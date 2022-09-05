@@ -15,8 +15,6 @@
  */
 package org.grails.orm.hibernate.proxy;
 
-
-import org.hibernate.collection.internal.AbstractPersistentCollection;
 import org.hibernate.collection.spi.PersistentCollection;
 
 /**
@@ -29,7 +27,7 @@ public class HibernateProxyHandler extends SimpleHibernateProxyHandler {
 
     public boolean isInitialized(Object o) {
         if (o instanceof PersistentCollection) {
-            return ((PersistentCollection)o).wasInitialized();
+            return ((PersistentCollection) o).wasInitialized();
         }
 
         return super.isInitialized(o);
@@ -50,11 +48,12 @@ public class HibernateProxyHandler extends SimpleHibernateProxyHandler {
 
     public void initialize(Object o) {
         if (o instanceof PersistentCollection) {
-            final PersistentCollection col = (PersistentCollection)o;
+            final PersistentCollection col = (PersistentCollection) o;
             if (!col.wasInitialized()) {
                 col.forceInitialization();
             }
         }
         super.initialize(o);
     }
+
 }

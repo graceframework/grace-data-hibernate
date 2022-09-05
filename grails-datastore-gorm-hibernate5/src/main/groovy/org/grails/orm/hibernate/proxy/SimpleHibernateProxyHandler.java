@@ -15,22 +15,21 @@
  */
 package org.grails.orm.hibernate.proxy;
 
+import java.io.Serializable;
 
 import groovy.lang.GroovyObject;
 import groovy.lang.GroovySystem;
+import org.hibernate.collection.spi.PersistentCollection;
+import org.hibernate.proxy.HibernateProxy;
+import org.hibernate.proxy.HibernateProxyHelper;
+import org.hibernate.proxy.LazyInitializer;
+
 import org.grails.datastore.mapping.core.Session;
 import org.grails.datastore.mapping.engine.AssociationQueryExecutor;
 import org.grails.datastore.mapping.proxy.JavassistProxyFactory;
 import org.grails.datastore.mapping.proxy.ProxyFactory;
 import org.grails.datastore.mapping.proxy.ProxyHandler;
 import org.grails.datastore.mapping.reflect.ClassPropertyFetcher;
-import org.hibernate.Hibernate;
-import org.hibernate.collection.spi.PersistentCollection;
-import org.hibernate.proxy.HibernateProxy;
-import org.hibernate.proxy.HibernateProxyHelper;
-import org.hibernate.proxy.LazyInitializer;
-
-import java.io.Serializable;
 
 /**
  * Implementation of the ProxyHandler interface for Hibernate.
@@ -74,7 +73,7 @@ public class SimpleHibernateProxyHandler extends JavassistProxyFactory implement
 
     public Object unwrapIfProxy(Object instance) {
         if (instance instanceof HibernateProxy) {
-            final HibernateProxy proxy = (HibernateProxy)instance;
+            final HibernateProxy proxy = (HibernateProxy) instance;
             return unwrapProxy(proxy);
         }
         else {
@@ -102,7 +101,7 @@ public class SimpleHibernateProxyHandler extends JavassistProxyFactory implement
      */
     private static void ensureCorrectGroovyMetaClass(Object target, Class<?> persistentClass) {
         if (target instanceof GroovyObject) {
-            GroovyObject go = ((GroovyObject)target);
+            GroovyObject go = ((GroovyObject) target);
             if (!go.getMetaClass().getTheClass().equals(persistentClass)) {
                 go.setMetaClass(GroovySystem.getMetaClassRegistry().getMetaClass(persistentClass));
             }
@@ -129,7 +128,7 @@ public class SimpleHibernateProxyHandler extends JavassistProxyFactory implement
 
     public void initialize(Object o) {
         if (o instanceof HibernateProxy) {
-            final LazyInitializer hibernateLazyInitializer = ((HibernateProxy)o).getHibernateLazyInitializer();
+            final LazyInitializer hibernateLazyInitializer = ((HibernateProxy) o).getHibernateLazyInitializer();
             if (hibernateLazyInitializer.isUninitialized()) {
                 hibernateLazyInitializer.initialize();
             }
@@ -141,13 +140,13 @@ public class SimpleHibernateProxyHandler extends JavassistProxyFactory implement
 
     public Object getProxyIdentifier(Object o) {
         if (o instanceof HibernateProxy) {
-            return ((HibernateProxy)o).getHibernateLazyInitializer().getIdentifier();
+            return ((HibernateProxy) o).getHibernateLazyInitializer().getIdentifier();
         }
         return super.getIdentifier(o);
     }
 
     public Class<?> getProxiedClass(Object o) {
-        if(o instanceof HibernateProxy) {
+        if (o instanceof HibernateProxy) {
             return HibernateProxyHelper.getClassWithoutInitializingProxy(o);
         }
         else {
@@ -164,4 +163,5 @@ public class SimpleHibernateProxyHandler extends JavassistProxyFactory implement
     public <T, K extends Serializable> T createProxy(Session session, AssociationQueryExecutor<K, T> executor, K associationKey) {
         return super.createProxy(session, executor, associationKey);
     }
+
 }

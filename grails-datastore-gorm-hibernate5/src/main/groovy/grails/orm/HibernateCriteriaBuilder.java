@@ -15,13 +15,13 @@
  */
 package grails.orm;
 
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.metamodel.Attribute;
+import javax.persistence.metamodel.PluralAttribute;
+
 import groovy.lang.GroovySystem;
-import org.grails.datastore.mapping.model.PersistentEntity;
-import org.grails.orm.hibernate.GrailsHibernateTemplate;
-import org.grails.orm.hibernate.HibernateDatastore;
-import org.grails.orm.hibernate.cfg.GrailsHibernateUtil;
-import org.grails.orm.hibernate.query.*;
-import org.grails.datastore.mapping.query.api.QueryableCriteria;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
@@ -29,17 +29,21 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
-import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.sql.JoinType;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 import org.springframework.orm.hibernate5.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import javax.persistence.metamodel.Attribute;
-import javax.persistence.metamodel.PluralAttribute;
-import java.util.List;
-import java.util.Map;
+import org.grails.datastore.mapping.model.PersistentEntity;
+import org.grails.datastore.mapping.query.api.QueryableCriteria;
+import org.grails.orm.hibernate.GrailsHibernateTemplate;
+import org.grails.orm.hibernate.HibernateDatastore;
+import org.grails.orm.hibernate.cfg.GrailsHibernateUtil;
+import org.grails.orm.hibernate.query.AbstractHibernateCriteriaBuilder;
+import org.grails.orm.hibernate.query.AbstractHibernateQuery;
+import org.grails.orm.hibernate.query.HibernateProjectionAdapter;
+import org.grails.orm.hibernate.query.HibernateQuery;
 
 /**
  * <p>Wraps the Hibernate Criteria API in a builder. The builder can be retrieved through the "createCriteria()" dynamic static
@@ -69,46 +73,83 @@ import java.util.Map;
  * @author Graeme Rocher
  */
 public class HibernateCriteriaBuilder extends AbstractHibernateCriteriaBuilder {
+
     /*
      * Define constants which may be used inside of criteria queries
      * to refer to standard Hibernate Type instances.
      */
     public static final Type BOOLEAN = StandardBasicTypes.BOOLEAN;
+
     public static final Type YES_NO = StandardBasicTypes.YES_NO;
+
     public static final Type BYTE = StandardBasicTypes.BYTE;
+
     public static final Type CHARACTER = StandardBasicTypes.CHARACTER;
+
     public static final Type SHORT = StandardBasicTypes.SHORT;
+
     public static final Type INTEGER = StandardBasicTypes.INTEGER;
+
     public static final Type LONG = StandardBasicTypes.LONG;
+
     public static final Type FLOAT = StandardBasicTypes.FLOAT;
+
     public static final Type DOUBLE = StandardBasicTypes.DOUBLE;
+
     public static final Type BIG_DECIMAL = StandardBasicTypes.BIG_DECIMAL;
+
     public static final Type BIG_INTEGER = StandardBasicTypes.BIG_INTEGER;
+
     public static final Type STRING = StandardBasicTypes.STRING;
+
     public static final Type NUMERIC_BOOLEAN = StandardBasicTypes.NUMERIC_BOOLEAN;
+
     public static final Type TRUE_FALSE = StandardBasicTypes.TRUE_FALSE;
+
     public static final Type URL = StandardBasicTypes.URL;
+
     public static final Type TIME = StandardBasicTypes.TIME;
+
     public static final Type DATE = StandardBasicTypes.DATE;
+
     public static final Type TIMESTAMP = StandardBasicTypes.TIMESTAMP;
+
     public static final Type CALENDAR = StandardBasicTypes.CALENDAR;
+
     public static final Type CALENDAR_DATE = StandardBasicTypes.CALENDAR_DATE;
+
     public static final Type CLASS = StandardBasicTypes.CLASS;
+
     public static final Type LOCALE = StandardBasicTypes.LOCALE;
+
     public static final Type CURRENCY = StandardBasicTypes.CURRENCY;
+
     public static final Type TIMEZONE = StandardBasicTypes.TIMEZONE;
+
     public static final Type UUID_BINARY = StandardBasicTypes.UUID_BINARY;
+
     public static final Type UUID_CHAR = StandardBasicTypes.UUID_CHAR;
+
     public static final Type BINARY = StandardBasicTypes.BINARY;
+
     public static final Type WRAPPER_BINARY = StandardBasicTypes.WRAPPER_BINARY;
+
     public static final Type IMAGE = StandardBasicTypes.IMAGE;
+
     public static final Type BLOB = StandardBasicTypes.BLOB;
+
     public static final Type MATERIALIZED_BLOB = StandardBasicTypes.MATERIALIZED_BLOB;
+
     public static final Type CHAR_ARRAY = StandardBasicTypes.CHAR_ARRAY;
+
     public static final Type CHARACTER_ARRAY = StandardBasicTypes.CHARACTER_ARRAY;
+
     public static final Type TEXT = StandardBasicTypes.TEXT;
+
     public static final Type CLOB = StandardBasicTypes.CLOB;
+
     public static final Type MATERIALIZED_CLOB = StandardBasicTypes.MATERIALIZED_CLOB;
+
     public static final Type SERIALIZABLE = StandardBasicTypes.SERIALIZABLE;
 
     @SuppressWarnings("rawtypes")
@@ -152,7 +193,7 @@ public class HibernateCriteriaBuilder extends AbstractHibernateCriteriaBuilder {
 
     protected Class getClassForAssociationType(Attribute<?, ?> type) {
         if (type instanceof PluralAttribute) {
-            return ((PluralAttribute)type).getElementType().getJavaType();
+            return ((PluralAttribute) type).getElementType().getJavaType();
         }
         return type.getJavaType();
     }
@@ -188,7 +229,7 @@ public class HibernateCriteriaBuilder extends AbstractHibernateCriteriaBuilder {
         {
             if (TransactionSynchronizationManager.hasResource(sessionFactory)) {
                 participate = true;
-                hibernateSession = ((SessionHolder)TransactionSynchronizationManager.getResource(sessionFactory)).getSession();
+                hibernateSession = ((SessionHolder) TransactionSynchronizationManager.getResource(sessionFactory)).getSession();
             }
             else {
                 hibernateSession = sessionFactory.openSession();
@@ -215,13 +256,13 @@ public class HibernateCriteriaBuilder extends AbstractHibernateCriteriaBuilder {
         Class targetClass = persistentEntity.getJavaClass();
         org.hibernate.criterion.DetachedCriteria detachedCriteria;
 
-        if(alias != null) {
+        if (alias != null) {
             detachedCriteria = org.hibernate.criterion.DetachedCriteria.forClass(targetClass, alias);
         }
         else {
             detachedCriteria = org.hibernate.criterion.DetachedCriteria.forClass(targetClass);
         }
-        populateHibernateDetachedCriteria(new HibernateQuery(detachedCriteria,persistentEntity), detachedCriteria, queryableCriteria);
+        populateHibernateDetachedCriteria(new HibernateQuery(detachedCriteria, persistentEntity), detachedCriteria, queryableCriteria);
         return detachedCriteria;
     }
 

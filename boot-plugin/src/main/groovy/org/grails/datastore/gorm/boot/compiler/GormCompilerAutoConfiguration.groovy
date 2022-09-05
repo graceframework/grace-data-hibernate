@@ -12,16 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.grails.datastore.gorm.boot.compiler
 
 import groovy.transform.CompileStatic
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.control.CompilationFailedException
 import org.codehaus.groovy.control.customizers.ImportCustomizer
-import org.springframework.boot.cli.compiler.AstUtils;
+import org.springframework.boot.cli.compiler.AstUtils
 import org.springframework.boot.cli.compiler.CompilerAutoConfiguration
-import org.springframework.boot.cli.compiler.DependencyCustomizer;
+import org.springframework.boot.cli.compiler.DependencyCustomizer
 
 /**
  * A compiler configuration that automatically adds the necessary imports
@@ -31,16 +30,17 @@ import org.springframework.boot.cli.compiler.DependencyCustomizer;
  *
  */
 @CompileStatic
-class GormCompilerAutoConfiguration extends CompilerAutoConfiguration{
+class GormCompilerAutoConfiguration extends CompilerAutoConfiguration {
+
     @Override
     boolean matches(ClassNode classNode) {
-        return AstUtils.hasAtLeastOneAnnotation(classNode, "grails.persistence.Entity", "grails.gorm.annotation.Entity" ,"Entity")
+        return AstUtils.hasAtLeastOneAnnotation(classNode, "grails.persistence.Entity", "grails.gorm.annotation.Entity", "Entity")
     }
 
     @Override
     void applyDependencies(DependencyCustomizer dependencies) throws CompilationFailedException {
         dependencies.ifAnyMissingClasses("grails.persistence.Entity", "grails.gorm.annotation.Entity")
-                        .add("grails-datastore-gorm-hibernate5")
+                .add("grails-datastore-gorm-hibernate5")
     }
 
     @Override

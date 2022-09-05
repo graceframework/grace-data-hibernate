@@ -15,7 +15,11 @@
  */
 package org.grails.orm.hibernate.cfg;
 
-import org.grails.datastore.mapping.model.*;
+import org.grails.datastore.mapping.model.AbstractClassMapping;
+import org.grails.datastore.mapping.model.AbstractPersistentEntity;
+import org.grails.datastore.mapping.model.ClassMapping;
+import org.grails.datastore.mapping.model.MappingContext;
+import org.grails.datastore.mapping.model.PersistentEntity;
 
 /**
  * Persistent entity implementation for Hibernate
@@ -24,16 +28,15 @@ import org.grails.datastore.mapping.model.*;
  * @since 5.0
  */
 public class HibernatePersistentEntity extends AbstractPersistentEntity<Mapping> {
-    private final AbstractClassMapping<Mapping> classMapping;
 
+    private final AbstractClassMapping<Mapping> classMapping;
 
     public HibernatePersistentEntity(Class javaClass, final MappingContext context) {
         super(javaClass, context);
 
-
-
         this.classMapping = new AbstractClassMapping<Mapping>(this, context) {
             Mapping mappedForm = (Mapping) context.getMappingFactory().createMappedForm(HibernatePersistentEntity.this);
+
             @Override
             public PersistentEntity getEntity() {
                 return HibernatePersistentEntity.this;
@@ -52,9 +55,9 @@ public class HibernatePersistentEntity extends AbstractPersistentEntity<Mapping>
         return true;
     }
 
-
     @Override
     public ClassMapping<Mapping> getMapping() {
         return this.classMapping;
     }
+
 }

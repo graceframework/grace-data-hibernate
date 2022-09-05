@@ -16,7 +16,11 @@
 package org.grails.orm.hibernate;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import org.hibernate.boot.Metadata;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
@@ -29,6 +33,7 @@ import org.hibernate.service.spi.SessionFactoryServiceRegistry;
 public class EventListenerIntegrator implements Integrator {
 
     protected HibernateEventListeners hibernateEventListeners;
+
     protected Map<String, Object> eventListeners;
 
     public EventListenerIntegrator(HibernateEventListeners hibernateEventListeners, Map<String, Object> eventListeners) {
@@ -85,7 +90,7 @@ public class EventListenerIntegrator implements Integrator {
                 EventType type = EventType.resolveEventTypeByName(entry.getKey());
                 Object listenerObject = entry.getValue();
                 if (listenerObject instanceof Collection) {
-                    appendListeners(listenerRegistry, type, (Collection)listenerObject);
+                    appendListeners(listenerRegistry, type, (Collection) listenerObject);
                 }
                 else if (listenerObject != null) {
                     appendListeners(listenerRegistry, type, Collections.singleton(listenerObject));
@@ -94,7 +99,7 @@ public class EventListenerIntegrator implements Integrator {
         }
 
         if (hibernateEventListeners != null && hibernateEventListeners.getListenerMap() != null) {
-            Map<String,Object> listenerMap = hibernateEventListeners.getListenerMap();
+            Map<String, Object> listenerMap = hibernateEventListeners.getListenerMap();
             for (EventType<?> type : TYPES) {
                 appendListeners(listenerRegistry, type, listenerMap);
             }
@@ -103,12 +108,12 @@ public class EventListenerIntegrator implements Integrator {
     }
 
     protected <T> void appendListeners(EventListenerRegistry listenerRegistry,
-                                       EventType<T> eventType, Collection<T> listeners) {
+            EventType<T> eventType, Collection<T> listeners) {
 
         EventListenerGroup<T> group = listenerRegistry.getEventListenerGroup(eventType);
         for (T listener : listeners) {
             if (listener != null) {
-                if(shouldOverrideListeners(eventType, listener)) {
+                if (shouldOverrideListeners(eventType, listener)) {
                     // since ClosureEventTriggeringInterceptor extends DefaultSaveOrUpdateEventListener we want to override instead of append the listener here
                     // to avoid there being 2 implementations which would impact performance too
                     group.clear();
@@ -128,24 +133,24 @@ public class EventListenerIntegrator implements Integrator {
 
     @SuppressWarnings("unchecked")
     protected <T> void appendListeners(final EventListenerRegistry listenerRegistry,
-                                       final EventType<T> eventType, final Map<String, Object> listeners) {
+            final EventType<T> eventType, final Map<String, Object> listeners) {
 
         Object listener = listeners.get(eventType.eventName());
         if (listener != null) {
-            if(shouldOverrideListeners(eventType, listener)) {
+            if (shouldOverrideListeners(eventType, listener)) {
                 // since ClosureEventTriggeringInterceptor extends DefaultSaveOrUpdateEventListener we want to override instead of append the listener here
                 // to avoid there being 2 implementations which would impact performance too
                 listenerRegistry.setListeners(eventType, (T) listener);
             }
             else {
-                listenerRegistry.appendListeners(eventType, (T)listener);
+                listenerRegistry.appendListeners(eventType, (T) listener);
             }
         }
     }
 
 
-
     public void disintegrate(SessionFactoryImplementor sessionFactory, SessionFactoryServiceRegistry serviceRegistry) {
         // nothing to do
     }
+
 }

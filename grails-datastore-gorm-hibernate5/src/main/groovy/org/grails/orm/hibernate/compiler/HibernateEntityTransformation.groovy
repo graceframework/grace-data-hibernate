@@ -1,9 +1,21 @@
 package org.grails.orm.hibernate.compiler
 
-import grails.gorm.dirty.checking.DirtyCheckedProperty
+import java.lang.reflect.Modifier
+
+import javax.persistence.Transient
+
 import groovy.transform.CompilationUnitAware
 import groovy.transform.CompileStatic
-import org.codehaus.groovy.ast.*
+import org.codehaus.groovy.ast.ASTNode
+import org.codehaus.groovy.ast.AnnotatedNode
+import org.codehaus.groovy.ast.AnnotationNode
+import org.codehaus.groovy.ast.ClassCodeVisitorSupport
+import org.codehaus.groovy.ast.ClassHelper
+import org.codehaus.groovy.ast.ClassNode
+import org.codehaus.groovy.ast.FieldNode
+import org.codehaus.groovy.ast.InnerClassNode
+import org.codehaus.groovy.ast.MethodNode
+import org.codehaus.groovy.ast.Parameter
 import org.codehaus.groovy.ast.stmt.BlockStatement
 import org.codehaus.groovy.ast.stmt.IfStatement
 import org.codehaus.groovy.ast.stmt.ReturnStatement
@@ -14,19 +26,32 @@ import org.codehaus.groovy.control.SourceUnit
 import org.codehaus.groovy.transform.ASTTransformation
 import org.codehaus.groovy.transform.GroovyASTTransformation
 import org.codehaus.groovy.transform.sc.StaticCompilationVisitor
-import org.grails.compiler.gorm.GormEntityTransformation
-import org.grails.datastore.mapping.model.config.GormProperties
-import org.grails.datastore.mapping.reflect.AstUtils
-import org.grails.datastore.mapping.reflect.NameUtils
 import org.hibernate.engine.spi.EntityEntry
 import org.hibernate.engine.spi.ManagedEntity
 import org.hibernate.engine.spi.PersistentAttributeInterceptable
 import org.hibernate.engine.spi.PersistentAttributeInterceptor
 
-import javax.persistence.Transient
-import java.lang.reflect.Modifier
+import grails.gorm.dirty.checking.DirtyCheckedProperty
 
-import static org.codehaus.groovy.ast.tools.GeneralUtils.*
+import org.grails.compiler.gorm.GormEntityTransformation
+import org.grails.datastore.mapping.model.config.GormProperties
+import org.grails.datastore.mapping.reflect.AstUtils
+import org.grails.datastore.mapping.reflect.NameUtils
+
+import static org.codehaus.groovy.ast.tools.GeneralUtils.args
+import static org.codehaus.groovy.ast.tools.GeneralUtils.assignS
+import static org.codehaus.groovy.ast.tools.GeneralUtils.callX
+import static org.codehaus.groovy.ast.tools.GeneralUtils.constX
+import static org.codehaus.groovy.ast.tools.GeneralUtils.equalsNullX
+import static org.codehaus.groovy.ast.tools.GeneralUtils.fieldX
+import static org.codehaus.groovy.ast.tools.GeneralUtils.ifS
+import static org.codehaus.groovy.ast.tools.GeneralUtils.neX
+import static org.codehaus.groovy.ast.tools.GeneralUtils.param
+import static org.codehaus.groovy.ast.tools.GeneralUtils.params
+import static org.codehaus.groovy.ast.tools.GeneralUtils.propX
+import static org.codehaus.groovy.ast.tools.GeneralUtils.returnS
+import static org.codehaus.groovy.ast.tools.GeneralUtils.ternaryX
+import static org.codehaus.groovy.ast.tools.GeneralUtils.varX
 
 /**
  * A transformation that transforms entities that implement the {@link grails.gorm.hibernate.annotation.ManagedEntity} trait,
@@ -38,6 +63,7 @@ import static org.codehaus.groovy.ast.tools.GeneralUtils.*
 @CompileStatic
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 class HibernateEntityTransformation implements ASTTransformation, CompilationUnitAware {
+
     private static final ClassNode MY_TYPE = new ClassNode(grails.gorm.hibernate.annotation.ManagedEntity.class);
     private static final Object APPLIED_MARKER = new Object();
 
@@ -75,12 +101,12 @@ class HibernateEntityTransformation implements ASTTransformation, CompilationUni
         def mapWith = AstUtils.getPropertyFromHierarchy(classNode, GormProperties.MAPPING_STRATEGY)
         String mapWithValue = mapWith?.initialExpression?.text
 
-        if(mapWithValue != null && (mapWithValue != ('hibernate') || mapWithValue != GormProperties.DEFAULT_MAPPING_STRATEGY)) {
+        if (mapWithValue != null && (mapWithValue != ('hibernate') || mapWithValue != GormProperties.DEFAULT_MAPPING_STRATEGY)) {
             return
         }
 
         new GormEntityTransformation(compilationUnit: compilationUnit).visit(classNode, sourceUnit)
-        
+
         ClassNode managedEntityClassNode = ClassHelper.make(ManagedEntity)
         ClassNode attributeInterceptableClassNode = ClassHelper.make(PersistentAttributeInterceptable)
         ClassNode entityEntryClassNode = ClassHelper.make(EntityEntry)
@@ -98,20 +124,19 @@ class HibernateEntityTransformation implements ASTTransformation, CompilationUni
         AnnotationNode transientAnnotationNode = new AnnotationNode(ClassHelper.make(Transient.class))
         FieldNode entityEntryHolderField = classNode.addField(entryHolderFieldName, Modifier.PRIVATE | Modifier.TRANSIENT, entityEntryClassNode, null)
         entityEntryHolderField
-                 .addAnnotation(transientAnnotationNode)
+                .addAnnotation(transientAnnotationNode)
 
         FieldNode previousManagedEntityField = classNode.addField(previousManagedEntityFieldName, Modifier.PRIVATE | Modifier.TRANSIENT, managedEntityClassNode, null)
         previousManagedEntityField
-                 .addAnnotation(transientAnnotationNode)
+                .addAnnotation(transientAnnotationNode)
 
         FieldNode nextManagedEntityField = classNode.addField(nextManagedEntityFieldName, Modifier.PRIVATE | Modifier.TRANSIENT, managedEntityClassNode, null)
         nextManagedEntityField
-                 .addAnnotation(transientAnnotationNode)
+                .addAnnotation(transientAnnotationNode)
 
         FieldNode interceptorField = classNode.addField(interceptorFieldName, Modifier.PRIVATE | Modifier.TRANSIENT, persistentAttributeInterceptorClassNode, null)
         interceptorField
-                 .addAnnotation(transientAnnotationNode)
-
+                .addAnnotation(transientAnnotationNode)
 
 
         // add method: PersistentAttributeInterceptor $$_hibernate_getInterceptor()
@@ -134,7 +159,7 @@ class HibernateEntityTransformation implements ASTTransformation, CompilationUni
                 ClassHelper.VOID_TYPE,
                 params(p1),
                 null,
-                assignS( varX(interceptorField), varX(p1) )
+                assignS(varX(interceptorField), varX(p1))
         )
         classNode.addMethod(setInterceptorMethod)
         staticCompilationVisitor.visitMethod(setInterceptorMethod)
@@ -172,7 +197,7 @@ class HibernateEntityTransformation implements ASTTransformation, CompilationUni
                 ClassHelper.VOID_TYPE,
                 params(entityEntryParam),
                 null,
-                assignS( varX(entityEntryHolderField), varX(entityEntryParam) )
+                assignS(varX(entityEntryHolderField), varX(entityEntryParam))
         )
         classNode.addMethod(setEntityEntryMethod)
         staticCompilationVisitor.visitMethod(setEntityEntryMethod)
@@ -209,7 +234,7 @@ class HibernateEntityTransformation implements ASTTransformation, CompilationUni
                 ClassHelper.VOID_TYPE,
                 params(previousParam),
                 null,
-                assignS( varX(previousManagedEntityField), varX(previousParam) )
+                assignS(varX(previousManagedEntityField), varX(previousParam))
         )
         classNode.addMethod(setPreviousManagedEntityMethod)
         staticCompilationVisitor.visitMethod(setPreviousManagedEntityMethod)
@@ -222,16 +247,17 @@ class HibernateEntityTransformation implements ASTTransformation, CompilationUni
                 ClassHelper.VOID_TYPE,
                 params(nextParam),
                 null,
-                assignS( varX(nextManagedEntityField), varX(nextParam) )
+                assignS(varX(nextManagedEntityField), varX(nextParam))
         )
         classNode.addMethod(setNextManagedEntityMethod)
         staticCompilationVisitor.visitMethod(setNextManagedEntityMethod)
 
         List<MethodNode> allMethods = classNode.getMethods()
-        for(MethodNode methodNode in allMethods) {
-            if(methodNode.getAnnotations(ClassHelper.make(DirtyCheckedProperty))) {
-                if(AstUtils.isGetter(methodNode)) {
+        for (MethodNode methodNode in allMethods) {
+            if (methodNode.getAnnotations(ClassHelper.make(DirtyCheckedProperty))) {
+                if (AstUtils.isGetter(methodNode)) {
                     def codeVisitor = new ClassCodeVisitorSupport() {
+
                         @Override
                         protected SourceUnit getSourceUnit() {
                             return sourceUnit
@@ -239,7 +265,7 @@ class HibernateEntityTransformation implements ASTTransformation, CompilationUni
 
                         @Override
                         void visitReturnStatement(ReturnStatement statement) {
-                            ReturnStatement rs = (ReturnStatement)statement
+                            ReturnStatement rs = (ReturnStatement) statement
                             def i = varX(interceptorField)
                             def propertyName = NameUtils.getPropertyNameForGetterOrSetter(methodNode.getName())
 
@@ -261,21 +287,21 @@ class HibernateEntityTransformation implements ASTTransformation, CompilationUni
                 }
                 else {
                     Statement code = methodNode.code
-                    if(code instanceof BlockStatement) {
-                        BlockStatement bs = (BlockStatement)code
+                    if (code instanceof BlockStatement) {
+                        BlockStatement bs = (BlockStatement) code
                         Parameter parameter = methodNode.getParameters()[0]
                         ClassNode parameterType = parameter.type
                         final boolean isPrimitive = ClassHelper.isPrimitiveType(parameterType)
                         String writeMethodName = isPrimitive ? "write${NameUtils.capitalize(parameterType.getName())}" : "writeObject"
                         String propertyName = NameUtils.getPropertyNameForGetterOrSetter(methodNode.getName())
                         def interceptorFieldExpr = fieldX(interceptorField)
-                        def ifStatement = ifS( neX(interceptorFieldExpr, constX(null) ),
-                            assignS(
-                                varX(parameter),
-                                callX( interceptorFieldExpr, writeMethodName, args( varX("this"), constX(propertyName), propX(varX("this"), propertyName), varX(parameter)))
-                            )
+                        def ifStatement = ifS(neX(interceptorFieldExpr, constX(null)),
+                                assignS(
+                                        varX(parameter),
+                                        callX(interceptorFieldExpr, writeMethodName, args(varX("this"), constX(propertyName), propX(varX("this"), propertyName), varX(parameter)))
+                                )
                         )
-                        staticCompilationVisitor.visitIfElse((IfStatement)ifStatement)
+                        staticCompilationVisitor.visitIfElse((IfStatement) ifStatement)
                         bs.getStatements().add(0, ifStatement)
                     }
                 }

@@ -32,17 +32,20 @@ import org.springframework.validation.DataBinder
 @CompileStatic
 @Builder(builderStrategy = SimpleStrategy, prefix = '')
 class CacheConfig implements Cloneable {
-    static final List USAGE_OPTIONS = ['read-only', 'read-write','nonstrict-read-write','transactional']
+
+    static final List USAGE_OPTIONS = ['read-only', 'read-write', 'nonstrict-read-write', 'transactional']
     static final List INCLUDE_OPTIONS = ['all', 'non-lazy']
 
     /**
      * The cache usage
      */
     String usage = "read-write"
+
     /**
      * Whether caching is enabled
      */
     boolean enabled = false
+
     /**
      * What to include in caching
      */
@@ -70,6 +73,7 @@ class CacheConfig implements Cloneable {
         dataBinder.bind(new MutablePropertyValues(config))
         return cacheConfig
     }
+
     /**
      * Configures an existing PropertyConfig instance
      *
@@ -82,4 +86,5 @@ class CacheConfig implements Cloneable {
         config.call()
         return cacheConfig
     }
+
 }

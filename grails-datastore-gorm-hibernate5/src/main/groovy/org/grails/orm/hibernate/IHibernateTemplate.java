@@ -71,4 +71,5 @@ public interface IHibernateTemplate {
     <T> T executeWithNewSession(Closure<T> callable);
 
     <T1> T1 executeWithExistingOrCreateNewSession(SessionFactory sessionFactory, Closure<T1> callable);
+
 }

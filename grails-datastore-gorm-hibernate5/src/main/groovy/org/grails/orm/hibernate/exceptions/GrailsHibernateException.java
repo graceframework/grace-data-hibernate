@@ -35,4 +35,5 @@ public abstract class GrailsHibernateException extends DatastoreException {
     public GrailsHibernateException(String message, Throwable cause) {
         super(message, cause);
     }
+
 }

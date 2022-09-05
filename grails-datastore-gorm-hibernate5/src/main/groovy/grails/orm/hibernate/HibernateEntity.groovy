@@ -1,6 +1,7 @@
 package grails.gorm.hibernate
 
 import groovy.transform.CompileStatic
+
 import org.grails.datastore.gorm.GormEnhancer
 import org.grails.datastore.gorm.GormEntity
 import org.grails.orm.hibernate.AbstractHibernateGormStaticApi
@@ -57,6 +58,6 @@ trait HibernateEntity<D> extends GormEntity<D> {
     }
 
     private static AbstractHibernateGormStaticApi currentHibernateStaticApi() {
-        (AbstractHibernateGormStaticApi)GormEnhancer.findStaticApi(this)
+        (AbstractHibernateGormStaticApi) GormEnhancer.findStaticApi(this)
     }
 }

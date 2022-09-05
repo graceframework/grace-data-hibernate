@@ -12,6 +12,7 @@ import org.springframework.transaction.TransactionStatus;
  * @author Burt Beckwith
  */
 public class PlatformTransactionManagerProxy implements PlatformTransactionManager {
+
     private PlatformTransactionManager targetTransactionManager;
 
     public PlatformTransactionManagerProxy() {
@@ -37,4 +38,5 @@ public class PlatformTransactionManagerProxy implements PlatformTransactionManag
     public void setTargetTransactionManager(PlatformTransactionManager targetTransactionManager) {
         this.targetTransactionManager = targetTransactionManager;
     }
+
 }

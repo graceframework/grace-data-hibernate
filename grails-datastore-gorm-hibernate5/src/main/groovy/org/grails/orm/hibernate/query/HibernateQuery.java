@@ -15,21 +15,10 @@
  */
 package org.grails.orm.hibernate.query;
 
-import grails.orm.HibernateCriteriaBuilder;
-import grails.orm.RlikeExpression;
-
-import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
-import org.grails.orm.hibernate.AbstractHibernateSession;
-import org.grails.orm.hibernate.GrailsHibernateTemplate;
-import org.grails.orm.hibernate.HibernateSession;
-import org.grails.datastore.mapping.model.PersistentEntity;
-import org.grails.datastore.mapping.query.api.QueryableCriteria;
 import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.dialect.Dialect;
@@ -39,6 +28,15 @@ import org.hibernate.internal.CriteriaImpl;
 import org.hibernate.persister.entity.PropertyMapping;
 import org.hibernate.type.BasicType;
 import org.hibernate.type.TypeResolver;
+
+import grails.orm.HibernateCriteriaBuilder;
+import grails.orm.RlikeExpression;
+
+import org.grails.datastore.mapping.model.PersistentEntity;
+import org.grails.datastore.mapping.query.api.QueryableCriteria;
+import org.grails.orm.hibernate.AbstractHibernateSession;
+import org.grails.orm.hibernate.GrailsHibernateTemplate;
+import org.grails.orm.hibernate.HibernateSession;
 
 /**
  * Bridges the Query API with the Hibernate Criteria API
@@ -127,4 +125,5 @@ public class HibernateQuery extends AbstractHibernateQuery {
             return new HibernateQuery(newCriteria, hibernateSession, entity);
         });
     }
+
 }

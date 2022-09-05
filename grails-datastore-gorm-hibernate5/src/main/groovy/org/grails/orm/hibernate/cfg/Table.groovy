@@ -30,14 +30,17 @@ import org.springframework.validation.DataBinder
 @Builder(builderStrategy = SimpleStrategy, prefix = '')
 @CompileStatic
 class Table {
+
     /**
      * The table name
      */
     String name
+
     /**
      * The table catalog
      */
     String catalog
+
     /**
      * The table schema
      */
@@ -77,4 +80,5 @@ class Table {
         config.call()
         return table
     }
+
 }

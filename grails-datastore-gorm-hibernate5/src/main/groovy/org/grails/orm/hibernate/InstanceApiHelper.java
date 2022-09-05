@@ -15,8 +15,9 @@
  */
 package org.grails.orm.hibernate;
 
-import org.grails.orm.hibernate.GrailsHibernateTemplate.HibernateCallback;
 import org.hibernate.FlushMode;
+
+import org.grails.orm.hibernate.GrailsHibernateTemplate.HibernateCallback;
 
 /**
  * Workaround for VerifyErrors in Groovy when using a HibernateCallback.
@@ -47,4 +48,5 @@ public class InstanceApiHelper {
             return null;
         });
     }
+
 }

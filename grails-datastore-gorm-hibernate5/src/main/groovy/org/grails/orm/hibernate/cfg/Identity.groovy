@@ -18,9 +18,10 @@ package org.grails.orm.hibernate.cfg
 import groovy.transform.CompileStatic
 import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
-import org.grails.datastore.mapping.config.Property
 import org.springframework.beans.MutablePropertyValues
 import org.springframework.validation.DataBinder
+
+import org.grails.datastore.mapping.config.Property
 
 /**
  * Defines the identity generation strategy. In the case of a 'composite' identity the properties
@@ -32,26 +33,32 @@ import org.springframework.validation.DataBinder
 @CompileStatic
 @Builder(builderStrategy = SimpleStrategy, prefix = '')
 class Identity extends Property {
+
     /**
      * The generator to use
      */
     String generator = 'native'
+
     /**
      * The column to map to
      */
     String column = 'id'
+
     /**
      * The name of the id property
      */
     String name
+
     /**
      * The natural id definition
      */
     NaturalId natural
+
     /**
      * The type
      */
     Class type = Long
+
     /**
      * Any parameters (for example for the generator)
      */
@@ -93,6 +100,7 @@ class Identity extends Property {
         dataBinder.bind(new MutablePropertyValues(config))
         return property
     }
+
     /**
      * Configures an existing PropertyConfig instance
      *
@@ -105,4 +113,5 @@ class Identity extends Property {
         config.call()
         return property
     }
+
 }

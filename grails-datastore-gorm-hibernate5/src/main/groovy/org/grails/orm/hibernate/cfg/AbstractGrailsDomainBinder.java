@@ -14,11 +14,11 @@
  */
 package org.grails.orm.hibernate.cfg;
 
-import org.grails.datastore.mapping.model.PersistentEntity;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import org.grails.datastore.mapping.model.PersistentEntity;
 
 /**
  * Handles the binding Grails domain classes and properties to the Hibernate runtime meta model.
@@ -28,6 +28,7 @@ import java.util.Map;
  * @since 0.1
  */
 public abstract class AbstractGrailsDomainBinder {
+
     protected static final Map<Class<?>, Mapping> MAPPING_CACHE = new HashMap<>();
 
 
@@ -67,12 +68,13 @@ public abstract class AbstractGrailsDomainBinder {
 
     public static void clearMappingCache(Class<?> theClass) {
         String className = theClass.getName();
-        for(Iterator<Map.Entry<Class<?>, Mapping>> it = MAPPING_CACHE.entrySet().iterator(); it.hasNext();) {
+        for (Iterator<Map.Entry<Class<?>, Mapping>> it = MAPPING_CACHE.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry<Class<?>, Mapping> entry = it.next();
             if (className.equals(entry.getKey().getName())) {
                 it.remove();
             }
         }
     }
+
 }
 

@@ -14,10 +14,10 @@
  */
 package org.grails.orm.hibernate.datasource;
 
+import java.util.List;
+
 import org.grails.datastore.mapping.core.connections.ConnectionSourcesSupport;
 import org.grails.datastore.mapping.model.PersistentEntity;
-
-import java.util.List;
 
 /**
  * Support methods for Multiple data source handling
@@ -26,6 +26,7 @@ import java.util.List;
  * @since 5.0.2
  */
 public class MultipleDataSourceSupport {
+
     /**
      * If a domain class uses more than one datasource, we need to know which one to use
      * when calling a method without a namespace qualifier.
@@ -44,4 +45,5 @@ public class MultipleDataSourceSupport {
     public static boolean usesDatasource(PersistentEntity domainClass, String dataSourceName) {
         return ConnectionSourcesSupport.usesConnectionSource(domainClass, dataSourceName);
     }
+
 }

@@ -5,14 +5,12 @@ import groovy.transform.builder.Builder
 import groovy.transform.builder.SimpleStrategy
 
 /**
- * Configurations the discriminator
- *
- * @author Graeme Rocher
- * @since 6.1
+ * Configurations the discriminator** @author Graeme Rocher* @since 6.1
  */
 @CompileStatic
 @Builder(builderStrategy = SimpleStrategy, prefix = '')
 class DiscriminatorConfig {
+
     /**
      * The discriminator value
      */
@@ -39,18 +37,14 @@ class DiscriminatorConfig {
     String formula
 
     /**
-     * Whether it is insertable
-     *
-     * @param insertable True if it is insertable
+     * Whether it is insertable** @param insertable True if it is insertable
      */
     void setInsert(boolean insertable) {
         this.insertable = insertable
     }
 
     /**
-     * Configures the column
-     * @param columnConfig The column config
-     * @return This discriminator config
+     * Configures the column* @param columnConfig The column config* @return This discriminator config
      */
     DiscriminatorConfig column(@DelegatesTo(ColumnConfig) Closure columnConfig) {
         column = new ColumnConfig()
@@ -59,4 +53,5 @@ class DiscriminatorConfig {
         columnConfig.call()
         return this
     }
+
 }
