@@ -37,4 +37,5 @@ public class SessionFactoryHolder {
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
+
 }

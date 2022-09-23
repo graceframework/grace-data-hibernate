@@ -20,17 +20,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.LockMode;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+
 import org.grails.datastore.mapping.core.AbstractAttributeStoringSession;
 import org.grails.datastore.mapping.core.Datastore;
 import org.grails.datastore.mapping.engine.Persister;
 import org.grails.datastore.mapping.model.MappingContext;
 import org.grails.datastore.mapping.query.api.QueryAliasAwareSession;
 import org.grails.datastore.mapping.transactions.Transaction;
-import org.hibernate.LockMode;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
  * Session implementation that wraps a Hibernate {@link Session}.
@@ -39,10 +40,12 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * @since 1.0
  */
 @SuppressWarnings("rawtypes")
-public abstract class AbstractHibernateSession extends AbstractAttributeStoringSession implements QueryAliasAwareSession{
+public abstract class AbstractHibernateSession extends AbstractAttributeStoringSession implements QueryAliasAwareSession {
 
     protected AbstractHibernateDatastore datastore;
+
     protected boolean connected = true;
+
     protected IHibernateTemplate hibernateTemplate;
 
     protected AbstractHibernateSession(AbstractHibernateDatastore hibernateDatastore, SessionFactory sessionFactory) {
@@ -146,7 +149,7 @@ public abstract class AbstractHibernateSession extends AbstractAttributeStoringS
     protected Collection getIterableAsCollection(Iterable objects) {
         Collection list;
         if (objects instanceof Collection) {
-            list = (Collection)objects;
+            list = (Collection) objects;
         }
         else {
             list = new ArrayList();
@@ -196,6 +199,5 @@ public abstract class AbstractHibernateSession extends AbstractAttributeStoringS
     public void setSynchronizedWithTransaction(boolean synchronizedWithTransaction) {
         // no-op
     }
-
 
 }

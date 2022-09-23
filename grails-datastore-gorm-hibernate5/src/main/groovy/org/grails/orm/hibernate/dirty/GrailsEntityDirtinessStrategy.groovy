@@ -17,13 +17,6 @@ package org.grails.orm.hibernate.dirty
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
-import org.grails.datastore.gorm.GormEnhancer
-import org.grails.datastore.mapping.dirty.checking.DirtyCheckable
-import org.grails.datastore.mapping.dirty.checking.DirtyCheckingSupport
-import org.grails.datastore.mapping.model.PersistentEntity
-import org.grails.datastore.mapping.model.PersistentProperty
-import org.grails.datastore.mapping.model.config.GormProperties
-import org.grails.datastore.mapping.model.types.Embedded
 import org.hibernate.CustomEntityDirtinessStrategy
 import org.hibernate.Hibernate
 import org.hibernate.Session
@@ -32,6 +25,14 @@ import org.hibernate.engine.spi.Status
 import org.hibernate.persister.entity.EntityPersister
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+
+import org.grails.datastore.gorm.GormEnhancer
+import org.grails.datastore.mapping.dirty.checking.DirtyCheckable
+import org.grails.datastore.mapping.dirty.checking.DirtyCheckingSupport
+import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.datastore.mapping.model.PersistentProperty
+import org.grails.datastore.mapping.model.config.GormProperties
+import org.grails.datastore.mapping.model.types.Embedded
 
 /**
  * A class to customize Hibernate dirtiness based on Grails {@link DirtyCheckable} interface
@@ -65,7 +66,8 @@ class GrailsEntityDirtinessStrategy implements CustomEntityDirtinessStrategy {
                 if (persistentEntity != null) {
                     resetDirtyEmbeddedObjects(persistentEntity, entity, persister, session)
                 }
-            } catch (IllegalStateException e) {
+            }
+            catch (IllegalStateException e) {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug(e.message, e)
                 }
@@ -90,30 +92,31 @@ class GrailsEntityDirtinessStrategy implements CustomEntityDirtinessStrategy {
     @Override
     void findDirty(Object entity, EntityPersister persister, Session session, CustomEntityDirtinessStrategy.DirtyCheckContext dirtyCheckContext) {
         Status status = getStatus(session, entity)
-        if(entity instanceof DirtyCheckable) {
+        if (entity instanceof DirtyCheckable) {
             dirtyCheckContext.doDirtyChecking(
                     new CustomEntityDirtinessStrategy.AttributeChecker() {
+
                         @Override
                         boolean isDirty(CustomEntityDirtinessStrategy.AttributeInformation attributeInformation) {
                             String propertyName = attributeInformation.name
-                            if(status != null) {
-                                if(status == Status.MANAGED) {
+                            if (status != null) {
+                                if (status == Status.MANAGED) {
                                     // perform dirty check
                                     DirtyCheckable dirtyCheckable = cast(entity)
-                                    if(GormProperties.LAST_UPDATED == propertyName) {
+                                    if (GormProperties.LAST_UPDATED == propertyName) {
                                         return dirtyCheckable.hasChanged()
                                     }
                                     else {
-                                        if(dirtyCheckable.hasChanged(propertyName)) {
+                                        if (dirtyCheckable.hasChanged(propertyName)) {
                                             return true
                                         }
                                         else {
                                             PersistentEntity gormEntity = GormEnhancer.findEntity(Hibernate.getClass(entity))
                                             PersistentProperty prop = gormEntity.getPropertyByName(attributeInformation.name)
-                                            if(prop instanceof Embedded) {
+                                            if (prop instanceof Embedded) {
                                                 def val = prop.reader.read(entity)
-                                                if( val instanceof DirtyCheckable ) {
-                                                    return ((DirtyCheckable)val).hasChanged()
+                                                if (val instanceof DirtyCheckable) {
+                                                    return ((DirtyCheckable) val).hasChanged()
                                                 }
                                                 else {
                                                     return false

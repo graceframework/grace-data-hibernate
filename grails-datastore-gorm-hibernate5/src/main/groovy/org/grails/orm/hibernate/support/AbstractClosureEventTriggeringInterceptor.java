@@ -1,7 +1,14 @@
 package org.grails.orm.hibernate.support;
 
 import org.hibernate.event.internal.DefaultSaveOrUpdateEventListener;
-import org.hibernate.event.spi.*;
+import org.hibernate.event.spi.PostDeleteEventListener;
+import org.hibernate.event.spi.PostInsertEventListener;
+import org.hibernate.event.spi.PostLoadEventListener;
+import org.hibernate.event.spi.PostUpdateEventListener;
+import org.hibernate.event.spi.PreDeleteEventListener;
+import org.hibernate.event.spi.PreInsertEventListener;
+import org.hibernate.event.spi.PreLoadEventListener;
+import org.hibernate.event.spi.PreUpdateEventListener;
 import org.springframework.context.ApplicationContextAware;
 
 /**
@@ -10,7 +17,8 @@ import org.springframework.context.ApplicationContextAware;
  * @author Graeme Rocher
  * @since 6.0
  */
-public abstract class AbstractClosureEventTriggeringInterceptor extends DefaultSaveOrUpdateEventListener
+public abstract class AbstractClosureEventTriggeringInterceptor
+        extends DefaultSaveOrUpdateEventListener
         implements ApplicationContextAware,
         PreLoadEventListener,
         PostLoadEventListener,
@@ -20,4 +28,5 @@ public abstract class AbstractClosureEventTriggeringInterceptor extends DefaultS
         PreDeleteEventListener,
         PreUpdateEventListener,
         PreInsertEventListener {
+
 }

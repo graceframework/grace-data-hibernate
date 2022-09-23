@@ -15,16 +15,17 @@
  */
 package grails.orm;
 
-import org.grails.orm.hibernate.GrailsHibernateTemplate;
-import org.grails.orm.hibernate.query.HibernateQuery;
+import java.sql.SQLException;
+import java.util.Iterator;
+
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.internal.CriteriaImpl;
 
-import java.sql.SQLException;
-import java.util.Iterator;
+import org.grails.orm.hibernate.GrailsHibernateTemplate;
+import org.grails.orm.hibernate.query.HibernateQuery;
 
 /**
  * A result list for Criteria list calls, which is aware of the totalCount for
@@ -34,11 +35,12 @@ import java.util.Iterator;
  * @since 1.0
  * @deprecated Use {@link org.grails.orm.hibernate.query.PagedResultList} instead.
  */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings({ "unchecked", "rawtypes" })
 @Deprecated
 public class PagedResultList extends grails.gorm.PagedResultList {
 
     private transient GrailsHibernateTemplate hibernateTemplate;
+
     private final Criteria criteria;
 
     public PagedResultList(GrailsHibernateTemplate template, Criteria crit) {
@@ -81,7 +83,7 @@ public class PagedResultList extends grails.gorm.PagedResultList {
                     }
                     totalCriteria.setProjection(impl.getProjection());
                     totalCriteria.setProjection(Projections.rowCount());
-                    return ((Number)totalCriteria.uniqueResult()).intValue();
+                    return ((Number) totalCriteria.uniqueResult()).intValue();
                 }
             });
         }
@@ -91,4 +93,5 @@ public class PagedResultList extends grails.gorm.PagedResultList {
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
     }
+
 }

@@ -26,12 +26,15 @@ import groovy.transform.builder.SimpleStrategy
 @CompileStatic
 @Builder(builderStrategy = SimpleStrategy, prefix = '')
 class NaturalId {
+
     /**
      * The property names that make up the natural id
      */
     List<String> propertyNames = []
+
     /**
      * Whether the natural id is mutable
      */
     boolean mutable = false
+
 }

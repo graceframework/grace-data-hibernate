@@ -15,23 +15,34 @@
  */
 package org.grails.orm.hibernate.cfg;
 
-import grails.gorm.annotation.Entity;
-import grails.gorm.hibernate.HibernateEntity;
+import java.lang.annotation.Annotation;
+
 import groovy.lang.Closure;
 import groovy.lang.GroovyObject;
+import org.springframework.validation.Errors;
+
+import grails.gorm.annotation.Entity;
+import grails.gorm.hibernate.HibernateEntity;
+
 import org.grails.datastore.gorm.GormEntity;
 import org.grails.datastore.mapping.config.AbstractGormMappingFactory;
 import org.grails.datastore.mapping.config.Property;
 import org.grails.datastore.mapping.config.groovy.MappingConfigurationBuilder;
-import org.grails.datastore.mapping.model.*;
+import org.grails.datastore.mapping.model.AbstractMappingContext;
+import org.grails.datastore.mapping.model.ClassMapping;
+import org.grails.datastore.mapping.model.DatastoreConfigurationException;
+import org.grails.datastore.mapping.model.EmbeddedPersistentEntity;
+import org.grails.datastore.mapping.model.IdentityMapping;
+import org.grails.datastore.mapping.model.MappingConfigurationStrategy;
+import org.grails.datastore.mapping.model.MappingContext;
+import org.grails.datastore.mapping.model.MappingFactory;
+import org.grails.datastore.mapping.model.PersistentEntity;
+import org.grails.datastore.mapping.model.ValueGenerator;
 import org.grails.datastore.mapping.model.config.GormProperties;
 import org.grails.datastore.mapping.model.config.JpaMappingConfigurationStrategy;
 import org.grails.datastore.mapping.reflect.ClassUtils;
 import org.grails.orm.hibernate.connections.HibernateConnectionSourceSettings;
 import org.grails.orm.hibernate.proxy.HibernateProxyHandler;
-import org.springframework.validation.Errors;
-
-import java.lang.annotation.Annotation;
 
 /**
  * A Mapping context for Hibernate
@@ -41,8 +52,10 @@ import java.lang.annotation.Annotation;
  */
 public class HibernateMappingContext extends AbstractMappingContext {
 
-    private static final String[] DEFAULT_IDENTITY_MAPPING = new String[] {GormProperties.IDENTITY};
+    private static final String[] DEFAULT_IDENTITY_MAPPING = new String[] { GormProperties.IDENTITY };
+
     private final HibernateMappingFactory mappingFactory;
+
     private final MappingConfigurationStrategy syntaxStrategy;
 
     /**
@@ -52,13 +65,13 @@ public class HibernateMappingContext extends AbstractMappingContext {
      * @param contextObject The context object (for example a Spring ApplicationContext)
      * @param persistentClasses The persistent classes
      */
-    public HibernateMappingContext(HibernateConnectionSourceSettings settings, Object contextObject, Class...persistentClasses) {
+    public HibernateMappingContext(HibernateConnectionSourceSettings settings, Object contextObject, Class... persistentClasses) {
         this.mappingFactory = new HibernateMappingFactory();
 
         // The mapping factory needs to be configured before initialize can be safely called
         initialize(settings);
 
-        if(settings != null) {
+        if (settings != null) {
             this.mappingFactory.setDefaultMapping(settings.getDefault().getMapping());
             this.mappingFactory.setDefaultConstraints(settings.getDefault().getConstraints());
         }
@@ -73,7 +86,7 @@ public class HibernateMappingContext extends AbstractMappingContext {
         addPersistentEntities(persistentClasses);
     }
 
-    public HibernateMappingContext(HibernateConnectionSourceSettings settings, Class...persistentClasses) {
+    public HibernateMappingContext(HibernateConnectionSourceSettings settings, Class... persistentClasses) {
         this(settings, null, persistentClasses);
     }
 
@@ -102,9 +115,9 @@ public class HibernateMappingContext extends AbstractMappingContext {
 
     @Override
     protected PersistentEntity createPersistentEntity(Class javaClass) {
-        if(GormEntity.class.isAssignableFrom(javaClass)) {
+        if (GormEntity.class.isAssignableFrom(javaClass)) {
             Object mappingStrategy = resolveMappingStrategy(javaClass);
-            if(isValidMappingStrategy(javaClass, mappingStrategy)) {
+            if (isValidMappingStrategy(javaClass, mappingStrategy)) {
                 return new HibernatePersistentEntity(javaClass, this);
             }
         }
@@ -126,7 +139,7 @@ public class HibernateMappingContext extends AbstractMappingContext {
     }
 
     private static boolean doIsDomainClassCheck(Class<?> clazz) {
-        if(GormEntity.class.isAssignableFrom(clazz)) {
+        if (GormEntity.class.isAssignableFrom(clazz)) {
             return true;
         }
 
@@ -188,11 +201,14 @@ public class HibernateMappingContext extends AbstractMappingContext {
     }
 
     static class HibernateEmbeddedPersistentEntity extends EmbeddedPersistentEntity {
+
         private final ClassMapping<Mapping> classMapping;
+
         public HibernateEmbeddedPersistentEntity(Class type, MappingContext ctx) {
             super(type, ctx);
             this.classMapping = new ClassMapping<Mapping>() {
                 Mapping mappedForm = (Mapping) context.getMappingFactory().createMappedForm(HibernateEmbeddedPersistentEntity.this);
+
                 @Override
                 public PersistentEntity getEntity() {
                     return HibernateEmbeddedPersistentEntity.this;
@@ -214,9 +230,10 @@ public class HibernateMappingContext extends AbstractMappingContext {
         public ClassMapping getMapping() {
             return classMapping;
         }
+
     }
 
-    class HibernateMappingFactory extends AbstractGormMappingFactory<Mapping,PropertyConfig> {
+    class HibernateMappingFactory extends AbstractGormMappingFactory<Mapping, PropertyConfig> {
 
         public HibernateMappingFactory() {
         }
@@ -231,19 +248,20 @@ public class HibernateMappingContext extends AbstractMappingContext {
             final Mapping mappedForm = createMappedForm(classMapping.getEntity());
             final Object identity = mappedForm.getIdentity();
             final ValueGenerator generator;
-            if(identity instanceof Identity) {
+            if (identity instanceof Identity) {
                 Identity id = (Identity) identity;
                 String generatorName = id.getGenerator();
-                if(generatorName != null) {
+                if (generatorName != null) {
                     ValueGenerator resolvedGenerator;
                     try {
                         resolvedGenerator = ValueGenerator.valueOf(generatorName.toUpperCase(java.util.Locale.ENGLISH));
-                    } catch (IllegalArgumentException e) {
-                        if(ClassUtils.isPresent(generatorName)) {
+                    }
+                    catch (IllegalArgumentException e) {
+                        if (ClassUtils.isPresent(generatorName)) {
                             resolvedGenerator = ValueGenerator.CUSTOM;
                         }
                         else {
-                            throw new DatastoreConfigurationException("Invalid id generation strategy for entity ["+classMapping.getEntity().getName()+"]: " + generatorName);
+                            throw new DatastoreConfigurationException("Invalid id generation strategy for entity [" + classMapping.getEntity().getName() + "]: " + generatorName);
                         }
                     }
                     generator = resolvedGenerator;
@@ -258,16 +276,16 @@ public class HibernateMappingContext extends AbstractMappingContext {
             return new IdentityMapping() {
                 @Override
                 public String[] getIdentifierName() {
-                    if(identity instanceof Identity) {
+                    if (identity instanceof Identity) {
                         final String name = ((Identity) identity).getName();
-                        if(name != null) {
-                            return new String[]{name};
+                        if (name != null) {
+                            return new String[] { name };
                         }
                         else {
                             return DEFAULT_IDENTITY_MAPPING;
                         }
                     }
-                    else if(identity instanceof CompositeIdentity) {
+                    else if (identity instanceof CompositeIdentity) {
                         return ((CompositeIdentity) identity).getPropertyNames();
                     }
                     return DEFAULT_IDENTITY_MAPPING;
@@ -304,5 +322,7 @@ public class HibernateMappingContext extends AbstractMappingContext {
         protected Class<Mapping> getEntityMappedFormType() {
             return Mapping.class;
         }
+
     }
+
 }

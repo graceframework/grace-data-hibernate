@@ -15,6 +15,18 @@
  */
 package org.grails.orm.hibernate.cfg;
 
+import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
@@ -24,14 +36,6 @@ import org.hibernate.usertype.ParameterizedType;
 import org.hibernate.usertype.UserType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.*;
 
 /**
  * Hibernate Usertype that enum values by their ID.
@@ -48,15 +52,20 @@ public class IdentityEnumType implements UserType, ParameterizedType, Serializab
     private static final Logger LOG = LoggerFactory.getLogger(IdentityEnumType.class);
 
     private static TypeConfiguration typeConfiguration = new TypeConfiguration();
+
     public static final String ENUM_ID_ACCESSOR = "getId";
 
     public static final String PARAM_ENUM_CLASS = "enumClass";
 
     private static final Map<Class<? extends Enum<?>>, BidiEnumMap> ENUM_MAPPINGS = new HashMap<>();
+
     protected Class<? extends Enum<?>> enumClass;
+
     protected BidiEnumMap bidiMap;
+
     protected AbstractStandardBasicType<?> type;
-    protected  int[] sqlTypes;
+
+    protected int[] sqlTypes;
 
     public static BidiEnumMap getBidiEnumMap(Class<? extends Enum<?>> cls) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         BidiEnumMap m = ENUM_MAPPINGS.get(cls);
@@ -78,13 +87,13 @@ public class IdentityEnumType implements UserType, ParameterizedType, Serializab
     @SuppressWarnings("unchecked")
     public void setParameterValues(Properties properties) {
         try {
-            enumClass = (Class<? extends Enum<?>>)Thread.currentThread().getContextClassLoader().loadClass(
-                    (String)properties.get(PARAM_ENUM_CLASS));
+            enumClass = (Class<? extends Enum<?>>) Thread.currentThread().getContextClassLoader().loadClass(
+                    (String) properties.get(PARAM_ENUM_CLASS));
             if (LOG.isDebugEnabled()) {
                 LOG.debug(String.format("Building ID-mapping for Enum Class %s", enumClass.getName()));
             }
             bidiMap = getBidiEnumMap(enumClass);
-            type = (AbstractStandardBasicType<?>)typeConfiguration.getBasicTypeRegistry().getRegisteredType(bidiMap.keyType.getName());
+            type = (AbstractStandardBasicType<?>) typeConfiguration.getBasicTypeRegistry().getRegisteredType(bidiMap.keyType.getName());
             if (LOG.isDebugEnabled()) {
                 LOG.debug(String.format("Mapped Basic Type is %s", type));
             }
@@ -150,12 +159,15 @@ public class IdentityEnumType implements UserType, ParameterizedType, Serializab
         return orig;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private static class BidiEnumMap implements Serializable {
 
         private static final long serialVersionUID = 3325751131102095834L;
+
         private final Map enumToKey;
+
         private final Map keytoEnum;
+
         private Class keyType;
 
         private BidiEnumMap(Class<? extends Enum> enumClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
@@ -193,5 +205,7 @@ public class IdentityEnumType implements UserType, ParameterizedType, Serializab
         public Object getKey(Object enumValue) {
             return enumToKey.get(enumValue);
         }
+
     }
+
 }

@@ -31,10 +31,12 @@ import groovy.transform.builder.SimpleStrategy
 @Builder(builderStrategy = SimpleStrategy, prefix = '')
 @CompileStatic
 class JoinTable extends Table {
+
     /**
      * The foreign key column
      */
     ColumnConfig key
+
     /**
      * The child id column
      */
@@ -49,6 +51,7 @@ class JoinTable extends Table {
         key = ColumnConfig.configureNew(columnConfig)
         return this
     }
+
     /**
      * Configures the column
      * @param columnConfig The column config
@@ -78,4 +81,5 @@ class JoinTable extends Table {
         column = new ColumnConfig(name: columnName)
         return this
     }
+
 }

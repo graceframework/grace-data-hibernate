@@ -20,4 +20,5 @@ class MetadataIntegrator implements Integrator {
     void disintegrate(SessionFactoryImplementor sessionFactory, SessionFactoryServiceRegistry serviceRegistry) {
         // noop
     }
+
 }

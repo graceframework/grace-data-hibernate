@@ -27,4 +27,5 @@ public class HibernateEventListeners {
     public void setListenerMap(Map<String, Object> listenerMap) {
         this.listenerMap = listenerMap;
     }
+
 }
