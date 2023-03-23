@@ -77,6 +77,10 @@ class User implements MultiTenant<User> {
 
     static belongsTo = [Department]
     static hasMany = [departments: Department]
+
+    static mapping = {
+        table 'users'
+    }
 }
 
 @Entity

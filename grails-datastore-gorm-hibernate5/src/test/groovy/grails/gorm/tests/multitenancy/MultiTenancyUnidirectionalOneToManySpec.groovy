@@ -103,7 +103,7 @@ class Vehicle implements MultiTenant<Vehicle> {
     static hasMany = [engines: Engine, wheels: Wheel]
     static constraints = {
         model blank:false
-        year min:1980
+        year min:1980, column: '`year`'
     }
 
     static mapping = {

@@ -37,4 +37,8 @@ class User {
     static constraints = {
         name unique: false
     }
+
+    static mapping = {
+        table 'users'
+    }
 }

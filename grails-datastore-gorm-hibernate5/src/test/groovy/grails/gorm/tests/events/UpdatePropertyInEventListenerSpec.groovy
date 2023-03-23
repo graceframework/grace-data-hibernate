@@ -69,6 +69,10 @@ class UpdatePropertyInEventListenerSpec extends Specification {
 class User {
     String username
     String password
+
+    static mapping = {
+        table 'users'
+    }
 }
 
 class PasswordEncodingListener extends AbstractPersistenceEventListener {
