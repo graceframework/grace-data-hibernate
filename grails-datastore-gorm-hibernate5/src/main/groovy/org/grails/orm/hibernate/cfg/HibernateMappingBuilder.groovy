@@ -1,5 +1,5 @@
 /*
- * Copyright 2003-2007 the original author or authors.
+ * Copyright 2003-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 package org.grails.orm.hibernate.cfg
 
-import javax.persistence.AccessType
+import jakarta.persistence.AccessType
 
 import groovy.transform.CompileStatic
 import org.hibernate.FetchMode
