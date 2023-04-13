@@ -22,6 +22,7 @@ dependencies {
 
     compileOnly("org.grails:grails-bootstrap:$grailsVersion")
     compileOnly("org.grails:grails-core:$grailsVersion")
+    compileOnly("org.grails:grails-cli:$grailsVersion")
     compileOnly "org.spockframework:spock-core:$spockVersion", {
         exclude group: "junit", module: "junit-dep"
         exclude group: 'org.codehaus.groovy', module: 'groovy-all'
