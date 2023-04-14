@@ -91,12 +91,9 @@ subprojects { Project subproject ->
         ext['gorm.version'] = gormVersion
 
         if (subproject.name.startsWith("examples-grails")) {
-
-            if (subproject.name != "examples-grails-data-service") {
-                apply plugin:"org.grails.grails-web"
-                apply plugin:"org.grails.grails-gsp"
-                apply plugin:"com.energizedwork.webdriver-binaries"
-            }
+            apply plugin:"org.grails.grails-web"
+            apply plugin:"org.grails.grails-gsp"
+            apply plugin:"com.energizedwork.webdriver-binaries"
         }
 
         configurations.all { Configuration configuration->
