@@ -107,9 +107,6 @@ subprojects { Project subproject ->
                 if (details.requested.group == "org.springframework.boot") {
                     details.useVersion(springBootVersion)
                 }
-                if (details.requested.group == "org.grails" && details.requested.name.contains("testing-support")) {
-                    details.useVersion(testingSupportVersion)
-                }
                 if (details.requested.group == 'org.grails' &&
                         details.requested.name.startsWith('grails-datastore') &&
                         details.requested.name != 'grails-datastore-gorm-hibernate5') {

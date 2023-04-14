@@ -25,7 +25,7 @@ dependencies {
     implementation "org.grails:grails-plugin-codecs"
     implementation "org.grails:grails-plugin-services"
     implementation "org.grails:grails-plugin-datasource"
-    implementation "org.grails:grails-web-boot"
+    implementation "org.grails:grails-boot"
     implementation "org.grails:grails-logging"
     implementation "org.grails.plugins:cache"
     implementation "org.grails.plugins:events"
@@ -38,6 +38,5 @@ dependencies {
     runtimeOnly "org.glassfish.web:el-impl:2.2.1-b05"
     runtimeOnly "org.apache.tomcat:tomcat-jdbc"
     runtimeOnly "javax.xml.bind:jaxb-api:2.3.1"
-    testImplementation "org.grails:grails-gorm-testing-support:$testingSupportVersion"
-    testImplementation "org.grails:grails-web-testing-support:$testingSupportVersion"
+    testImplementation "org.grails:grails-test-support"
 }
