@@ -23,10 +23,7 @@ dependencies {
     runtimeOnly "javax.xml.bind:jaxb-api:$jaxbVersion"
     runtimeOnly "com.sun.xml.bind:jaxb-impl:$jaxbVersion"
 
-    compileOnly ("net.sf.ehcache:ehcache-core:2.6.11") {
-        exclude group: 'commons-logging', module:'commons-logging'
-    }
-
+    compileOnly ("net.sf.ehcache:ehcache:2.10.6")
     compileOnly ("org.hibernate:hibernate-ehcache:$hibernate5Version") {
         exclude group:'commons-collections', module:'commons-collections'
         exclude group:'commons-logging', module:'commons-logging'
@@ -48,7 +45,7 @@ dependencies {
     }
     testImplementation "com.h2database:h2:$h2Version"
 
-    testImplementation "net.sf.ehcache:ehcache-core:2.6.11"
+    testImplementation "net.sf.ehcache:ehcache:2.10.6"
     testImplementation "org.hibernate:hibernate-ehcache:$hibernate5Version"
     
     testImplementation "org.apache.tomcat:tomcat-jdbc:$tomcatVersion"
