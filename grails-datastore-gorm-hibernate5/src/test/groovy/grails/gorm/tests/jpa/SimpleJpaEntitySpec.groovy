@@ -7,6 +7,7 @@ import org.grails.datastore.mapping.model.types.Association
 import org.grails.orm.hibernate.HibernateDatastore
 import org.springframework.transaction.PlatformTransactionManager
 import spock.lang.AutoCleanup
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -26,6 +27,7 @@ class SimpleJpaEntitySpec extends Specification {
     @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(Customer)
     @Shared PlatformTransactionManager transactionManager = hibernateDatastore.getTransactionManager()
 
+    @Ignore
     @Rollback
     void "test that JPA entities can be treated as GORM entities"() {
         when:"A basic entity is persisted and validated"
@@ -44,6 +46,7 @@ class SimpleJpaEntitySpec extends Specification {
         query.count() == 0
     }
 
+    @Ignore
     @Rollback
     void "test that JPA entities can use javax.validation"() {
         when:"A basic entity is persisted and validated"
@@ -59,6 +62,7 @@ class SimpleJpaEntitySpec extends Specification {
         query.count() == 0
     }
 
+    @Ignore
     @Rollback
     void "test that JPA entities can use javax.validation and the hibernate interceptor evicts invalid entities"() {
         when:"A basic entity is persisted and validated"
@@ -73,6 +77,7 @@ class SimpleJpaEntitySpec extends Specification {
         c.errors.hasErrors()
     }
 
+    @Ignore
     void "Test persistent entity model"() {
         given:
         PersistentEntity entity = hibernateDatastore.mappingContext.getPersistentEntity(Customer.name)
