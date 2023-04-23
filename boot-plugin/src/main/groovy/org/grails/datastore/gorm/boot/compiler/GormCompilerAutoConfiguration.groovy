@@ -1,4 +1,5 @@
-/* Copyright (C) 2014 SpringSource
+/*
+ * Copyright (C) 2014-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +19,10 @@ import groovy.transform.CompileStatic
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.control.CompilationFailedException
 import org.codehaus.groovy.control.customizers.ImportCustomizer
-import org.springframework.boot.cli.compiler.AstUtils
-import org.springframework.boot.cli.compiler.CompilerAutoConfiguration
-import org.springframework.boot.cli.compiler.DependencyCustomizer
+
+import org.grails.cli.compiler.AstUtils
+import org.grails.cli.compiler.CompilerAutoConfiguration
+import org.grails.cli.compiler.DependencyCustomizer
 
 /**
  * A compiler configuration that automatically adds the necessary imports

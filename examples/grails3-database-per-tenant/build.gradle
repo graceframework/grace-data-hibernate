@@ -8,11 +8,11 @@ configurations.all {
     }
 }
 
-grails {
-    agent {
-        enabled = false
-    }
-}
+// grails {
+//     agent {
+//         enabled = false
+//     }
+// }
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-logging"
@@ -20,11 +20,8 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.boot:spring-boot-starter-tomcat"
     implementation "javax.servlet:javax.servlet-api:$servletApiVersion"
+    implementation "org.grails:grails-boot:$grailsVersion"
     implementation "org.grails:grails-core:$grailsVersion"
-    implementation "org.grails:grails-dependencies:$grailsVersion", {
-        exclude module:'grails-datastore-simple'
-    }
-    implementation "org.grails:grails-web-boot:$grailsVersion"
     implementation project(":grails-plugin")
 
 
@@ -37,7 +34,5 @@ dependencies {
     runtimeOnly "org.grails.plugins:fields:$fieldsVersion"
     runtimeOnly "org.grails.plugins:scaffolding:$scaffoldingVersion"
 
-    testImplementation ("org.grails:grails-gorm-testing-support:$testingSupportVersion") {
-        exclude group: "org.spockframework", module: "spock-core"
-    }
+    testImplementation ("org.grails:grails-test-support")
 }

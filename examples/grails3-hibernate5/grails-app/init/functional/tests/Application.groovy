@@ -1,17 +1,14 @@
 package functional.tests
 
-import grails.boot.GrailsApp
-import grails.boot.config.GrailsAutoConfiguration
+import grails.boot.Grails
 import groovy.transform.CompileStatic
 
-@CompileStatic
-class Application extends GrailsAutoConfiguration {
-    static void main(String[] args) {
-        GrailsApp.run(Application, args)
-    }
+import grails.boot.annotation.GrailsComponentScan
 
-    @Override
-    Collection<String> packageNames() {
-        [Application.package.name, "another"]
+@CompileStatic
+@GrailsComponentScan(['functional.tests', 'another'])
+class Application {
+    static void main(String[] args) {
+        Grails.run(Application, args)
     }
 }
