@@ -15,8 +15,8 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
-import javax.validation.ConstraintViolationException
-import javax.validation.constraints.Digits
+import jakarta.validation.ConstraintViolationException
+import jakarta.validation.constraints.Digits
 
 /**
  * Created by graemerocher on 22/12/16.

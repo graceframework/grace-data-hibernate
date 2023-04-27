@@ -2,13 +2,13 @@ package grails.gorm.tests.validation
 
 import grails.gorm.annotation.Entity
 import grails.gorm.transactions.Rollback
+import jakarta.validation.constraints.NotBlank
 import org.grails.orm.hibernate.HibernateDatastore
-import org.hibernate.validator.constraints.NotBlank
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
-import javax.validation.constraints.Digits
+import jakarta.validation.constraints.Digits
 
 /**
  * Created by graemerocher on 07/04/2017.
