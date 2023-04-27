@@ -20,9 +20,9 @@ dependencies {
     }
     api("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion")
     api("jakarta.validation:jakarta.validation-api:$jakartaValidationVersion")
-    // runtimeOnly('javax.el:javax.el-api:3.0.1-b06')
-    // runtimeOnly "javax.xml.bind:jaxb-api:$jaxbVersion"
-    // runtimeOnly "com.sun.xml.bind:jaxb-impl:$jaxbVersion"
+    runtimeOnly("jakarta.el:jakarta.el-api:$jakartaElVersion")
+    runtimeOnly "jakarta.xml.bind:jakarta.xml.bind-api:$jaxbApiVersion"
+    runtimeOnly "com.sun.xml.bind:jaxb-impl:$jaxbImplVersion"
 
     compileOnly ("net.sf.ehcache:ehcache:2.10.6")
     compileOnly ("org.hibernate:hibernate-ehcache:$hibernate5Version") {
