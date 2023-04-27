@@ -18,6 +18,7 @@ dependencies {
         exclude group:'commons-collections', module:'commons-collections'
         exclude group:'org.slf4j', module:'slf4j-api'
     }
+    api("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion")
     api("jakarta.validation:jakarta.validation-api:$jakartaValidationVersion")
     // runtimeOnly('javax.el:javax.el-api:3.0.1-b06')
     // runtimeOnly "javax.xml.bind:jaxb-api:$jaxbVersion"
