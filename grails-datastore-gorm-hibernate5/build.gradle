@@ -1,7 +1,11 @@
+configurations {
+    all*.exclude group: 'org.codehaus.groovy'
+}
+
 dependencies {
     api "org.slf4j:slf4j-api:$slf4jVersion"
 
-    api "org.codehaus.groovy:groovy:$groovyVersion"
+    api "org.apache.groovy:groovy:$groovyVersion"
     api("org.grails:grails-datastore-gorm:$gormVersion")
     api "org.springframework:spring-orm:$springVersion"
     api("org.hibernate:hibernate-core-jakarta:$hibernate5Version") {
@@ -38,9 +42,9 @@ dependencies {
         exclude group:'xml-apis', module:'xml-apis'
     }
 
-    testImplementation "org.codehaus.groovy:groovy-test-junit5:$groovyVersion"
-    testImplementation "org.codehaus.groovy:groovy-sql:$groovyVersion"
-    testImplementation "org.codehaus.groovy:groovy-json:$groovyVersion"
+    testImplementation "org.apache.groovy:groovy-test-junit5:$groovyVersion"
+    testImplementation "org.apache.groovy:groovy-sql:$groovyVersion"
+    testImplementation "org.apache.groovy:groovy-json:$groovyVersion"
     testImplementation "org.grails:grails-datastore-gorm-tck:$gormVersion", {
         exclude group: "org.spockframework"
     }

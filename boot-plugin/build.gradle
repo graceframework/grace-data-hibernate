@@ -2,7 +2,7 @@ dependencies {
     compileOnly "org.grails:grails-shell:$grailsVersion", {
         exclude group:'org.codehaus.groovy', module:'groovy'
     }
-    api "org.codehaus.groovy:groovy:$groovyVersion"
+    api "org.apache.groovy:groovy:$groovyVersion"
     api "org.springframework.boot:spring-boot-autoconfigure:$springBootVersion"
     api project(":grails-datastore-gorm-hibernate5")
 
