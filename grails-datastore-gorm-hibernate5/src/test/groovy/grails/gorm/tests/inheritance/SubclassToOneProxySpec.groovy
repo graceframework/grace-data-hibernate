@@ -1,8 +1,11 @@
 package grails.gorm.tests.inheritance
 
+import spock.lang.Ignore
+
 import grails.gorm.annotation.Entity
 import grails.gorm.tests.GormDatastoreSpec
 
+@Ignore("https://issues.apache.org/jira/browse/GROOVY-5106")
 class SubclassToOneProxySpec extends GormDatastoreSpec {
 
     void "the hasOne is a proxy and unwraps"() {
@@ -23,7 +26,7 @@ class SubclassToOneProxySpec extends GormDatastoreSpec {
     }
 }
 
-@Entity
+//@Entity
 class SuperclassProxy {
 }
 

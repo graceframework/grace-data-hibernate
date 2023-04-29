@@ -18,7 +18,7 @@ import spock.lang.Specification
 @Issue('https://github.com/grails/gorm-hibernate5/issues/36')
 class UniqueWithinGroupSpec extends Specification {
 
-    @AutoCleanup @Shared HibernateDatastore hibernateDatastore = new HibernateDatastore(getClass().getPackage())
+    @AutoCleanup @Shared HibernateDatastore hibernateDatastore = new HibernateDatastore(Thing)
     @Shared SessionFactory sessionFactory = hibernateDatastore.sessionFactory
 
     @Rollback

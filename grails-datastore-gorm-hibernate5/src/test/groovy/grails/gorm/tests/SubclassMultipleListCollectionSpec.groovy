@@ -9,7 +9,7 @@ import spock.lang.*
 /**
  * Created by graemerocher on 01/03/2017.
  */
-@Ignore
+@Ignore("https://issues.apache.org/jira/browse/GROOVY-5106")
 class SubclassMultipleListCollectionSpec extends Specification {
 
     @AutoCleanup @Shared HibernateDatastore hibernateDatastore
@@ -53,7 +53,7 @@ class Product extends SuperProduct {
     static belongsTo = [iteration: Iteration]
 }
 
-@Entity
+//@Entity
 class SuperProduct {
 
     static constraints = {

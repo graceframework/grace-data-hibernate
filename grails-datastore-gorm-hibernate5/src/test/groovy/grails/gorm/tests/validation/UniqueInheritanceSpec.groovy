@@ -1,5 +1,7 @@
 package grails.gorm.tests.validation
 
+import spock.lang.Ignore
+
 import grails.gorm.annotation.Entity
 import grails.gorm.transactions.Rollback
 import org.grails.datastore.mapping.reflect.EntityReflector
@@ -10,6 +12,7 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 @Rollback
+@Ignore("https://issues.apache.org/jira/browse/GROOVY-5106")
 class UniqueInheritanceSpec extends Specification {
 
     @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(Item, ConcreteProduct, Product, Book)
@@ -75,7 +78,7 @@ class ConcreteProduct extends Product {
 
 }
 
-@Entity
+//@Entity
 abstract class Product {
     String name
 

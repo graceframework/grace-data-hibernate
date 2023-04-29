@@ -31,7 +31,7 @@ import spock.lang.Specification
 @Issue('https://github.com/grails/grails-data-mapping/issues/1004')
 class UniqueWithHasOneSpec extends Specification {
 
-    @AutoCleanup @Shared HibernateDatastore hibernateDatastore = new HibernateDatastore(getClass().getPackage())
+    @AutoCleanup @Shared HibernateDatastore hibernateDatastore = new HibernateDatastore(Foo, Bar)
     @Shared SessionFactory sessionFactory = hibernateDatastore.sessionFactory
 
 
