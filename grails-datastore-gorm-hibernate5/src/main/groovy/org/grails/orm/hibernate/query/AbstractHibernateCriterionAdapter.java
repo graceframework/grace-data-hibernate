@@ -43,7 +43,7 @@ import org.grails.datastore.mapping.query.criteria.FunctionCallingCriterion;
  */
 public abstract class AbstractHibernateCriterionAdapter {
 
-    protected static final Map<Class<?>, CriterionAdaptor<?>> criterionAdaptors = new HashMap<Class<?>, CriterionAdaptor<?>>();
+    protected static final Map<Class<?>, CriterionAdaptor<?>> criterionAdaptors = new HashMap<>();
 
     protected static boolean initialized;
 
