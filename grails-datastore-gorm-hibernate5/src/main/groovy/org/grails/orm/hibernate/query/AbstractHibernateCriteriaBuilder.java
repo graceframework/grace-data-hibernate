@@ -261,7 +261,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * @param types List of types for the projected values
      */
     protected void sqlProjection(String sql, List<String> columnAliases, List<Type> types) {
-        projectionList.add(Projections.sqlProjection(sql, columnAliases.toArray(new String[columnAliases.size()]), types.toArray(new Type[types.size()])));
+        projectionList.add(Projections.sqlProjection(sql, columnAliases.toArray(new String[0]), types.toArray(new Type[0])));
     }
 
     /**
@@ -273,7 +273,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * @param types List of types for the projected values
      */
     protected void sqlGroupProjection(String sql, String groupBy, List<String> columnAliases, List<Type> types) {
-        projectionList.add(Projections.sqlGroupProjection(sql, groupBy, columnAliases.toArray(new String[columnAliases.size()]), types.toArray(new Type[types.size()])));
+        projectionList.add(Projections.sqlGroupProjection(sql, groupBy, columnAliases.toArray(new String[0]), types.toArray(new Type[0])));
     }
 
     /**
