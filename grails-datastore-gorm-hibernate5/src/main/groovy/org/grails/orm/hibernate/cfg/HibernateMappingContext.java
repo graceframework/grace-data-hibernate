@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 original authors
+ * Copyright 2015-2023 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,8 +38,8 @@ import org.grails.datastore.mapping.model.MappingContext;
 import org.grails.datastore.mapping.model.MappingFactory;
 import org.grails.datastore.mapping.model.PersistentEntity;
 import org.grails.datastore.mapping.model.ValueGenerator;
+import org.grails.datastore.mapping.model.config.GormMappingConfigurationStrategy;
 import org.grails.datastore.mapping.model.config.GormProperties;
-import org.grails.datastore.mapping.model.config.JpaMappingConfigurationStrategy;
 import org.grails.datastore.mapping.reflect.ClassUtils;
 import org.grails.orm.hibernate.connections.HibernateConnectionSourceSettings;
 import org.grails.orm.hibernate.proxy.HibernateProxyHandler;
@@ -76,7 +76,7 @@ public class HibernateMappingContext extends AbstractMappingContext {
             this.mappingFactory.setDefaultConstraints(settings.getDefault().getConstraints());
         }
         this.mappingFactory.setContextObject(contextObject);
-        this.syntaxStrategy = new JpaMappingConfigurationStrategy(mappingFactory) {
+        this.syntaxStrategy = new GormMappingConfigurationStrategy(mappingFactory) {
             @Override
             protected boolean supportsCustomType(Class<?> propertyType) {
                 return !Errors.class.isAssignableFrom(propertyType);
