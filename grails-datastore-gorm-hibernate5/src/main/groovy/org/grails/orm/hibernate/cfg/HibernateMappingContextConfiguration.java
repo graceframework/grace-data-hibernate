@@ -274,7 +274,7 @@ public class HibernateMappingContextConfiguration extends Configuration implemen
             }
         }
 
-        addAnnotatedClasses(annotatedClasses.toArray(new Class[annotatedClasses.size()]));
+        addAnnotatedClasses(annotatedClasses.toArray(new Class[0]));
 
         ClassLoaderService classLoaderService = new ClassLoaderServiceImpl(appClassLoader) {
             @Override

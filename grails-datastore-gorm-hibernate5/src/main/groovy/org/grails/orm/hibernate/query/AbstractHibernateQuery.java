@@ -86,7 +86,7 @@ public abstract class AbstractHibernateQuery extends Query {
 
     protected static Field opField = ReflectionUtils.findField(SimpleExpression.class, "op");
 
-    private static final Map<String, Boolean> JOIN_STATUS_CACHE = new ConcurrentHashMap<String, Boolean>();
+    private static final Map<String, Boolean> JOIN_STATUS_CACHE = new ConcurrentHashMap<>();
 
     static {
         ReflectionUtils.makeAccessible(opField);
@@ -102,13 +102,13 @@ public abstract class AbstractHibernateQuery extends Query {
 
     protected int aliasCount;
 
-    protected Map<String, CriteriaAndAlias> createdAssociationPaths = new HashMap<String, CriteriaAndAlias>();
+    protected Map<String, CriteriaAndAlias> createdAssociationPaths = new HashMap<>();
 
-    protected LinkedList<String> aliasStack = new LinkedList<String>();
+    protected LinkedList<String> aliasStack = new LinkedList<>();
 
-    protected LinkedList<PersistentEntity> entityStack = new LinkedList<PersistentEntity>();
+    protected LinkedList<PersistentEntity> entityStack = new LinkedList<>();
 
-    protected LinkedList<Association> associationStack = new LinkedList<Association>();
+    protected LinkedList<Association> associationStack = new LinkedList<>();
 
     protected LinkedList aliasInstanceStack = new LinkedList();
 

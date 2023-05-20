@@ -32,6 +32,7 @@ import org.grails.datastore.mapping.core.grailsversion.GrailsVersion;
  * @since 6.0
  *
  */
+@Deprecated(forRemoval = true)
 public class HibernateVersionSupport {
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2013-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -212,7 +212,7 @@ abstract class AbstractHibernateGormInstanceApi<D> extends GormInstanceApi<D> {
         catch (DataAccessException e) {
             try {
                 hibernateTemplate.execute { Session session ->
-                    session.flushMode = FlushMode.MANUAL
+                    session.hibernateFlushMode = FlushMode.MANUAL
                 }
             }
             finally {
@@ -292,7 +292,7 @@ abstract class AbstractHibernateGormInstanceApi<D> extends GormInstanceApi<D> {
         }
         catch (HibernateException e) {
             // session should not be flushed again after a data acccess exception!
-            session.setFlushMode FlushMode.MANUAL
+            session.hibernateFlushMode = FlushMode.MANUAL
             throw e
         }
     }
@@ -425,7 +425,7 @@ abstract class AbstractHibernateGormInstanceApi<D> extends GormInstanceApi<D> {
             if (session.contains(target) && proxyHandler.isInitialized(target)) {
                 target = proxyHandler.unwrap(target)
                 session.setReadOnly target, true
-                session.flushMode = FlushMode.MANUAL
+                session.hibernateFlushMode = FlushMode.MANUAL
             }
         }
     }
