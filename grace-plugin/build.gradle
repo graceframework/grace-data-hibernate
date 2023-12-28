@@ -1,27 +1,12 @@
-configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        if(details.requested.group == 'org.grails' &&
-                details.requested.name.startsWith('grails-datastore') &&
-                details.requested.name != 'grails-datastore-gorm-hibernate5') {
-            details.useVersion(gormVersion)
-        }
-        if(details.requested.group == 'org.codehaus.groovy' && details.requested.name.startsWith('groovy')) {
-            details.useVersion(groovyVersion)   
-        }
-        if(details.requested.group == 'org.springframework') {
-            details.useVersion(springVersion)
-        }
-    }
-}
-
 dependencies {
-    documentation ("org.grails:grails-core:$grailsVersion")
-    documentation ("org.grails:grails-bootstrap:$grailsVersion")
-    documentation ("org.grails:grails-spring:$grailsVersion")
+    documentation ("org.graceframework:grace-core:$graceVersion")
+    documentation ("org.graceframework:grace-bootstrap:$graceVersion")
+    documentation ("org.graceframework:grace-spring:$graceVersion")
     documentation ("com.github.javaparser:javaparser-core:$javaParserCoreVersion")
 
-    compileOnly("org.grails:grails-bootstrap:$grailsVersion")
-    compileOnly("org.grails:grails-core:$grailsVersion")
+    compileOnly("org.graceframework:grace-bootstrap:$graceVersion")
+    compileOnly("org.graceframework:grace-cli:$graceVersion")
+    compileOnly("org.graceframework:grace-core:$graceVersion")
     compileOnly "org.spockframework:spock-core:$spockVersion", {
         exclude group: "junit", module: "junit-dep"
         exclude group: 'org.codehaus.groovy', module: 'groovy-all'
@@ -31,20 +16,20 @@ dependencies {
     api "org.springframework.boot:spring-boot:$springBootVersion"
     api "org.springframework:spring-orm:$springVersion"
     api "org.hibernate:hibernate-core:${hibernate5Version}"
-    api "org.grails:grails-datastore-web:$gormVersion"
-    api "org.grails:grails-datastore-gorm-support:$gormVersion"
-    api project(":grails-datastore-gorm-hibernate5"), {
+    api "org.graceframework:grace-datastore-web:$gormVersion"
+    api "org.graceframework:grace-datastore-gorm-support:$gormVersion"
+    api project(":grace-datastore-gorm-hibernate5"), {
         exclude group:'org.springframework', module:'spring-context'
         exclude group:'org.springframework', module:'spring-core'
         exclude group:'org.springframework', module:'spring-beans'
         exclude group:'org.springframework', module:'spring-tx'
-        exclude group:'org.grails', module:'grails-bootstrap'
+        exclude group:'org.graceframework', module:'grails-bootstrap'
         exclude group:'org.codehaus.groovy', module:'groovy-all'
         exclude group:'org.grails', module:'grails-core'
         exclude group:'javax.transaction', module:'jta'
     }
     testRuntimeOnly "org.yaml:snakeyaml:$snakeyamlVersion"
-    testImplementation "org.grails:grails-gorm-testing-support:$testingSupportVersion"
+    testImplementation "org.graceframework:grace-test-support:$graceVersion"
     testRuntimeOnly "com.h2database:h2:$h2Version"
     testRuntimeOnly "org.apache.tomcat:tomcat-jdbc:$tomcatVersion"
     testRuntimeOnly "org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.5.2"
