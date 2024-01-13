@@ -8,6 +8,7 @@ dependencies {
     documentation ("com.github.javaparser:javaparser-core:$javaParserCoreVersion")
 
     compileOnly("org.graceframework:grace-bootstrap:$graceVersion")
+    compileOnly("org.graceframework:grace-boot:$graceVersion")
     compileOnly("org.graceframework:grace-cli:$graceVersion")
     compileOnly("org.graceframework:grace-core:$graceVersion")
     compileOnly "org.spockframework:spock-core:$spockVersion", {
