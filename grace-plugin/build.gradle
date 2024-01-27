@@ -1,4 +1,3 @@
-
 apply plugin: "org.graceframework.grace-plugin"
 
 dependencies {
@@ -29,7 +28,6 @@ dependencies {
         exclude group:'org.springframework', module:'spring-tx'
         exclude group:'org.graceframework', module:'grails-bootstrap'
         exclude group:'org.codehaus.groovy', module:'groovy-all'
-        exclude group:'org.grails', module:'grails-core'
         exclude group:'javax.transaction', module:'jta'
     }
     testRuntimeOnly "org.yaml:snakeyaml:$snakeyamlVersion"
@@ -42,3 +40,9 @@ dependencies {
 }
 
 groovydoc.classpath += configurations.documentation
+
+jar {
+    enabled = true
+    archiveClassifier.set('')
+    includeEmptyDirs = false
+}
