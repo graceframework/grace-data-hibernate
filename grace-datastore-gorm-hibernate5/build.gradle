@@ -2,7 +2,7 @@ dependencies {
     api "org.slf4j:slf4j-api:$slf4jVersion"
 
     api "org.codehaus.groovy:groovy:$groovyVersion"
-    api("org.grails:grails-datastore-gorm:$gormVersion")
+    api("org.graceframework:grace-datastore-gorm:$gormVersion")
     api "org.springframework:spring-orm:$springVersion"
     api("org.hibernate:hibernate-core:$hibernate5Version") {
         exclude group:'commons-logging', module:'commons-logging'
@@ -43,7 +43,7 @@ dependencies {
     testImplementation "org.codehaus.groovy:groovy-test-junit5:$groovyVersion"
     testImplementation "org.codehaus.groovy:groovy-sql:$groovyVersion"
     testImplementation "org.codehaus.groovy:groovy-json:$groovyVersion"
-    testImplementation "org.grails:grails-datastore-gorm-tck:$gormVersion", {
+    testImplementation "org.graceframework:grace-datastore-gorm-tck:$gormVersion", {
         exclude group: "org.spockframework"
     }
     testImplementation "com.h2database:h2:$h2Version"
