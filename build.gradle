@@ -51,6 +51,19 @@ nexusPublishing {
 }
 
 subprojects { Project subproject ->
+    ext {
+        projectArtifactId = subproject.name
+        isExample = subproject.name.startsWith('example')
+        isPluginProject = subproject.name == 'hibernate5'
+    }
+
+    if (isPluginProject) {
+        group "org.graceframework.plugins"
+    }
+    else {
+        group "org.graceframework"
+    }
+    version project.rootProject.version
 
     repositories {
         mavenCentral()
@@ -58,13 +71,6 @@ subprojects { Project subproject ->
             maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
         }
         maven { url 'https://repo.gradle.org/gradle/libs-releases' }
-    }
-
-    ext {
-        projectArtifactId = subproject.name
-        isExample = subproject.name.startsWith('example')
-        isPluginProject = subproject.name.endsWith("-plugin") && (subproject.name.startsWith("grace") || subproject.name.startsWith("rx-"))
-        isGrails3PluginProject = subproject.name.endsWith("-plugin")
     }
 
     if(isExample) {
@@ -89,15 +95,6 @@ subprojects { Project subproject ->
         documentation.extendsFrom(compileClasspath)
     }
 
-    if (isPluginProject) {
-        group "org.graceframework.plugins"
-        version project.rootProject.version
-    }
-    else {
-        group "org.graceframework"
-        version project.rootProject.version
-    }
-
     if (subproject.name == 'docs') {
         return
     }
@@ -108,6 +105,10 @@ subprojects { Project subproject ->
     apply plugin: 'codenarc'
     apply plugin: 'signing'
     apply plugin: "org.gradle.test-retry"
+
+    if (isPluginProject) {
+        apply plugin: 'org.graceframework.grace-plugin'
+    }
 
     dependencies {
         documentation "org.fusesource.jansi:jansi:$jansiVersion"
@@ -158,7 +159,7 @@ subprojects { Project subproject ->
                 from components.java
 
                 afterEvaluate {
-                    if(isGrails3PluginProject) {
+                    if(isPluginProject) {
                         artifact source:"${sourceSets.main.groovy.outputDir}/META-INF/grails-plugin.xml",
                                 classifier:"plugin",
                                 extension:'xml'
@@ -191,7 +192,14 @@ subprojects { Project subproject ->
                         }
                     }
                 }
-
+                pom.withXml {
+                    def pomNode = asNode()
+                    try {
+                        pomNode.dependencyManagement.replaceNode {}
+                    } catch (Throwable e) {
+                        // ignore
+                    }
+                }
             }
         }
     }
