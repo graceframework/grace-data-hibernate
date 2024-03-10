@@ -6,24 +6,24 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.boot:spring-boot-starter-tomcat"
     implementation "javax.servlet:javax.servlet-api:$servletApiVersion"
-    implementation "org.grails:grails-boot:$grailsVersion"
-    implementation "org.grails:grails-core:$grailsVersion"
-    implementation "org.grails:grails-plugin-rest:$grailsVersion"
-    implementation project(":grails-plugin")
+    implementation "org.graceframework:grace-boot:$graceVersion"
+    implementation "org.graceframework:grace-core:$graceVersion"
+    implementation "org.graceframework:grace-plugin-rest:$graceVersion"
+    implementation project(":grace-plugin")
 
     implementation "org.hibernate:hibernate-core:$hibernate5Version"
     implementation "org.hibernate:hibernate-ehcache:$hibernate5Version"
 
-    runtimeOnly "com.bertramlabs.plugins:asset-pipeline-grails:$assetPipelineVersion"
+    runtimeOnly "org.graceframework.plugins:asset-pipeline-plugin:$assetPipelineVersion"
     runtimeOnly "com.h2database:h2"
     runtimeOnly "org.yaml:snakeyaml:$snakeyamlVersion"
     runtimeOnly "org.apache.tomcat:tomcat-jdbc:$tomcatVersion"
-    runtimeOnly "org.grails.plugins:fields:$fieldsVersion"
-    runtimeOnly "org.grails.plugins:scaffolding:$scaffoldingVersion"
+    runtimeOnly "org.graceframework.plugins:fields:$fieldsVersion"
+    runtimeOnly "org.graceframework.plugins:scaffolding:$scaffoldingVersion"
 
-    testImplementation("org.grails:grails-test-support")
+    testImplementation("org.graceframework:grace-test-support")
 
-    testImplementation("org.grails.plugins:geb") {
+    testImplementation("org.graceframework.plugins:geb") {
         exclude group: 'org.gebish', module: 'geb-spock'
     }
     testImplementation "org.gebish:geb-spock:$gebVersion"
