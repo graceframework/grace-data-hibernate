@@ -1,12 +1,8 @@
-configurations {
-    all*.exclude group: 'org.codehaus.groovy'
-}
-
 dependencies {
     api "org.slf4j:slf4j-api:$slf4jVersion"
 
     api "org.apache.groovy:groovy:$groovyVersion"
-    api("org.graceframework:grace-datastore-gorm:$gormVersion")
+    api "org.graceframework:grace-datastore-gorm:$gormVersion"
     api "org.springframework:spring-orm:$springVersion"
     api("org.hibernate:hibernate-core-jakarta:$hibernate5Version") {
         exclude group:'commons-logging', module:'commons-logging'
