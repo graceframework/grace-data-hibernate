@@ -2,11 +2,13 @@ package grails.plugin.hibernate
 
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.support.BeanDefinitionRegistry
+import org.springframework.boot.autoconfigure.AutoConfigurationPackages
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.core.convert.converter.Converter
 import org.springframework.core.convert.support.ConfigurableConversionService
 import org.springframework.core.env.PropertyResolver
 
+import grails.boot.config.GrailsComponentScanner
 import grails.config.Config
 import grails.core.GrailsApplication
 import grails.core.GrailsClass
@@ -16,6 +18,7 @@ import grails.util.Environment
 
 import org.grails.config.PropertySourcesConfig
 import org.grails.core.artefact.DomainClassArtefactHandler
+import org.grails.datastore.gorm.utils.ClasspathEntityScanner
 
 /**
  * Plugin that integrates Hibernate into a Grails application
@@ -66,11 +69,20 @@ class HibernateGrailsPlugin extends Plugin {
                 ((PropertySourcesConfig) config).setConversionService(conversionService)
             }
 
+            List<String> packageNames = AutoConfigurationPackages.get(applicationContext.beanFactory)
+            List<Package> packages = []
+            for (name in packageNames) {
+                Package pkg = Package.getPackage(name)
+                if (pkg != null) {
+                    packages.add(pkg)
+                }
+            }
+            Class[] entityClasses = new ClasspathEntityScanner().scan(packages as Package[])
 
-            def domainClasses = grailsApplication.getArtefacts(DomainClassArtefactHandler.TYPE)
+            List domainClasses = grailsApplication.getArtefacts(DomainClassArtefactHandler.TYPE)
                     .collect() { GrailsClass cls -> cls.clazz }
 
-            def springInitializer = new HibernateDatastoreSpringInitializer((PropertyResolver) config, domainClasses)
+            def springInitializer = new HibernateDatastoreSpringInitializer((PropertyResolver) config, entityClasses + domainClasses)
             springInitializer.enableReload = Environment.isDevelopmentMode()
             springInitializer.registerApplicationIfNotPresent = false
             springInitializer.grailsPlugin = true

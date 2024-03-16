@@ -14,6 +14,7 @@ dependencies {
         exclude group: 'org.hamcrest', module: 'hamcrest-core'
     }
 
+    api "org.springframework.boot:spring-boot-autoconfigure:$springBootVersion"
     api "org.springframework:spring-orm:$springVersion"
     api "org.hibernate:hibernate-core:${hibernate5Version}"
     api "org.graceframework:grace-datastore-web:$gormVersion"
