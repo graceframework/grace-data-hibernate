@@ -1,5 +1,7 @@
 package grails.plugin.hibernate
 
+import javax.sql.DataSource
+
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.support.BeanDefinitionRegistry
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages
@@ -77,12 +79,22 @@ class HibernateGrailsPlugin extends Plugin {
                     packages.add(pkg)
                 }
             }
+            Collection<Class> persistentClasses = new ArrayList<>()
             Class[] entityClasses = new ClasspathEntityScanner().scan(packages as Package[])
 
             List domainClasses = grailsApplication.getArtefacts(DomainClassArtefactHandler.TYPE)
                     .collect() { GrailsClass cls -> cls.clazz }
 
-            def springInitializer = new HibernateDatastoreSpringInitializer((PropertyResolver) config, entityClasses + domainClasses)
+            persistentClasses.addAll(entityClasses)
+            persistentClasses.addAll(domainClasses)
+            HibernateDatastoreSpringInitializer springInitializer
+            if (applicationContext.containsBean(DEFAULT_DATA_SOURCE_NAME)) {
+                DataSource dataSource = applicationContext.getBean(DEFAULT_DATA_SOURCE_NAME, DataSource)
+                springInitializer = new HibernateDatastoreSpringInitializer(dataSource, (PropertyResolver) config, persistentClasses)
+            }
+            else {
+                springInitializer = new HibernateDatastoreSpringInitializer((PropertyResolver) config, persistentClasses)
+            }
             springInitializer.enableReload = Environment.isDevelopmentMode()
             springInitializer.registerApplicationIfNotPresent = false
             springInitializer.grailsPlugin = true

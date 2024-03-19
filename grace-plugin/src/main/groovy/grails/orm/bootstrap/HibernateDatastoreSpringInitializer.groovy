@@ -53,6 +53,7 @@ class HibernateDatastoreSpringInitializer extends AbstractDatastoreInitializer {
     public static final String DATA_SOURCES = Settings.SETTING_DATASOURCES;
     public static final String TEST_DB_URL = "jdbc:h2:mem:grailsDb;LOCK_TIMEOUT=10000;DB_CLOSE_DELAY=-1"
 
+    DataSource dataSource
     String defaultDataSourceBeanName = ConnectionSource.DEFAULT
     String defaultSessionFactoryBeanName = SESSION_FACTORY_BEAN_NAME
     Set<String> dataSources = [defaultDataSourceBeanName] as Set<String>
@@ -67,6 +68,18 @@ class HibernateDatastoreSpringInitializer extends AbstractDatastoreInitializer {
     HibernateDatastoreSpringInitializer(PropertyResolver configuration, Class... persistentClasses) {
         super(configuration, persistentClasses)
         configureDataSources(configuration)
+    }
+
+    HibernateDatastoreSpringInitializer(DataSource dataSource, PropertyResolver configuration, Collection<Class> persistentClasses) {
+        super(configuration, persistentClasses)
+        configureDataSources(configuration)
+        this.dataSource = dataSource
+    }
+
+    HibernateDatastoreSpringInitializer(DataSource dataSource, PropertyResolver configuration, Class... persistentClasses) {
+        super(configuration, persistentClasses)
+        configureDataSources(configuration)
+        this.dataSource = dataSource
     }
 
     HibernateDatastoreSpringInitializer(PropertyResolver configuration, String... packages) {
@@ -153,8 +166,15 @@ class HibernateDatastoreSpringInitializer extends AbstractDatastoreInitializer {
                 bean.autowire = true
                 dataSourceConnectionSourceFactory = ref('dataSourceConnectionSourceFactory')
             }
-            hibernateDatastore(HibernateDatastore, config, hibernateConnectionSourceFactory, eventPublisher) { bean ->
-                bean.primary = true
+            if (dataSource) {
+                hibernateDatastore(HibernateDatastore, dataSource, config, hibernateConnectionSourceFactory, eventPublisher) { bean ->
+                    bean.primary = true
+                }
+            }
+            else {
+                hibernateDatastore(HibernateDatastore, config, hibernateConnectionSourceFactory, eventPublisher) { bean ->
+                    bean.primary = true
+                }
             }
             sessionFactory(hibernateDatastore: 'getSessionFactory') { bean ->
                 bean.primary = true
