@@ -30,9 +30,9 @@ configurations.all {
 }
 
 dependencies {
-    documentation "org.grails:grails-core:$grailsVersion"
-    documentation "org.grails:grails-bootstrap:$grailsVersion"
-    documentation "org.grails:grails-spring:$grailsVersion"
+    documentation "org.graceframework:grace-core:$graceVersion"
+    documentation "org.graceframework:grace-bootstrap:$graceVersion"
+    documentation "org.graceframework:grace-spring:$graceVersion"
     documentation "info.picocli:picocli:$picocliVersion"
     documentation "org.fusesource.jansi:jansi:$jansiVersion"
     documentation "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
@@ -40,7 +40,7 @@ dependencies {
 
     documentation "org.fusesource.jansi:jansi:$jansiVersion"
     for(p in coreProjects) {
-        documentation "org.grails:grails-datastore-$p:$gormVersion"
+        documentation "org.graceframework:grace-datastore-$p:$gormVersion"
     }
     project.rootProject.subprojects.each { subproject ->
         if(subproject.name != "docs" && !subproject.name.startsWith('examples')) {
