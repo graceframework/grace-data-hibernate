@@ -1,5 +1,5 @@
 ext {
-    githubBranch = "7.1.x"
+    githubBranch = "release/2023.0.0-M1"
     checkOutDir = "build/checkout"
     zipFile = "build/source.zip"
 
@@ -30,9 +30,9 @@ configurations.all {
 }
 
 dependencies {
-    documentation "org.grails:grails-core:$grailsVersion"
-    documentation "org.grails:grails-bootstrap:$grailsVersion"
-    documentation "org.grails:grails-spring:$grailsVersion"
+    documentation "org.graceframework:grace-core:$graceVersion"
+    documentation "org.graceframework:grace-bootstrap:$graceVersion"
+    documentation "org.graceframework:grace-spring:$graceVersion"
     documentation "info.picocli:picocli:$picocliVersion"
     documentation "org.fusesource.jansi:jansi:$jansiVersion"
     documentation "org.apache.groovy:groovy-dateutil:$groovyVersion"
@@ -40,7 +40,7 @@ dependencies {
 
     documentation "org.fusesource.jansi:jansi:$jansiVersion"
     for(p in coreProjects) {
-        documentation "org.grails:grails-datastore-$p:$gormVersion"
+        documentation "org.graceframework:grace-datastore-$p:$gormVersion"
     }
     project.rootProject.subprojects.each { subproject ->
         if(subproject.name != "docs" && !subproject.name.startsWith('examples')) {
@@ -76,13 +76,13 @@ task fetchSource {
         println "Downloading GORM source code."
         def tag = System.getenv('TRAVIS_TAG')
         if (tag) {
-            ant.get src: "https://github.com/grails/grails-data-mapping/archive/${tag}.zip", dest: zipFile, verbose: true
+            ant.get src: "https://github.com/grace/grace-data/archive/${tag}.zip", dest: zipFile, verbose: true
         } else {
-            ant.get src: "https://github.com/grails/grails-data-mapping/zipball/${githubBranch}", dest: zipFile, verbose: true
+            ant.get src: "https://github.com/grace/grace-data/zipball/${githubBranch}", dest: zipFile, verbose: true
         }
 
         ant.unzip src: zipFile, dest: checkOutDir, {
-            mapper type: "regexp", from: "(grails-\\S*?/)(.*)", to: "gorm-src/\\2"
+            mapper type: "regexp", from: "(grace-\\S*?/)(.*)", to: "gorm-src/\\2"
         }
         println "GORM source code downloaded."
     }
