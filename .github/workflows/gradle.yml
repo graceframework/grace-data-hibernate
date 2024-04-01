@@ -2,10 +2,10 @@ name: Grace CI
 on:
   push:
     branches:
-      - 'release/[2022-2029]+.[0-9]+.3'
+      - 'release/2022.1.4'
   pull_request:
     branches:
-      - 'release/[2022-2029]+.[0-9]+.3'
+      - 'release/2022.1.4'
   workflow_dispatch:
 jobs:
   build:
