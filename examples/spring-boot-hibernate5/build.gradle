@@ -14,13 +14,6 @@ apply plugin:"groovy"
 
 group 'examples'
 
-configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        if(details.requested.group == 'org.codehaus.groovy' && details.requested.name.startsWith('groovy')) {
-            details.useVersion(groovyVersion)   
-        }
-    }
-}  
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-web")
