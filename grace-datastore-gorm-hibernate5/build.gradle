@@ -24,7 +24,6 @@ dependencies {
     api("jakarta.persistence:jakarta.persistence-api:$jpaVersion")
     runtimeOnly("jakarta.el:jakarta.el-api:$jakartaElVersion")
     runtimeOnly "jakarta.xml.bind:jakarta.xml.bind-api:$jaxbApiVersion"
-    runtimeOnly "com.sun.xml.bind:jaxb-impl:$jaxbImplVersion"
 
     compileOnly ("net.sf.ehcache:ehcache:2.10.6")
     compileOnly ("org.hibernate:hibernate-ehcache:$hibernate5Version") {
