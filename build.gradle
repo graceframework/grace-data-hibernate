@@ -55,7 +55,7 @@ subprojects { Project subproject ->
     ext {
         projectArtifactId = subproject.name
         isExample = subproject.name.startsWith('example')
-        isPluginProject = subproject.name == 'hibernate5'
+        isPluginProject = subproject.name == 'hibernate'
     }
 
     if (isPluginProject) {

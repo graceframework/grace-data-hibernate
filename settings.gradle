@@ -1,13 +1,13 @@
 rootProject.name = 'Grace.Data.Hibernate'
 
 // Core
-include "grace-datastore-gorm-hibernate5"
+include "grace-datastore-gorm-hibernate"
 
 // Documentation
 // include 'docs'
 
 // Plugins
-include "boot-plugin"
+// include "boot-plugin"
 include 'grace-plugin'
 
 // include "examples-grails3-hibernate5"
@@ -35,5 +35,5 @@ include 'grace-plugin'
 // project(":examples-grails-data-service").projectDir = new File(settingsDir, "examples/grails-data-service")
 
 
-project(':boot-plugin').name = 'gorm-hibernate5-spring-boot'
-project(':grace-plugin').name = 'hibernate5'
+// project(':boot-plugin').name = 'gorm-hibernate5-spring-boot'
+project(':grace-plugin').name = 'hibernate'
