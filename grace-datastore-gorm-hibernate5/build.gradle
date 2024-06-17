@@ -2,7 +2,7 @@ dependencies {
     api "org.slf4j:slf4j-api:$slf4jVersion"
 
     api "org.codehaus.groovy:groovy:$groovyVersion"
-    api("org.grails:grails-datastore-gorm:$gormVersion")
+    api("org.graceframework:grace-datastore-gorm:$gormVersion")
     api "org.springframework:spring-orm:$springVersion"
     api("org.hibernate:hibernate-core:$hibernate5Version") {
         exclude group:'commons-logging', module:'commons-logging'
@@ -19,9 +19,9 @@ dependencies {
         exclude group:'org.slf4j', module:'slf4j-api'
     }
     api 'javax.validation:validation-api:2.0.1.Final'
-    runtimeOnly('javax.el:javax.el-api:3.0.1-b06')
-    runtimeOnly "javax.xml.bind:jaxb-api:$jaxbVersion"
-    runtimeOnly "com.sun.xml.bind:jaxb-impl:$jaxbVersion"
+    runtimeOnly("jakarta.el:jakarta.el-api:$jakartaElVersion")
+    runtimeOnly "jakarta.xml.bind:jakarta.xml.bind-api:$jaxbApiVersion"
+    runtimeOnly "com.sun.xml.bind:jaxb-impl:$jaxbImplVersion"
 
     compileOnly ("net.sf.ehcache:ehcache:2.10.6")
     compileOnly ("org.hibernate:hibernate-ehcache:$hibernate5Version") {
@@ -40,7 +40,7 @@ dependencies {
     testImplementation "org.codehaus.groovy:groovy-test-junit5:$groovyVersion"
     testImplementation "org.codehaus.groovy:groovy-sql:$groovyVersion"
     testImplementation "org.codehaus.groovy:groovy-json:$groovyVersion"
-    testImplementation "org.grails:grails-datastore-gorm-tck:$gormVersion", {
+    testImplementation "org.graceframework:grace-datastore-gorm-tck:$gormVersion", {
         exclude group: "org.spockframework"
     }
     testImplementation "com.h2database:h2:$h2Version"
@@ -71,55 +71,5 @@ test {
     afterSuite {
         System.out.print('.')
         System.out.flush()
-    }
-}
-
-test.doFirst {
-    def toBaseClassRelativePathWithoutExtension = { String base, String classFile ->
-        if (classFile.startsWith(base)) {
-            def sansClass = classFile[0 .. classFile.size() - ".class".size() - 1]
-            def dollarIndex = sansClass.indexOf('$')
-            def baseClass = dollarIndex > 0 ? sansClass[0..dollarIndex - 1] : sansClass
-            def relative = baseClass - base - '/'
-            relative
-        }
-        else {
-            null
-        }
-    }    
-    def tckClassesFile = project
-                            .configurations
-                            .testCompileClasspath
-                            .resolvedConfiguration
-                            .getResolvedArtifacts()
-                            .find { resolved ->
-                                resolved.moduleVersion.id.name == 'grails-datastore-gorm-tck'
-                            }.file
-
-    def tckClassesDir = project.file("${project.buildDir}/tck")                            
-    copy {
-        from zipTree(tckClassesFile)
-        into tckClassesDir 
-    }
-    copy {
-        from tckClassesDir
-        into sourceSets.test.output.classesDirs.find { it.path.contains('classes' + File.separator + 'groovy') }
-        include "**/*.class"
-        exclude { details ->
-            // Do not copy across any TCK class (or nested classes of that class)
-            // If there is a corresponding source file in the particular modules
-            // test source tree. Allows a module to override a test/helper.
-            if (!details.file.isFile()) {
-                return false
-            }
-            def candidatePath = details.file.absolutePath
-            def relativePath = toBaseClassRelativePathWithoutExtension(tckClassesDir.absolutePath, candidatePath)
-
-            if (relativePath == null) {
-                throw new IllegalStateException("$candidatePath does not appear to be in the TCK")
-            }
-
-            project.file("src/test/groovy/${relativePath}.groovy").exists()
-        }
     }
 }
