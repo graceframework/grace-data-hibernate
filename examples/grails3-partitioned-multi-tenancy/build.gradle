@@ -1,5 +1,7 @@
 group "examples"
 
+apply plugin:"org.graceframework.grace-web"
+apply plugin:"org.graceframework.grace-gsp"
 
 dependencies {
 
@@ -7,19 +9,17 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.boot:spring-boot-starter-tomcat"
-    implementation "javax.servlet:javax.servlet-api:$servletApiVersion"
-    implementation "org.graceframework:grace-boot:$graceVersion"
-    implementation "org.graceframework:grace-core:$graceVersion"
-    implementation project(":grace-plugin")
+    implementation "org.graceframework:grace-boot"
+    implementation "org.graceframework:grace-core"
+    implementation project(":hibernate5")
 
     implementation "org.hibernate:hibernate-core:$hibernate5Version"
 
     runtimeOnly "org.graceframework.plugins:asset-pipeline-plugin:$assetPipelineVersion"
     runtimeOnly "com.h2database:h2"
-    runtimeOnly "org.yaml:snakeyaml:$snakeyamlVersion"
-    runtimeOnly "org.apache.tomcat:tomcat-jdbc:$tomcatVersion"
-    runtimeOnly "org.graceframework.plugins:fields:$fieldsVersion"
-    runtimeOnly "org.graceframework.plugins:scaffolding:$scaffoldingVersion"
+    runtimeOnly "org.apache.tomcat:tomcat-jdbc"
+    runtimeOnly "org.graceframework.plugins:fields"
+    runtimeOnly "org.graceframework.plugins:scaffolding"
 
     testImplementation "org.graceframework:grace-test-support"
 }

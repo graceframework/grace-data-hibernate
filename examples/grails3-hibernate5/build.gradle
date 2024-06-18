@@ -1,32 +1,33 @@
 group "examples"
 
+apply plugin:"com.github.erdi.webdriver-binaries"
+apply plugin:"org.graceframework.grace-web"
+apply plugin:"org.graceframework.grace-gsp"
+
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-logging"
     implementation "org.springframework.boot:spring-boot-autoconfigure"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.boot:spring-boot-starter-tomcat"
-    implementation "javax.servlet:javax.servlet-api:$servletApiVersion"
-    implementation "org.graceframework:grace-boot:$graceVersion"
-    implementation "org.graceframework:grace-core:$graceVersion"
-    implementation "org.graceframework:grace-plugin-rest:$graceVersion"
-    implementation project(":grace-plugin")
+    implementation "org.graceframework:grace-boot"
+    implementation "org.graceframework:grace-core"
+    implementation "org.graceframework:grace-plugin-controllers"
+    implementation "org.graceframework:grace-plugin-i18n"
+    implementation "org.graceframework:grace-plugin-rest"
+    implementation "org.graceframework:grace-plugin-gsp"
+    implementation project(":hibernate5")
 
     implementation "org.hibernate:hibernate-core:$hibernate5Version"
     implementation "org.hibernate:hibernate-ehcache:$hibernate5Version"
 
     runtimeOnly "org.graceframework.plugins:asset-pipeline-plugin:$assetPipelineVersion"
     runtimeOnly "com.h2database:h2"
-    runtimeOnly "org.yaml:snakeyaml:$snakeyamlVersion"
-    runtimeOnly "org.apache.tomcat:tomcat-jdbc:$tomcatVersion"
-    runtimeOnly "org.graceframework.plugins:fields:$fieldsVersion"
-    runtimeOnly "org.graceframework.plugins:scaffolding:$scaffoldingVersion"
+    runtimeOnly "org.apache.tomcat:tomcat-jdbc"
+    runtimeOnly "org.graceframework.plugins:fields"
+    runtimeOnly "org.graceframework.plugins:scaffolding"
 
     testImplementation("org.graceframework:grace-test-support")
-
-    testImplementation("org.graceframework.plugins:geb") {
-        exclude group: 'org.gebish', module: 'geb-spock'
-    }
-    testImplementation "org.gebish:geb-spock:$gebVersion"
+    testImplementation("org.graceframework.plugins:geb")
     testRuntimeOnly "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
     testRuntimeOnly "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
     testRuntimeOnly "org.seleniumhq.selenium:selenium-safari-driver:$seleniumSafariDriverVersion"
@@ -35,10 +36,12 @@ dependencies {
     testImplementation "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
     testImplementation "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
 }
+
 webdriverBinaries {
     chromedriver "$chromeDriverVersion"
     geckodriver "$geckodriverVersion"
 }
+
 tasks.withType(Test) {
     systemProperty "geb.env", System.getProperty('geb.env')
     systemProperty "geb.build.reportsDir", reporting.file("geb/integrationTest")

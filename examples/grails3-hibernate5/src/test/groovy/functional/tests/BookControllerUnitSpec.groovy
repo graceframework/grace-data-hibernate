@@ -2,7 +2,7 @@ package functional.tests
 
 import grails.test.hibernate.HibernateSpec
 import grails.testing.web.controllers.ControllerUnitTest
-import org.grails.plugins.web.mime.MimeTypesGrailsPlugin
+// import org.grails.plugins.web.mime.MimeTypesGrailsPlugin
 
 /**
  * Created by graemerocher on 24/10/16.
@@ -10,7 +10,7 @@ import org.grails.plugins.web.mime.MimeTypesGrailsPlugin
 class BookControllerUnitSpec extends HibernateSpec implements ControllerUnitTest<BookController> {
 
     def setupSpec() {
-        defineBeans(new MimeTypesGrailsPlugin())
+        // defineBeans(new MimeTypesGrailsPlugin())
     }
 
     def setup() {

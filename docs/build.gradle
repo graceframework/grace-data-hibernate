@@ -42,11 +42,11 @@ dependencies {
     for(p in coreProjects) {
         documentation "org.graceframework:grace-datastore-$p:$gormVersion"
     }
-    project.rootProject.subprojects.each { subproject ->
-        if(subproject.name != "docs" && !subproject.name.startsWith('examples')) {
-            documentation project(":$subproject.name")
-        }
-    }
+    // project.rootProject.subprojects.each { subproject ->
+    //     if(subproject.name != "docs" && !subproject.name.startsWith('examples:')) {
+    //         documentation project(":$subproject.name")
+    //     }
+    // }
 }
 
 asciidoctor {

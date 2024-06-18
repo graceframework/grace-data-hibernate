@@ -29,11 +29,10 @@ dependencies {
     implementation "org.graceframework:grace-logging"
     implementation "org.graceframework.plugins:cache"
     implementation "org.graceframework.plugins:events"
-    implementation project(":grace-plugin")
+    implementation project(":hibernate5")
     implementation "org.hibernate:hibernate-core:$hibernate5Version"
     implementation "org.graceframework.plugins:views-json"
     implementation "org.graceframework.plugins:views-json-templates"
-    implementation 'org.graceframework.plugins:spring-security-rest:3.0.1'
     profile "org.graceframework.profiles:rest-api"
     runtimeOnly "org.glassfish.web:el-impl:2.2.1-b05"
     runtimeOnly "org.apache.tomcat:tomcat-jdbc"
