@@ -62,7 +62,7 @@ subprojects { Project subproject ->
             projectArtifactId = subproject.name == 'boot-plugin' ? 'gorm-hibernate5-spring-boot' : subproject.name
         }
 
-        isExample = subproject.name.startsWith('example:')
+        isExample = subproject.path.startsWith(':example:')
         isPluginProject = subproject.name == 'grace-plugin'
     }
 
@@ -120,11 +120,11 @@ subprojects { Project subproject ->
         documentation "info.picocli:picocli:$picocliVersion"
         documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"
 
-        implementation "org.codehaus.groovy:groovy:$groovyVersion"
+        api "org.codehaus.groovy:groovy:$groovyVersion"
         testImplementation "org.codehaus.groovy:groovy-test-junit5:$groovyVersion"
         testImplementation("org.spockframework:spock-core:$spockVersion") { transitive = false}
         testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
-        testImplementation "org.junit.platform:junit-platform-runner:1.8.2"
+        testImplementation "org.junit.platform:junit-platform-runner:$junitPlatformVersion"
         testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
     }
 
