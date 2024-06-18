@@ -33,7 +33,7 @@ jobs:
         id: build
         uses: gradle/actions/setup-gradle@v3
         with:
-          arguments: build -x codenarcMain -x codenarcTest -x checkstyleMain -x checkstyleTest
+          arguments: test
   publish:
     if: github.event_name == 'push'
     needs: ["build"]
