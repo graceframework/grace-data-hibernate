@@ -18,16 +18,7 @@ dependencies {
     api "org.hibernate:hibernate-core:${hibernate5Version}"
     api "org.graceframework:grace-datastore-web:$gormVersion"
     api "org.graceframework:grace-datastore-gorm-support:$gormVersion"
-    api project(":grace-datastore-gorm-hibernate5"), {
-        exclude group:'org.springframework', module:'spring-context'
-        exclude group:'org.springframework', module:'spring-core'
-        exclude group:'org.springframework', module:'spring-beans'
-        exclude group:'org.springframework', module:'spring-tx'
-        exclude group:'org.graceframework', module:'grace-bootstrap'
-        exclude group:'org.codehaus.groovy', module:'groovy-all'
-        exclude group:'org.graceframework', module:'grace-core'
-        exclude group:'javax.transaction', module:'jta'
-    }
+    api project(":grace-datastore-gorm-hibernate5")
     testRuntimeOnly "org.yaml:snakeyaml:$snakeyamlVersion"
     testImplementation "org.graceframework:grace-test-support"
     testRuntimeOnly "com.h2database:h2:$h2Version"
