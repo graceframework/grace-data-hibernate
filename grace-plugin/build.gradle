@@ -31,6 +31,6 @@ groovydoc.classpath += configurations.documentation
 
 jar {
     enabled = true
-    archiveClassifier.set('')
+    archiveClassifier.set('plugin')
     includeEmptyDirs = false
 }
