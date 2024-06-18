@@ -54,17 +54,20 @@ nexusPublishing {
 
 subprojects { Project subproject ->
     ext {
-        projectArtifactId = subproject.name
+        if (subproject.name == 'grace-plugin') {
+            projectGroup = 'org.graceframework.plugins'
+            projectArtifactId = 'hibernate5'
+        }
+        else {
+            projectGroup = 'org.graceframework'
+            projectArtifactId = subproject.name == 'boot-plugin' ? 'gorm-hibernate5-spring-boot' : subproject.name
+        }
+
         isExample = subproject.name.startsWith('example:')
-        isPluginProject = subproject.name == 'hibernate5'
+        isPluginProject = subproject.name == 'grace-plugin'
     }
 
-    if (isPluginProject) {
-        group "org.graceframework.plugins"
-    }
-    else {
-        group "org.graceframework"
-    }
+    group projectGroup
     version project.rootProject.version
 
     repositories {
@@ -75,11 +78,10 @@ subprojects { Project subproject ->
         maven { url 'https://repo.gradle.org/gradle/libs-releases' }
     }
 
-    if(isExample) {
+    if (isExample) {
         apply plugin: "groovy"
 
         dependencies {
-            testImplementation "io.projectreactor:reactor-test:3.4.17"
             testImplementation "org.codehaus.groovy:groovy-test-junit5:$groovyVersion"
             testImplementation("org.spockframework:spock-core:$spockVersion") { transitive = false}
             testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
@@ -137,18 +139,18 @@ subprojects { Project subproject ->
         withSourcesJar()
     }
 
-    // tasks.withType(Test) {
-    //     configure {
-    //         retry {
-    //             maxRetries = 2
-    //             maxFailures = 20
-    //             failOnPassedAfterRetry = true
-    //             filter {
-    //                 excludeClasses.add("*GroovyChangeLogSpec")
-    //             }
-    //         }
-    //     }
-    // }
+    tasks.withType(Test) {
+        configure {
+            retry {
+                maxRetries = 2
+                maxFailures = 20
+                failOnPassedAfterRetry = true
+                filter {
+                    excludeClasses.add("*GroovyChangeLogSpec")
+                }
+            }
+        }
+    }
 
     groovydoc.classpath = configurations.documentation
 

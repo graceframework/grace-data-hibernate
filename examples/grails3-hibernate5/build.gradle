@@ -15,7 +15,7 @@ dependencies {
     implementation "org.graceframework:grace-plugin-i18n"
     implementation "org.graceframework:grace-plugin-rest"
     implementation "org.graceframework:grace-plugin-gsp"
-    implementation project(":hibernate5")
+    implementation project(":grace-plugin")
 
     implementation "org.hibernate:hibernate-core:$hibernate5Version"
     implementation "org.hibernate:hibernate-ehcache:$hibernate5Version"

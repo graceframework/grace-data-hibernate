@@ -33,7 +33,7 @@ dependencies {
     implementation "org.graceframework:grace-logging"
     implementation "org.graceframework.plugins:cache"
     implementation "org.graceframework.plugins:events"
-    implementation project(":hibernate5")
+    implementation project(":grace-plugin")
     implementation "org.hibernate:hibernate-core:$hibernate5Version"
     implementation "org.graceframework.plugins:views-json"
     implementation "org.graceframework.plugins:views-json-templates"
