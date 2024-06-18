@@ -23,8 +23,12 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.boot:spring-boot-starter-tomcat"
     implementation "org.graceframework:grace-plugin-codecs"
-    implementation "org.graceframework:grace-plugin-services"
+    implementation "org.graceframework:grace-plugin-controllers"
     implementation "org.graceframework:grace-plugin-datasource"
+    implementation "org.graceframework:grace-plugin-domain-class"
+    implementation "org.graceframework:grace-plugin-i18n"
+    implementation "org.graceframework:grace-plugin-url-mappings"
+    implementation "org.graceframework:grace-plugin-services"
     implementation "org.graceframework:grace-boot"
     implementation "org.graceframework:grace-logging"
     implementation "org.graceframework.plugins:cache"
@@ -37,5 +41,7 @@ dependencies {
     runtimeOnly "org.glassfish.web:el-impl:2.2.1-b05"
     runtimeOnly "org.apache.tomcat:tomcat-jdbc"
     runtimeOnly "javax.xml.bind:jaxb-api:2.3.1"
-    testImplementation "org.grails:grails-test-support"
+    testImplementation "org.graceframework:grace-test-support"
 }
+
+bootJar.enabled = false
