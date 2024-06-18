@@ -156,13 +156,13 @@ subprojects { Project subproject ->
     publishing {
         publications {
             maven(MavenPublication) {
-                def projectName = subproject.name.split('-')*.capitalize().join(' ')
+                def projectName = isPluginProject ? 'Hibernate 5 Plugin' : subproject.name.split('-')*.capitalize().join(' ')
                 artifactId projectArtifactId
 
                 from components.java
 
                 afterEvaluate {
-                    if(isPluginProject) {
+                    if (isPluginProject) {
                         artifact source:"${sourceSets.main.groovy.outputDir}/META-INF/grails-plugin.xml",
                                 classifier:"plugin",
                                 extension:'xml'
