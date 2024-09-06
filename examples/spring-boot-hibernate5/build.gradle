@@ -16,7 +16,7 @@ group 'examples'
 
 configurations.all {
     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        if(details.requested.group == 'org.codehaus.groovy' && details.requested.name.startsWith('groovy')) {
+        if(details.requested.group == 'org.apache.groovy' && details.requested.name.startsWith('groovy')) {
             details.useVersion(groovyVersion)   
         }
     }
