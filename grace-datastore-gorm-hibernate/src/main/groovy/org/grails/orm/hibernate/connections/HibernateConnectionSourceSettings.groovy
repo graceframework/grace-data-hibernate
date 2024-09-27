@@ -1,9 +1,21 @@
+/*
+ * Copyright 2016-2024 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.orm.hibernate.connections
 
-import groovy.transform.AutoClone
 import groovy.transform.CompileStatic
-import groovy.transform.builder.Builder
-import groovy.transform.builder.SimpleStrategy
 import org.hibernate.CustomEntityDirtinessStrategy
 import org.hibernate.cfg.AvailableSettings
 import org.hibernate.cfg.Configuration
@@ -12,6 +24,7 @@ import org.hibernate.cfg.NamingStrategy
 import org.springframework.core.io.Resource
 
 import org.grails.datastore.gorm.jdbc.connections.DataSourceSettings
+import org.grails.datastore.mapping.config.SettingsBuilder
 import org.grails.datastore.mapping.core.connections.ConnectionSourceSettings
 import org.grails.orm.hibernate.HibernateEventListeners
 import org.grails.orm.hibernate.dirty.GrailsEntityDirtinessStrategy
@@ -21,10 +34,11 @@ import org.grails.orm.hibernate.support.AbstractClosureEventTriggeringIntercepto
  * Settings for Hibernate
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 6.0
  */
-@Builder(builderStrategy = SimpleStrategy, prefix = '')
-@AutoClone
+@CompileStatic
+@SettingsBuilder
 class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
 
     /**
@@ -53,9 +67,8 @@ class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
         return properties
     }
 
-
-    @Builder(builderStrategy = SimpleStrategy, prefix = '')
-    @AutoClone
+    @CompileStatic
+    @SettingsBuilder
     static class HibernateSettings extends LinkedHashMap<String, String> {
 
         /**
@@ -261,8 +274,8 @@ class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
             }
         }
 
-        @Builder(builderStrategy = SimpleStrategy, prefix = '')
-        @AutoClone
+        @CompileStatic
+        @SettingsBuilder
         static class CacheSettings {
             /**
              * Whether to cache queries
@@ -270,8 +283,8 @@ class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
             boolean queries = false
         }
 
-        @Builder(builderStrategy = SimpleStrategy, prefix = '')
-        @AutoClone
+        @CompileStatic
+        @SettingsBuilder
         static class FlushSettings {
             /**
              * The default flush mode
@@ -305,8 +318,8 @@ class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
         /**
          * Settings for OpenSessionInView
          */
-        @Builder(builderStrategy = SimpleStrategy, prefix = '')
-        @AutoClone
+        @CompileStatic
+        @SettingsBuilder
         static class OsivSettings {
             /**
              * Whether to cache queries
