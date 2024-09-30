@@ -1,10 +1,11 @@
-/* Copyright (C) 2011 SpringSource
+/*
+ * Copyright 2011-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -74,7 +75,6 @@ import org.grails.datastore.mapping.core.connections.ConnectionSourcesInitialize
 import org.grails.datastore.mapping.core.connections.DefaultConnectionSource;
 import org.grails.datastore.mapping.core.connections.SingletonConnectionSources;
 import org.grails.datastore.mapping.core.exceptions.ConfigurationException;
-import org.grails.datastore.mapping.engine.event.DatastoreInitializedEvent;
 import org.grails.datastore.mapping.model.DatastoreConfigurationException;
 import org.grails.datastore.mapping.model.MappingContext;
 import org.grails.datastore.mapping.model.PersistentEntity;
@@ -95,6 +95,7 @@ import org.grails.orm.hibernate.support.ClosureEventTriggeringInterceptor;
  * Datastore implementation that uses a Hibernate SessionFactory underneath.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 public class HibernateDatastore extends AbstractHibernateDatastore implements MessageSourceAware {
@@ -500,7 +501,6 @@ public class HibernateDatastore extends AbstractHibernateDatastore implements Me
             );
 
             registerEventListeners(eventPublisher);
-            this.eventPublisher.publishEvent(new DatastoreInitializedEvent(this));
         }
     }
 
