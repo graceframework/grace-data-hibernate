@@ -15,7 +15,12 @@ import jakarta.validation.constraints.Digits
  */
 class BeanValidationSpec extends Specification {
 
-    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(Bean)
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
+    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(config, Bean)
 
     @Rollback
     void "test bean validation API validate on save"() {

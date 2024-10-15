@@ -1,6 +1,5 @@
 package org.grails.orm.hibernate
 
-import org.grails.orm.hibernate.cfg.Settings
 import spock.lang.Specification
 
 /**
@@ -10,7 +9,9 @@ class HibernateDatastoreSpec extends Specification {
 
     void "test configure via map"() {
         when:"The map constructor is used"
-        def config = Collections.singletonMap(Settings.SETTING_DB_CREATE,  "create-drop")
+        def config = Map.of(
+                'dataSource.dbCreate',  "create-drop",
+                "dataSource.url", "jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000")
         HibernateDatastore datastore = new HibernateDatastore(config, Book)
 
         then:"GORM is configured correctly"

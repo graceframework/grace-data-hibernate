@@ -37,7 +37,12 @@ import jakarta.persistence.OneToMany
  */
 class TwoUnidirectionalHasManySpec extends Specification {
 
-    @Shared @AutoCleanup HibernateDatastore datastore = new HibernateDatastore(getClass().getPackage())
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
+    @Shared @AutoCleanup HibernateDatastore datastore = new HibernateDatastore(config, getClass().getPackage())
 
 
     @Rollback

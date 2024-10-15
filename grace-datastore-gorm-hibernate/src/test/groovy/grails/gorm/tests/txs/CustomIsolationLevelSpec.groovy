@@ -15,7 +15,12 @@ import spock.lang.Specification
  */
 class CustomIsolationLevelSpec extends Specification {
 
-    @AutoCleanup @Shared HibernateDatastore hibernateDatastore = new HibernateDatastore(Product, Attribute)
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
+    @AutoCleanup @Shared HibernateDatastore hibernateDatastore = new HibernateDatastore(config, Product, Attribute)
 
 
     @Issue('https://github.com/grails/grails-data-mapping/issues/952')

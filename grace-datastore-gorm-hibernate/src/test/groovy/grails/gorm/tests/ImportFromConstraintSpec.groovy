@@ -14,7 +14,12 @@ import spock.lang.Specification
  */
 class ImportFromConstraintSpec extends Specification {
 
-    @Shared @AutoCleanup HibernateDatastore datastore = new HibernateDatastore(TestA, TestB)
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
+    @Shared @AutoCleanup HibernateDatastore datastore = new HibernateDatastore(config, TestA, TestB)
     @Shared PlatformTransactionManager transactionManager = datastore.getTransactionManager()
 
     @Rollback

@@ -78,6 +78,7 @@ class Setup {
         }
 
         grailsConfig.dataSource.dbCreate = "create-drop"
+        grailsConfig.dataSource.url = "jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000"
         hibernateDatastore = new HibernateDatastore(DatastoreUtils.createPropertyResolver(grailsConfig), classes as Class[])
         transactionManager = hibernateDatastore.getTransactionManager()
         sessionFactory = hibernateDatastore.sessionFactory

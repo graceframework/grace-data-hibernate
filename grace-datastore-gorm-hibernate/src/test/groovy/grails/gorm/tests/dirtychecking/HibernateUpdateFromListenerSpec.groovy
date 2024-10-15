@@ -19,9 +19,14 @@ import spock.util.concurrent.PollingConditions
 
 class HibernateUpdateFromListenerSpec extends Specification {
 
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
     @Shared
     @AutoCleanup
-    HibernateDatastore datastore = new HibernateDatastore(Person)
+    HibernateDatastore datastore = new HibernateDatastore(config, Person)
     @Shared PlatformTransactionManager transactionManager = datastore.transactionManager
 
     PersonSaveOrUpdatePersistentEventListener listener

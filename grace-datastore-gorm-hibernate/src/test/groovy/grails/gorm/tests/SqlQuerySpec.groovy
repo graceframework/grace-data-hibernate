@@ -14,7 +14,12 @@ import spock.lang.Specification
 @Rollback
 class SqlQuerySpec extends Specification {
 
-    @Shared @AutoCleanup HibernateDatastore datastore = new HibernateDatastore(Club)
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
+    @Shared @AutoCleanup HibernateDatastore datastore = new HibernateDatastore(config, Club)
     @Shared PlatformTransactionManager transactionManager = datastore.getTransactionManager()
 
     // bug in JDK 11 results in IllegalArgumentException: Comparison method violates its general contract!

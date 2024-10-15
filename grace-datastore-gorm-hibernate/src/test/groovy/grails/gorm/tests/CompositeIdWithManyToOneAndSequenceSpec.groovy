@@ -14,7 +14,13 @@ import spock.lang.Specification
  */
 class CompositeIdWithManyToOneAndSequenceSpec extends Specification {
 
-    @AutoCleanup @Shared HibernateDatastore datastore = new HibernateDatastore(Tooth, ToothDisease)
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
+
+    @AutoCleanup @Shared HibernateDatastore datastore = new HibernateDatastore(config, Tooth, ToothDisease)
     @Shared PlatformTransactionManager transactionManager = datastore.transactionManager
 
     @Rollback

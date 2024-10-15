@@ -13,7 +13,12 @@ import spock.lang.Specification
  */
 class TwoBidirectionalOneToManySpec extends Specification {
 
-    @AutoCleanup @Shared HibernateDatastore datastore = new HibernateDatastore(Room, PointX, PointY)
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
+    @AutoCleanup @Shared HibernateDatastore datastore = new HibernateDatastore(config, Room, PointX, PointY)
     @Shared PlatformTransactionManager transactionManager = datastore.transactionManager
 
     @Rollback

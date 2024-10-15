@@ -18,7 +18,12 @@ import jakarta.persistence.AccessType
 @Rollback
 class JoinPerfSpec extends Specification {
 
-    @Shared @AutoCleanup HibernateDatastore datastore = new HibernateDatastore(Author, Book, BookAuthor)
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
+    @Shared @AutoCleanup HibernateDatastore datastore = new HibernateDatastore(config, Author, Book, BookAuthor)
     @Shared PlatformTransactionManager transactionManager = datastore.getTransactionManager()
 
     void setup() {

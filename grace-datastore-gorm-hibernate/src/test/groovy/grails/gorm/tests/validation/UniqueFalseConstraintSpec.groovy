@@ -11,7 +11,12 @@ import spock.lang.Specification
 @Rollback
 class UniqueFalseConstraintSpec extends Specification {
 
-    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(User)
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
+    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(config, User)
 
     @Issue('https://github.com/grails/grails-data-mapping/issues/1059')
     void 'unique:false constraint is ignored and does not behave as unique:true'() {

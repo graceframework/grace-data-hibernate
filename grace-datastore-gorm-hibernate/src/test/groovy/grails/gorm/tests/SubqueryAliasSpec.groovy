@@ -14,8 +14,13 @@ import spock.lang.Specification
 @ApplyDetachedCriteriaTransform
 class SubqueryAliasSpec extends Specification {
 
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
     @AutoCleanup @Shared HibernateDatastore datastore = new HibernateDatastore(
-        Club, Team
+            config, Club, Team
     )
 
     @Shared PlatformTransactionManager transactionManager = datastore.getTransactionManager()

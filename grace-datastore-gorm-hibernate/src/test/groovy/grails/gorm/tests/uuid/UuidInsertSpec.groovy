@@ -12,8 +12,13 @@ import spock.lang.Specification
  * Created by graemerocher on 05/04/2017.
  */
 class UuidInsertSpec extends Specification {
-    @Shared @AutoCleanup HibernateDatastore datastore = new HibernateDatastore(getClass().getPackage())
 
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
+    @Shared @AutoCleanup HibernateDatastore datastore = new HibernateDatastore(config, getClass().getPackage())
 
     @Rollback
     @Issue('https://github.com/grails/grails-data-mapping/issues/902')

@@ -18,7 +18,12 @@ import spock.lang.Specification
 @Issue('https://github.com/grails/gorm-hibernate5/issues/36')
 class UniqueWithinGroupSpec extends Specification {
 
-    @AutoCleanup @Shared HibernateDatastore hibernateDatastore = new HibernateDatastore(Thing)
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
+    @AutoCleanup @Shared HibernateDatastore hibernateDatastore = new HibernateDatastore(config, Thing)
     @Shared SessionFactory sessionFactory = hibernateDatastore.sessionFactory
 
     @Rollback

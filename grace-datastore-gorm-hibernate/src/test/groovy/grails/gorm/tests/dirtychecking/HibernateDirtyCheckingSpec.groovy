@@ -14,7 +14,12 @@ import spock.lang.Specification
  */
 class HibernateDirtyCheckingSpec extends Specification {
 
-    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(Person)
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
+    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(config, Person)
 
     @Rollback
     @Issue('https://github.com/grails/grails-core/issues/10613')

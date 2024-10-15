@@ -23,8 +23,12 @@ import jakarta.validation.constraints.Digits
  */
 class SimpleJpaEntitySpec extends Specification {
 
-
-    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(Customer)
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
+    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(config, Customer)
     @Shared PlatformTransactionManager transactionManager = hibernateDatastore.getTransactionManager()
 
     @Ignore

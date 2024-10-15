@@ -12,9 +12,14 @@ import spock.lang.Specification
 @Rollback
 class CompositeIdCriteria extends Specification {
 
+  @Shared Map config = [
+          'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+          'dataSource.dbCreate': 'create-drop',
+          'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+  ]
   @Shared
   @AutoCleanup
-  HibernateDatastore datastore = new HibernateDatastore(CompositeIdToMany, CompositeIdSimple, Author, Book)
+  HibernateDatastore datastore = new HibernateDatastore(config, CompositeIdToMany, CompositeIdSimple, Author, Book)
 
   @Issue("https://github.com/grails/gorm-hibernate5/issues/234")
   def "test that composite to-many properties can be queried using JPA"() {

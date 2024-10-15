@@ -16,7 +16,12 @@ import java.sql.ResultSet
  */
 class IdentityEnumTypeSpec extends Specification {
 
-    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(EnumEntityDomain, FooWithEnum)
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
+    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(config, EnumEntityDomain, FooWithEnum)
     @Shared PlatformTransactionManager transactionManager = hibernateDatastore.getTransactionManager()
 
     @Rollback

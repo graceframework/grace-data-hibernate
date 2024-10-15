@@ -12,8 +12,11 @@ class MultipleDataSourceMetadataSpec extends Specification {
 
     @Shared
     Map config = [
+            "dataSource.url": "jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
             "dataSources.apples.url": "jdbc:h2:mem:apples;LOCK_TIMEOUT=10000",
-            "dataSources.oranges.url": "jdbc:h2:mem:oranges;LOCK_TIMEOUT=10000"
+            "dataSources.apples.dialect": "org.hibernate.dialect.H2Dialect",
+            "dataSources.oranges.url": "jdbc:h2:mem:oranges;LOCK_TIMEOUT=10000",
+            "dataSources.oranges.dialect": "org.hibernate.dialect.H2Dialect"
     ]
 
     @AutoCleanup

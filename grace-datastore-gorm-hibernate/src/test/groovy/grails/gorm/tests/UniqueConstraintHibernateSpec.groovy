@@ -20,7 +20,12 @@ import spock.lang.Specification
  */
 class UniqueConstraintHibernateSpec extends Specification {
 
-    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(UniqueGroup, GroupWithin, Driver, License)
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
+    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(config, UniqueGroup, GroupWithin, Driver, License)
     @Shared PlatformTransactionManager transactionManager = hibernateDatastore.getTransactionManager()
 
     void "Test simple unique constraint"() {

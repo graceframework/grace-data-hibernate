@@ -22,7 +22,12 @@ import spock.lang.Specification
  */
 class UpdatePropertyInEventListenerSpec extends Specification {
 
-    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(User)
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
+    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(config, User)
     @Shared PlatformTransactionManager transactionManager = hibernateDatastore.transactionManager
 
     @Rollback

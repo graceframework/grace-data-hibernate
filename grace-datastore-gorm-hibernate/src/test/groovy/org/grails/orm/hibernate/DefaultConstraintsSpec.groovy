@@ -18,7 +18,8 @@ import spock.lang.Specification
 class DefaultConstraintsSpec extends Specification {
 
     @Shared PropertyResolver configuration = DatastoreUtils.createPropertyResolver(
-            (Settings.SETTING_DB_CREATE):'create',
+            'dataSource.dbCreate' :'create',
+            'dataSource.url': 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
         'grails.gorm.default.constraints':{
             '*'(nullable: true)
         }

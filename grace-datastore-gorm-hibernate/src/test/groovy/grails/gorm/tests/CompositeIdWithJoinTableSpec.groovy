@@ -14,9 +14,16 @@ import spock.lang.Specification
  * Created by graemerocher on 26/01/2017.
  */
 class CompositeIdWithJoinTableSpec extends Specification {
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
 
-    @AutoCleanup @Shared HibernateDatastore datastore = new HibernateDatastore(CompositeIdParent, CompositeIdChild)
-    @Shared PlatformTransactionManager transactionManager = datastore.transactionManager
+    @AutoCleanup @Shared
+    HibernateDatastore datastore = new HibernateDatastore(config, CompositeIdParent, CompositeIdChild)
+    @Shared
+    PlatformTransactionManager transactionManager = datastore.transactionManager
 
     @Rollback
     void "test composite id with join table"() {

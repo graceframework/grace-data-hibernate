@@ -31,7 +31,12 @@ import spock.lang.Specification
  */
 class TransactionPropagationSpec extends Specification {
 
-    @AutoCleanup @Shared HibernateDatastore hibernateDatastore = new HibernateDatastore(Book)
+    @Shared Map config = [
+            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+    ]
+    @AutoCleanup @Shared HibernateDatastore hibernateDatastore = new HibernateDatastore(config, Book)
 
     @Issue('https://github.com/grails/grails-core/issues/10801')
     void "test transaction propagation settings"() {
