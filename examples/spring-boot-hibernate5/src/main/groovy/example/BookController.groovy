@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+import grails.gorm.transactions.Transactional
+
 @RestController
 @CompileStatic
 class BookController {
@@ -13,6 +15,7 @@ class BookController {
     @Autowired
     BookService bookService
 
+    @Transactional
     @RequestMapping("/books")
     List<Book> books() {
         Book.list()

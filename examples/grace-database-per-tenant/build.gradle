@@ -1,0 +1,45 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
+        classpath "org.graceframework.plugins:views-gradle:$graceViewsVersion"
+    }
+}
+
+group = "examples"
+
+apply plugin: "org.graceframework.grace-web"
+apply plugin: "org.graceframework.plugins.views-json"
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-logging"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.graceframework:grace-boot"
+    implementation "org.graceframework:grace-core"
+    implementation "org.graceframework:grace-logging"
+    implementation "org.graceframework:grace-plugin-codecs"
+    implementation "org.graceframework:grace-plugin-controllers"
+    implementation "org.graceframework:grace-plugin-databinding"
+    implementation "org.graceframework:grace-plugin-datasource"
+    implementation "org.graceframework:grace-plugin-domain-class"
+    implementation "org.graceframework:grace-plugin-i18n"
+    implementation "org.graceframework:grace-plugin-interceptors"
+    implementation "org.graceframework:grace-plugin-management"
+    implementation "org.graceframework:grace-plugin-rest"
+    implementation "org.graceframework:grace-plugin-services"
+    implementation "org.graceframework:grace-plugin-url-mappings"
+    implementation project(":hibernate")
+    implementation "org.graceframework.plugins:cache"
+    implementation "org.graceframework.plugins:events"
+    runtimeOnly "org.graceframework.plugins:fields"
+    runtimeOnly "org.graceframework.plugins:scaffolding"
+    runtimeOnly "org.graceframework.plugins:asset-pipeline-plugin:$assetPipelineVersion"
+    runtimeOnly "com.h2database:h2"
+    implementation "org.graceframework.plugins:views-json"
+    implementation "org.graceframework.plugins:views-json-templates"
+    profile "org.graceframework.profiles:rest-api"
+    testImplementation "org.graceframework:grace-test-support"
+}

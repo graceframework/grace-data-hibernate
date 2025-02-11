@@ -1,0 +1,108 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
+        classpath "org.graceframework.plugins:asset-pipeline-gradle:$assetPipelineVersion"
+        classpath "org.graceframework.plugins:views-gradle:$graceViewsVersion"
+        classpath "com.github.erdi:webdriver-binaries-gradle-plugin:3.2"
+    }
+}
+
+apply plugin: "org.graceframework.asset-pipeline"
+apply plugin: "org.graceframework.grace-web"
+apply plugin: "org.graceframework.grace-gsp"
+apply plugin: "com.github.erdi.webdriver-binaries"
+
+group = "examples"
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    developmentOnly
+}
+
+dependencies {
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+    console "org.graceframework:grace-console"
+    implementation "org.springframework.boot:spring-boot-starter-logging"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
+    implementation "org.graceframework:grace-core"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.graceframework:grace-boot"
+    implementation "org.graceframework:grace-logging"
+    implementation "org.graceframework:grace-plugin-core"
+    implementation "org.graceframework:grace-plugin-codecs"
+    implementation "org.graceframework:grace-plugin-controllers"
+    implementation "org.graceframework:grace-plugin-databinding"
+    implementation "org.graceframework:grace-plugin-datasource"
+    implementation "org.graceframework:grace-plugin-domain-class"
+    implementation "org.graceframework:grace-plugin-i18n"
+    implementation "org.graceframework:grace-plugin-interceptors"
+    implementation "org.graceframework:grace-plugin-gsp"
+    implementation "org.graceframework:grace-plugin-management"
+    implementation "org.graceframework:grace-plugin-rest"
+    implementation "org.graceframework:grace-plugin-services"
+    implementation "org.graceframework:grace-plugin-url-mappings"
+    implementation "org.graceframework.plugins:async"
+    implementation "org.graceframework.plugins:cache"
+    implementation "org.graceframework.plugins:events"
+    implementation "org.graceframework.plugins:fields"
+    implementation project(":hibernate")
+    implementation "org.graceframework.plugins:scaffolding"
+    implementation 'org.flywaydb:flyway-core'
+    profile "org.graceframework.profiles:web"
+    runtimeOnly "org.graceframework.plugins:asset-pipeline-plugin:6.2.0"
+    runtimeOnly "com.h2database:h2"
+    testImplementation "org.graceframework:grace-test-support"
+    testImplementation "org.mockito:mockito-core"
+    testImplementation "org.graceframework.plugins:geb"
+    testImplementation "org.seleniumhq.selenium:selenium-remote-driver:4.2.2"
+    testImplementation "org.seleniumhq.selenium:selenium-api:4.2.2"
+    testImplementation "org.seleniumhq.selenium:selenium-support:4.2.2"
+    testRuntimeOnly "org.seleniumhq.selenium:selenium-chrome-driver:4.2.2"
+    testRuntimeOnly "org.seleniumhq.selenium:selenium-firefox-driver:4.2.2"
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+tasks.withType(Jar) {
+    configure {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+}
+
+tasks.withType(GroovyCompile) {
+    configure(groovyOptions) {
+        forkOptions.jvmArgs = ['-Xmx1024m']
+    }
+}
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+}
+
+webdriverBinaries {
+    chromedriver {
+        version = '126.0.6478.126'
+        fallbackTo32Bit = true
+    }
+    geckodriver '0.33.0'
+}
+
+tasks.withType(Test) {
+    systemProperty "geb.env", System.getProperty('geb.env')
+    systemProperty "geb.build.reportsDir", reporting.file("geb/integrationTest")
+    systemProperty 'webdriver.chrome.driver', System.getProperty('webdriver.chrome.driver')
+    systemProperty 'webdriver.gecko.driver', System.getProperty('webdriver.gecko.driver')
+}

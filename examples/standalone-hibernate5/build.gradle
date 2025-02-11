@@ -1,13 +1,13 @@
-group 'examples'
+group = 'examples'
 
 apply plugin:"groovy"
 
 dependencies {
-    implementation project(":grails-datastore-gorm-hibernate5")
+    implementation project(":grace-datastore-gorm-hibernate")
     runtimeOnly "com.h2database:h2:$h2Version"
     runtimeOnly "org.apache.tomcat:tomcat-jdbc:$tomcatVersion"
     runtimeOnly "org.slf4j:slf4j-api:$slf4jVersion"
-    implementation "org.grails:grails-core:$grailsVersion"
+    implementation "org.graceframework:grace-core:$graceVersion"
     testImplementation "org.spockframework:spock-core:$spockVersion"
 
     testRuntimeOnly "org.slf4j:slf4j-simple:$slf4jVersion"
