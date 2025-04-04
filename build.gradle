@@ -10,7 +10,7 @@ buildscript {
     }
     dependencies {
         classpath "io.github.gradle-nexus:publish-plugin:2.0.0"
-        // classpath "io.github.groovylang.groovydoc:groovydoc-gradle-plugin:1.0.1"
+        classpath "org.asciidoctor:asciidoctor-gradle-jvm:4.0.3"
         classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
         classpath "com.github.erdi:webdriver-binaries-gradle-plugin:$webdriverBinariesVersion"
         classpath "org.gradle:test-retry-gradle-plugin:1.6.0"
@@ -114,7 +114,6 @@ subprojects { Project subproject ->
         documentation "org.fusesource.jansi:jansi:$jansiVersion"
         documentation "org.apache.groovy:groovy-dateutil:$groovyVersion"
         documentation "org.apache.groovy:groovy-xml:$groovyVersion"
-        documentation "info.picocli:picocli:$picocliVersion"
         documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"
 
         testImplementation "org.spockframework:spock-core:$spockVersion", {

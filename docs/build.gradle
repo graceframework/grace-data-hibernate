@@ -1,5 +1,5 @@
 ext {
-    githubBranch = "release/2023.0.0-M1"
+    githubBranch = "2023.3.x"
     checkOutDir = "build/checkout"
     zipFile = "build/source.zip"
 
@@ -12,19 +12,13 @@ ext {
 
 version rootProject.version
 
-apply plugin: 'org.asciidoctor.convert'
+apply plugin: "org.asciidoctor.jvm.convert"
 apply plugin: 'groovy'
 
-configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        if (details.requested.group == 'org.apache.groovy' && details.requested.name.startsWith('groovy')) {
-            details.useVersion(groovyVersion)
-        }
-        if (details.requested.group == 'org.springframework') {
-            details.useVersion(springVersion)
-        }
-        if (details.requested.group == "org.springframework.boot") {
-            details.useVersion(springBootVersion)
+configurations {
+    documentation {
+        attributes {
+            attribute(Bundling.BUNDLING_ATTRIBUTE, (Bundling) (objects.named(Bundling, 'external')))
         }
     }
 }
@@ -33,7 +27,6 @@ dependencies {
     documentation "org.graceframework:grace-core:$graceVersion"
     documentation "org.graceframework:grace-bootstrap:$graceVersion"
     documentation "org.graceframework:grace-spring:$graceVersion"
-    documentation "info.picocli:picocli:$picocliVersion"
     documentation "org.fusesource.jansi:jansi:$jansiVersion"
     documentation "org.apache.groovy:groovy-dateutil:$groovyVersion"
     documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"
@@ -51,21 +44,21 @@ dependencies {
 
 asciidoctor {
     resources {
-        from("${project.projectDir}/src/docs/asciidoc/images")
-        into "./images"
+        from("${project.projectDir}/src/docs/images")
+        into "${project.projectDir}/images"
     }
 
     attributes  'experimental'  : 'true',
                 'compat-mode'   : 'true',
+                'toc'           : 'left',
                 'icons'         : 'font',
                 'reproducible'  : '',
                 'version'       : project.version,
                 'pluginVersion' : project.version,
-                'sourcedir'     : "${project.projectDir}/src/main/groovy"
-}
+                // 'mongoDriverVersion': mongodbDriverVersion,
+                'sourcedir'     : "${project.rootDir}"
 
-asciidoctorj {
-    version = '1.5.4'
+    baseDirFollowsSourceDir()
 }
 
 task fetchSource {
@@ -76,9 +69,9 @@ task fetchSource {
         println "Downloading GORM source code."
         def tag = System.getenv('TRAVIS_TAG')
         if (tag) {
-            ant.get src: "https://github.com/grace/grace-data/archive/${tag}.zip", dest: zipFile, verbose: true
+            ant.get src: "https://github.com/graceframework/grace-data/archive/${tag}.zip", dest: zipFile, verbose: true
         } else {
-            ant.get src: "https://github.com/grace/grace-data/zipball/${githubBranch}", dest: zipFile, verbose: true
+            ant.get src: "https://github.com/graceframework/grace-data/zipball/${githubBranch}", dest: zipFile, verbose: true
         }
 
         ant.unzip src: zipFile, dest: checkOutDir, {
@@ -105,9 +98,9 @@ tasks.withType(Groovydoc) {
     def files
     for (p in coreProjects) {
         if (files == null) {
-            files = project.files("${checkOutDir}/gorm-src/grails-datastore-${p}/src/main/groovy")
+            files = project.files("${checkOutDir}/gorm-src/grace-datastore-${p}/src/main/groovy")
         } else {
-            files += project.files("${checkOutDir}/gorm-src/grails-datastore-${p}/src/main/groovy")
+            files += project.files("${checkOutDir}/gorm-src/grace-datastore-${p}/src/main/groovy")
         }
     }
     project.rootProject.subprojects
@@ -131,8 +124,8 @@ task docs(dependsOn:[asciidoctor, groovydoc, copyDocs, copyResources] +
                 .collect { project -> project.tasks.groovydoc }
 )
 
-//task assemble(type: Zip, dependsOn:docs) {
-//    from "${project.buildDir}/docs"
-//    baseName = "${project.name}-${project.version}"
-//    destinationDir = project.file("${project.buildDir}/distributions")
-//}
+task assemble(type: Zip, dependsOn:docs) {
+   from "${project.buildDir}/docs"
+   baseName = "${project.name}-${project.version}"
+   destinationDir = project.file("${project.buildDir}/distributions")
+}
