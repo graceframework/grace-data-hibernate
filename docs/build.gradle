@@ -126,6 +126,6 @@ task docs(dependsOn:[asciidoctor, groovydoc, copyDocs, copyResources] +
 
 task assembleDocs(type: Zip, dependsOn:docs) {
    from "${project.buildDir}/docs"
-   baseName = "${project.name}-${project.version}"
-   destinationDir = project.file("${project.buildDir}/distributions")
+   archiveBaseName.set(project.name)
+   destinationDirectory.set(project.file("${project.buildDir}/distributions"))
 }
