@@ -124,7 +124,7 @@ task docs(dependsOn:[asciidoctor, groovydoc, copyDocs, copyResources] +
                 .collect { project -> project.tasks.groovydoc }
 )
 
-task assemble(type: Zip, dependsOn:docs) {
+task assembleDocs(type: Zip, dependsOn:docs) {
    from "${project.buildDir}/docs"
    baseName = "${project.name}-${project.version}"
    destinationDir = project.file("${project.buildDir}/distributions")
