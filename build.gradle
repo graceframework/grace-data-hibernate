@@ -195,14 +195,6 @@ subprojects { Project subproject ->
                         }
                     }
                 }
-                pom.withXml {
-                    def pomNode = asNode()
-                    try {
-                        pomNode.dependencyManagement.replaceNode {}
-                    } catch (Throwable e) {
-                        // ignore
-                    }
-                }
             }
         }
     }
