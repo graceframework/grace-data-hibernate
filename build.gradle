@@ -30,7 +30,6 @@ ext {
 ext."signing.keyId" = System.getenv("SIGNING_KEY") ?: project.hasProperty("signing.keyId") ? project.getProperty('signing.keyId') : null
 ext."signing.password" = System.getenv("SIGNING_PASSPHRASE") ?: project.hasProperty("signing.password") ? project.getProperty('signing.password') : null
 ext."signing.secretKeyRingFile" = project.hasProperty("signing.secretKeyRingFile") ? project.getProperty('signing.secretKeyRingFile') : null
-ext['junit-jupiter.version'] = junitJupiterVersion
 
 apply plugin: 'maven-publish'
 apply plugin: "io.github.gradle-nexus.publish-plugin"
@@ -78,12 +77,11 @@ subprojects { Project subproject ->
         apply plugin: "groovy"
 
         dependencies {
-            testImplementation "io.projectreactor:reactor-test:3.4.17"
-            testImplementation "org.apache.groovy:groovy-test-junit5:$groovyVersion"
-            testImplementation("org.spockframework:spock-core:$spockVersion") { transitive = false}
-            testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
-            testImplementation "org.junit.platform:junit-platform-runner:$junitPlatformVersion"
-            testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
+            testImplementation "org.apache.groovy:groovy-test-junit5"
+            testImplementation("org.spockframework:spock-core") { transitive = false}
+            testImplementation "org.junit.jupiter:junit-jupiter-api"
+            testImplementation "org.junit.platform:junit-platform-runner"
+            testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
         }
 
         return
@@ -109,23 +107,36 @@ subprojects { Project subproject ->
     if (isPluginProject) {
         apply plugin: 'org.graceframework.grace-plugin'
     }
+    else {
+        apply plugin: "io.spring.dependency-management"
+
+        dependencyManagement {
+            imports {
+                mavenBom "org.graceframework:grace-bom:$graceVersion"
+            }
+            applyMavenExclusions false
+            generatedPomCustomization {
+                enabled = false
+            }
+        }
+    }
 
     dependencies {
         documentation "org.fusesource.jansi:jansi:$jansiVersion"
-        documentation "org.apache.groovy:groovy-dateutil:$groovyVersion"
-        documentation "org.apache.groovy:groovy-xml:$groovyVersion"
+        documentation "org.apache.groovy:groovy-dateutil"
+        documentation "org.apache.groovy:groovy-xml"
         documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"
 
-        testImplementation "org.spockframework:spock-core:$spockVersion", {
+        testImplementation "org.spockframework:spock-core", {
             exclude group: "org.junit.platform", module: "junit-platform-engine"
         }
-        testImplementation "org.apache.groovy:groovy-test-junit5:${groovyVersion}", {
+        testImplementation "org.apache.groovy:groovy-test-junit5", {
             exclude group: "org.junit.platform", module: "junit-platform-launcher"
             exclude group: "org.junit.jupiter", module: "junit-jupiter-engine"
         }
-        testImplementation "org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}"
-        testImplementation "org.junit.platform:junit-platform-runner:${junitPlatformVersion}"
-        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}"
+        testImplementation "org.junit.jupiter:junit-jupiter-api"
+        testImplementation "org.junit.platform:junit-platform-runner"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
     }
 
     java {
@@ -160,6 +171,15 @@ subprojects { Project subproject ->
                 artifactId = projectArtifactId
 
                 from components.java
+
+                versionMapping {
+                    usage('java-api') {
+                        fromResolutionOf('runtimeClasspath')
+                    }
+                    usage('java-runtime') {
+                        fromResolutionResult()
+                    }
+                }
 
                 afterEvaluate {
                     if(isPluginProject) {
