@@ -1,10 +1,9 @@
 package datasources
 
 import grails.boot.Grails
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration
-import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
+import groovy.transform.CompileStatic
 
-//@EnableAutoConfiguration(exclude = DataSourceTransactionManagerAutoConfiguration)
+@CompileStatic
 class Application {
     static void main(String[] args) {
         Grails.run(Application)

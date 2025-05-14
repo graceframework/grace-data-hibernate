@@ -9,7 +9,7 @@ model {
 }
 
 json {
-	message "Welcome to Grails!"
+	message "Welcome to Grace!"
     environment Environment.current.name
     appversion grailsApplication.metadata.getApplicationVersion()
     grailsversion GrailsUtil.grailsVersion

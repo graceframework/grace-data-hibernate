@@ -2,8 +2,9 @@ package example
 
 class BootStrap {
 
-    def init = { servletContext ->
+    def init() {
     }
-    def destroy = {
+
+    def destroy() {
     }
 }

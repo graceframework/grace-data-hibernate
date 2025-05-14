@@ -17,6 +17,16 @@ repositories {
     mavenCentral()
 }
 
+dependencyManagement {
+    imports {
+        mavenBom "org.graceframework:grace-bom:$graceVersion", {
+            bomProperties([
+                'grace-gorm.version': gormVersion
+            ])
+        }
+    }
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -26,12 +36,14 @@ dependencies {
     implementation "org.graceframework:grace-plugin-core:$graceVersion"
     implementation "org.graceframework:grace-plugin-datasource:$graceVersion"
     implementation project(":hibernate")
-    implementation "org.hibernate:hibernate-ehcache:$hibernateCoreVersion"
-    implementation "io.micrometer:micrometer-core:1.13.9"
     implementation "org.javassist:javassist:3.30.2-GA"
-
     runtimeOnly 'com.h2database:h2'
-
-    testImplementation "org.spockframework:spock-core:$spockVersion"
+    implementation "net.sf.ehcache:ehcache:2.10.6"
+    implementation ("org.hibernate:hibernate-ehcache:$hibernateCoreVersion") {
+        exclude group:'net.sf.ehcache', module:'ehcache'
+        exclude group:'org.hibernate', module:'hibernate-core'
+    }
+    runtimeOnly "org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:1.1.1.Final"
+    testImplementation "org.spockframework:spock-core"
     testImplementation'org.springframework.boot:spring-boot-starter-test'
 }

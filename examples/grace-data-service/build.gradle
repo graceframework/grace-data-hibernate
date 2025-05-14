@@ -33,10 +33,9 @@ dependencies {
     implementation "org.graceframework:grace-plugin-url-mappings"
     implementation "org.graceframework.plugins:cache"
     implementation "org.graceframework.plugins:events"
-    implementation project(":hibernate")
-    implementation "org.hibernate:hibernate-core-jakarta:$hibernateCoreVersion"
     implementation "org.graceframework.plugins:views-json"
-    implementation "org.graceframework.plugins:views-json-templates"
+    implementation project(":hibernate")
+    runtimeOnly 'com.h2database:h2'
     profile "org.graceframework.profiles:rest-api"
     testImplementation "org.graceframework:grace-test-support"
 }

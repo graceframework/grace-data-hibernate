@@ -1,23 +1,11 @@
 package functional.tests
 
-import grails.gorm.annotation.JpaEntity
-
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
-import jakarta.validation.constraints.Digits
-
-/**
- * Created by graemerocher on 02/01/2017.
- */
-@Entity
 class Product {
-    @Id
-    @GeneratedValue
-    Long myId
-    String name
 
-    @Digits(integer = 6, fraction = 2)
+    String name
     String price
 
+    static constraints = {
+        price(scale: 2)
+    }
 }

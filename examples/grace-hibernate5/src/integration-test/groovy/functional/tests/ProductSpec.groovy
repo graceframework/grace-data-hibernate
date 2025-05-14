@@ -12,7 +12,7 @@ import spock.lang.Specification
 class ProductSpec extends Specification {
 
     @Rollback
-    void "test that JPA entities can be treated as GORM entities"() {
+    void "test that Entities can be treated as GORM entities"() {
         when:"A basic entity is persisted and validated"
         Product product = new Product(price: "6000.01", name: "iMac")
         product.save(flush:true, validate:false)
@@ -30,20 +30,5 @@ class ProductSpec extends Specification {
     void "test entity in different package to application"() {
         expect:
         Item.count() == 0
-    }
-
-    @Rollback
-    void "test that JPA entities can use javax.validation"() {
-        when:"A basic entity is persisted and validated"
-        Product c = new Product(price: "Bad", name: "iMac")
-        c.save(flush:true)
-
-        def query = Product.where {
-            name == 'iMac'
-        }
-        then:"The object was saved"
-        c.errors.hasErrors()
-        Product.count() == 1
-        query.count() == 0
     }
 }

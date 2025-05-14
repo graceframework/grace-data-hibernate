@@ -11,26 +11,7 @@ include 'grace-plugin'
 project(':grace-plugin').name = 'hibernate'
 
 // Examples
-// include "examples-grace-data-service"
-// project(":examples-grace-data-service").projectDir = new File(settingsDir, "examples/grace-data-service")
-
-// include "examples-grace-database-per-tenant"
-// project(":examples-grace-database-per-tenant").projectDir = new File(settingsDir, "examples/grace-database-per-tenant")
-
-// include "examples-grace-hibernate5"
-// project(":examples-grace-hibernate5").projectDir = new File(settingsDir, "examples/grace-hibernate5")
-
-// include "examples-grace-multiple-datasources"
-// project(":examples-grace-multiple-datasources").projectDir = new File(settingsDir, "examples/grace-multiple-datasources")
-
-// include "examples-grace-partitioned-multi-tenancy"
-// project(":examples-grace-partitioned-multi-tenancy").projectDir = new File(settingsDir, "examples/grace-partitioned-multi-tenancy")
-
-// include "examples-grace-schema-per-tenant"
-// project(":examples-grace-schema-per-tenant").projectDir = new File(settingsDir, "examples/grace-schema-per-tenant")
-
-// include "examples-standalone-hibernate5"
-// project(":examples-standalone-hibernate5").projectDir = new File(settingsDir, "examples/standalone-hibernate5")
-
-// include "examples-spring-boot-hibernate5"
-// project(":examples-spring-boot-hibernate5").projectDir = new File(settingsDir, "examples/spring-boot-hibernate5")
+file("${rootDir}/examples").eachDir {
+	include "examples-${it.name}"
+    project(":examples-${it.name}").projectDir = new File(settingsDir, "examples/${it.name}")
+}
