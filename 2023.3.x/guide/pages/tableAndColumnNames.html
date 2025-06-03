@@ -1,0 +1,369 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>8.2.1 Table and Column Names 2023.3.0-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navHeader">
+        
+        <span id="logo">
+            <a href="https://graceframework.org" title="Grace Framework Website">
+                <img src="../img/grace.svg" alt="Grace Framework" />
+            </a>
+        </span>
+        
+        <div class="docHeader">
+            <h1 class="docTitle">Grace Data Hibernate</h1>
+            <h3 class="docSubTitle">Provides integration between Grace and Hibernate through GORM</h3>
+        </div>
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/gettingStarted.html"><strong>2</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/quickStartGuide.html"><strong>3</strong><span>Quick Start Guide</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/configuration.html"><strong>4</strong><span>Configuration</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/domainClasses.html"><strong>5</strong><span>Domain Modelling in GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/persistenceBasics.html"><strong>6</strong><span>Persistence Basics</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/querying.html"><strong>7</strong><span>Querying with GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/services.html"><strong>10</strong><span>GORM Data Services</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <!-- <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li> -->
+            <li class="separator selected">
+                <a id="ref-button" href="../api/index.html">API Docs</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/querying.html">&lt;&lt; <strong>7</strong><span>Querying with GORM</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>8.2.1 Table and Column Names</h1>
+
+                    <p><strong>Version:</strong> 2023.3.0-SNAPSHOT</p>
+                </div>
+
+                
+
+                
+
+<h3 id="tableAndColumnNames"><a class="anchor" href="#tableAndColumnNames"></a>8.2.1 Table and Column Names</h3>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/ormdsl/tableAndColumnNames.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect4">
+<h5 id="_table_names">Table names</h5>
+<div class="paragraph">
+<p>The database table name which the class maps to can be customized using the <code>table</code> method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+    ...
+    static mapping = {
+        table <span class="string"><span class="delimiter">'</span><span class="content">people</span><span class="delimiter">'</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case the class would be mapped to a table called <code>people</code> instead of the default name of <code>person</code>.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_column_names">Column names</h5>
+<div class="paragraph">
+<p>It is also possible to customize the mapping for individual columns onto the database. For example to change the name you can do:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+
+    <span class="predefined-type">String</span> firstName
+
+    <span class="directive">static</span> mapping = {
+        table <span class="string"><span class="delimiter">'</span><span class="content">people</span><span class="delimiter">'</span></span>
+        firstName column: <span class="string"><span class="delimiter">'</span><span class="content">First_Name</span><span class="delimiter">'</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here <code>firstName</code> is a dynamic method within the <code>mapping</code> Closure that has a single Map parameter. Since its name corresponds to a domain class persistent field, the parameter values (in this case just <code>"column"</code>) are used to configure the mapping for that property.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_column_type">Column type</h5>
+<div class="paragraph">
+<p>GORM supports configuration of Hibernate types with the DSL using the type attribute. This includes specifying user types that implement the Hibernate <a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/usertype/UserType.html">org.hibernate.usertype.UserType</a> interface, which allows complete customization of how a type is persisted. As an example if you had a <code>PostCodeType</code> you could use it as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Address</span> {
+
+    <span class="predefined-type">String</span> number
+    <span class="predefined-type">String</span> postCode
+
+    <span class="directive">static</span> mapping = {
+        postCode type: PostCodeType
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively if you just wanted to map it to one of Hibernate&#8217;s basic types other than the default chosen by GORM you could use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Address</span> {
+
+    <span class="predefined-type">String</span> number
+    <span class="predefined-type">String</span> postCode
+
+    <span class="directive">static</span> mapping = {
+        postCode type: <span class="string"><span class="delimiter">'</span><span class="content">text</span><span class="delimiter">'</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This would make the <code>postCode</code> column map to the default large-text type for the database you&#8217;re using (for example TEXT or CLOB).</p>
+</div>
+<div class="paragraph">
+<p>See the Hibernate documentation regarding <a href="https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#basic-explicit">Basic Types</a> for further information.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_many_to_oneone_to_one_mappings">Many-to-One/One-to-One Mappings</h5>
+<div class="paragraph">
+<p>In the case of associations it is also possible to configure the foreign keys used to map associations. In the case of a many-to-one or one-to-one association this is exactly the same as any regular column. For example consider the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+
+    <span class="predefined-type">String</span> firstName
+    Address address
+
+    <span class="directive">static</span> mapping = {
+        table <span class="string"><span class="delimiter">'</span><span class="content">people</span><span class="delimiter">'</span></span>
+        firstName column: <span class="string"><span class="delimiter">'</span><span class="content">First_Name</span><span class="delimiter">'</span></span>
+        address column: <span class="string"><span class="delimiter">'</span><span class="content">Person_Address_Id</span><span class="delimiter">'</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default the <code>address</code> association would map to a foreign key column called <code>address_id</code>. By using the above mapping we have changed the name of the foreign key column to <code>Person_Adress_Id</code>.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_one_to_many_mapping">One-to-Many Mapping</h5>
+<div class="paragraph">
+<p>With a bidirectional one-to-many you can change the foreign key column used by changing the column name on the many side of the association as per the example in the previous section on one-to-one associations. However, with unidirectional associations the foreign key needs to be specified on the association itself. For example given a unidirectional one-to-many relationship between <code>Person</code> and <code>Address</code> the following code will change the foreign key in the <code>address</code> table:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+
+    <span class="predefined-type">String</span> firstName
+
+    <span class="directive">static</span> hasMany = [addresses: Address]
+
+    <span class="directive">static</span> mapping = {
+        table <span class="string"><span class="delimiter">'</span><span class="content">people</span><span class="delimiter">'</span></span>
+        firstName column: <span class="string"><span class="delimiter">'</span><span class="content">First_Name</span><span class="delimiter">'</span></span>
+        addresses column: <span class="string"><span class="delimiter">'</span><span class="content">Person_Address_Id</span><span class="delimiter">'</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you don&#8217;t want the column to be in the <code>address</code> table, but instead some intermediate join table you can use the <code>joinTable</code> parameter:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+
+    <span class="predefined-type">String</span> firstName
+
+    <span class="directive">static</span> hasMany = [addresses: Address]
+
+    <span class="directive">static</span> mapping = {
+        table <span class="string"><span class="delimiter">'</span><span class="content">people</span><span class="delimiter">'</span></span>
+        firstName column: <span class="string"><span class="delimiter">'</span><span class="content">First_Name</span><span class="delimiter">'</span></span>
+        addresses joinTable: [name: <span class="string"><span class="delimiter">'</span><span class="content">Person_Addresses</span><span class="delimiter">'</span></span>,
+                              key: <span class="string"><span class="delimiter">'</span><span class="content">Person_Id</span><span class="delimiter">'</span></span>,
+                              column: <span class="string"><span class="delimiter">'</span><span class="content">Address_Id</span><span class="delimiter">'</span></span>]
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_many_to_many_mapping">Many-to-Many Mapping</h5>
+<div class="paragraph">
+<p>GORM, by default maps a many-to-many association using a join table. For example consider this many-to-many association:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Group</span> {
+    ...
+    static hasMany = [people: Person]
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+    ...
+    static belongsTo = <span class="predefined-type">Group</span>
+    <span class="directive">static</span> hasMany = [groups: <span class="predefined-type">Group</span>]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case GORM will create a join table called <code>group_person</code> containing foreign keys called <code>person_id</code> and <code>group_id</code> referencing the <code>person</code> and <code>group</code> tables. To change the column names you can specify a column within the mappings for each class.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Group</span> {
+   ...
+   static mapping = {
+       people column: <span class="string"><span class="delimiter">'</span><span class="content">Group_Person_Id</span><span class="delimiter">'</span></span>
+   }
+}
+<span class="type">class</span> <span class="class">Person</span> {
+   ...
+   static mapping = {
+       groups column: <span class="string"><span class="delimiter">'</span><span class="content">Group_Group_Id</span><span class="delimiter">'</span></span>
+   }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also specify the name of the join table to use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Group</span> {
+   ...
+   static mapping = {
+       people column: <span class="string"><span class="delimiter">'</span><span class="content">Group_Person_Id</span><span class="delimiter">'</span></span>,
+              joinTable: <span class="string"><span class="delimiter">'</span><span class="content">PERSON_GROUP_ASSOCIATIONS</span><span class="delimiter">'</span></span>
+   }
+}
+<span class="type">class</span> <span class="class">Person</span> {
+   ...
+   static mapping = {
+       groups column: <span class="string"><span class="delimiter">'</span><span class="content">Group_Group_Id</span><span class="delimiter">'</span></span>,
+              joinTable: <span class="string"><span class="delimiter">'</span><span class="content">PERSON_GROUP_ASSOCIATIONS</span><span class="delimiter">'</span></span>
+   }
+}</code></pre>
+</div>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/querying.html">&lt;&lt; <strong>7</strong><span>Querying with GORM</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright &copy; 2022-2025 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

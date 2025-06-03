@@ -1,0 +1,673 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>10 GORM Data Services 2023.3.0-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navHeader">
+        
+        <span id="logo">
+            <a href="https://graceframework.org" title="Grace Framework Website">
+                <img src="../img/grace.svg" alt="Grace Framework" />
+            </a>
+        </span>
+        
+        <div class="docHeader">
+            <h1 class="docTitle">Grace Data Hibernate</h1>
+            <h3 class="docSubTitle">Provides integration between Grace and Hibernate through GORM</h3>
+        </div>
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/gettingStarted.html"><strong>2</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/quickStartGuide.html"><strong>3</strong><span>Quick Start Guide</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/configuration.html"><strong>4</strong><span>Configuration</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/domainClasses.html"><strong>5</strong><span>Domain Modelling in GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/persistenceBasics.html"><strong>6</strong><span>Persistence Basics</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/querying.html"><strong>7</strong><span>Querying with GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/services.html"><strong>10</strong><span>GORM Data Services</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <!-- <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li> -->
+            <li class="separator selected">
+                <a id="ref-button" href="../api/index.html">API Docs</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../guide/programmaticTransactions.html">&lt;&lt; <strong>9</strong><span>Programmatic Transactions</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>10 GORM Data Services</h1>
+
+                    <p><strong>Version:</strong> 2023.3.0-SNAPSHOT</p>
+                </div>
+
+                
+                <div id="table-of-content">
+                    <h2>Table of Contents</h2>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#basics"><strong>10.1</strong><span>Data Service Basics</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#queries"><strong>10.2</strong><span>Data Service Queries</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#writeOperations"><strong>10.3</strong><span>Data Service Write Operations</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#serviceValidation"><strong>10.4</strong><span>Validating Data Services</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#rxServices"><strong>10.5</strong><span>RxJava Support</span></a>
+                    </div>
+                    
+                </div>
+                
+
+                
+
+<h1 id="services"><a class="anchor" href="#services"></a>10 GORM Data Services</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/services.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Introduced in GORM 6.1, Data Services take the work out of implemented service layer logic by adding the ability to automatically implement abstract classes or interfaces using GORM logic.</p>
+</div>
+<div class="paragraph">
+<p>To illustrate what GORM Data Services are about let&#8217;s walk through an example.</p>
+</div>
+
+
+<h2 id="basics"><a class="anchor" href="#basics"></a>10.1 Data Service Basics</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/services/basics.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect3">
+<h4 id="_writing_a_simple_data_service">Writing a Simple Data Service</h4>
+<div class="paragraph">
+<p>In a Grails application you can create a Data Service in either <code>src/main/groovy</code> or <code>grails-app/services</code>. To write a Data Service you should create either an interface (although abstract classes can also be used, more about that later) and annotate it with the <code>grails.gorm.services.Service</code> annotation with the domain class the service applies to:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+    <span class="predefined-type">Book</span> getBook(<span class="predefined-type">Serializable</span> id)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>@Service</code> annotation is an AST transformation that will automatically implement the service for you. You can then obtain the service via Spring autowiring:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Autowired</span> BookService bookService</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or if you are using GORM standalone by looking it up from the <code>HibernateDatastore</code> instance:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">BookService bookService = hibernateDatastore.getService(BookService)</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+The above example also works in Spock unit tests that extend <code>HibernateSpec</code>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_how_does_it_work">How Does it Work?</h4>
+<div class="paragraph">
+<p>The <code>@Service</code> transformation will look at the the method signatures of the interface and make a best effort to find a way to implement each method.</p>
+</div>
+<div class="paragraph">
+<p>If a method cannot be implemented then a compilation error will occur. At this point you have the option to use an abstract class instead and provide an implementation yourself.</p>
+</div>
+<div class="paragraph">
+<p>The <code>@Service</code> transformation will also generate a <code>META-INF/services</code> file for the service so it can be discovered via the standard Java service loader. So no additional configuration is necessary.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_advantages_of_data_services">Advantages of Data Services</h4>
+<div class="paragraph">
+<p>There are several advantages to Data Services that make them worth considering to abstract your persistence logic.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Type Safety</strong> - Data service method signatures are compile time checked and compilation will fail if the types of any parameters don&#8217;t match up with properties in your domain class</p>
+</li>
+<li>
+<p><strong>Testing</strong> - Since Data Services are interfaces this makes them easy to test via <a href="https://spockframework.org/spock/docs/1.0/interaction_based_testing.html">Spock Mocks</a></p>
+</li>
+<li>
+<p><strong>Performance</strong> - The generated services are statically compiled and unlike competing technologies in the Java space no proxies are created so runtime performance doesn&#8217;t suffer</p>
+</li>
+<li>
+<p><strong>Transaction Management</strong> - Each method in a Data Service is wrapped in an appropriate transaction (a read-only transaction in the case of read operations) that can be easily overridden.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_abstract_class_support">Abstract Class Support</h4>
+<div class="paragraph">
+<p>If you come across a method that GORM doesn&#8217;t know how to implement, then you can provide an implementation by using an abstract class.</p>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">interface</span> IBookService {
+    <span class="predefined-type">Book</span> getBook(<span class="predefined-type">Serializable</span> id)
+    <span class="predefined-type">Date</span> someOtherMethod()
+}
+<span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="directive">abstract</span> <span class="type">class</span> <span class="class">BookService</span> <span class="directive">implements</span> IBookService {
+
+   <span class="annotation">@Override</span>
+   <span class="predefined-type">Date</span> someOtherMethod() {
+      <span class="comment">// impl</span>
+   }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case GORM will implement the interface methods that have not been defined by the abstract class.</p>
+</div>
+<div class="paragraph">
+<p>In addition, all <em>public</em> methods of the domain class will be automatically wrapped in the appropriate transaction handling.</p>
+</div>
+<div class="paragraph">
+<p>What this means is that you can define protected abstract methods that are non-transactional in order to compose logic. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="directive">abstract</span> <span class="type">class</span> <span class="class">BookService</span>  {
+
+   <span class="directive">protected</span> <span class="directive">abstract</span> <span class="predefined-type">Book</span> getBook(<span class="predefined-type">Serializable</span> id) <i class="conum" data-value="1"></i><b>(1)</b>
+
+   <span class="directive">protected</span> <span class="directive">abstract</span> Author getAuthor(<span class="predefined-type">Serializable</span> id) <i class="conum" data-value="1"></i><b>(1)</b>
+
+   <span class="predefined-type">Book</span> updateBook(<span class="predefined-type">Serializable</span> id, <span class="predefined-type">Serializable</span> authorId) { <i class="conum" data-value="2"></i><b>(2)</b>
+      <span class="predefined-type">Book</span> book = getBook(id)
+      <span class="keyword">if</span>(book != <span class="predefined-constant">null</span>) {
+          Author author = getAuthor(authorId)
+          <span class="keyword">if</span>(author == <span class="predefined-constant">null</span>) {
+              <span class="keyword">throw</span> <span class="keyword">new</span> <span class="exception">IllegalArgumentException</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">Author does not exist</span><span class="delimiter">&quot;</span></span>)
+          }
+          book.author = author
+          book.save()
+      }
+      <span class="keyword">return</span> book
+   }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Two <code>protected abstract</code> methods are defined that are not wrapped in transaction handling</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>updateBook</code> method uses the two methods that are implemented automatically by GORM and being <code>public</code> is automatically made transactional.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you have <code>public</code> methods that you do not wish to be transactional, then you can annotate them with <code>@NotTransactional</code>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+
+<h2 id="queries"><a class="anchor" href="#queries"></a>10.2 Data Service Queries</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/services/queries.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>GORM Data Services will implement queries for you using a number of different strategies and conventions.</p>
+</div>
+<div class="paragraph">
+<p>It does this by looking at the return type of a method and the method stem and picking the most appropriate implementation.</p>
+</div>
+<div class="paragraph">
+<p>The following table summarizes the conventions:</p>
+</div>
+<div class="paragraph">
+<p>Unresolved directive in &lt;stdin&gt; - include::queryConventions.adoc[]</p>
+</div>
+<div class="paragraph">
+<p>The conventions are extensible (more on that later), in terms of queries there are two distinct types.</p>
+</div>
+<div class="sect3">
+<h4 id="_simple_queries">Simple Queries</h4>
+<div class="paragraph">
+<p>Unresolved directive in &lt;stdin&gt; - include::simpleQueries.adoc[]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_dynamic_finder_queries">Dynamic Finder Queries</h4>
+<div class="paragraph">
+<p>Unresolved directive in &lt;stdin&gt; - include::finderQueries.adoc[]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_where_queries">Where Queries</h4>
+<div class="paragraph">
+<p>Unresolved directive in &lt;stdin&gt; - include::whereQueries.adoc[]</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_query_joins">Query Joins</h3>
+<div class="paragraph">
+<p>You can specify query joins using the <code>@Join</code> annotation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">static</span> <span class="include">javax.persistence.criteria.JoinType.*</span>
+
+<span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+    <span class="annotation">@Join</span>(<span class="string"><span class="delimiter">'</span><span class="content">author</span><span class="delimiter">'</span></span>)
+    <span class="predefined-type">Book</span> find(<span class="predefined-type">String</span> title) <i class="conum" data-value="1"></i><b>(1)</b>
+
+    <span class="annotation">@Join</span>(value=<span class="string"><span class="delimiter">'</span><span class="content">author</span><span class="delimiter">'</span></span>, type=LEFT) <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="predefined-type">Book</span> findAnother(<span class="predefined-type">String</span> title)
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Join on the <code>author</code> property</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Join on the <code>author</code> property using a <code>LEFT OUTER</code> join</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_jpa_ql_queries">JPA-QL Queries</h4>
+<div class="paragraph">
+<p>Unresolved directive in &lt;stdin&gt; - include::hqlQueries.adoc[]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_query_projections">Query Projections</h4>
+<div class="paragraph">
+<p>Unresolved directive in &lt;stdin&gt; - include::queryProjections.adoc[]</p>
+</div>
+</div>
+</div>
+
+
+<h2 id="writeOperations"><a class="anchor" href="#writeOperations"></a>10.3 Data Service Write Operations</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/services/writeOperations.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Write operations in Data Services are automatically wrapped in a transaction. You can modify the transactional attributes by simply adding the <code>@Transactional</code> transformation to any method.</p>
+</div>
+<div class="paragraph">
+<p>The following sections discuss the details of the different write operations.</p>
+</div>
+<div class="sect3">
+<h4 id="_create">Create</h4>
+<div class="paragraph">
+<p>To create a new entity the method should return the new entity and feature either the parameters to be used to create the entity or the entity itself.</p>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+    <span class="predefined-type">Book</span> saveBook(<span class="predefined-type">String</span> title)
+
+    <span class="predefined-type">Book</span> saveBook(<span class="predefined-type">Book</span> newBook)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If any of the parameters don&#8217;t match up to a property on the domain class then a compilation error will occur.</p>
+</div>
+<div class="paragraph">
+<p>If a validation error occurs then a <code>ValidationException</code> will be thrown from the service.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_update">Update</h4>
+<div class="paragraph">
+<p>Update operations are similar to Create operations, the main difference being that the first argument should be the <code>id</code> of the object to update.</p>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+    <span class="predefined-type">Book</span> updateBook(<span class="predefined-type">Serializable</span> id, <span class="predefined-type">String</span> title)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If any of the parameters don&#8217;t match up to a property on the domain class then a compilation error will occur.</p>
+</div>
+<div class="paragraph">
+<p>If a validation error occurs then a <code>ValidationException</code> will be thrown from the service.</p>
+</div>
+<div class="paragraph">
+<p>You can also implement update operations using JPA-QL:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Query</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">update </span><span class="inline"><span class="inline-delimiter">${</span><span class="predefined-type">Book</span> book<span class="inline-delimiter">}</span></span><span class="content"> set </span><span class="inline"><span class="inline-delimiter">${</span>book.title<span class="inline-delimiter">}</span></span><span class="content"> = </span><span class="inline"><span class="inline-delimiter">$</span>newTitle</span><span class="content"> where </span><span class="inline"><span class="inline-delimiter">$</span>book</span><span class="content">.title = </span><span class="inline"><span class="inline-delimiter">$</span>oldTitle</span><span class="delimiter">&quot;</span></span>)
+<span class="predefined-type">Number</span> updateTitle(<span class="predefined-type">String</span> newTitle, <span class="predefined-type">String</span> oldTitle)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_delete">Delete</h4>
+<div class="paragraph">
+<p>Delete operations can either return <code>void</code> or return the instance that was deleted. In the latter case an extra query is required to fetch the entity prior to issue a delete.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+    <span class="predefined-type">Number</span> deleteAll(<span class="predefined-type">String</span> title)
+
+    <span class="type">void</span> delete(<span class="predefined-type">Serializable</span> id)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also implement delete operations using JPA-QL:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Query</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">delete </span><span class="inline"><span class="inline-delimiter">${</span><span class="predefined-type">Book</span> book<span class="inline-delimiter">}</span></span><span class="content"> where </span><span class="inline"><span class="inline-delimiter">$</span>book</span><span class="content">.title = </span><span class="inline"><span class="inline-delimiter">$</span>title</span><span class="delimiter">&quot;</span></span>)
+<span class="type">void</span> delete(<span class="predefined-type">String</span> title)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or via where queries:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Where</span>({ title == title &amp;&amp; releaseDate &gt; date })
+<span class="type">void</span> delete(<span class="predefined-type">String</span> title, <span class="predefined-type">Date</span> date)</code></pre>
+</div>
+</div>
+</div>
+
+
+<h2 id="serviceValidation"><a class="anchor" href="#serviceValidation"></a>10.4 Validating Data Services</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/services/serviceValidation.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>GORM Data Services have built in support for <code>javax.validation</code> annotations for method parameters.</p>
+</div>
+<div class="paragraph">
+<p>You will need to have a <code>javax.validation</code> implementation on your classpath (such as <code>hibernate-validator</code> and then simply annotate your method parameters using the appropriate annotation. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">javax.validation.constraints.*</span>
+
+<span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+
+    <span class="predefined-type">Book</span> find(<span class="annotation">@NotNull</span> <span class="predefined-type">String</span> title)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the above example the <code>NotNull</code> constraint is applied to the <code>title</code> property. If <code>null</code> is passed to the method a <code>ConstraintViolationException</code> exception will be thrown.</p>
+</div>
+
+
+<h2 id="rxServices"><a class="anchor" href="#rxServices"></a>10.5 RxJava Support</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/services/rxServices.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>GORM Data Services also support returning RxJava 1.x <a href="https://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html">rx.Observable</a> or <a href="https://reactivex.io/RxJava/1.x/javadoc/rx/Single.html">rx.Single</a> types.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+RxJava 2.x support is planned for a future release
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To use the RxJava support you need to ensure that the <code>grails-datastore-gorm-rx</code> dependencies is on the classpath by adding the following to <code>build.gradle</code>:</p>
+</div>
+<div class="listingblock">
+<div class="title">build.gradle</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">compile "org.grails:grails-datastore-gorm-rx:2023.3.0-SNAPSHOT"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">rx.*</span>
+
+<span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+   Single&lt;<span class="predefined-type">Book</span>&gt; findOne(<span class="predefined-type">String</span> title)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When a <code>rx.Single</code> is used then a single result is returned. To query multiple results use an <code>rx.Observable</code> instead:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">rx.*</span>
+
+<span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+   <span class="predefined-type">Observable</span>&lt;<span class="predefined-type">Book</span>&gt; findBooks(<span class="predefined-type">String</span> title)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For regular GORM entities, GORM will by default execute the persistence operation using RxJava&#8217;s <a href="https://reactivex.io/RxJava/1.x/javadoc/rx/schedulers/Schedulers.html#io()">IO Scheduler</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+For RxGORM entities where the underlying database supports non-blocking access the database driver will schedule the operation accordingly.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You can run the operation on a different scheduler using the <code>RxSchedule</code> annotation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">rx.*</span>
+<span class="keyword">import</span> <span class="include">grails.gorm.rx.services.RxSchedule</span>
+<span class="keyword">import</span> <span class="include">grails.gorm.services.Service</span>
+<span class="keyword">import</span> <span class="include">rx.schedulers.Schedulers</span>
+
+<span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+
+   <span class="annotation">@RxSchedule</span>(scheduler = { Schedulers.newThread() })
+   <span class="predefined-type">Observable</span>&lt;<span class="predefined-type">Book</span>&gt; findBooks(<span class="predefined-type">String</span> title)
+}</code></pre>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../guide/programmaticTransactions.html">&lt;&lt; <strong>9</strong><span>Programmatic Transactions</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright &copy; 2022-2025 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

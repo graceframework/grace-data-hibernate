@@ -1,0 +1,2181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>8 Advanced GORM Features 2023.3.0-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navHeader">
+        
+        <span id="logo">
+            <a href="https://graceframework.org" title="Grace Framework Website">
+                <img src="../img/grace.svg" alt="Grace Framework" />
+            </a>
+        </span>
+        
+        <div class="docHeader">
+            <h1 class="docTitle">Grace Data Hibernate</h1>
+            <h3 class="docSubTitle">Provides integration between Grace and Hibernate through GORM</h3>
+        </div>
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/gettingStarted.html"><strong>2</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/quickStartGuide.html"><strong>3</strong><span>Quick Start Guide</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/configuration.html"><strong>4</strong><span>Configuration</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/domainClasses.html"><strong>5</strong><span>Domain Modelling in GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/persistenceBasics.html"><strong>6</strong><span>Persistence Basics</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/querying.html"><strong>7</strong><span>Querying with GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/services.html"><strong>10</strong><span>GORM Data Services</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <!-- <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li> -->
+            <li class="separator selected">
+                <a id="ref-button" href="../api/index.html">API Docs</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../guide/querying.html">&lt;&lt; <strong>7</strong><span>Querying with GORM</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>8 Advanced GORM Features</h1>
+
+                    <p><strong>Version:</strong> 2023.3.0-SNAPSHOT</p>
+                </div>
+
+                
+                <div id="table-of-content">
+                    <h2>Table of Contents</h2>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#eventsAutoTimestamping"><strong>8.1</strong><span>Events and Auto Timestamping</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#ormdsl"><strong>8.2</strong><span>Custom ORM Mapping</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:10px"><a href="#tableAndColumnNames"><strong>8.2.1</strong><span>Table and Column Names</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:10px"><a href="#caching"><strong>8.2.2</strong><span>Caching Strategy</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:10px"><a href="#inheritanceStrategies"><strong>8.2.3</strong><span>Inheritance Strategies</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:10px"><a href="#identity"><strong>8.2.4</strong><span>Custom Database Identity</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:10px"><a href="#compositePrimaryKeys"><strong>8.2.5</strong><span>Composite Primary Keys</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:10px"><a href="#databaseIndices"><strong>8.2.6</strong><span>Database Indices</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:10px"><a href="#optimisticLockingAndVersioning"><strong>8.2.7</strong><span>Optimistic Locking and Versioning</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:10px"><a href="#fetchingDSL"><strong>8.2.8</strong><span>Eager and Lazy Fetching</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:10px"><a href="#customCascadeBehaviour"><strong>8.2.9</strong><span>Custom Cascade Behaviour</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:10px"><a href="#customHibernateTypes"><strong>8.2.10</strong><span>Custom Hibernate Types</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:10px"><a href="#derivedProperties"><strong>8.2.11</strong><span>Derived Properties</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:10px"><a href="#customNamingStrategy"><strong>8.2.12</strong><span>Custom Naming Strategy</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#defaultSortOrder"><strong>8.3</strong><span>Default Sort Order</span></a>
+                    </div>
+                    
+                </div>
+                
+
+                
+
+<h1 id="advancedGORMFeatures"><a class="anchor" href="#advancedGORMFeatures"></a>8 Advanced GORM Features</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>The following sections cover more advanced usages of GORM including caching, custom mapping and events.</p>
+</div>
+
+
+<h2 id="eventsAutoTimestamping"><a class="anchor" href="#eventsAutoTimestamping"></a>8.1 Events and Auto Timestamping</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/eventsAutoTimestamping.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>GORM supports the registration of events as methods that get fired when certain events occurs such as deletes, inserts and updates. The following is a list of supported events:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>beforeInsert</code> - Executed before an object is initially persisted to the database.  If you return false, the insert will be cancelled.</p>
+</li>
+<li>
+<p><code>beforeUpdate</code> - Executed before an object is updated.  If you return false, the update will be cancelled.</p>
+</li>
+<li>
+<p><code>beforeDelete</code> - Executed before an object is deleted.  If you return false, the operation delete will be cancelled.</p>
+</li>
+<li>
+<p><code>beforeValidate</code> - Executed before an object is validated</p>
+</li>
+<li>
+<p><code>afterInsert</code> - Executed after an object is persisted to the database</p>
+</li>
+<li>
+<p><code>afterUpdate</code> - Executed after an object has been updated</p>
+</li>
+<li>
+<p><code>afterDelete</code> - Executed after an object has been deleted</p>
+</li>
+<li>
+<p><code>onLoad</code> - Executed when an object is loaded from the database</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To add an event simply register the relevant method with your domain class.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Do not attempt to flush the session within an event (such as with obj.save(flush:true)). Since events are fired during flushing this will cause a StackOverflowError.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_the_beforeinsert_event">The beforeInsert event</h4>
+<div class="paragraph">
+<p>Fired before an object is saved to the database</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+   <span class="directive">private</span> <span class="directive">static</span> <span class="directive">final</span> <span class="predefined-type">Date</span> NULL_DATE = <span class="keyword">new</span> <span class="predefined-type">Date</span>(<span class="integer">0</span>)
+
+   <span class="predefined-type">String</span> firstName
+   <span class="predefined-type">String</span> lastName
+   <span class="predefined-type">Date</span> signupDate = NULL_DATE
+
+   def beforeInsert() {
+      <span class="keyword">if</span> (signupDate == NULL_DATE) {
+         signupDate = <span class="keyword">new</span> <span class="predefined-type">Date</span>()
+      }
+   }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_the_beforeupdate_event">The beforeUpdate event</h4>
+<div class="paragraph">
+<p>Fired before an existing object is updated</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+
+   def securityService
+
+   <span class="predefined-type">String</span> firstName
+   <span class="predefined-type">String</span> lastName
+   <span class="predefined-type">String</span> lastUpdatedBy
+
+   <span class="directive">static</span> constraints = {
+      lastUpdatedBy nullable: <span class="predefined-constant">true</span>
+   }
+
+   def beforeUpdate() {
+      lastUpdatedBy = securityService.currentAuthenticatedUsername()
+   }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_the_beforedelete_event">The beforeDelete event</h4>
+<div class="paragraph">
+<p>Fired before an object is deleted.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+   <span class="predefined-type">String</span> name
+
+   def beforeDelete() {
+      ActivityTrace.withNewSession {
+         <span class="keyword">new</span> ActivityTrace(eventName: <span class="string"><span class="delimiter">&quot;</span><span class="content">Person Deleted</span><span class="delimiter">&quot;</span></span>, data: name).save()
+      }
+   }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice the usage of <code>withNewSession</code> method above. Since events are triggered whilst Hibernate is flushing using persistence methods like <code>save()</code> and <code>delete()</code> won&#8217;t result in objects being saved unless you run your operations with a new <code>Session</code>.</p>
+</div>
+<div class="paragraph">
+<p>Fortunately the <code>withNewSession</code> method lets you share the same transactional JDBC connection even though you&#8217;re using a different underlying <code>Session</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_the_beforevalidate_event">The beforeValidate event</h4>
+<div class="paragraph">
+<p>Fired before an object is validated.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+   <span class="predefined-type">String</span> name
+
+   <span class="directive">static</span> constraints = {
+       name size: <span class="integer">5</span>.<span class="float">.45</span>
+   }
+
+   def beforeValidate() {
+       name = name?.trim()
+   }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>beforeValidate</code> method is run before any validators are run.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Validation may run more often than you think. It is triggered by the <code>validate()</code> and <code>save()</code> methods as you&#8217;d expect, but it is also typically triggered just before the view is rendered as well. So when writing <code>beforeValidate()</code> implementations, make sure that they can handle being called multiple times with the same property values.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>GORM supports an overloaded version of <code>beforeValidate</code> which accepts a <code>List</code> parameter which may include
+the names of the properties which are about to be validated.  This version of <code>beforeValidate</code> will be called
+when the <code>validate</code> method has been invoked and passed a <code>List</code> of property names as an argument.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+   <span class="predefined-type">String</span> name
+   <span class="predefined-type">String</span> town
+   <span class="predefined-type">Integer</span> age
+
+   <span class="directive">static</span> constraints = {
+       name size: <span class="integer">5</span>.<span class="float">.45</span>
+       age range: <span class="integer">4</span>.<span class="float">.99</span>
+   }
+
+   def beforeValidate(<span class="predefined-type">List</span> propertiesBeingValidated) {
+      <span class="comment">// do pre validation work based on propertiesBeingValidated</span>
+   }
+}
+
+def p = <span class="keyword">new</span> Person(name: <span class="string"><span class="delimiter">'</span><span class="content">Jacob Brown</span><span class="delimiter">'</span></span>, age: <span class="integer">10</span>)
+p.validate([<span class="string"><span class="delimiter">'</span><span class="content">age</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>])</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Note that when <code>validate</code> is triggered indirectly because of a call to the <code>save</code> method that
+the <code>validate</code> method is being invoked with no arguments, not a <code>List</code> that includes all of
+the property names.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Either or both versions of <code>beforeValidate</code> may be defined in a domain class.  GORM will
+prefer the <code>List</code> version if a <code>List</code> is passed to <code>validate</code> but will fall back on the
+no-arg version if the <code>List</code> version does not exist.  Likewise, GORM will prefer the
+no-arg version if no arguments are passed to <code>validate</code> but will fall back on the
+<code>List</code> version if the no-arg version does not exist.  In that case, <code>null</code> is passed to <code>beforeValidate</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_the_onloadbeforeload_event">The onLoad/beforeLoad event</h4>
+<div class="paragraph">
+<p>Fired immediately before an object is loaded from the database:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+   <span class="predefined-type">String</span> name
+   <span class="predefined-type">Date</span> dateCreated
+   <span class="predefined-type">Date</span> lastUpdated
+
+   def onLoad() {
+      log.debug <span class="string"><span class="delimiter">&quot;</span><span class="content">Loading ${id}</span><span class="delimiter">&quot;</span></span>
+   }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>beforeLoad()</code> is effectively a synonym for <code>onLoad()</code>, so only declare one or the other.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_the_afterload_event">The afterLoad event</h4>
+<div class="paragraph">
+<p>Fired immediately after an object is loaded from the database:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+   <span class="predefined-type">String</span> name
+   <span class="predefined-type">Date</span> dateCreated
+   <span class="predefined-type">Date</span> lastUpdated
+
+   def afterLoad() {
+      name = <span class="string"><span class="delimiter">&quot;</span><span class="content">I'm loaded</span><span class="delimiter">&quot;</span></span>
+   }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_custom_event_listeners">Custom Event Listeners</h4>
+<div class="paragraph">
+<p>To register a custom event listener you need to subclass <code>AbstractPersistenceEventListener</code> (in package <em>org.grails.datastore.mapping.engine.event</em>) and implement the methods <code>onPersistenceEvent</code> and <code>supportsEventType</code>. You also must provide a reference to the datastore to the listener.  The simplest possible implementation can be seen below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">public</span> MyPersistenceListener(<span class="directive">final</span> Datastore datastore) {
+    <span class="local-variable">super</span>(datastore)
+}
+
+<span class="annotation">@Override</span>
+<span class="directive">protected</span> <span class="type">void</span> onPersistenceEvent(<span class="directive">final</span> AbstractPersistenceEvent event) {
+    <span class="keyword">switch</span>(event.eventType) {
+        <span class="keyword">case</span> <span class="key">PreInsert</span>:
+            println <span class="string"><span class="delimiter">&quot;</span><span class="content">PRE INSERT </span><span class="char">\$</span><span class="content">{event.entityObject}</span><span class="delimiter">&quot;</span></span>
+        <span class="keyword">break</span>
+        <span class="keyword">case</span> <span class="key">PostInsert</span>:
+            println <span class="string"><span class="delimiter">&quot;</span><span class="content">POST INSERT </span><span class="char">\$</span><span class="content">{event.entityObject}</span><span class="delimiter">&quot;</span></span>
+        <span class="keyword">break</span>
+        <span class="keyword">case</span> <span class="key">PreUpdate</span>:
+            println <span class="string"><span class="delimiter">&quot;</span><span class="content">PRE UPDATE </span><span class="char">\$</span><span class="content">{event.entityObject}</span><span class="delimiter">&quot;</span></span>
+        <span class="keyword">break</span>;
+        <span class="keyword">case</span> <span class="key">PostUpdate</span>:
+            println <span class="string"><span class="delimiter">&quot;</span><span class="content">POST UPDATE </span><span class="char">\$</span><span class="content">{event.entityObject}</span><span class="delimiter">&quot;</span></span>
+        <span class="keyword">break</span>;
+        <span class="keyword">case</span> <span class="key">PreDelete</span>:
+            println <span class="string"><span class="delimiter">&quot;</span><span class="content">PRE DELETE </span><span class="char">\$</span><span class="content">{event.entityObject}</span><span class="delimiter">&quot;</span></span>
+        <span class="keyword">break</span>;
+        <span class="keyword">case</span> <span class="key">PostDelete</span>:
+            println <span class="string"><span class="delimiter">&quot;</span><span class="content">POST DELETE </span><span class="char">\$</span><span class="content">{event.entityObject}</span><span class="delimiter">&quot;</span></span>
+        <span class="keyword">break</span>;
+        <span class="keyword">case</span> <span class="key">PreLoad</span>:
+            println <span class="string"><span class="delimiter">&quot;</span><span class="content">PRE LOAD </span><span class="char">\$</span><span class="content">{event.entityObject}</span><span class="delimiter">&quot;</span></span>
+        <span class="keyword">break</span>;
+        <span class="keyword">case</span> <span class="key">PostLoad</span>:
+            println <span class="string"><span class="delimiter">&quot;</span><span class="content">POST LOAD </span><span class="char">\$</span><span class="content">{event.entityObject}</span><span class="delimiter">&quot;</span></span>
+        <span class="keyword">break</span>;
+    }
+}
+
+<span class="annotation">@Override</span>
+<span class="directive">public</span> <span class="type">boolean</span> supportsEventType(<span class="predefined-type">Class</span>&lt;? <span class="directive">extends</span> ApplicationEvent&gt; eventType) {
+    <span class="keyword">return</span> <span class="predefined-constant">true</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>AbstractPersistenceEvent</code> class has many subclasses (<code>PreInsertEvent</code>, <code>PostInsertEvent</code> etc.) that provide further information specific to the event. A <code>cancel()</code> method is also provided on the event which allows you to veto an insert, update or delete operation.</p>
+</div>
+<div class="paragraph">
+<p>Once you have created your event listener you need to register it. If you are using Spring this can be done via the <code>ApplicationContext</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">HibernateDatastore datastore = applicationContext.getBean(HibernateDatastore)
+applicationContext.addApplicationListener <span class="keyword">new</span> MyPersistenceListener(datastore)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you are not using Spring then you can register the event listener using the <code>getApplicationEventPublisher()</code> method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">HibernateDatastore datastore = ... <span class="comment">// get a reference to the datastore</span>
+datastore.getApplicationEventPublisher()
+         .addApplicationListener <span class="keyword">new</span> MyPersistenceListener(datastore)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_hibernate_events">Hibernate Events</h4>
+<div class="paragraph">
+<p>It is generally encouraged to use the non-Hibernate specific API described above, but if you need access to more detailed Hibernate events then you can define custom Hibernate-specific event listeners.</p>
+</div>
+<div class="paragraph">
+<p>You can also register event handler classes in an application&#8217;s <code>grails-app/conf/spring/resources.groovy</code> or in the <code>doWithSpring</code> closure in a plugin descriptor by registering a Spring bean named <code>hibernateEventListeners</code>. This bean has one property, <code>listenerMap</code> which specifies the listeners to register for various Hibernate events.</p>
+</div>
+<div class="paragraph">
+<p>The values of the Map are instances of classes that implement one or more Hibernate listener interfaces. You can use one class that implements all of the required interfaces, or one concrete class per interface, or any combination. The valid Map keys and corresponding interfaces are listed here:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><strong>Name</strong></th>
+<th class="tableblock halign-left valign-top"><strong>Interface</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">auto-flush</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/AutoFlushEventListener.html">AutoFlushEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">merge</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/MergeEventListener.html">MergeEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">create</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/PersistEventListener.html">PersistEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">create-onflush</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/PersistEventListener.html">PersistEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">delete</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/DeleteEventListener.html">DeleteEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dirty-check</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/DirtyCheckEventListener.html">DirtyCheckEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">evict</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/EvictEventListener.html">EvictEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">flush</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/FlushEventListener.html">FlushEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">flush-entity</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/FlushEntityEventListener.html">FlushEntityEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">load</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/LoadEventListener.html">LoadEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">load-collection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/InitializeCollectionEventListener.html">InitializeCollectionEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lock</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/LockEventListener.html">LockEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">refresh</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/RefreshEventListener.html">RefreshEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">replicate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/ReplicateEventListener.html">ReplicateEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">save-update</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/SaveOrUpdateEventListener.html">SaveOrUpdateEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">save</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/SaveOrUpdateEventListener.html">SaveOrUpdateEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">update</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/SaveOrUpdateEventListener.html">SaveOrUpdateEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pre-load</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/PreLoadEventListener.html">PreLoadEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pre-update</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/PreUpdateEventListener.html">PreUpdateEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pre-delete</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/PreDeleteEventListener.html">PreDeleteEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pre-insert</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/PreInsertEventListener.html">PreInsertEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pre-collection-recreate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/PreCollectionRecreateEventListener.html">PreCollectionRecreateEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pre-collection-remove</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/PreCollectionRemoveEventListener.html">PreCollectionRemoveEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pre-collection-update</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/PreCollectionUpdateEventListener.html">PreCollectionUpdateEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">post-load</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/PostLoadEventListener.html">PostLoadEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">post-update</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/PostUpdateEventListener.html">PostUpdateEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">post-delete</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/PostDeleteEventListener.html">PostDeleteEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">post-insert</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/PostInsertEventListener.html">PostInsertEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">post-commit-update</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/PostUpdateEventListener.html">PostUpdateEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">post-commit-delete</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/PostDeleteEventListener.html">PostDeleteEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">post-commit-insert</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/PostInsertEventListener.html">PostInsertEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">post-collection-recreate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/PostCollectionRecreateEventListener.html">PostCollectionRecreateEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">post-collection-remove</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/PostCollectionRemoveEventListener.html">PostCollectionRemoveEventListener</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">post-collection-update</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/event/spi/PostCollectionUpdateEventListener.html">PostCollectionUpdateEventListener</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>For example, you could register a class <code>AuditEventListener</code> which implements <code>PostInsertEventListener</code>, <code>PostUpdateEventListener</code>, and <code>PostDeleteEventListener</code> using the following in an application:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">beans = {
+
+   auditListener(AuditEventListener)
+
+   hibernateEventListeners(HibernateEventListeners) {
+      listenerMap = [<span class="string"><span class="delimiter">'</span><span class="content">post-insert</span><span class="delimiter">'</span></span>: auditListener,
+                     <span class="string"><span class="delimiter">'</span><span class="content">post-update</span><span class="delimiter">'</span></span>: auditListener,
+                     <span class="string"><span class="delimiter">'</span><span class="content">post-delete</span><span class="delimiter">'</span></span>: auditListener]
+   }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>or use this in a plugin:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> doWithSpring = {
+
+   auditListener(AuditEventListener)
+
+   hibernateEventListeners(HibernateEventListeners) {
+      listenerMap = [<span class="string"><span class="delimiter">'</span><span class="content">post-insert</span><span class="delimiter">'</span></span>: auditListener,
+                     <span class="string"><span class="delimiter">'</span><span class="content">post-update</span><span class="delimiter">'</span></span>: auditListener,
+                     <span class="string"><span class="delimiter">'</span><span class="content">post-delete</span><span class="delimiter">'</span></span>: auditListener]
+   }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_automatic_timestamping">Automatic timestamping</h4>
+<div class="paragraph">
+<p>If you define a <code>dateCreated</code> property it will be set to the current date for you when you create new instances. Likewise, if you define a <code>lastUpdated</code> property it will be automatically be updated for you when you change persistent instances.</p>
+</div>
+<div class="paragraph">
+<p>If this is not the behaviour you want you can disable this feature with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+   <span class="predefined-type">Date</span> dateCreated
+   <span class="predefined-type">Date</span> lastUpdated
+   <span class="directive">static</span> mapping = {
+      autoTimestamp <span class="predefined-constant">false</span>
+   }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+If you have <code>nullable: false</code> constraints on either <code>dateCreated</code> or <code>lastUpdated</code>, your domain instances will fail validation - probably not what you want. Omit constraints from these properties unless you disable automatic timestamping.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>It is also possible to disable the automatic timestamping temporarily. This is most typically done in the case of a test where you need to define values for the <code>dateCreated</code> or <code>lastUpdated</code> in the past. It may also be useful for importing old data from other systems where you would like to keep the current values of the timestamps.</p>
+</div>
+<div class="paragraph">
+<p>Timestamps can be temporarily disabled for all domains, a specified list of domains, or a single domain. To get started, you need to get a reference to the <code>AutoTimestampEventListener</code>. If you already have access to the datastore, you can execute the <code>getAutoTimestampEventListener</code> method. If you don&#8217;t have access to the datastore, inject the <code>autoTimestampEventListener</code> bean.</p>
+</div>
+<div class="paragraph">
+<p>Once you have a reference to the event listener, you can execute <code>withoutDateCreated</code>, <code>withoutLastUpdated</code>, or <code>withoutTimestamps</code>. The <code>withoutTimestamps</code> method will temporarily disable both <code>dateCreated</code> and <code>lastUpdated</code>.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="comment">//Only the dateCreated property handling will be disabled for only the Foo domain</span>
+autoTimestampEventListener.withoutDateCreated(Foo) {
+    <span class="keyword">new</span> Foo(<span class="key">dateCreated</span>: <span class="keyword">new</span> <span class="predefined-type">Date</span>() - <span class="integer">1</span>).save(<span class="key">flush</span>: <span class="predefined-constant">true</span>)
+}
+
+<span class="comment">//Only the lastUpdated property handling will be disabled for only the Foo and Bar domains</span>
+autoTimestampEventListener.withoutLastUpdated(Foo, Bar) {
+    <span class="keyword">new</span> Foo(<span class="key">lastUpdated</span>: <span class="keyword">new</span> <span class="predefined-type">Date</span>() - <span class="integer">1</span>, <span class="key">bar</span>: <span class="keyword">new</span> Bar(<span class="key">lastUpdated</span>: <span class="keyword">new</span> <span class="predefined-type">Date</span>() + <span class="integer">1</span>)).save(<span class="key">flush</span>: <span class="predefined-constant">true</span>)
+}
+
+<span class="comment">//All timestamp property handling will be disabled for all domains</span>
+autoTimestampEventListener.withoutTimestamps {
+    <span class="keyword">new</span> Foo(<span class="key">dateCreated</span>: <span class="keyword">new</span> <span class="predefined-type">Date</span>() - <span class="integer">2</span>, <span class="key">lastUpdated</span>: <span class="keyword">new</span> <span class="predefined-type">Date</span>() - <span class="integer">1</span>).save(<span class="key">flush</span>: <span class="predefined-constant">true</span>)
+    <span class="keyword">new</span> Bar(<span class="key">dateCreated</span>: <span class="keyword">new</span> <span class="predefined-type">Date</span>() - <span class="integer">2</span>, <span class="key">lastUpdated</span>: <span class="keyword">new</span> <span class="predefined-type">Date</span>() - <span class="integer">1</span>).save(<span class="key">flush</span>: <span class="predefined-constant">true</span>)
+    <span class="keyword">new</span> FooBar(<span class="key">dateCreated</span>: <span class="keyword">new</span> <span class="predefined-type">Date</span>() - <span class="integer">2</span>, <span class="key">lastUpdated</span>: <span class="keyword">new</span> <span class="predefined-type">Date</span>() - <span class="integer">1</span>).save(<span class="key">flush</span>: <span class="predefined-constant">true</span>)
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Because the timestamp handling is only disabled for the duration of the closure, you must flush the session during the closure execution!
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+
+<h2 id="ormdsl"><a class="anchor" href="#ormdsl"></a>8.2 Custom ORM Mapping</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/ormdsl.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>GORM domain classes can be mapped onto many legacy schemas with an Object Relational Mapping DSL (domain specific language). The following sections takes you through what is possible with the ORM DSL.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+None of this is necessary if you are happy to stick to the conventions defined by GORM for table names, column names and so on. You only needs this functionality if you need to tailor the way GORM maps onto legacy schemas or configures caching
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Custom mappings are defined using a static <code>mapping</code> block defined within your domain class:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+    ...
+    static mapping = {
+        version <span class="predefined-constant">false</span>
+        autoTimestamp <span class="predefined-constant">false</span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also configure global mappings in <code>application.groovy</code> (or an external config file) using this setting:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">grails.gorm.default.mapping = {
+    version <span class="predefined-constant">false</span>
+    autoTimestamp <span class="predefined-constant">false</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It has the same syntax as the standard <code>mapping</code> block but it applies to all your domain classes! You can then override these defaults within the <code>mapping</code> block of a domain class.</p>
+</div>
+
+
+<h3 id="tableAndColumnNames"><a class="anchor" href="#tableAndColumnNames"></a>8.2.1 Table and Column Names</h3>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/ormdsl/tableAndColumnNames.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect4">
+<h5 id="_table_names">Table names</h5>
+<div class="paragraph">
+<p>The database table name which the class maps to can be customized using the <code>table</code> method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+    ...
+    static mapping = {
+        table <span class="string"><span class="delimiter">'</span><span class="content">people</span><span class="delimiter">'</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case the class would be mapped to a table called <code>people</code> instead of the default name of <code>person</code>.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_column_names">Column names</h5>
+<div class="paragraph">
+<p>It is also possible to customize the mapping for individual columns onto the database. For example to change the name you can do:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+
+    <span class="predefined-type">String</span> firstName
+
+    <span class="directive">static</span> mapping = {
+        table <span class="string"><span class="delimiter">'</span><span class="content">people</span><span class="delimiter">'</span></span>
+        firstName column: <span class="string"><span class="delimiter">'</span><span class="content">First_Name</span><span class="delimiter">'</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here <code>firstName</code> is a dynamic method within the <code>mapping</code> Closure that has a single Map parameter. Since its name corresponds to a domain class persistent field, the parameter values (in this case just <code>"column"</code>) are used to configure the mapping for that property.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_column_type">Column type</h5>
+<div class="paragraph">
+<p>GORM supports configuration of Hibernate types with the DSL using the type attribute. This includes specifying user types that implement the Hibernate <a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/usertype/UserType.html">org.hibernate.usertype.UserType</a> interface, which allows complete customization of how a type is persisted. As an example if you had a <code>PostCodeType</code> you could use it as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Address</span> {
+
+    <span class="predefined-type">String</span> number
+    <span class="predefined-type">String</span> postCode
+
+    <span class="directive">static</span> mapping = {
+        postCode type: PostCodeType
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively if you just wanted to map it to one of Hibernate&#8217;s basic types other than the default chosen by GORM you could use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Address</span> {
+
+    <span class="predefined-type">String</span> number
+    <span class="predefined-type">String</span> postCode
+
+    <span class="directive">static</span> mapping = {
+        postCode type: <span class="string"><span class="delimiter">'</span><span class="content">text</span><span class="delimiter">'</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This would make the <code>postCode</code> column map to the default large-text type for the database you&#8217;re using (for example TEXT or CLOB).</p>
+</div>
+<div class="paragraph">
+<p>See the Hibernate documentation regarding <a href="https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#basic-explicit">Basic Types</a> for further information.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_many_to_oneone_to_one_mappings">Many-to-One/One-to-One Mappings</h5>
+<div class="paragraph">
+<p>In the case of associations it is also possible to configure the foreign keys used to map associations. In the case of a many-to-one or one-to-one association this is exactly the same as any regular column. For example consider the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+
+    <span class="predefined-type">String</span> firstName
+    Address address
+
+    <span class="directive">static</span> mapping = {
+        table <span class="string"><span class="delimiter">'</span><span class="content">people</span><span class="delimiter">'</span></span>
+        firstName column: <span class="string"><span class="delimiter">'</span><span class="content">First_Name</span><span class="delimiter">'</span></span>
+        address column: <span class="string"><span class="delimiter">'</span><span class="content">Person_Address_Id</span><span class="delimiter">'</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default the <code>address</code> association would map to a foreign key column called <code>address_id</code>. By using the above mapping we have changed the name of the foreign key column to <code>Person_Adress_Id</code>.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_one_to_many_mapping">One-to-Many Mapping</h5>
+<div class="paragraph">
+<p>With a bidirectional one-to-many you can change the foreign key column used by changing the column name on the many side of the association as per the example in the previous section on one-to-one associations. However, with unidirectional associations the foreign key needs to be specified on the association itself. For example given a unidirectional one-to-many relationship between <code>Person</code> and <code>Address</code> the following code will change the foreign key in the <code>address</code> table:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+
+    <span class="predefined-type">String</span> firstName
+
+    <span class="directive">static</span> hasMany = [addresses: Address]
+
+    <span class="directive">static</span> mapping = {
+        table <span class="string"><span class="delimiter">'</span><span class="content">people</span><span class="delimiter">'</span></span>
+        firstName column: <span class="string"><span class="delimiter">'</span><span class="content">First_Name</span><span class="delimiter">'</span></span>
+        addresses column: <span class="string"><span class="delimiter">'</span><span class="content">Person_Address_Id</span><span class="delimiter">'</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you don&#8217;t want the column to be in the <code>address</code> table, but instead some intermediate join table you can use the <code>joinTable</code> parameter:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+
+    <span class="predefined-type">String</span> firstName
+
+    <span class="directive">static</span> hasMany = [addresses: Address]
+
+    <span class="directive">static</span> mapping = {
+        table <span class="string"><span class="delimiter">'</span><span class="content">people</span><span class="delimiter">'</span></span>
+        firstName column: <span class="string"><span class="delimiter">'</span><span class="content">First_Name</span><span class="delimiter">'</span></span>
+        addresses joinTable: [name: <span class="string"><span class="delimiter">'</span><span class="content">Person_Addresses</span><span class="delimiter">'</span></span>,
+                              key: <span class="string"><span class="delimiter">'</span><span class="content">Person_Id</span><span class="delimiter">'</span></span>,
+                              column: <span class="string"><span class="delimiter">'</span><span class="content">Address_Id</span><span class="delimiter">'</span></span>]
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_many_to_many_mapping">Many-to-Many Mapping</h5>
+<div class="paragraph">
+<p>GORM, by default maps a many-to-many association using a join table. For example consider this many-to-many association:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Group</span> {
+    ...
+    static hasMany = [people: Person]
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+    ...
+    static belongsTo = <span class="predefined-type">Group</span>
+    <span class="directive">static</span> hasMany = [groups: <span class="predefined-type">Group</span>]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case GORM will create a join table called <code>group_person</code> containing foreign keys called <code>person_id</code> and <code>group_id</code> referencing the <code>person</code> and <code>group</code> tables. To change the column names you can specify a column within the mappings for each class.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Group</span> {
+   ...
+   static mapping = {
+       people column: <span class="string"><span class="delimiter">'</span><span class="content">Group_Person_Id</span><span class="delimiter">'</span></span>
+   }
+}
+<span class="type">class</span> <span class="class">Person</span> {
+   ...
+   static mapping = {
+       groups column: <span class="string"><span class="delimiter">'</span><span class="content">Group_Group_Id</span><span class="delimiter">'</span></span>
+   }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also specify the name of the join table to use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Group</span> {
+   ...
+   static mapping = {
+       people column: <span class="string"><span class="delimiter">'</span><span class="content">Group_Person_Id</span><span class="delimiter">'</span></span>,
+              joinTable: <span class="string"><span class="delimiter">'</span><span class="content">PERSON_GROUP_ASSOCIATIONS</span><span class="delimiter">'</span></span>
+   }
+}
+<span class="type">class</span> <span class="class">Person</span> {
+   ...
+   static mapping = {
+       groups column: <span class="string"><span class="delimiter">'</span><span class="content">Group_Group_Id</span><span class="delimiter">'</span></span>,
+              joinTable: <span class="string"><span class="delimiter">'</span><span class="content">PERSON_GROUP_ASSOCIATIONS</span><span class="delimiter">'</span></span>
+   }
+}</code></pre>
+</div>
+</div>
+</div>
+
+
+<h3 id="caching"><a class="anchor" href="#caching"></a>8.2.2 Caching Strategy</h3>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/ormdsl/caching.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect4">
+<h5 id="_setting_up_caching">Setting up caching</h5>
+<div class="paragraph">
+<p><a href="https://www.hibernate.org/">Hibernate</a> features a second-level cache with a customizable cache provider. This needs to be configured in the <code>grails-app/conf/application.yml</code> file as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="key">hibernate</span>:
+  <span class="key">cache</span>:
+    <span class="key">use_second_level_cache</span>: <span class="predefined-constant">true</span>
+    <span class="key">provider_class</span>: net.sf.ehcache.hibernate.EhCacheProvider
+    <span class="key">region</span>:
+       <span class="key">factory_class</span>: org.hibernate.cache.ehcache.EhCacheRegionFactory</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can customize any of these settings, for example to use a distributed caching mechanism.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+For further reading on caching and in particular Hibernate&#8217;s second-level cache, refer to the <a href="https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#caching">Hibernate documentation</a> on the subject.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_caching_instances">Caching instances</h5>
+<div class="paragraph">
+<p>Call the <code>cache</code> method in your mapping block to enable caching with the default settings:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+    ...
+    static mapping = {
+        table <span class="string"><span class="delimiter">'</span><span class="content">people</span><span class="delimiter">'</span></span>
+        cache <span class="predefined-constant">true</span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will configure a 'read-write' cache that includes both lazy and non-lazy properties. You can customize this further:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+    ...
+    static mapping = {
+        table <span class="string"><span class="delimiter">'</span><span class="content">people</span><span class="delimiter">'</span></span>
+        cache usage: <span class="string"><span class="delimiter">'</span><span class="content">read-only</span><span class="delimiter">'</span></span>, include: <span class="string"><span class="delimiter">'</span><span class="content">non-lazy</span><span class="delimiter">'</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_caching_associations">Caching associations</h5>
+<div class="paragraph">
+<p>As well as the ability to use Hibernate&#8217;s second level cache to cache instances you can also cache collections (associations) of objects. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+
+    <span class="predefined-type">String</span> firstName
+
+    <span class="directive">static</span> hasMany = [addresses: Address]
+
+    <span class="directive">static</span> mapping = {
+        table <span class="string"><span class="delimiter">'</span><span class="content">people</span><span class="delimiter">'</span></span>
+        version <span class="predefined-constant">false</span>
+        addresses column: <span class="string"><span class="delimiter">'</span><span class="content">Address</span><span class="delimiter">'</span></span>, cache: <span class="predefined-constant">true</span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Address</span> {
+    <span class="predefined-type">String</span> number
+    <span class="predefined-type">String</span> postCode
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will enable a 'read-write' caching mechanism on the <code>addresses</code> collection. You can also use:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">cache: <span class="string"><span class="delimiter">'</span><span class="content">read-write</span><span class="delimiter">'</span></span> <span class="comment">// or 'read-only' or 'transactional'</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>to further configure the cache usage.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_caching_queries">Caching Queries</h5>
+<div class="paragraph">
+<p>In order for the results of queries to be cached, you must enable caching in your mapping:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="key">hibernate</span>:
+  <span class="key">cache</span>:
+    <span class="key">use_query_cache</span>: <span class="predefined-constant">true</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To enable query caching for all queries created by dynamic finders, GORM etc. you can specify:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="key">hibernate</span>:
+  <span class="key">cache</span>:
+    <span class="key">queries</span>: <span class="predefined-constant">true</span>    <span class="error">#</span> This implicitly sets  <span class="error">`</span>use_query_cache=<span class="predefined-constant">true</span><span class="error">`</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can cache queries such as dynamic finders and criteria. To do so using a dynamic finder you can pass the <code>cache</code> argument:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">def person = Person.findByFirstName(<span class="string"><span class="delimiter">&quot;</span><span class="content">Fred</span><span class="delimiter">&quot;</span></span>, [cache: <span class="predefined-constant">true</span>])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also cache criteria queries:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">def people = Person.withCriteria {
+    like(<span class="string"><span class="delimiter">'</span><span class="content">firstName</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Fr%</span><span class="delimiter">'</span></span>)
+    cache <span class="predefined-constant">true</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_cache_usages">Cache usages</h5>
+<div class="paragraph">
+<p>Below is a description of the different cache settings and their usages:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>read-only</code> - If your application needs to read but never modify instances of a persistent class, a read-only cache may be used.</p>
+</li>
+<li>
+<p><code>read-write</code> - If the application needs to update data, a read-write cache might be appropriate.</p>
+</li>
+<li>
+<p><code>nonstrict-read-write</code> - If the application only occasionally needs to update data (i.e. if it is very unlikely that two transactions would try to update the same item simultaneously) and strict transaction isolation is not required, a <code>nonstrict-read-write</code> cache might be appropriate.</p>
+</li>
+<li>
+<p><code>transactional</code> - The <code>transactional</code> cache strategy provides support for fully transactional cache providers such as JBoss TreeCache. Such a cache may only be used in a JTA environment and you must specify <code>hibernate.transaction.manager_lookup_class</code> in the <code>grails-app/conf/application.groovy</code> file&#8217;s <code>hibernate</code> config.</p>
+</li>
+</ul>
+</div>
+</div>
+
+
+<h3 id="inheritanceStrategies"><a class="anchor" href="#inheritanceStrategies"></a>8.2.3 Inheritance Strategies</h3>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/ormdsl/inheritanceStrategies.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>By default GORM classes use <code>table-per-hierarchy</code> inheritance mapping. This has the disadvantage that columns cannot have a <code>NOT-NULL</code> constraint applied to them at the database level. If you would prefer to use a <code>table-per-subclass</code> inheritance strategy you can do so as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Payment</span> {
+    <span class="predefined-type">Integer</span> amount
+
+    <span class="directive">static</span> mapping = {
+        tablePerHierarchy <span class="predefined-constant">false</span>
+    }
+}
+
+<span class="type">class</span> <span class="class">CreditCardPayment</span> <span class="directive">extends</span> Payment {
+    <span class="predefined-type">String</span> cardNumber
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The mapping of the root <code>Payment</code> class specifies that it will not be using <code>table-per-hierarchy</code> mapping for all child classes.</p>
+</div>
+
+
+<h3 id="identity"><a class="anchor" href="#identity"></a>8.2.4 Custom Database Identity</h3>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/ormdsl/identity.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>You can customize how GORM generates identifiers for the database using the DSL. By default GORM relies on the native database mechanism for generating ids. This is by far the best approach, but there are still many schemas that have different approaches to identity.</p>
+</div>
+<div class="paragraph">
+<p>To deal with this Hibernate defines the concept of an id generator. You can customize the id generator and the column it maps to as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+    ...
+    static mapping = {
+        table <span class="string"><span class="delimiter">'</span><span class="content">people</span><span class="delimiter">'</span></span>
+        version <span class="predefined-constant">false</span>
+        id generator: <span class="string"><span class="delimiter">'</span><span class="content">hilo</span><span class="delimiter">'</span></span>,
+           params: [table: <span class="string"><span class="delimiter">'</span><span class="content">hi_value</span><span class="delimiter">'</span></span>,
+                    column: <span class="string"><span class="delimiter">'</span><span class="content">next_value</span><span class="delimiter">'</span></span>,
+                    max_lo: <span class="integer">100</span>]
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case we&#8217;re using one of Hibernate&#8217;s built in 'hilo' generators that uses a separate table to generate ids.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+For more information on the different Hibernate generators refer to the <a href="https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#identifiers-generators">Hibernate reference documentation</a>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Although you don&#8217;t typically specify the <code>id</code> field (GORM adds it for you) you can still configure its mapping like the other properties. For example to customise the column for the id property you can do:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+    ...
+    static mapping = {
+        table <span class="string"><span class="delimiter">'</span><span class="content">people</span><span class="delimiter">'</span></span>
+        version <span class="predefined-constant">false</span>
+        id column: <span class="string"><span class="delimiter">'</span><span class="content">person_id</span><span class="delimiter">'</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+
+
+<h3 id="compositePrimaryKeys"><a class="anchor" href="#compositePrimaryKeys"></a>8.2.5 Composite Primary Keys</h3>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/ormdsl/compositePrimaryKeys.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>GORM supports the concept of composite identifiers (identifiers composed from 2 or more properties). It is not an approach we recommend, but is available to you if you need it:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.apache.commons.lang.builder.HashCodeBuilder</span>
+
+<span class="type">class</span> <span class="class">Person</span> <span class="directive">implements</span> <span class="predefined-type">Serializable</span> {
+
+    <span class="predefined-type">String</span> firstName
+    <span class="predefined-type">String</span> lastName
+
+    <span class="type">boolean</span> equals(other) {
+        <span class="keyword">if</span> (!(other <span class="keyword">instanceof</span> Person)) {
+            <span class="keyword">return</span> <span class="predefined-constant">false</span>
+        }
+
+        other.firstName == firstName &amp;&amp; other.lastName == lastName
+    }
+
+    <span class="type">int</span> hashCode() {
+        <span class="keyword">def</span> builder = <span class="keyword">new</span> HashCodeBuilder()
+        builder.append firstName
+        builder.append lastName
+        builder.toHashCode()
+    }
+
+    <span class="directive">static</span> mapping = {
+        id <span class="key">composite</span>: [<span class="string"><span class="delimiter">'</span><span class="content">firstName</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">lastName</span><span class="delimiter">'</span></span>]
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above will create a composite id of the <code>firstName</code> and <code>lastName</code> properties of the Person class. To retrieve an instance by id you use a prototype of the object itself:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">def p = Person.get(<span class="keyword">new</span> Person(firstName: <span class="string"><span class="delimiter">&quot;</span><span class="content">Fred</span><span class="delimiter">&quot;</span></span>, lastName: <span class="string"><span class="delimiter">&quot;</span><span class="content">Flintstone</span><span class="delimiter">&quot;</span></span>))
+println p.firstName</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Domain classes mapped with composite primary keys must implement the <code>Serializable</code> interface and override the <code>equals</code> and <code>hashCode</code> methods, using the properties in the composite key for the calculations. The example above uses a <code>HashCodeBuilder</code> for convenience but it&#8217;s fine to implement it yourself.</p>
+</div>
+<div class="paragraph">
+<p>Another important consideration when using composite primary keys is associations. If for example you have a many-to-one association where the foreign keys are stored in the associated table then 2 columns will be present in the associated table.</p>
+</div>
+<div class="paragraph">
+<p>For example consider the following domain class:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Address</span> {
+    Person person
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case the <code>address</code> table will have an additional two columns called <code>person_first_name</code> and <code>person_last_name</code>. If you wish the change the mapping of these columns then you can do so using the following technique:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Address</span> {
+    Person person
+    <span class="directive">static</span> mapping = {
+        columns {
+                    person {
+                column <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">FirstName</span><span class="delimiter">&quot;</span></span>
+                column <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">LastName</span><span class="delimiter">&quot;</span></span>
+                        }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+
+
+<h3 id="databaseIndices"><a class="anchor" href="#databaseIndices"></a>8.2.6 Database Indices</h3>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/ormdsl/databaseIndices.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To get the best performance out of your queries it is often necessary to tailor the table index definitions. How you tailor them is domain specific and a matter of monitoring usage patterns of your queries. With GORM&#8217;s DSL you can specify which columns are used in which indexes:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+    <span class="predefined-type">String</span> firstName
+    <span class="predefined-type">String</span> address
+    <span class="directive">static</span> mapping = {
+        table <span class="string"><span class="delimiter">'</span><span class="content">people</span><span class="delimiter">'</span></span>
+        version <span class="predefined-constant">false</span>
+        id column: <span class="string"><span class="delimiter">'</span><span class="content">person_id</span><span class="delimiter">'</span></span>
+        firstName column: <span class="string"><span class="delimiter">'</span><span class="content">First_Name</span><span class="delimiter">'</span></span>, index: <span class="string"><span class="delimiter">'</span><span class="content">Name_Idx</span><span class="delimiter">'</span></span>
+        address column: <span class="string"><span class="delimiter">'</span><span class="content">Address</span><span class="delimiter">'</span></span>, index: <span class="string"><span class="delimiter">'</span><span class="content">Name_Idx,Address_Index</span><span class="delimiter">'</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that you cannot have any spaces in the value of the <code>index</code> attribute; in this example <code>index:'Name_Idx, Address_Index'</code> will cause an error.</p>
+</div>
+
+
+<h3 id="optimisticLockingAndVersioning"><a class="anchor" href="#optimisticLockingAndVersioning"></a>8.2.7 Optimistic Locking and Versioning</h3>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/ormdsl/optimisticLockingAndVersioning.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>As discussed in the section on <a href="#locking">Optimistic and Pessimistic Locking</a>, by default GORM uses optimistic locking and automatically injects a <code>version</code> property into every class which is in turn mapped to a <code>version</code> column at the database level.</p>
+</div>
+<div class="paragraph">
+<p>If you&#8217;re mapping to a legacy schema that doesn&#8217;t have version columns (or there&#8217;s some other reason why you don&#8217;t want/need this feature) you can disable this with the <code>version</code> method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+    ...
+    static mapping = {
+        table <span class="string"><span class="delimiter">'</span><span class="content">people</span><span class="delimiter">'</span></span>
+        version <span class="predefined-constant">false</span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you disable optimistic locking you are essentially on your own with regards to concurrent updates and are open to the risk of users losing data (due to data overriding) unless you use <a href="#locking">pessimistic locking</a>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_version_columns_types">Version columns types</h5>
+<div class="paragraph">
+<p>By default GORM maps the <code>version</code> property as a <code>Long</code> that gets incremented by one each time an instance is updated. But Hibernate also supports using a <code>Timestamp</code>, for example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">java.sql.Timestamp</span>
+
+<span class="include">class</span> <span class="include">Person</span> {
+
+    ...
+    <span class="include">Timestamp</span> <span class="include">version</span>
+
+    <span class="include">static</span> <span class="include">mapping</span> = {
+        <span class="include">table</span> <span class="string"><span class="delimiter">'</span><span class="content">people</span><span class="delimiter">'</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There&#8217;s a slight risk that two updates occurring at nearly the same time on a fast server can end up with the same timestamp value but this risk is very low. One benefit of using a <code>Timestamp</code> instead of a <code>Long</code> is that you combine the optimistic locking and last-updated semantics into a single column.</p>
+</div>
+</div>
+
+
+<h3 id="fetchingDSL"><a class="anchor" href="#fetchingDSL"></a>8.2.8 Eager and Lazy Fetching</h3>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/ormdsl/fetchingDSL.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect4">
+<h5 id="_lazy_collections">Lazy Collections</h5>
+<div class="paragraph">
+<p>As discussed in the section on <a href="#fetching">Eager and Lazy fetching</a>, GORM collections are lazily loaded by default but you can change this behaviour with the ORM DSL. There are several options available to you, but the most common ones are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>lazy: false</p>
+</li>
+<li>
+<p>fetch: 'join'</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>and they&#8217;re used like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+
+    <span class="predefined-type">String</span> firstName
+    Pet pet
+
+    <span class="directive">static</span> hasMany = [addresses: Address]
+
+    <span class="directive">static</span> mapping = {
+        addresses lazy: <span class="predefined-constant">false</span>
+        pet fetch: <span class="string"><span class="delimiter">'</span><span class="content">join</span><span class="delimiter">'</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Address</span> {
+    <span class="predefined-type">String</span> street
+    <span class="predefined-type">String</span> postCode
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Pet</span> {
+    <span class="predefined-type">String</span> name
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The first option, <code>lazy: false</code> , ensures that when a <code>Person</code> instance is loaded, its <code>addresses</code> collection is loaded at the same time with a second SELECT. The second option is basically the same, except the collection is loaded with a JOIN rather than another SELECT. Typically you want to reduce the number of queries, so <code>fetch: 'join'</code> is the more appropriate option. On the other hand, it could feasibly be the more expensive approach if your domain model and data result in more and larger results than would otherwise be necessary.</p>
+</div>
+<div class="paragraph">
+<p>For more advanced users, the other settings available are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>batchSize: N</code></p>
+</li>
+<li>
+<p><code>lazy: false, batchSize: N</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>where N is an integer. These let you fetch results in batches, with one query per batch. As a simple example, consider this mapping for <code>Person</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Person</span> {
+
+    <span class="predefined-type">String</span> firstName
+    Pet pet
+
+    <span class="directive">static</span> mapping = {
+        pet <span class="key">batchSize</span>: <span class="integer">5</span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If a query returns multiple <code>Person</code> instances, then when we access the first <code>pet</code> property, Hibernate will fetch that <code>Pet</code> plus the four next ones. You can get the same behaviour with eager loading by combining <code>batchSize</code> with the <code>lazy: false</code> option.</p>
+</div>
+<div class="paragraph">
+<p>You can find out more about these options in the <a href="https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#fetching">Hibernate user guide</a>. Note that ORM DSL does not currently support the "subselect" fetching strategy.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_lazy_single_ended_associations">Lazy Single-Ended Associations</h5>
+<div class="paragraph">
+<p>In GORM, one-to-one and many-to-one associations are by default lazy. Non-lazy single ended associations can be problematic when you load many entities because each non-lazy association will result in an extra SELECT statement. If the associated entities also have non-lazy associations, the number of queries grows significantly!</p>
+</div>
+<div class="paragraph">
+<p>Use the same technique as for lazy collections to make a one-to-one or many-to-one association non-lazy/eager:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+    <span class="predefined-type">String</span> firstName
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Address</span> {
+
+    <span class="predefined-type">String</span> street
+    <span class="predefined-type">String</span> postCode
+
+    <span class="directive">static</span> belongsTo = [person: Person]
+
+    <span class="directive">static</span> mapping = {
+        person lazy: <span class="predefined-constant">false</span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here we configure GORM to load the associated <code>Person</code> instance (through the <code>person</code> property) whenever an <code>Address</code> is loaded.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_lazy_associations_and_proxies">Lazy Associations and Proxies</h5>
+<div class="paragraph">
+<p>Hibernate uses runtime-generated proxies to facilitate single-ended lazy associations; Hibernate dynamically subclasses the entity class to create the proxy.</p>
+</div>
+<div class="paragraph">
+<p>Consider the previous example but with a lazily-loaded <code>person</code> association: Hibernate will set the <code>person</code> property to a proxy that is a subclass of <code>Person</code>. When you call any of the getters (except for the <code>id</code> property) or setters on that proxy, Hibernate will load the entity from the database.</p>
+</div>
+<div class="paragraph">
+<p>Unfortunately this technique can produce surprising results. Consider the following example classes:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Pet</span> {
+    <span class="predefined-type">String</span> name
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Dog</span> <span class="directive">extends</span> Pet {
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+    <span class="predefined-type">String</span> name
+    Pet pet
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Proxies can have confusing behavior when combined with inheritance. Because the proxy is only a subclass of the parent class, any attempt to cast or access data on the subclass will fail. Assuming we have a single <code>Person</code> instance with a <code>Dog</code> as the <code>pet</code>.</p>
+</div>
+<div class="paragraph">
+<p>The code below will not fail because directly querying the <code>Pet</code> table does not require the resulting objects to be proxies because they are not lazy.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> pet = Pet.get(<span class="integer">1</span>)
+<span class="keyword">assert</span> pet <span class="keyword">instanceof</span> Dog</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following code will fail because the association is lazy and the <code>pet</code> instance is a proxy.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> person = Person.get(<span class="integer">1</span>)
+<span class="keyword">assert</span> person.pet <span class="keyword">instanceof</span> Dog</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the only goal is to check if the proxy is an instance of a class, there is one helper method available to do so that works with proxies. Take special care in using it though because it does cause a call to the database to retrieve the association data.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> person = Person.get(<span class="integer">1</span>)
+<span class="keyword">assert</span> person.pet.instanceOf(Dog)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There are a couple of ways to approach this issue. The first rule of thumb is that if it is known ahead of time that the association data is required, join the data in the query of the <code>Person</code>. For example, the following assertion is true.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> person = Person.where { id == <span class="integer">1</span> }.join(<span class="string"><span class="delimiter">&quot;</span><span class="content">pet</span><span class="delimiter">&quot;</span></span>).get()
+<span class="keyword">assert</span> person.pet <span class="keyword">instanceof</span> Dog</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the above example the <code>pet</code> association is no longer lazy because it is being retrieved along with the <code>Person</code> and thus no proxies are necessary. There are cases when it makes sense for a proxy to be returned, mostly in the case where its impossible to know if the data will be used or not. For those cases in order to access properties of the subclasses, the proxy must be unwrapped. To unwrap a proxy inject an instance of <a href="../api/org/grails/datastore/mapping/proxy/ProxyHandler.html">ProxyHandler</a> and pass the proxy to the <code>unwrap</code> method.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> person = Person.get(<span class="integer">1</span>)
+<span class="keyword">assert</span> proxyHandler.unwrap(person.pet) <span class="keyword">instanceof</span> Dog</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For cases where dependency injection is impractical or not available, a helper method <a href="../api/org/grails/orm/hibernate/cfg/GrailsHibernateUtil.html#unwrapIfProxy(java.lang.Object)">GrailsHibernateUtil.unwrapIfProxy(Object)</a> can be used instead.</p>
+</div>
+<div class="paragraph">
+<p>Unwrapping a proxy is different than initializing it. Initializing a proxy simply populates the underlying instance with data from the database, however unwrapping a returns the inner target.</p>
+</div>
+</div>
+
+
+<h3 id="customCascadeBehaviour"><a class="anchor" href="#customCascadeBehaviour"></a>8.2.9 Custom Cascade Behaviour</h3>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/ormdsl/customCascadeBehaviour.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>As described in the section on <a href="#cascades">cascading updates</a>, the primary mechanism to control the way updates and deletes cascade from one association to another is the static <a href="#ref-domain-classes-belongsTo">belongsTo</a> property.</p>
+</div>
+<div class="paragraph">
+<p>However, the ORM DSL gives you complete access to Hibernate&#8217;s <a href="https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#associations">transitive persistence</a> capabilities using the <code>cascade</code> attribute.</p>
+</div>
+<div class="paragraph">
+<p>Valid settings for the cascade attribute include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>merge</code> - merges the state of a detached association</p>
+</li>
+<li>
+<p><code>save-update</code> - cascades only saves and updates to an association</p>
+</li>
+<li>
+<p><code>delete</code> - cascades only deletes to an association</p>
+</li>
+<li>
+<p><code>lock</code> - useful if a pessimistic lock should be cascaded to its associations</p>
+</li>
+<li>
+<p><code>refresh</code> - cascades refreshes to an association</p>
+</li>
+<li>
+<p><code>evict</code> - cascades evictions (equivalent to <code>discard()</code> in GORM) to associations if set</p>
+</li>
+<li>
+<p><code>all</code> - cascade <em>all</em> operations to associations</p>
+</li>
+<li>
+<p><code>all-delete-orphan</code> - Applies only to one-to-many associations and indicates that when a child is removed from an association then it should be automatically deleted. Children are also deleted when the parent is.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To specify the cascade attribute simply define one or more (comma-separated) of the aforementioned settings as its value:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Person</span> {
+
+    <span class="predefined-type">String</span> firstName
+
+    <span class="directive">static</span> hasMany = [addresses: Address]
+
+    <span class="directive">static</span> mapping = {
+        addresses cascade: <span class="string"><span class="delimiter">&quot;</span><span class="content">all-delete-orphan</span><span class="delimiter">&quot;</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Address</span> {
+    <span class="predefined-type">String</span> street
+    <span class="predefined-type">String</span> postCode
+}</code></pre>
+</div>
+</div>
+
+
+<h3 id="customHibernateTypes"><a class="anchor" href="#customHibernateTypes"></a>8.2.10 Custom Hibernate Types</h3>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/ormdsl/customHibernateTypes.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>You saw in an earlier section that you can use composition (with the <code>embedded</code> property) to break a table into multiple objects. You can achieve a similar effect with Hibernate&#8217;s custom user types. These are not domain classes themselves, but plain Java or Groovy classes. Each of these types also has a corresponding "meta-type" class that implements <a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/usertype/UserType.html">org.hibernate.usertype.UserType</a>.</p>
+</div>
+<div class="paragraph">
+<p>The <a href="https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#_custom_type">Hibernate reference manual</a> has some information on custom types, but here we will focus on how to map them in GORM. Let&#8217;s start by taking a look at a simple domain class that uses an old-fashioned (pre-Java 1.5) type-safe enum class:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Book</span> {
+
+    <span class="predefined-type">String</span> title
+    <span class="predefined-type">String</span> author
+    Rating rating
+
+    <span class="directive">static</span> mapping = {
+        rating <span class="key">type</span>: RatingUserType
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>All we have done is declare the <code>rating</code> field the enum type and set the property&#8217;s type in the custom mapping to the corresponding <code>UserType</code> implementation. That&#8217;s all you have to do to start using your custom type. If you want, you can also use the other column settings such as "column" to change the column name and "index" to add it to an index.</p>
+</div>
+<div class="paragraph">
+<p>Custom types aren&#8217;t limited to just a single column - they can be mapped to as many columns as you want. In such cases you explicitly define in the mapping what columns to use, since Hibernate can only use the property name for a single column. Fortunately, GORM lets you map multiple columns to a property using this syntax:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Book</span> {
+
+    <span class="predefined-type">String</span> title
+    <span class="predefined-type">Name</span> author
+    Rating rating
+
+    <span class="directive">static</span> mapping = {
+        author type: NameUserType, {
+            column name: <span class="string"><span class="delimiter">&quot;</span><span class="content">first_name</span><span class="delimiter">&quot;</span></span>
+            column name: <span class="string"><span class="delimiter">&quot;</span><span class="content">last_name</span><span class="delimiter">&quot;</span></span>
+        }
+        rating type: RatingUserType
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above example will create "first_name" and "last_name" columns for the <code>author</code> property. You&#8217;ll be pleased to know that you can also use some of the normal column/property mapping attributes in the column definitions. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">column name: <span class="string"><span class="delimiter">&quot;</span><span class="content">first_name</span><span class="delimiter">&quot;</span></span>, index: <span class="string"><span class="delimiter">&quot;</span><span class="content">my_idx</span><span class="delimiter">&quot;</span></span>, unique: <span class="predefined-constant">true</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The column definitions do <em>not</em> support the following attributes: <code>type</code>, <code>cascade</code>, <code>lazy</code>, <code>cache</code>, and <code>joinTable</code>.</p>
+</div>
+<div class="paragraph">
+<p>One thing to bear in mind with custom types is that they define the <em>SQL types</em> for the corresponding database columns. That helps take the burden of configuring them yourself, but what happens if you have a legacy database that uses a different SQL type for one of the columns? In that case, override the column&#8217;s SQL type using the <code>sqlType</code> attribute:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Book</span> {
+
+    <span class="predefined-type">String</span> title
+    <span class="predefined-type">Name</span> author
+    Rating rating
+
+    <span class="directive">static</span> mapping = {
+        author type: NameUserType, {
+            column name: <span class="string"><span class="delimiter">&quot;</span><span class="content">first_name</span><span class="delimiter">&quot;</span></span>, sqlType: <span class="string"><span class="delimiter">&quot;</span><span class="content">text</span><span class="delimiter">&quot;</span></span>
+            column name: <span class="string"><span class="delimiter">&quot;</span><span class="content">last_name</span><span class="delimiter">&quot;</span></span>, sqlType: <span class="string"><span class="delimiter">&quot;</span><span class="content">text</span><span class="delimiter">&quot;</span></span>
+        }
+        rating type: RatingUserType, sqlType: <span class="string"><span class="delimiter">&quot;</span><span class="content">text</span><span class="delimiter">&quot;</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Mind you, the SQL type you specify needs to still work with the custom type. So overriding a default of "varchar" with "text" is fine, but overriding "text" with "yes_no" isn&#8217;t going to work.</p>
+</div>
+
+
+<h3 id="derivedProperties"><a class="anchor" href="#derivedProperties"></a>8.2.11 Derived Properties</h3>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/ormdsl/derivedProperties.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>A derived property is one that takes its value from a SQL expression, often but not necessarily based on the value of one or more other persistent properties.  Consider a Product class like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Product</span> {
+    <span class="predefined-type">Float</span> price
+    <span class="predefined-type">Float</span> taxRate
+    <span class="predefined-type">Float</span> tax
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the <code>tax</code> property is derived based on the value of <code>price</code> and <code>taxRate</code> properties then is probably no need to persist the <code>tax</code> property.  The SQL used to derive the value of a derived property may be expressed in the ORM DSL like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Product</span> {
+    <span class="predefined-type">Float</span> price
+    <span class="predefined-type">Float</span> taxRate
+    <span class="predefined-type">Float</span> tax
+
+    <span class="directive">static</span> mapping = {
+        tax formula: <span class="string"><span class="delimiter">'</span><span class="content">PRICE * TAX_RATE</span><span class="delimiter">'</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that the formula expressed in the ORM DSL is SQL so references to other properties should relate to the persistence model not the object model, which is why the example refers to <code>PRICE</code> and <code>TAX_RATE</code> instead of <code>price</code> and <code>taxRate</code>.</p>
+</div>
+<div class="paragraph">
+<p>With that in place, when a Product is retrieved with something like <code>Product.get(42)</code>, the SQL that is generated to support that will look something like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">select
+    product0_.id <span class="keyword">as</span> id1_0_,
+    product0_.version <span class="keyword">as</span> version1_0_,
+    product0_.price <span class="keyword">as</span> price1_0_,
+    product0_.tax_rate <span class="keyword">as</span> tax4_1_0_,
+    product0_.PRICE * product0_.TAX_RATE <span class="keyword">as</span> formula1_0_
+from
+    product product0_
+where
+    product0_.id=?</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Since the <code>tax</code> property is derived at runtime and not stored in the database it might seem that the same effect could be achieved by adding a method like <code>getTax()</code> to the <code>Product</code> class that simply returns the product of the <code>taxRate</code> and <code>price</code> properties.  With an approach like that you would give up the ability query the database based on the value of the <code>tax</code> property.  Using a derived property allows exactly that.  To retrieve all <code>Product</code> objects that have a <code>tax</code> value greater than 21.12 you could execute a query like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">Product.findAllByTaxGreaterThan(<span class="float">21.12</span>)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Derived properties may be referenced in the Criteria API:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">Product.withCriteria {
+    gt <span class="string"><span class="delimiter">'</span><span class="content">tax</span><span class="delimiter">'</span></span>, <span class="float">21.12f</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The SQL that is generated to support either of those would look something like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">select
+    this_.id <span class="keyword">as</span> id1_0_,
+    this_.version <span class="keyword">as</span> version1_0_,
+    this_.price <span class="keyword">as</span> price1_0_,
+    this_.tax_rate <span class="keyword">as</span> tax4_1_0_,
+    this_.PRICE * this_.TAX_RATE <span class="keyword">as</span> formula1_0_
+from
+    product this_
+where
+    this_.PRICE * this_.TAX_RATE&gt;?</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Because the value of a derived property is generated in the database and depends on the execution of SQL code, derived properties may not have GORM constraints applied to them.  If constraints are specified for a derived property, they will be ignored.
+</td>
+</tr>
+</table>
+</div>
+
+
+<h3 id="customNamingStrategy"><a class="anchor" href="#customNamingStrategy"></a>8.2.12 Custom Naming Strategy</h3>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/ormdsl/customNamingStrategy.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>By default GORM uses Hibernate&#8217;s <code>ImprovedNamingStrategy</code> to convert domain class Class and field names to SQL table and column names by converting from camel-cased Strings to ones that use underscores as word separators. You can customize these on a per-class basis in the <code>mapping</code> closure but if there&#8217;s a consistent pattern you can specify a different <code>NamingStrategy</code> class to use.</p>
+</div>
+<div class="paragraph">
+<p>Configure the class name to be used in <code>grails-app/conf/application.groovy</code> in the <code>hibernate</code> section, e.g.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">dataSource {
+    pooled = <span class="predefined-constant">true</span>
+    dbCreate = <span class="string"><span class="delimiter">&quot;</span><span class="content">create-drop</span><span class="delimiter">&quot;</span></span>
+    ...
+}
+
+hibernate {
+    cache.use_second_level_cache = <span class="predefined-constant">true</span>
+    ...
+    naming_strategy = com.myco.myproj.CustomNamingStrategy
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also specify the name of the class and it will be loaded for you:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">hibernate {
+    ...
+    naming_strategy = <span class="string"><span class="delimiter">'</span><span class="content">com.myco.myproj.CustomNamingStrategy</span><span class="delimiter">'</span></span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A third option is to provide an instance if there is some configuration required beyond calling the default constructor:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">hibernate {
+    ...
+    def strategy = <span class="keyword">new</span> com.myco.myproj.CustomNamingStrategy()
+    <span class="comment">// configure as needed</span>
+    naming_strategy = strategy
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can use an existing class or write your own, for example one that prefixes table names and column names:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">package</span> <span class="namespace">com.myco.myproj</span>
+
+<span class="namespace">import</span> <span class="namespace">org.hibernate.cfg.ImprovedNamingStrategy</span>
+<span class="namespace">import</span> <span class="namespace">org.hibernate.util.StringHelper</span>
+
+<span class="namespace">class</span> <span class="namespace">CustomNamingStrategy</span> <span class="namespace">extends</span> <span class="namespace">ImprovedNamingStrategy</span> {
+
+    <span class="namespace">String</span> <span class="namespace">classToTableName</span>(<span class="namespace">String</span> <span class="namespace">className</span>) {
+        <span class="string"><span class="delimiter">&quot;</span><span class="content">table_</span><span class="delimiter">&quot;</span></span> + <span class="namespace">StringHelper.unqualify</span>(<span class="namespace">className</span>)
+    }
+
+    <span class="namespace">String</span> <span class="namespace">propertyToColumnName</span>(<span class="namespace">String</span> <span class="namespace">propertyName</span>) {
+        <span class="string"><span class="delimiter">&quot;</span><span class="content">col_</span><span class="delimiter">&quot;</span></span> + <span class="namespace">StringHelper.unqualify</span>(<span class="namespace">propertyName</span>)
+    }
+}</code></pre>
+</div>
+</div>
+
+
+<h2 id="defaultSortOrder"><a class="anchor" href="#defaultSortOrder"></a>8.3 Default Sort Order</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/defaultSortOrder.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>You can sort objects using query arguments such as those found in the <a href="#ref-domain-classes-list">list</a> method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">def airports = Airport.list(sort:<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However, you can also declare the default sort order for a collection in the mapping:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Airport</span> {
+    ...
+    static mapping = {
+        sort <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above means that all collections of <code>Airport</code> instances will by default be sorted by the airport name. If you also want to change the sort <em>order</em>, use this syntax:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Airport</span> {
+    ...
+    static mapping = {
+        sort name: <span class="string"><span class="delimiter">&quot;</span><span class="content">desc</span><span class="delimiter">&quot;</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, you can configure sorting at the association level:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Airport</span> {
+    ...
+    static hasMany = [flights: Flight]
+
+    <span class="directive">static</span> mapping = {
+        flights sort: <span class="string"><span class="delimiter">'</span><span class="content">number</span><span class="delimiter">'</span></span>, order: <span class="string"><span class="delimiter">'</span><span class="content">desc</span><span class="delimiter">'</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case, the <code>flights</code> collection will always be sorted in descending order of flight number.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+These mappings will not work for default unidirectional one-to-many or many-to-many relationships because they involve a join table. See <a href="#ref-orgbrowse-grails-4089-this issue">this issue</a> for more details. Consider using a <code>SortedSet</code> or queries with sort parameters to fetch the data you need.
+</td>
+</tr>
+</table>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../guide/querying.html">&lt;&lt; <strong>7</strong><span>Querying with GORM</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright &copy; 2022-2025 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

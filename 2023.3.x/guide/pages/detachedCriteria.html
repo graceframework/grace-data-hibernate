@@ -1,0 +1,427 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>7.4 Detached Criteria 2023.3.0-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navHeader">
+        
+        <span id="logo">
+            <a href="https://graceframework.org" title="Grace Framework Website">
+                <img src="../img/grace.svg" alt="Grace Framework" />
+            </a>
+        </span>
+        
+        <div class="docHeader">
+            <h1 class="docTitle">Grace Data Hibernate</h1>
+            <h3 class="docSubTitle">Provides integration between Grace and Hibernate through GORM</h3>
+        </div>
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/gettingStarted.html"><strong>2</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/quickStartGuide.html"><strong>3</strong><span>Quick Start Guide</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/configuration.html"><strong>4</strong><span>Configuration</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/domainClasses.html"><strong>5</strong><span>Domain Modelling in GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/persistenceBasics.html"><strong>6</strong><span>Persistence Basics</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/querying.html"><strong>7</strong><span>Querying with GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/services.html"><strong>10</strong><span>GORM Data Services</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <!-- <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li> -->
+            <li class="separator selected">
+                <a id="ref-button" href="../api/index.html">API Docs</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/persistenceBasics.html">&lt;&lt; <strong>6</strong><span>Persistence Basics</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>7.4 Detached Criteria</h1>
+
+                    <p><strong>Version:</strong> 2023.3.0-SNAPSHOT</p>
+                </div>
+
+                
+
+                
+
+<h2 id="detachedCriteria"><a class="anchor" href="#detachedCriteria"></a>7.4 Detached Criteria</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/querying/detachedCriteria.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Detached Criteria are criteria queries that are not associated with any given database session/connection. Supported since Grails 2.0, Detached Criteria queries have many uses including allowing you to create common reusable criteria queries, execute subqueries and execute batch updates/deletes.</p>
+</div>
+<div class="sect3">
+<h4 id="_building_detached_criteria_queries">Building Detached Criteria Queries</h4>
+<div class="paragraph">
+<p>The primary point of entry for using the Detached Criteria is the <a href="../api/grails/gorm/DetachedCriteria.html">DetachedCriteria</a> class which accepts a domain class as the only argument to its constructor:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">grails.gorm.*</span>
+...
+def criteria = <span class="keyword">new</span> DetachedCriteria(Person)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once you have obtained a reference to a detached criteria instance you can execute <a href="#whereQueries">where</a> queries or criteria queries to build up the appropriate query. To build a normal criteria query you can use the <code>build</code> method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> criteria = <span class="keyword">new</span> DetachedCriteria(Person).build {
+    eq <span class="string"><span class="delimiter">'</span><span class="content">lastName</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Simpson</span><span class="delimiter">'</span></span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that methods on the <a href="../api/grails/gorm/DetachedCriteria.html">DetachedCriteria</a> instance <strong>do not</strong> mutate the original object but instead return a new query. In other words, you have to use the return value of the <code>build</code> method to obtain the mutated criteria object:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> criteria = <span class="keyword">new</span> DetachedCriteria(Person).build {
+    eq <span class="string"><span class="delimiter">'</span><span class="content">lastName</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Simpson</span><span class="delimiter">'</span></span>
+}
+<span class="keyword">def</span> bartQuery = criteria.build {
+    eq <span class="string"><span class="delimiter">'</span><span class="content">firstName</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Bart</span><span class="delimiter">'</span></span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_executing_detached_criteria_queries">Executing Detached Criteria Queries</h4>
+<div class="paragraph">
+<p>Unlike regular criteria, Detached Criteria are lazy, in that no query is executed at the point of definition. Once a Detached Criteria query has been constructed then there are a number of useful query methods which are summarized in the table below:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Method</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>list</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List all matching entities</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>get</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Return a single matching result</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>count</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Count all matching records</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>exists</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Return true if any matching records exist</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>deleteAll</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Delete all matching records</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>updateAll(Map)</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Update all matching records with the given properties</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>As an example the following code will list the first 4 matching records sorted by the <code>firstName</code> property:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> criteria = <span class="keyword">new</span> DetachedCriteria(Person).build {
+    eq <span class="string"><span class="delimiter">'</span><span class="content">lastName</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Simpson</span><span class="delimiter">'</span></span>
+}
+<span class="keyword">def</span> results = criteria.list(<span class="key">max</span>:<span class="integer">4</span>, <span class="key">sort</span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">firstName</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also supply additional criteria to the list method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> results = criteria.list(<span class="key">max</span>:<span class="integer">4</span>, <span class="key">sort</span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">firstName</span><span class="delimiter">&quot;</span></span>) {
+    gt <span class="string"><span class="delimiter">'</span><span class="content">age</span><span class="delimiter">'</span></span>, <span class="integer">30</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To retrieve a single result you can use the <code>get</code> or <code>find</code> methods (which are synonyms):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">Person p = criteria.find() <span class="comment">// or criteria.get()</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>DetachedCriteria</code> class itself also implements the <code>Iterable</code> interface which means that it can be treated like a list:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> criteria = <span class="keyword">new</span> DetachedCriteria(Person).build {
+    eq <span class="string"><span class="delimiter">'</span><span class="content">lastName</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Simpson</span><span class="delimiter">'</span></span>
+}
+criteria.each {
+    println <span class="local-variable">it</span>.firstName
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case the query is only executed when the <code>each</code> method is called. The same applies to all other Groovy collection iteration methods.</p>
+</div>
+<div class="paragraph">
+<p>You can also execute dynamic finders on <code>DetachedCriteria</code> just like on domain classes. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> criteria = <span class="keyword">new</span> DetachedCriteria(Person).build {
+    eq <span class="string"><span class="delimiter">'</span><span class="content">lastName</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Simpson</span><span class="delimiter">'</span></span>
+}
+<span class="keyword">def</span> bart = criteria.findByFirstName(<span class="string"><span class="delimiter">&quot;</span><span class="content">Bart</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_using_detached_criteria_for_subqueries">Using Detached Criteria for Subqueries</h4>
+<div class="paragraph">
+<p>Within the context of a regular criteria query you can use <code>DetachedCriteria</code> to execute subquery. For example if you want to find all people who are older than the average age the following query will accomplish that:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> results = Person.withCriteria {
+     gt <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span>, <span class="keyword">new</span> DetachedCriteria(Person).build {
+         projections {
+             avg <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span>
+         }
+     }
+     order <span class="string"><span class="delimiter">&quot;</span><span class="content">firstName</span><span class="delimiter">&quot;</span></span>
+ }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice that in this case the subquery class is the same as the original criteria query class (i.e. <code>Person</code>) and hence the query can be shortened to:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> results = Person.withCriteria {
+     gt <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span>, {
+         projections {
+             avg <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span>
+         }
+     }
+     order <span class="string"><span class="delimiter">&quot;</span><span class="content">firstName</span><span class="delimiter">&quot;</span></span>
+ }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the subquery class differs from the original criteria query then you will have to use the original syntax.</p>
+</div>
+<div class="paragraph">
+<p>In the previous example the projection ensured that only a single result was returned (the average age). If your subquery returns multiple results then there are different criteria methods that need to be used to compare the result. For example to find all the people older than the ages 18 to 65 a <code>gtAll</code> query can be used:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> results = Person.withCriteria {
+    gtAll <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span>, {
+        projections {
+            property <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span>
+        }
+        between <span class="string"><span class="delimiter">'</span><span class="content">age</span><span class="delimiter">'</span></span>, <span class="integer">18</span>, <span class="integer">65</span>
+    }
+
+    order <span class="string"><span class="delimiter">&quot;</span><span class="content">firstName</span><span class="delimiter">&quot;</span></span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following table summarizes criteria methods for operating on subqueries that return multiple results:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Method</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>gtAll</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">greater than all subquery results</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>geAll</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">greater than or equal to all subquery results</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>ltAll</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">less than all subquery results</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>leAll</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">less than or equal to all subquery results</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>eqAll</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">equal to all subquery results</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>neAll</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">not equal to all subquery results</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_batch_operations_with_detached_criteria">Batch Operations with Detached Criteria</h4>
+<div class="paragraph">
+<p>The <a href="../api/grails/gorm/DetachedCriteria.html">DetachedCriteria</a> class can be used to execute batch operations such as batch updates and deletes. For example, the following query will update all people with the surname "Simpson" to have the surname "Bloggs":</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> criteria = <span class="keyword">new</span> DetachedCriteria(Person).build {
+    eq <span class="string"><span class="delimiter">'</span><span class="content">lastName</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Simpson</span><span class="delimiter">'</span></span>
+}
+<span class="type">int</span> total = criteria.updateAll(<span class="key">lastName</span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">Bloggs</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Note that one limitation with regards to batch operations is that join queries (queries that query associations) are not allowed within the <code>DetachedCriteria</code> instance.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To batch delete records you can use the <code>deleteAll</code> method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> criteria = <span class="keyword">new</span> DetachedCriteria(Person).build {
+    eq <span class="string"><span class="delimiter">'</span><span class="content">lastName</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Simpson</span><span class="delimiter">'</span></span>
+}
+<span class="type">int</span> total = criteria.deleteAll()</code></pre>
+</div>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/persistenceBasics.html">&lt;&lt; <strong>6</strong><span>Persistence Basics</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright &copy; 2022-2025 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>8.2.10 Custom Hibernate Types 2023.3.0-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navHeader">
+        
+        <span id="logo">
+            <a href="https://graceframework.org" title="Grace Framework Website">
+                <img src="../img/grace.svg" alt="Grace Framework" />
+            </a>
+        </span>
+        
+        <div class="docHeader">
+            <h1 class="docTitle">Grace Data Hibernate</h1>
+            <h3 class="docSubTitle">Provides integration between Grace and Hibernate through GORM</h3>
+        </div>
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/gettingStarted.html"><strong>2</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/quickStartGuide.html"><strong>3</strong><span>Quick Start Guide</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/configuration.html"><strong>4</strong><span>Configuration</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/domainClasses.html"><strong>5</strong><span>Domain Modelling in GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/persistenceBasics.html"><strong>6</strong><span>Persistence Basics</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/querying.html"><strong>7</strong><span>Querying with GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/services.html"><strong>10</strong><span>GORM Data Services</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <!-- <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li> -->
+            <li class="separator selected">
+                <a id="ref-button" href="../api/index.html">API Docs</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/querying.html">&lt;&lt; <strong>7</strong><span>Querying with GORM</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>8.2.10 Custom Hibernate Types</h1>
+
+                    <p><strong>Version:</strong> 2023.3.0-SNAPSHOT</p>
+                </div>
+
+                
+
+                
+
+<h3 id="customHibernateTypes"><a class="anchor" href="#customHibernateTypes"></a>8.2.10 Custom Hibernate Types</h3>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/ormdsl/customHibernateTypes.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>You saw in an earlier section that you can use composition (with the <code>embedded</code> property) to break a table into multiple objects. You can achieve a similar effect with Hibernate&#8217;s custom user types. These are not domain classes themselves, but plain Java or Groovy classes. Each of these types also has a corresponding "meta-type" class that implements <a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/usertype/UserType.html">org.hibernate.usertype.UserType</a>.</p>
+</div>
+<div class="paragraph">
+<p>The <a href="https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#_custom_type">Hibernate reference manual</a> has some information on custom types, but here we will focus on how to map them in GORM. Let&#8217;s start by taking a look at a simple domain class that uses an old-fashioned (pre-Java 1.5) type-safe enum class:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Book</span> {
+
+    <span class="predefined-type">String</span> title
+    <span class="predefined-type">String</span> author
+    Rating rating
+
+    <span class="directive">static</span> mapping = {
+        rating <span class="key">type</span>: RatingUserType
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>All we have done is declare the <code>rating</code> field the enum type and set the property&#8217;s type in the custom mapping to the corresponding <code>UserType</code> implementation. That&#8217;s all you have to do to start using your custom type. If you want, you can also use the other column settings such as "column" to change the column name and "index" to add it to an index.</p>
+</div>
+<div class="paragraph">
+<p>Custom types aren&#8217;t limited to just a single column - they can be mapped to as many columns as you want. In such cases you explicitly define in the mapping what columns to use, since Hibernate can only use the property name for a single column. Fortunately, GORM lets you map multiple columns to a property using this syntax:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Book</span> {
+
+    <span class="predefined-type">String</span> title
+    <span class="predefined-type">Name</span> author
+    Rating rating
+
+    <span class="directive">static</span> mapping = {
+        author type: NameUserType, {
+            column name: <span class="string"><span class="delimiter">&quot;</span><span class="content">first_name</span><span class="delimiter">&quot;</span></span>
+            column name: <span class="string"><span class="delimiter">&quot;</span><span class="content">last_name</span><span class="delimiter">&quot;</span></span>
+        }
+        rating type: RatingUserType
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above example will create "first_name" and "last_name" columns for the <code>author</code> property. You&#8217;ll be pleased to know that you can also use some of the normal column/property mapping attributes in the column definitions. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">column name: <span class="string"><span class="delimiter">&quot;</span><span class="content">first_name</span><span class="delimiter">&quot;</span></span>, index: <span class="string"><span class="delimiter">&quot;</span><span class="content">my_idx</span><span class="delimiter">&quot;</span></span>, unique: <span class="predefined-constant">true</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The column definitions do <em>not</em> support the following attributes: <code>type</code>, <code>cascade</code>, <code>lazy</code>, <code>cache</code>, and <code>joinTable</code>.</p>
+</div>
+<div class="paragraph">
+<p>One thing to bear in mind with custom types is that they define the <em>SQL types</em> for the corresponding database columns. That helps take the burden of configuring them yourself, but what happens if you have a legacy database that uses a different SQL type for one of the columns? In that case, override the column&#8217;s SQL type using the <code>sqlType</code> attribute:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Book</span> {
+
+    <span class="predefined-type">String</span> title
+    <span class="predefined-type">Name</span> author
+    Rating rating
+
+    <span class="directive">static</span> mapping = {
+        author type: NameUserType, {
+            column name: <span class="string"><span class="delimiter">&quot;</span><span class="content">first_name</span><span class="delimiter">&quot;</span></span>, sqlType: <span class="string"><span class="delimiter">&quot;</span><span class="content">text</span><span class="delimiter">&quot;</span></span>
+            column name: <span class="string"><span class="delimiter">&quot;</span><span class="content">last_name</span><span class="delimiter">&quot;</span></span>, sqlType: <span class="string"><span class="delimiter">&quot;</span><span class="content">text</span><span class="delimiter">&quot;</span></span>
+        }
+        rating type: RatingUserType, sqlType: <span class="string"><span class="delimiter">&quot;</span><span class="content">text</span><span class="delimiter">&quot;</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Mind you, the SQL type you specify needs to still work with the custom type. So overriding a default of "varchar" with "text" is fine, but overriding "text" with "yes_no" isn&#8217;t going to work.</p>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/querying.html">&lt;&lt; <strong>7</strong><span>Querying with GORM</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright &copy; 2022-2025 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

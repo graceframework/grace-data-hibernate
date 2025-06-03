@@ -1,0 +1,864 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>7.2 Where Queries 2023.3.0-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navHeader">
+        
+        <span id="logo">
+            <a href="https://graceframework.org" title="Grace Framework Website">
+                <img src="../img/grace.svg" alt="Grace Framework" />
+            </a>
+        </span>
+        
+        <div class="docHeader">
+            <h1 class="docTitle">Grace Data Hibernate</h1>
+            <h3 class="docSubTitle">Provides integration between Grace and Hibernate through GORM</h3>
+        </div>
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/gettingStarted.html"><strong>2</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/quickStartGuide.html"><strong>3</strong><span>Quick Start Guide</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/configuration.html"><strong>4</strong><span>Configuration</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/domainClasses.html"><strong>5</strong><span>Domain Modelling in GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/persistenceBasics.html"><strong>6</strong><span>Persistence Basics</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/querying.html"><strong>7</strong><span>Querying with GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/services.html"><strong>10</strong><span>GORM Data Services</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <!-- <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li> -->
+            <li class="separator selected">
+                <a id="ref-button" href="../api/index.html">API Docs</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/persistenceBasics.html">&lt;&lt; <strong>6</strong><span>Persistence Basics</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>7.2 Where Queries</h1>
+
+                    <p><strong>Version:</strong> 2023.3.0-SNAPSHOT</p>
+                </div>
+
+                
+
+                
+
+<h2 id="whereQueries"><a class="anchor" href="#whereQueries"></a>7.2 Where Queries</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/querying/whereQueries.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>The <a href="../api/org/grails/datastore/gorm/GormEntity.html#where(groovy.lang.Closure)">where()</a> method builds on the support for <a href="#detachedCriteria">Detached Criteria</a> by providing an enhanced, compile-time checked query DSL for common queries. The <code>where</code> method is more flexible than dynamic finders, less verbose than criteria and provides a powerful mechanism to compose queries.</p>
+</div>
+<div class="sect3">
+<h4 id="_basic_querying">Basic Querying</h4>
+<div class="paragraph">
+<p>The <a href="../api/org/grails/datastore/gorm/GormEntity.html#where(groovy.lang.Closure)">where()</a> method accepts a closure that looks very similar to Groovy&#8217;s regular collection methods. The closure should define the logical criteria in regular Groovy syntax, for example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> query = Person.where {
+   firstName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Bart</span><span class="delimiter">&quot;</span></span>
+}
+Person bart = query.find()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The returned object is a <a href="../api/grails/gorm/DetachedCriteria.html">DetachedCriteria</a> instance, which means it is not associated with any particular database connection or session. This means you can use the <code>where</code> method to define common queries at the class level:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">grails.gorm.*</span>
+
+<span class="type">class</span> <span class="class">Person</span> {
+    <span class="directive">static</span> DetachedCriteria&lt;Person&gt; simpsons = where {
+         lastName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Simpson</span><span class="delimiter">&quot;</span></span>
+    }
+    ...
+}
+...
+Person.simpsons.each { Person p -&gt;
+    println p.firstname
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Query execution is lazy and only happens upon usage of the <a href="#detachedCriteria">DetachedCriteria</a> instance. If you want to execute a where-style query immediately there are variations of the <code>findAll</code> and <code>find</code> methods to accomplish this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> results = Person.findAll {
+     lastName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Simpson</span><span class="delimiter">&quot;</span></span>
+}
+<span class="keyword">def</span> results = Person.findAll(<span class="key">sort</span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">firstName</span><span class="delimiter">&quot;</span></span>) {
+     lastName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Simpson</span><span class="delimiter">&quot;</span></span>
+}
+Person p = Person.find { firstName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Bart</span><span class="delimiter">&quot;</span></span> }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Each Groovy operator maps onto a regular criteria method. The following table provides a map of Groovy operators to methods:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Operator</th>
+<th class="tableblock halign-left valign-top">Criteria Method</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><code>==</code></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">eq</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Equal to</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><code>!=</code></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ne</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not equal to</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><code>&gt;</code></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">gt</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Greater than</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><code>&lt;</code></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lt</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Less than</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><code>&gt;=</code></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ge</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Greater than or equal to</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><code>&#8656;</code></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">le</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Less than or equal to</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><code>in</code></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">inList</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Contained within the given list</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><code>==~</code></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">like</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Like a given string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong><code>=~</code></strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ilike</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Case insensitive like</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>It is possible use regular Groovy comparison operators and logic to formulate complex queries:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> query = Person.where {
+    (lastName != <span class="string"><span class="delimiter">&quot;</span><span class="content">Simpson</span><span class="delimiter">&quot;</span></span> &amp;&amp; firstName != <span class="string"><span class="delimiter">&quot;</span><span class="content">Fred</span><span class="delimiter">&quot;</span></span>) || (firstName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Bart</span><span class="delimiter">&quot;</span></span> &amp;&amp; age &gt; <span class="integer">9</span>)
+}
+<span class="keyword">def</span> results = query.list(<span class="key">sort</span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">firstName</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The Groovy regex matching operators map onto like and ilike queries unless the expression on the right hand side is a <code>Pattern</code> object, in which case they map onto an <code>rlike</code> query:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> query = Person.where {
+     firstName ==~ ~<span class="regexp"><span class="delimiter">/</span><span class="content">B.+</span><span class="delimiter">/</span></span>
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Note that <code>rlike</code> queries are only supported if the underlying database supports regular expressions
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>A <code>between</code> criteria query can be done by combining the <code>in</code> keyword with a range:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> query = Person.where {
+     age <span class="keyword">in</span> <span class="integer">18</span>..<span class="integer">65</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, you can do <code>isNull</code> and <code>isNotNull</code> style queries by using <code>null</code> with regular comparison operators:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> query = Person.where {
+     middleName == <span class="predefined-constant">null</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_query_composition">Query Composition</h4>
+<div class="paragraph">
+<p>Since the return value of the <code>where</code> method is a <a href="#detachedCriteria">DetachedCriteria</a> instance you can compose new queries from the original query:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">DetachedCriteria&lt;Person&gt; query = Person.where {
+     lastName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Simpson</span><span class="delimiter">&quot;</span></span>
+}
+DetachedCriteria&lt;Person&gt; bartQuery = query.where {
+     firstName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Bart</span><span class="delimiter">&quot;</span></span>
+}
+Person p = bartQuery.find()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that you cannot pass a closure defined as a variable into the <code>where</code> method unless it has been explicitly cast to a <code>DetachedCriteria</code> instance. In other words the following will produce an error:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> callable = {
+    lastName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Simpson</span><span class="delimiter">&quot;</span></span>
+}
+<span class="keyword">def</span> query = Person.where(callable)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above must be written as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">grails.gorm.DetachedCriteria</span>
+
+<span class="keyword">def</span> callable = {
+    lastName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Simpson</span><span class="delimiter">&quot;</span></span>
+} <span class="keyword">as</span> DetachedCriteria&lt;Person&gt;
+<span class="keyword">def</span> query = Person.where(callable)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you can see the closure definition is cast (using the Groovy <code>as</code> keyword) to a <a href="#detachedCriteria">DetachedCriteria</a> instance targeted at the <code>Person</code> class.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_conjunction_disjunction_and_negation">Conjunction, Disjunction and Negation</h4>
+<div class="paragraph">
+<p>As mentioned previously you can combine regular Groovy logical operators (<code>||</code> and <code>&amp;&amp;</code>) to form conjunctions and disjunctions:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> query = Person.where {
+    (lastName != <span class="string"><span class="delimiter">&quot;</span><span class="content">Simpson</span><span class="delimiter">&quot;</span></span> &amp;&amp; firstName != <span class="string"><span class="delimiter">&quot;</span><span class="content">Fred</span><span class="delimiter">&quot;</span></span>) || (firstName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Bart</span><span class="delimiter">&quot;</span></span> &amp;&amp; age &gt; <span class="integer">9</span>)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also negate a logical comparison using <code>!</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> query = Person.where {
+    firstName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Fred</span><span class="delimiter">&quot;</span></span> &amp;&amp; !(lastName == <span class="string"><span class="delimiter">'</span><span class="content">Simpson</span><span class="delimiter">'</span></span>)
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_property_comparison_queries">Property Comparison Queries</h4>
+<div class="paragraph">
+<p>If you use a property name on both the left hand and right side of a comparison expression then the appropriate property comparison criteria is automatically used:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> query = Person.where {
+   firstName == lastName
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following table described how each comparison operator maps onto each criteria property comparison method:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Operator</th>
+<th class="tableblock halign-left valign-top">Criteria Method</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>==</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">eqProperty</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Equal to</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>!=</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">neProperty</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Not equal to</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>&gt;</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">gtProperty</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Greater than</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>&lt;</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ltProperty</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Less than</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>&gt;=</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">geProperty</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Greater than or equal to</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>&#8656;</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">leProperty</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Less than or equal to</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_querying_associations">Querying Associations</h4>
+<div class="paragraph">
+<p>Associations can be queried by using the dot operator to specify the property name of the association to be queried:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> query = Pet.where {
+    owner.firstName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Joe</span><span class="delimiter">&quot;</span></span> || owner.firstName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Fred</span><span class="delimiter">&quot;</span></span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can group multiple criterion inside a closure method call where the name of the method matches the association name:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> query = Person.where {
+    pets { name == <span class="string"><span class="delimiter">&quot;</span><span class="content">Jack</span><span class="delimiter">&quot;</span></span> || name == <span class="string"><span class="delimiter">&quot;</span><span class="content">Joe</span><span class="delimiter">&quot;</span></span> }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This technique can be combined with other top-level criteria:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> query = Person.where {
+     pets { name == <span class="string"><span class="delimiter">&quot;</span><span class="content">Jack</span><span class="delimiter">&quot;</span></span> } || firstName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Ed</span><span class="delimiter">&quot;</span></span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For collection associations it is possible to apply queries to the size of the collection:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> query = Person.where {
+       pets.size() == <span class="integer">2</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following table shows which operator maps onto which criteria method for each size() comparison:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Operator</th>
+<th class="tableblock halign-left valign-top">Criteria Method</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>==</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sizeEq</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The collection size is equal to</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>!=</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sizeNe</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The collection size is not equal to</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>&gt;</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sizeGt</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The collection size is greater than</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>&lt;</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sizeLt</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The collection size is less than</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>&gt;=</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sizeGe</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The collection size is greater than or equal to</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>&#8656;</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">sizeLe</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The collection size is less than or equal to</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_query_aliases_and_sorting">Query Aliases and Sorting</h4>
+<div class="paragraph">
+<p>If you define a query for an association an alias is automatically generated for the query. For example the following query:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> query = Pet.where {
+    owner.firstName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Fred</span><span class="delimiter">&quot;</span></span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Will generate an alias for the <code>owner</code> association such as <code>owner_alias_0</code>. These generated aliases are fine for most cases, but are not useful if you want to later sort or use a projection on the results. For example the following query will fail:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="comment">// fails because a dynamic alias is used</span>
+Pet.where {
+    owner.firstName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Fred</span><span class="delimiter">&quot;</span></span>
+}.list(<span class="key">sort</span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">owner.lastName</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you plan to sort the results then an explicit alias should be used and these can be defined by simply declaring a variable in the <code>where</code> query:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> query = Pet.where {
+    <span class="keyword">def</span> o1 = owner <i class="conum" data-value="1"></i><b>(1)</b>
+    o1.firstName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Fred</span><span class="delimiter">&quot;</span></span> <i class="conum" data-value="2"></i><b>(2)</b>
+}.list(<span class="key">sort</span>:<span class="string"><span class="delimiter">'</span><span class="content">o1.lastName</span><span class="delimiter">'</span></span>) <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Define an alias called <code>o1</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Use the alias in the query itself</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Use the alias to sort the results</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>By assigning the name of an association to a local variable it will automatically become an alias usable within the query itself and also for the purposes of sorting or projecting the results.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_subqueries">Subqueries</h4>
+<div class="paragraph">
+<p>It is possible to execute subqueries within where queries. For example to find all the people older than the average age the following query can be used:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">final</span> query = Person.where {
+  age &gt; avg(age)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The following table lists the possible subqueries:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Method</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>avg</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The average of all values</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>sum</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The sum of all values</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>max</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The maximum value</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>min</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The minimum value</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>count</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The count of all values</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>property</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Retrieves a property of the resulting entities</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>You can apply additional criteria to any subquery by using the <code>of</code> method and passing in a closure containing the criteria:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> query = Person.where {
+  age &gt; avg(age).of { lastName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Simpson</span><span class="delimiter">&quot;</span></span> } &amp;&amp; firstName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Homer</span><span class="delimiter">&quot;</span></span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Since the <code>property</code> subquery returns multiple results, the criterion used compares all results. For example the following query will find all people younger than people with the surname "Simpson":</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">Person.where {
+    age &lt; property(age).of { lastName == <span class="string"><span class="delimiter">&quot;</span><span class="content">Simpson</span><span class="delimiter">&quot;</span></span> }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_more_advanced_subqueries_in_gorm">More Advanced Subqueries in GORM</h4>
+<div class="paragraph">
+<p>The support for subqueries has been extended. You can now use in  with nested subqueries</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> results = Person.where {
+    firstName <span class="keyword">in</span> where { age &lt; <span class="integer">18</span> }.firstName
+}.list()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Criteria and where queries can be seamlessly mixed:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> results = Person.withCriteria {
+    notIn <span class="string"><span class="delimiter">&quot;</span><span class="content">firstName</span><span class="delimiter">&quot;</span></span>, Person.where { age &lt; <span class="integer">18</span> }.firstName
+ }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Subqueries can be used with projections:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> results = Person.where {
+    age &gt; where { age &gt; <span class="integer">18</span> }.avg(<span class="string"><span class="delimiter">'</span><span class="content">age</span><span class="delimiter">'</span></span>)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Correlated queries that span two domain classes can be used:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> employees = Employee.where {
+    region.continent <span class="keyword">in</span> [<span class="string"><span class="delimiter">'</span><span class="content">APAC</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">EMEA</span><span class="delimiter">&quot;</span></span>]
+    }.id()
+    <span class="keyword">def</span> results = Sale.where {
+    employee <span class="keyword">in</span> employees &amp;&amp; total &gt; <span class="integer">100000</span>
+    }.employee.list()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And support for aliases (cross query references) using simple variable declarations has been added to where queries:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> query = Employee.where {
+    <span class="keyword">def</span> em1 = Employee
+    exists Sale.where {
+        <span class="keyword">def</span> s1 = Sale
+        <span class="keyword">def</span> em2 = employee
+        <span class="keyword">return</span> em2.id == em1.id
+    }.id()
+}
+<span class="keyword">def</span> results = query.list()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_other_functions">Other Functions</h4>
+<div class="paragraph">
+<p>There are several functions available to you within the context of a query. These are summarized in the table below:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Method</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>second</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The second of a date property</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>minute</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The minute of a date property</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>hour</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The hour of a date property</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>day</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The day of the month of a date property</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>month</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The month of a date property</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>year</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The year of a date property</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>lower</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Converts a string property to lower case</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>upper</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Converts a string property to upper case</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>length</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The length of a string property</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>trim</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Trims a string property</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Currently functions can only be applied to properties or associations of domain classes. You cannot, for example, use a function on a result of a subquery.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>For example the following query can be used to find all pet&#8217;s born in 2011:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> query = Pet.where {
+    year(birthDate) == <span class="integer">2011</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also apply functions to associations:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> query = Person.where {
+    year(pets.birthDate) == <span class="integer">2009</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_batch_updates_and_deletes">Batch Updates and Deletes</h4>
+<div class="paragraph">
+<p>Since each <code>where</code> method call returns a <a href="#detachedCriteria">DetachedCriteria</a> instance, you can use <code>where</code> queries to execute batch operations such as batch updates and deletes. For example, the following query will update all people with the surname "Simpson" to have the surname "Bloggs":</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">DetachedCriteria&lt;Person&gt; query = Person.where {
+    lastName == <span class="string"><span class="delimiter">'</span><span class="content">Simpson</span><span class="delimiter">'</span></span>
+}
+<span class="type">int</span> total = query.updateAll(<span class="key">lastName</span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">Bloggs</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Note that one limitation with regards to batch operations is that join queries (queries that query associations) are not allowed.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To batch delete records you can use the <code>deleteAll</code> method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">DetachedCriteria&lt;Person&gt; query = Person.where {
+    lastName == <span class="string"><span class="delimiter">'</span><span class="content">Simpson</span><span class="delimiter">'</span></span>
+}
+<span class="type">int</span> total = query.deleteAll()</code></pre>
+</div>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/persistenceBasics.html">&lt;&lt; <strong>6</strong><span>Persistence Basics</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright &copy; 2022-2025 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

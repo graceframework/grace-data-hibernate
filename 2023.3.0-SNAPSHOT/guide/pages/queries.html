@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>10.2 Data Service Queries 2023.3.0-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navHeader">
+        
+        <span id="logo">
+            <a href="https://graceframework.org" title="Grace Framework Website">
+                <img src="../img/grace.svg" alt="Grace Framework" />
+            </a>
+        </span>
+        
+        <div class="docHeader">
+            <h1 class="docTitle">Grace Data Hibernate</h1>
+            <h3 class="docSubTitle">Provides integration between Grace and Hibernate through GORM</h3>
+        </div>
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/gettingStarted.html"><strong>2</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/quickStartGuide.html"><strong>3</strong><span>Quick Start Guide</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/configuration.html"><strong>4</strong><span>Configuration</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/domainClasses.html"><strong>5</strong><span>Domain Modelling in GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/persistenceBasics.html"><strong>6</strong><span>Persistence Basics</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/querying.html"><strong>7</strong><span>Querying with GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/services.html"><strong>10</strong><span>GORM Data Services</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <!-- <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li> -->
+            <li class="separator selected">
+                <a id="ref-button" href="../api/index.html">API Docs</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/programmaticTransactions.html">&lt;&lt; <strong>9</strong><span>Programmatic Transactions</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>10.2 Data Service Queries</h1>
+
+                    <p><strong>Version:</strong> 2023.3.0-SNAPSHOT</p>
+                </div>
+
+                
+
+                
+
+<h2 id="queries"><a class="anchor" href="#queries"></a>10.2 Data Service Queries</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/services/queries.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>GORM Data Services will implement queries for you using a number of different strategies and conventions.</p>
+</div>
+<div class="paragraph">
+<p>It does this by looking at the return type of a method and the method stem and picking the most appropriate implementation.</p>
+</div>
+<div class="paragraph">
+<p>The following table summarizes the conventions:</p>
+</div>
+<div class="paragraph">
+<p>Unresolved directive in &lt;stdin&gt; - include::queryConventions.adoc[]</p>
+</div>
+<div class="paragraph">
+<p>The conventions are extensible (more on that later), in terms of queries there are two distinct types.</p>
+</div>
+<div class="sect3">
+<h4 id="_simple_queries">Simple Queries</h4>
+<div class="paragraph">
+<p>Unresolved directive in &lt;stdin&gt; - include::simpleQueries.adoc[]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_dynamic_finder_queries">Dynamic Finder Queries</h4>
+<div class="paragraph">
+<p>Unresolved directive in &lt;stdin&gt; - include::finderQueries.adoc[]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_where_queries">Where Queries</h4>
+<div class="paragraph">
+<p>Unresolved directive in &lt;stdin&gt; - include::whereQueries.adoc[]</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_query_joins">Query Joins</h3>
+<div class="paragraph">
+<p>You can specify query joins using the <code>@Join</code> annotation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">static</span> <span class="include">javax.persistence.criteria.JoinType.*</span>
+
+<span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+    <span class="annotation">@Join</span>(<span class="string"><span class="delimiter">'</span><span class="content">author</span><span class="delimiter">'</span></span>)
+    <span class="predefined-type">Book</span> find(<span class="predefined-type">String</span> title) <i class="conum" data-value="1"></i><b>(1)</b>
+
+    <span class="annotation">@Join</span>(value=<span class="string"><span class="delimiter">'</span><span class="content">author</span><span class="delimiter">'</span></span>, type=LEFT) <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="predefined-type">Book</span> findAnother(<span class="predefined-type">String</span> title)
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Join on the <code>author</code> property</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Join on the <code>author</code> property using a <code>LEFT OUTER</code> join</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_jpa_ql_queries">JPA-QL Queries</h4>
+<div class="paragraph">
+<p>Unresolved directive in &lt;stdin&gt; - include::hqlQueries.adoc[]</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_query_projections">Query Projections</h4>
+<div class="paragraph">
+<p>Unresolved directive in &lt;stdin&gt; - include::queryProjections.adoc[]</p>
+</div>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/programmaticTransactions.html">&lt;&lt; <strong>9</strong><span>Programmatic Transactions</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright &copy; 2022-2025 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,987 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>6 Persistence Basics 2023.3.0-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navHeader">
+        
+        <span id="logo">
+            <a href="https://graceframework.org" title="Grace Framework Website">
+                <img src="../img/grace.svg" alt="Grace Framework" />
+            </a>
+        </span>
+        
+        <div class="docHeader">
+            <h1 class="docTitle">Grace Data Hibernate</h1>
+            <h3 class="docSubTitle">Provides integration between Grace and Hibernate through GORM</h3>
+        </div>
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/gettingStarted.html"><strong>2</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/quickStartGuide.html"><strong>3</strong><span>Quick Start Guide</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/configuration.html"><strong>4</strong><span>Configuration</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/domainClasses.html"><strong>5</strong><span>Domain Modelling in GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/persistenceBasics.html"><strong>6</strong><span>Persistence Basics</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/querying.html"><strong>7</strong><span>Querying with GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/services.html"><strong>10</strong><span>GORM Data Services</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <!-- <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li> -->
+            <li class="separator selected">
+                <a id="ref-button" href="../api/index.html">API Docs</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../guide/domainClasses.html">&lt;&lt; <strong>5</strong><span>Domain Modelling in GORM</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../guide/querying.html"><strong>7</strong><span>Querying with GORM</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>6 Persistence Basics</h1>
+
+                    <p><strong>Version:</strong> 2023.3.0-SNAPSHOT</p>
+                </div>
+
+                
+                <div id="table-of-content">
+                    <h2>Table of Contents</h2>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#savingAndUpdating"><strong>6.1</strong><span>Saving and Updating</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#deletingObjects"><strong>6.2</strong><span>Deleting Objects</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#cascades"><strong>6.3</strong><span>Understanding Cascading Updates and Deletes</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#fetching"><strong>6.4</strong><span>Eager and Lazy Fetching</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#locking"><strong>6.5</strong><span>Pessimistic and Optimistic Locking</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#modificationChecking"><strong>6.6</strong><span>Modification Checking</span></a>
+                    </div>
+                    
+                </div>
+                
+
+                
+
+<h1 id="persistenceBasics"><a class="anchor" href="#persistenceBasics"></a>6 Persistence Basics</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/persistenceBasics.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>A key thing to remember about GORM is that under the surface GORM is using <a href="https://www.hibernate.org/">Hibernate</a> for persistence. If you are coming from a background of using <a href="https://api.rubyonrails.org/classes/ActiveRecord/Base.html">ActiveRecord</a> or <a href="https://www.mybatis.org/">iBatis/MyBatis</a>, Hibernate&#8217;s "session" model may feel a little strange.</p>
+</div>
+<div class="paragraph">
+<p>If you are using Grails, then Grails automatically binds a Hibernate session to the currently executing request. This lets you use the <code>save()</code> and <code>delete</code> methods as well as other GORM methods transparently.</p>
+</div>
+<div class="paragraph">
+<p>If you are not using Grails then you have to make sure that a session is bound to the current request. One way to to achieve that is with the <a href="../api/org/grails/datastore/gorm/GormEntity.html#withNewSession(groovy.lang.Closure)">withNewSession(Closure)</a> method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="predefined-type">Book</span>.withNewSession {
+        <span class="comment">// your logic here</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Another option is to bind a transaction using the <a href="../api/org/grails/datastore/gorm/GormEntity.html#withTransaction(groovy.lang.Closure)">withTransaction(Closure)</a> method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="predefined-type">Book</span>.withTransaction {
+        <span class="comment">// your logic here</span>
+}</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_transactional_write_behind">Transactional Write-Behind</h4>
+<div class="paragraph">
+<p>A useful feature of Hibernate over direct JDBC calls and even other frameworks is that when you call <a href="../api/org/grails/datastore/gorm/GormEntity.html#save()">save()</a> or <a href="../api/org/grails/datastore/gorm/GormEntity.html#delete()">delete()</a> it does not necessarily perform any SQL operations <strong>at that point</strong>. Hibernate batches up SQL statements and executes them as late as possible, often at the end of the request when flushing and closing the session.</p>
+</div>
+<div class="paragraph">
+<p>If you are using Grails this typically done for you automatically, which manages your Hibernate session. If you are using GORM outside of Grails then you may need to manually flush the session at the end of your operation.</p>
+</div>
+<div class="paragraph">
+<p>Hibernate caches database updates where possible, only actually pushing the changes when it knows that a flush is required, or when a flush is triggered programmatically. One common case where Hibernate will flush cached updates is when performing queries since the cached information might be included in the query results. But as long as you&#8217;re doing non-conflicting saves, updates, and deletes, they&#8217;ll be batched until the session is flushed. This can be a significant performance boost for applications that do a lot of database writes.</p>
+</div>
+<div class="paragraph">
+<p>Note that flushing is not the same as committing a transaction. If your actions are performed in the context of a transaction, flushing will execute SQL updates but the database will save the changes in its transaction queue and only finalize the updates when the transaction commits.</p>
+</div>
+</div>
+
+
+<h2 id="savingAndUpdating"><a class="anchor" href="#savingAndUpdating"></a>6.1 Saving and Updating</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/persistenceBasics/savingAndUpdating.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>An example of using the <a href="../api/org/grails/datastore/gorm/GormEntity.html#save()">save()</a> method can be seen below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> p = Person.get(<span class="integer">1</span>)
+p.save()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This save will be not be pushed to the database immediately - it will be pushed when the next flush occurs. But there are occasions when you want to control when those statements are executed or, in Hibernate terminology, when the session is "flushed". To do so you can use the flush argument to the save method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> p = Person.get(<span class="integer">1</span>)
+p.save(<span class="key">flush</span>: <span class="predefined-constant">true</span>)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that in this case <em>all</em> pending SQL statements including previous saves, deletes, etc. will be synchronized with the database. This also lets you catch any exceptions, which is typically useful in highly concurrent scenarios involving <a href="#locking">optimistic locking</a>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> p = Person.get(<span class="integer">1</span>)
+<span class="keyword">try</span> {
+    p.save(<span class="key">flush</span>: <span class="predefined-constant">true</span>)
+}
+<span class="keyword">catch</span> (org.springframework.dao.DataIntegrityViolationException e) {
+    <span class="comment">// deal with exception</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Another thing to bear in mind is that GORM validates a domain instance every time you save it. If that validation fails the domain instance will <em>not</em> be persisted to the database. By default, <code>save()</code> will simply return <code>null</code> in this case, but if you would prefer it to throw an exception you can use the <code>failOnError</code> argument:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> p = Person.get(<span class="integer">1</span>)
+<span class="keyword">try</span> {
+    p.save(<span class="key">failOnError</span>: <span class="predefined-constant">true</span>)
+}
+<span class="keyword">catch</span> (ValidationException e) {
+    <span class="comment">// deal with exception</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can even change the default behaviour with a setting in <code>application.groovy</code>, as described in the <a href="#configuration">section on configuration</a>. Just remember that when you are saving domain instances that have been bound with data provided by the user, the likelihood of validation exceptions is quite high and you won&#8217;t want those exceptions propagating to the end user.</p>
+</div>
+
+
+<h2 id="deletingObjects"><a class="anchor" href="#deletingObjects"></a>6.2 Deleting Objects</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/persistenceBasics/deletingObjects.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>An example of the <a href="../api/org/grails/datastore/gorm/GormEntity.html#delete()">delete()</a> method can be seen below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> p = Person.get(<span class="integer">1</span>)
+p.delete()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As with saves, Hibernate will use transactional write-behind to perform the delete; to perform the delete in-place you can use the <code>flush</code> argument:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> p = Person.get(<span class="integer">1</span>)
+p.delete(<span class="key">flush</span>: <span class="predefined-constant">true</span>)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Using the <code>flush</code> argument lets you catch any errors that occur during a delete. A common error that may occur is if you violate a database constraint, although this is normally down to a programming or schema error. The following example shows how to catch a <code>DataIntegrityViolationException</code> that is thrown when you violate the database constraints:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">org.springframework.dao</span>.*
+
+<span class="include">def</span> <span class="include">p</span> = <span class="include">Person.get</span>(<span class="integer">1</span>)
+
+<span class="include">try</span> {
+    <span class="include">p.delete</span>(<span class="include">flush</span>: <span class="include">true</span>)
+}
+<span class="include">catch</span> (<span class="include">DataIntegrityViolationException</span> <span class="include">e</span>) {
+    <span class="comment">// handle the error</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In order to perform a batch delete there are a couple of ways to achieve that. One way is to use a <a href="#whereQueries">Where Query</a>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">Person.where {
+        name == <span class="string"><span class="delimiter">&quot;</span><span class="content">Fred</span><span class="delimiter">&quot;</span></span>
+}.deleteAll()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Another alternative is to use an HQL statement within the <a href="../api/org/grails/datastore/gorm/GormEntity.html#executeUpdate(java.lang.String)">executeUpdate(&#8230;&#8203;)</a> method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">Customer.executeUpdate(<span class="string"><span class="delimiter">&quot;</span><span class="content">delete Customer c where c.name = :oldName</span><span class="delimiter">&quot;</span></span>,
+                       [<span class="key">oldName</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Fred</span><span class="delimiter">&quot;</span></span>])</code></pre>
+</div>
+</div>
+
+
+<h2 id="cascades"><a class="anchor" href="#cascades"></a>6.3 Understanding Cascading Updates and Deletes</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/persistenceBasics/cascades.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>It is critical that you understand how cascading updates and deletes work when using GORM. The key part to remember is the <code>belongsTo</code> setting which controls which class "owns" a relationship.</p>
+</div>
+<div class="paragraph">
+<p>Whether it is a one-to-one, one-to-many or many-to-many, defining <code>belongsTo</code> will result in updates cascading from the owning class to its dependant (the other side of the relationship), and for many-/one-to-one and one-to-many relationships deletes will also cascade.</p>
+</div>
+<div class="paragraph">
+<p>If you <em>do not</em> define <code>belongsTo</code> then no cascades will happen and you will have to manually save each object (except in the case of the one-to-many, in which case saves will cascade automatically if a new instance is in a <code>hasMany</code> collection).</p>
+</div>
+<div class="paragraph">
+<p>Here is an example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Airport</span> {
+    <span class="predefined-type">String</span> name
+    <span class="directive">static</span> hasMany = [<span class="key">flights</span>: Flight]
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Flight</span> {
+    <span class="predefined-type">String</span> number
+    <span class="directive">static</span> belongsTo = [<span class="key">airport</span>: Airport]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If I now create an <code>Airport</code> and add some <code>Flight</code>s to it I can save the <code>Airport</code> and have the updates cascaded down to each flight, hence saving the whole object graph:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">new</span> Airport(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Gatwick</span><span class="delimiter">&quot;</span></span>)
+        .addToFlights(<span class="keyword">new</span> Flight(<span class="key">number</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">BA3430</span><span class="delimiter">&quot;</span></span>))
+        .addToFlights(<span class="keyword">new</span> Flight(<span class="key">number</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">EZ0938</span><span class="delimiter">&quot;</span></span>))
+        .save()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Conversely if I later delete the <code>Airport</code> all <code>Flight</code> instances associated with it will also be deleted:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> airport = Airport.findByName(<span class="string"><span class="delimiter">&quot;</span><span class="content">Gatwick</span><span class="delimiter">&quot;</span></span>)
+airport.delete()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above examples are called transitive persistence and are controlled via the <code>belongsTo</code> and the cascade policy. If I were to remove <code>belongsTo</code> then the above cascading deletion code <strong>would not work</strong>.</p>
+</div>
+<div class="sect4">
+<h5 id="_unidirectional_many_to_one_without_belongsto">Unidirectional Many-To-One without belongsTo</h5>
+<div class="paragraph">
+<p>For example, consider the following domain model:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Location</span> {
+    <span class="predefined-type">String</span> city
+}
+
+<span class="type">class</span> <span class="class">Author</span> {
+    <span class="predefined-type">String</span> name
+    Location location
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It looks simple, right? And it is. Just set the location property to a Location instance and you have linked an author to a location. But see what happens when we run the following code:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> a = <span class="keyword">new</span> Author(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Niall Ferguson</span><span class="delimiter">&quot;</span></span>, <span class="key">location</span>: <span class="keyword">new</span> Location(<span class="key">city</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Boston</span><span class="delimiter">&quot;</span></span>))
+a.save()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>An exception is thrown. If you look at the ultimate “caused by” exception, you’ll see the message <code>“not-null property references a null or transient value: Author.location”</code>. What’s going on?</p>
+</div>
+<div class="paragraph">
+<p>A transient instance is one that isn’t attached to a Hibernate session. As you can see from the code, we are setting the Author.location property to a new Location instance, not one retrieved from the database. Hence the instance is transient. The obvious fix is to make the Location instance persistent by saving it:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> l = <span class="keyword">new</span> Location(<span class="key">city</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Boston</span><span class="delimiter">&quot;</span></span>)
+l.save()
+
+<span class="keyword">def</span> a = <span class="keyword">new</span> Author(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Niall Ferguson</span><span class="delimiter">&quot;</span></span>, <span class="key">location</span>: l)
+a.save()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Another option is to alter the cascade policy for the association. There are two ways to do that. One way is to define <code>belongsTo</code> on the <code>Location</code> class:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Location</span> {
+    <span class="predefined-type">String</span> city
+
+    <span class="directive">static</span> belongsTo = Author
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that this above syntax does not make the association bidirectional since no property is defined. A bidirectional example would be:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Location</span> {
+    <span class="predefined-type">String</span> city
+
+    <span class="directive">static</span> belongsTo = [<span class="key">author</span>:Author]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively if you prefer that the <code>Location</code> class has nothing to do with the <code>Author</code> class you can define the cascade policy in <code>Author</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+    <span class="predefined-type">String</span> name
+    Location location
+
+    <span class="directive">static</span> mapping = {
+        location <span class="key">cascade</span>:<span class="string"><span class="delimiter">'</span><span class="content">save-update</span><span class="delimiter">'</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The above example will configure the cascade policy to cascade saves and updates, but not deletes.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_bidirectional_one_to_many_with_belongsto">Bidirectional one-to-many with belongsTo</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">A</span> { <span class="directive">static</span> hasMany = [<span class="key">bees</span>: B] }</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">B</span> { <span class="directive">static</span> belongsTo = [<span class="key">a</span>: A] }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the case of a bidirectional one-to-many where the many side defines a <code>belongsTo</code> then the cascade strategy is set to "ALL" for the one side and "NONE" for the many side.</p>
+</div>
+<div class="paragraph">
+<p>What this means is that whenever an instance of <code>A</code> is saved or updated. So will any instances of <code>B</code>. And, critically, whenever any instance of <code>A</code> is <strong>deleted</strong> so will all the associated instances of <code>B</code>!</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_unidirectional_one_to_many">Unidirectional One-to-Many</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">A</span> { <span class="directive">static</span> hasMany = [<span class="key">bees</span>: B] }</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">B</span> {  }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the case of a unidirectional one-to-many where the many side defines no belongsTo then the cascade strategy is set to "SAVE-UPDATE".</p>
+</div>
+<div class="paragraph">
+<p>Since the <code>belongsTo</code> is not defined, this means that saves and updates will be cascaded from <code>A</code> to <code>B</code>, however deletes <strong>will not</strong> cascade!</p>
+</div>
+<div class="paragraph">
+<p>Only when you define <code>belongsTo</code> in <code>B</code> or alter the cascading strategy of <code>A</code> will deletes be cascaded.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_bidirectional_one_to_many_no_belongsto">Bidirectional One-to-Many, no belongsTo</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">A</span> { <span class="directive">static</span> hasMany = [<span class="key">bees</span>: B] }</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">B</span> { A a }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the case of a bidirectional one-to-many where the many side does not define a <code>belongsTo</code> then the cascade strategy is set to "SAVE-UPDATE" for the one side and "NONE" for the many side.</p>
+</div>
+<div class="paragraph">
+<p>So exactly like the previous case of a undirectional One-to-Many, without <code>belongsTo</code> definition no delete operations will be cascaded, but crucially saves and updates will by default. If you do not want saves and updates to cacade then <strong>you must</strong> alter the cascade policy of <code>A</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">A</span> {
+    <span class="directive">static</span> hasMany = [<span class="key">bees</span>: B]
+    <span class="directive">static</span> mapping = {
+        bees <span class="key">cascade</span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">none</span><span class="delimiter">&quot;</span></span>
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_unidirectional_many_to_one_with_belongsto">Unidirectional Many-to-One with belongsTo</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">A</span> {  }</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">B</span> { <span class="directive">static</span> belongsTo = [<span class="key">a</span>: A] }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the case of a unidirectional many-to-one association that defines a <code>belongsTo</code> then the cascade strategy is set to "ALL" for the owning side of the relationship (A&#8594;B) and "NONE" from the side that defines the <code>belongsTo</code> (B&#8594;A)</p>
+</div>
+<div class="paragraph">
+<p>You may be wondering why this association is a many-to-one and not a one-to-one. The reason is because it is possible to have multiple instances of <code>B</code> associated to the same instance of <code>A</code>. If you wish to define this association as a true one-to-one association a <code>unique</code> constraint is required:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">B</span> {
+    <span class="directive">static</span> belongsTo = [<span class="key">a</span>: A]
+    <span class="directive">static</span> constraints = {
+        a <span class="key">unique</span>:<span class="predefined-constant">true</span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that if you need further control over cascading behaviour, you can use the <a href="#ormdsl">ORM DSL</a>.</p>
+</div>
+</div>
+
+
+<h2 id="fetching"><a class="anchor" href="#fetching"></a>6.4 Eager and Lazy Fetching</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/persistenceBasics/fetching.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Associations in GORM are by default lazy. This is best explained by example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Airport</span> {
+    <span class="predefined-type">String</span> name
+    <span class="directive">static</span> hasMany = [<span class="key">flights</span>: Flight]
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Flight</span> {
+    <span class="predefined-type">String</span> number
+    Location destination
+    <span class="directive">static</span> belongsTo = [<span class="key">airport</span>: Airport]
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Location</span> {
+    <span class="predefined-type">String</span> city
+    <span class="predefined-type">String</span> country
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Given the above domain classes and the following code:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> airport = Airport.findByName(<span class="string"><span class="delimiter">&quot;</span><span class="content">Gatwick</span><span class="delimiter">&quot;</span></span>)
+<span class="keyword">for</span> (flight <span class="keyword">in</span> airport.flights) {
+    println flight.destination.city
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>GORM will execute a single SQL query to fetch the <code>Airport</code> instance, another to get its flights, and then 1 extra query for <em>each iteration</em> over the <code>flights</code> association to get the current flight&#8217;s destination. In other words you get N+1 queries (if you exclude the original one to get the airport).</p>
+</div>
+<div class="sect2">
+<h3 id="_configuring_eager_fetching">Configuring Eager Fetching</h3>
+<div class="paragraph">
+<p>An alternative approach that avoids the N+1 queries is to use eager fetching, which can be specified as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Airport</span> {
+    <span class="predefined-type">String</span> name
+    <span class="directive">static</span> hasMany = [<span class="key">flights</span>: Flight]
+    <span class="directive">static</span> mapping = {
+        flights <span class="key">lazy</span>: <span class="predefined-constant">false</span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case the <code>flights</code> association will be loaded at the same time as its <code>Airport</code> instance, although a second query will be executed to fetch the collection. You can also use <code>fetch: 'join'</code> instead of <code>lazy: false</code> , in which case GORM will only execute a single query to get the airports and their flights. This works well for single-ended associations, but you need to be careful with one-to-manys. Queries will work as you&#8217;d expect right up to the moment you add a limit to the number of results you want. At that point, you will likely end up with fewer results than you were expecting. The reason for this is quite technical but ultimately the problem arises from GORM using a left outer join.</p>
+</div>
+<div class="paragraph">
+<p>So, the recommendation is currently to use <code>fetch: 'join'</code> for single-ended associations and <code>lazy: false</code> for one-to-manys.</p>
+</div>
+<div class="paragraph">
+<p>Be careful how and where you use eager loading because you could load your entire database into memory with too many eager associations. You can find more information on the mapping options in the <a href="#fetchingDSL">section on the ORM DSL</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_altering_fetch_strategy_for_a_query">Altering Fetch Strategy for a Query</h3>
+<div class="paragraph">
+<p>Rather than configuring join fetching as the default for an association, it may be better to alter the join strategy only for the queries that require it. This can be done using the <code>fetch</code> argument to most GORM methods:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="comment">// Using the list method</span>
+Author.list(<span class="key">fetch</span>: [<span class="key">location</span>: <span class="string"><span class="delimiter">'</span><span class="content">join</span><span class="delimiter">'</span></span>]).each { a -&gt;
+    println a.location.city
+}
+<span class="comment">// Using a dynamic finder</span>
+Author.findAllByNameLike(<span class="string"><span class="delimiter">&quot;</span><span class="content">John%</span><span class="delimiter">&quot;</span></span>, [ <span class="key">sort</span>: <span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="key">order</span>: <span class="string"><span class="delimiter">'</span><span class="content">asc</span><span class="delimiter">'</span></span>, <span class="key">fetch</span>: [<span class="key">location</span>: <span class="string"><span class="delimiter">'</span><span class="content">join</span><span class="delimiter">'</span></span>] ]).each { a-&gt;
+    ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or using the <code>join</code> method when using <a href="#whereQueries">Where Queries</a> or criteria:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">Author.where {
+    name == <span class="string"><span class="delimiter">&quot;</span><span class="content">Stephen King</span><span class="delimiter">&quot;</span></span>
+}.join(<span class="string"><span class="delimiter">'</span><span class="content">location</span><span class="delimiter">'</span></span>)
+ .list()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_batch_fetching">Using Batch Fetching</h3>
+<div class="paragraph">
+<p>Although eager fetching is appropriate for some cases, it is not always desirable. If you made everything eager you could quite possibly load your entire database into memory resulting in performance and memory problems. An alternative to eager fetching is to use batch fetching. You can configure Hibernate to lazily fetch results in "batches". For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Airport</span> {
+    <span class="predefined-type">String</span> name
+    <span class="directive">static</span> hasMany = [flights: Flight]
+    <span class="directive">static</span> mapping = {
+        flights batchSize: <span class="integer">10</span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case, due to the <code>batchSize</code> argument, when you iterate over the <code>flights</code> association, Hibernate will fetch results in batches of 10. For example if you had an <code>Airport</code> that had 30 flights, if you didn&#8217;t configure batch fetching you would get 1 query to fetch the <code>Airport</code> and then <code>30</code> queries to fetch each flight. With batch fetching you get 1 query to fetch the <code>Airport</code> and 3 queries to fetch each <code>Flight</code> in batches of 10. In other words, batch fetching is an optimization of the lazy fetching strategy. Batch fetching can also be configured at the class level as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="type">class</span> <span class="class">Flight</span> {
+    ...
+    static mapping = {
+        batchSize <span class="integer">10</span>
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+
+
+<h2 id="locking"><a class="anchor" href="#locking"></a>6.5 Pessimistic and Optimistic Locking</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/persistenceBasics/locking.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect3">
+<h4 id="_optimistic_locking">Optimistic Locking</h4>
+<div class="paragraph">
+<p>By default GORM classes are configured for optimistic locking. Optimistic locking is a feature of Hibernate which involves storing a version value in a special <code>version</code> column in the database that is incremented after each update.</p>
+</div>
+<div class="paragraph">
+<p>The <code>version</code> column gets read into a <code>version</code> property that contains the current versioned state of persistent instance which you can access:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> airport = Airport.get(<span class="integer">10</span>)
+
+println airport.version</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When you perform updates Hibernate will automatically check the version property against the  version column in the database and if they differ will throw a <a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/StaleObjectStateException.html">StaleObjectException</a>. This will roll back the transaction if one is active.</p>
+</div>
+<div class="paragraph">
+<p>This is useful as it allows a certain level of atomicity without resorting to pessimistic locking that has an inherit performance penalty. The downside is that you have to deal with this exception if you have highly concurrent writes. This requires flushing the session:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> airport = Airport.get(<span class="integer">10</span>)
+
+<span class="keyword">try</span> {
+    airport.name = <span class="string"><span class="delimiter">&quot;</span><span class="content">Heathrow</span><span class="delimiter">&quot;</span></span>
+    airport.save(<span class="key">flush</span>: <span class="predefined-constant">true</span>)
+}
+<span class="keyword">catch</span> (org.springframework.dao.OptimisticLockingFailureException e) {
+    <span class="comment">// deal with exception</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The way you deal with the exception depends on the application. You could attempt a programmatic merge of the data or go back to the user and ask them to resolve the conflict.</p>
+</div>
+<div class="paragraph">
+<p>Alternatively, if it becomes a problem you can resort to pessimistic locking.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>version</code> will only be updated after flushing the session.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pessimistic_locking">Pessimistic Locking</h4>
+<div class="paragraph">
+<p>Pessimistic locking is equivalent to doing a SQL "SELECT * FOR UPDATE" statement and locking a row in the database. This has the implication that other read operations will be blocking until the lock is released.</p>
+</div>
+<div class="paragraph">
+<p>In GORM pessimistic locking is performed on an existing instance with the <a href="../api/org/grails/datastore/gorm/GormEntity.html#lock()">lock()</a> method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> airport = Airport.get(<span class="integer">10</span>)
+airport.lock() <span class="comment">// lock for update</span>
+airport.name = <span class="string"><span class="delimiter">&quot;</span><span class="content">Heathrow</span><span class="delimiter">&quot;</span></span>
+airport.save()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>GORM will automatically deal with releasing the lock for you once the transaction has been committed.</p>
+</div>
+<div class="paragraph">
+<p>However, in the above case what we are doing is "upgrading" from a regular SELECT to a SELECT..FOR UPDATE and another thread could still have updated the record in between the call to <code>get()</code> and the call to <code>lock()</code>.</p>
+</div>
+<div class="paragraph">
+<p>To get around this problem you can use the static <a href="../api/org/grails/datastore/gorm/GormEntity.html#lock(java.io.Serializable)">lock(id)</a> method that takes an id just like <a href="../api/org/grails/datastore/gorm/GormEntity.html#get(java.io.Serializable)">get(id)</a>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> airport = Airport.lock(<span class="integer">10</span>) <span class="comment">// lock for update</span>
+airport.name = <span class="string"><span class="delimiter">&quot;</span><span class="content">Heathrow</span><span class="delimiter">&quot;</span></span>
+airport.save()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case only SELECT..FOR UPDATE is issued.</p>
+</div>
+<div class="paragraph">
+<p>As well as the <a href="../api/org/grails/datastore/gorm/GormEntity.html#lock(java.io.Serializable)">lock(id)</a> method you can also obtain a pessimistic locking using queries. For example using a dynamic finder:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">def airport = Airport.findByName(<span class="string"><span class="delimiter">&quot;</span><span class="content">Heathrow</span><span class="delimiter">&quot;</span></span>, [lock: <span class="predefined-constant">true</span>])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or using criteria:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">def airport = Airport.createCriteria().get {
+    eq(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">Heathrow</span><span class="delimiter">'</span></span>)
+    lock <span class="predefined-constant">true</span>
+}</code></pre>
+</div>
+</div>
+</div>
+
+
+<h2 id="modificationChecking"><a class="anchor" href="#modificationChecking"></a>6.6 Modification Checking</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/persistenceBasics/modificationChecking.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Once you have loaded and possibly modified a persistent domain class instance, it isn&#8217;t straightforward to retrieve the original values. If you try to reload the instance using <a href="../api/org/grails/datastore/gorm/GormEntity.html#get(java.io.Serializable)">get(id)</a> Hibernate will return the current modified instance from its Session cache.</p>
+</div>
+<div class="paragraph">
+<p>Reloading using another query would trigger a flush which could cause problems if your data isn&#8217;t ready to be flushed yet. So GORM provides some methods to retrieve the original values that Hibernate caches when it loads the instance (which it uses for dirty checking).</p>
+</div>
+<div class="sect3">
+<h4 id="_isdirty">isDirty</h4>
+<div class="paragraph">
+<p>You can use the <a href="../api/org/grails/datastore/gorm/GormEntity.html#isDirty(java.lang.String)">isDirty()</a> method to check if any field has been modified:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> airport = Airport.get(<span class="integer">10</span>)
+<span class="keyword">assert</span> !airport.isDirty()
+
+airport.properties = params
+<span class="keyword">if</span> (airport.isDirty()) {
+   <span class="comment">// do something based on changed state</span>
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>isDirty()</code> does not currently check collection associations, but it does check all other persistent properties and associations.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You can also check if individual fields have been modified:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> airport = Airport.get(<span class="integer">10</span>)
+<span class="keyword">assert</span> !airport.isDirty()
+
+airport.properties = params
+<span class="keyword">if</span> (airport.isDirty(<span class="string"><span class="delimiter">'</span><span class="content">name</span><span class="delimiter">'</span></span>)) {
+   <span class="comment">// do something based on changed name</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_isdirty_and_proxies">isDirty and Proxies</h4>
+<div class="paragraph">
+<p>Dirty checking uses the <code>equals()</code> method to determine if a property has changed. In the case of associations, it is important to recognize that if the association is a proxy, comparing properties on the domain that are not related to the identifier will initialize the proxy, causing another database query.</p>
+</div>
+<div class="paragraph">
+<p>If the association does not define <code>equals()</code> method, then the default Groovy behavior of verifying the instances are the same will be used. Because proxies are not the same instance as an instance loaded from the database, which can cause confusing behavior. It is recommended to implement the <code>equals()</code> method if you need to check the dirtiness of an association. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+    <span class="predefined-type">Long</span> id
+    <span class="predefined-type">String</span> name
+
+     <span class="comment">/**
+     * This ensures that if either or both of the instances
+     * have a null id (new instances), they are not equal.
+     */</span>
+    <span class="annotation">@Override</span>
+    <span class="type">boolean</span> equals(o) {
+        <span class="keyword">if</span> (!(o <span class="keyword">instanceof</span> Author)) <span class="keyword">return</span> <span class="predefined-constant">false</span>
+        <span class="keyword">if</span> (<span class="local-variable">this</span>.is(o)) <span class="keyword">return</span> <span class="predefined-constant">true</span>
+        Author that = (Author) o
+        <span class="keyword">if</span> (id !=<span class="predefined-constant">null</span> &amp;&amp; that.id !=<span class="predefined-constant">null</span>) <span class="keyword">return</span> id == that.id
+        <span class="keyword">return</span> <span class="predefined-constant">false</span>
+    }
+}
+
+<span class="type">class</span> <span class="class">Book</span> {
+    <span class="predefined-type">Long</span> id
+    <span class="predefined-type">String</span> title
+    Author author
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getdirtypropertynames">getDirtyPropertyNames</h4>
+<div class="paragraph">
+<p>You can use the <a href="../api/org/grails/datastore/gorm/GormEntity.html#getDirtyPropertyNames()">getDirtyPropertyNames()</a> method to retrieve the names of modified fields; this may be empty but will not be null:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> airport = Airport.get(<span class="integer">10</span>)
+<span class="keyword">assert</span> !airport.isDirty()
+
+airport.properties = params
+<span class="keyword">def</span> modifiedFieldNames = airport.getDirtyPropertyNames()
+<span class="keyword">for</span> (fieldName <span class="keyword">in</span> modifiedFieldNames) {
+   <span class="comment">// do something based on changed value</span>
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_getpersistentvalue">getPersistentValue</h4>
+<div class="paragraph">
+<p>You can use the <a href="../api/org/grails/datastore/gorm/GormEntity.html#getPersistentValue(java.lang.String)">getPersistentValue(fieldName)</a> method to retrieve the value of a modified field:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> airport = Airport.get(<span class="integer">10</span>)
+<span class="keyword">assert</span> !airport.isDirty()
+
+airport.properties = params
+<span class="keyword">def</span> modifiedFieldNames = airport.getDirtyPropertyNames()
+<span class="keyword">for</span> (fieldName <span class="keyword">in</span> modifiedFieldNames) {
+    <span class="keyword">def</span> currentValue = airport.<span class="string"><span class="delimiter">&quot;</span><span class="inline"><span class="inline-delimiter">$</span>fieldName</span><span class="delimiter">&quot;</span></span>
+    <span class="keyword">def</span> originalValue = airport.getPersistentValue(fieldName)
+    <span class="keyword">if</span> (currentValue != originalValue) {
+        <span class="comment">// do something based on changed value</span>
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../guide/domainClasses.html">&lt;&lt; <strong>5</strong><span>Domain Modelling in GORM</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../guide/querying.html"><strong>7</strong><span>Querying with GORM</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright &copy; 2022-2025 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

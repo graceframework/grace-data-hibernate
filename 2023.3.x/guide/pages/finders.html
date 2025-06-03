@@ -1,0 +1,330 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>7.1 Dynamic Finders 2023.3.0-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navHeader">
+        
+        <span id="logo">
+            <a href="https://graceframework.org" title="Grace Framework Website">
+                <img src="../img/grace.svg" alt="Grace Framework" />
+            </a>
+        </span>
+        
+        <div class="docHeader">
+            <h1 class="docTitle">Grace Data Hibernate</h1>
+            <h3 class="docSubTitle">Provides integration between Grace and Hibernate through GORM</h3>
+        </div>
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/gettingStarted.html"><strong>2</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/quickStartGuide.html"><strong>3</strong><span>Quick Start Guide</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/configuration.html"><strong>4</strong><span>Configuration</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/domainClasses.html"><strong>5</strong><span>Domain Modelling in GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/persistenceBasics.html"><strong>6</strong><span>Persistence Basics</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/querying.html"><strong>7</strong><span>Querying with GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/services.html"><strong>10</strong><span>GORM Data Services</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <!-- <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li> -->
+            <li class="separator selected">
+                <a id="ref-button" href="../api/index.html">API Docs</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/persistenceBasics.html">&lt;&lt; <strong>6</strong><span>Persistence Basics</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>7.1 Dynamic Finders</h1>
+
+                    <p><strong>Version:</strong> 2023.3.0-SNAPSHOT</p>
+                </div>
+
+                
+
+                
+
+<h2 id="finders"><a class="anchor" href="#finders"></a>7.1 Dynamic Finders</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/querying/finders.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>GORM supports the concept of <strong>dynamic finders</strong>. A dynamic finder looks like a static method invocation, but the methods themselves don&#8217;t actually exist in any form at the code level.</p>
+</div>
+<div class="paragraph">
+<p>Instead, a method is auto-magically generated using code synthesis at runtime, based on the properties of a given class. Take for example the <code>Book</code> class:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Book</span> {
+    <span class="predefined-type">String</span> title
+    <span class="predefined-type">Date</span> releaseDate
+    Author author
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+    <span class="predefined-type">String</span> name
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>Book</code> class has properties such as <code>title</code>, <code>releaseDate</code> and <code>author</code>. These can be used by the <code>findBy*</code> and <code>findAllBy*</code> methods in the form of "method expressions":</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> book = <span class="predefined-type">Book</span>.findByTitle(<span class="string"><span class="delimiter">&quot;</span><span class="content">The Stand</span><span class="delimiter">&quot;</span></span>)
+
+book = <span class="predefined-type">Book</span>.findByTitleLike(<span class="string"><span class="delimiter">&quot;</span><span class="content">Harry Pot%</span><span class="delimiter">&quot;</span></span>)
+
+book = <span class="predefined-type">Book</span>.findByReleaseDateBetween(firstDate, secondDate)
+
+book = <span class="predefined-type">Book</span>.findByReleaseDateGreaterThan(someDate)
+
+book = <span class="predefined-type">Book</span>.findByTitleLikeOrReleaseDateLessThan(<span class="string"><span class="delimiter">&quot;</span><span class="content">%Something%</span><span class="delimiter">&quot;</span></span>, someDate)</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_method_expressions">Method Expressions</h4>
+<div class="paragraph">
+<p>A method expression in GORM is made up of the prefix such as <code>findBy*</code> followed by an expression that combines one or more properties. The basic form is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="predefined-type">Book</span>.findBy(&lt;&lt;Property&gt;&gt;&lt;&lt;<span class="predefined-type">Comparator</span>&gt;&gt;&lt;&lt;<span class="predefined-type">Boolean</span> Operator&gt;&gt;)?&lt;&lt;Property&gt;&gt;&lt;&lt;<span class="predefined-type">Comparator</span>&gt;&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The tokens marked with a '?' are optional. Each comparator changes the nature of the query. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> book = <span class="predefined-type">Book</span>.findByTitle(<span class="string"><span class="delimiter">&quot;</span><span class="content">The Stand</span><span class="delimiter">&quot;</span></span>)
+
+book =  <span class="predefined-type">Book</span>.findByTitleLike(<span class="string"><span class="delimiter">&quot;</span><span class="content">Harry Pot%</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the above example the first query is equivalent to equality whilst the latter, due to the <code>Like</code> comparator, is equivalent to a SQL <code>like</code> expression.</p>
+</div>
+<div class="paragraph">
+<p>The possible comparators include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>InList</code> - In the list of given values</p>
+</li>
+<li>
+<p><code>LessThan</code> - less than a given value</p>
+</li>
+<li>
+<p><code>LessThanEquals</code> - less than or equal a give value</p>
+</li>
+<li>
+<p><code>GreaterThan</code> - greater than a given value</p>
+</li>
+<li>
+<p><code>GreaterThanEquals</code> - greater than or equal a given value</p>
+</li>
+<li>
+<p><code>Like</code> - Equivalent to a SQL like expression</p>
+</li>
+<li>
+<p><code>Ilike</code> - Similar to a <code>Like</code>, except case insensitive</p>
+</li>
+<li>
+<p><code>NotEqual</code> - Negates equality</p>
+</li>
+<li>
+<p><code>InRange</code> - Between the <code>from</code> and <code>to</code> values of a Groovy Range</p>
+</li>
+<li>
+<p><code>Rlike</code> - Performs a Regexp LIKE in MySQL or Oracle otherwise falls back to <code>Like</code></p>
+</li>
+<li>
+<p><code>Between</code> - Between two values (requires two arguments)</p>
+</li>
+<li>
+<p><code>IsNotNull</code> - Not a null value (doesn&#8217;t take an argument)</p>
+</li>
+<li>
+<p><code>IsNull</code> - Is a null value (doesn&#8217;t take an argument)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Notice that the last three require different numbers of method arguments compared to the rest, as demonstrated in the following example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> now = <span class="keyword">new</span> <span class="predefined-type">Date</span>()
+<span class="keyword">def</span> lastWeek = now - <span class="integer">7</span>
+<span class="keyword">def</span> book = <span class="predefined-type">Book</span>.findByReleaseDateBetween(lastWeek, now)
+
+books = <span class="predefined-type">Book</span>.findAllByReleaseDateIsNull()
+books = <span class="predefined-type">Book</span>.findAllByReleaseDateIsNotNull()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_boolean_logic_andor">Boolean logic (AND/OR)</h4>
+<div class="paragraph">
+<p>Method expressions can also use a boolean operator to combine two or more criteria:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> books = <span class="predefined-type">Book</span>.findAllByTitleLikeAndReleaseDateGreaterThan(
+                      <span class="string"><span class="delimiter">&quot;</span><span class="content">%Java%</span><span class="delimiter">&quot;</span></span>, <span class="keyword">new</span> <span class="predefined-type">Date</span>() - <span class="integer">30</span>)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case we&#8217;re using <code>And</code> in the middle of the query to make sure both conditions are satisfied, but you could equally use <code>Or</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> books = <span class="predefined-type">Book</span>.findAllByTitleLikeOrReleaseDateGreaterThan(
+                      <span class="string"><span class="delimiter">&quot;</span><span class="content">%Java%</span><span class="delimiter">&quot;</span></span>, <span class="keyword">new</span> <span class="predefined-type">Date</span>() - <span class="integer">30</span>)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can combine as many criteria as you like, but they must all be combined with <code>And</code> or all <code>Or</code>. If you need to combine <code>And</code> and <code>Or</code> or if the number of criteria creates a very long method name, just convert the query to a <a href="#criteria">Criteria</a> or <a href="#hql">HQL</a> query.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_querying_associations">Querying Associations</h4>
+<div class="paragraph">
+<p>Associations can also be used within queries:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> author = Author.findByName(<span class="string"><span class="delimiter">&quot;</span><span class="content">Stephen King</span><span class="delimiter">&quot;</span></span>)
+
+<span class="keyword">def</span> books = author ? <span class="predefined-type">Book</span>.findAllByAuthor(author) : <span class="type">[]</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case if the <code>Author</code> instance is not null we use it in a query to obtain all the <code>Book</code> instances for the given <code>Author</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pagination_and_sorting">Pagination and Sorting</h4>
+<div class="paragraph">
+<p>The same pagination and sorting parameters available on the <a href="../api/org/grails/datastore/gorm/GormEntity.html#list()">list()</a> method can also be used with dynamic finders by supplying a map as the final parameter:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> books = <span class="predefined-type">Book</span>.findAllByTitleLike(<span class="string"><span class="delimiter">&quot;</span><span class="content">Harry Pot%</span><span class="delimiter">&quot;</span></span>,
+               [<span class="key">max</span>: <span class="integer">3</span>, <span class="key">offset</span>: <span class="integer">2</span>, <span class="key">sort</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span>, <span class="key">order</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">desc</span><span class="delimiter">&quot;</span></span>])</code></pre>
+</div>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/persistenceBasics.html">&lt;&lt; <strong>6</strong><span>Persistence Basics</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright &copy; 2022-2025 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <title>Grace Data Hibernate 2023.3.0-SNAPSHOT</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" href="./css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8" />
+        <link rel="stylesheet" href="./css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8" />
+    <script type="text/javascript">
+function addJsClass(el) {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+    </head>
+
+    <body class="body" onload="addJsClass();">
+        <div id="navigation">
+            <div class="navHeader">
+                
+                <span id="logo">
+                    <a href="https://graceframework.org" title="Go to Grace Framework Website">
+                        <img src="./img/grace.svg" alt="Grace Framework" />
+                    </a>
+                </span>
+                
+                <div class="docHeader">
+                    <h1 class="docTitle">Grace Data Hibernate</h1>
+                    <h3 class="docSubTitle">Provides integration between Grace and Hibernate through GORM</h3>
+                    <span class="docVersion">2023.3.0-SNAPSHOT</span>
+                </div>
+            </div>
+            <div class="navLinks">
+                <ul>
+                    <li>
+                        <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                            <a href="./guide/index.html" class="button">Table of contents</a>
+                            <div id="nav-summary-childs" style="display:none;">
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="./guide/introduction.html"><strong>1</strong><span>Introduction</span></a></div>
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="./guide/gettingStarted.html"><strong>2</strong><span>Getting Started</span></a></div>
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="./guide/quickStartGuide.html"><strong>3</strong><span>Quick Start Guide</span></a></div>
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="./guide/configuration.html"><strong>4</strong><span>Configuration</span></a></div>
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="./guide/domainClasses.html"><strong>5</strong><span>Domain Modelling in GORM</span></a></div>
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="./guide/persistenceBasics.html"><strong>6</strong><span>Persistence Basics</span></a></div>
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="./guide/querying.html"><strong>7</strong><span>Querying with GORM</span></a></div>
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="./guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span></a></div>
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="./guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span></a></div>
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="./guide/services.html"><strong>10</strong><span>GORM Data Services</span></a></div>
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="./guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a></div>
+                                
+                            </div>
+                        </div>
+                    </li>
+                    <!-- <li class="separator selected">
+                        <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+                    </li> -->
+                    <li class="separator selected">
+                        <a id="ref-button" href="./api/index.html">API Docs</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+
+        <table id="colset" cellpadding="0" cellspacing="0">
+            <tr>
+                <td id="col1">
+                    <div id="main" class="corner-all">
+
+                        <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                        <div class="project">
+                            <h1>Grace Data Hibernate</h1>
+                            <p><strong>Authors:</strong> Michael Yan</p>
+                            <p><strong>Version:</strong> 2023.3.0-SNAPSHOT</p>
+                            
+                        </div>
+
+                        
+                        <div id="table-of-content">
+                            <h2>Table of Contents</h2>
+                            
+                            <div class="toc-item" style="margin-left:0px"><a href="./guide/introduction.html"><strong>1</strong><span>Introduction</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/introduction.html#releaseHistory"><strong>1.1</strong><span>Release History</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/introduction.html#upgradeNotes"><strong>1.2</strong><span>Upgrade Notes</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:0px"><a href="./guide/gettingStarted.html"><strong>2</strong><span>Getting Started</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/gettingStarted.html#hibernateVersions"><strong>2.1</strong><span>Configuring Different Hibernate Versions</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/gettingStarted.html#springBoot"><strong>2.2</strong><span>Using GORM in Spring Boot</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/gettingStarted.html#outsideGrails"><strong>2.3</strong><span>Using GORM for Hibernate Outside Grails</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:0px"><a href="./guide/quickStartGuide.html"><strong>3</strong><span>Quick Start Guide</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/quickStartGuide.html#basicCRUD"><strong>3.1</strong><span>Basic CRUD</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:0px"><a href="./guide/configuration.html"><strong>4</strong><span>Configuration</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/configuration.html#configurationReference"><strong>4.1</strong><span>Configuration Reference</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/configuration.html#configurationDefaults"><strong>4.2</strong><span>The Default Mapping &amp; Constraints</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/configuration.html#hibernateCustomization"><strong>4.3</strong><span>Hibernate Customization</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:0px"><a href="./guide/domainClasses.html"><strong>5</strong><span>Domain Modelling in GORM</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/domainClasses.html#gormAssociation"><strong>5.1</strong><span>Association in GORM</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:20px"><a href="./guide/domainClasses.html#manyToOneAndOneToOne"><strong>5.1.1</strong><span>Many-to-one and one-to-one</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:20px"><a href="./guide/domainClasses.html#oneToMany"><strong>5.1.2</strong><span>One-to-many</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:20px"><a href="./guide/domainClasses.html#manyToMany"><strong>5.1.3</strong><span>Many-to-many</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:20px"><a href="./guide/domainClasses.html#basicCollectionTypes"><strong>5.1.4</strong><span>Basic Collection Types</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/domainClasses.html#gormComposition"><strong>5.2</strong><span>Composition in GORM</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/domainClasses.html#inheritanceInGORM"><strong>5.3</strong><span>Inheritance in GORM</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/domainClasses.html#setsListsAndMaps"><strong>5.4</strong><span>Sets, Lists and Maps</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:0px"><a href="./guide/persistenceBasics.html"><strong>6</strong><span>Persistence Basics</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/persistenceBasics.html#savingAndUpdating"><strong>6.1</strong><span>Saving and Updating</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/persistenceBasics.html#deletingObjects"><strong>6.2</strong><span>Deleting Objects</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/persistenceBasics.html#cascades"><strong>6.3</strong><span>Understanding Cascading Updates and Deletes</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/persistenceBasics.html#fetching"><strong>6.4</strong><span>Eager and Lazy Fetching</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/persistenceBasics.html#locking"><strong>6.5</strong><span>Pessimistic and Optimistic Locking</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/persistenceBasics.html#modificationChecking"><strong>6.6</strong><span>Modification Checking</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:0px"><a href="./guide/querying.html"><strong>7</strong><span>Querying with GORM</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/querying.html#finders"><strong>7.1</strong><span>Dynamic Finders</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/querying.html#whereQueries"><strong>7.2</strong><span>Where Queries</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/querying.html#criteria"><strong>7.3</strong><span>Criteria</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/querying.html#detachedCriteria"><strong>7.4</strong><span>Detached Criteria</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/querying.html#hql"><strong>7.5</strong><span>Hibernate Query Language (HQL)</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:0px"><a href="./guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/advancedGORMFeatures.html#eventsAutoTimestamping"><strong>8.1</strong><span>Events and Auto Timestamping</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/advancedGORMFeatures.html#ormdsl"><strong>8.2</strong><span>Custom ORM Mapping</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:20px"><a href="./guide/advancedGORMFeatures.html#tableAndColumnNames"><strong>8.2.1</strong><span>Table and Column Names</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:20px"><a href="./guide/advancedGORMFeatures.html#caching"><strong>8.2.2</strong><span>Caching Strategy</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:20px"><a href="./guide/advancedGORMFeatures.html#inheritanceStrategies"><strong>8.2.3</strong><span>Inheritance Strategies</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:20px"><a href="./guide/advancedGORMFeatures.html#identity"><strong>8.2.4</strong><span>Custom Database Identity</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:20px"><a href="./guide/advancedGORMFeatures.html#compositePrimaryKeys"><strong>8.2.5</strong><span>Composite Primary Keys</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:20px"><a href="./guide/advancedGORMFeatures.html#databaseIndices"><strong>8.2.6</strong><span>Database Indices</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:20px"><a href="./guide/advancedGORMFeatures.html#optimisticLockingAndVersioning"><strong>8.2.7</strong><span>Optimistic Locking and Versioning</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:20px"><a href="./guide/advancedGORMFeatures.html#fetchingDSL"><strong>8.2.8</strong><span>Eager and Lazy Fetching</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:20px"><a href="./guide/advancedGORMFeatures.html#customCascadeBehaviour"><strong>8.2.9</strong><span>Custom Cascade Behaviour</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:20px"><a href="./guide/advancedGORMFeatures.html#customHibernateTypes"><strong>8.2.10</strong><span>Custom Hibernate Types</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:20px"><a href="./guide/advancedGORMFeatures.html#derivedProperties"><strong>8.2.11</strong><span>Derived Properties</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:20px"><a href="./guide/advancedGORMFeatures.html#customNamingStrategy"><strong>8.2.12</strong><span>Custom Naming Strategy</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/advancedGORMFeatures.html#defaultSortOrder"><strong>8.3</strong><span>Default Sort Order</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:0px"><a href="./guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:0px"><a href="./guide/services.html"><strong>10</strong><span>GORM Data Services</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/services.html#basics"><strong>10.1</strong><span>Data Service Basics</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/services.html#queries"><strong>10.2</strong><span>Data Service Queries</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/services.html#writeOperations"><strong>10.3</strong><span>Data Service Write Operations</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/services.html#serviceValidation"><strong>10.4</strong><span>Validating Data Services</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/services.html#rxServices"><strong>10.5</strong><span>RxJava Support</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:0px"><a href="./guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/multipleDataSources.html#dataSourceConfiguration"><strong>11.1</strong><span>Configuring Multiple Data Sources</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/multipleDataSources.html#mappingDomainsToDataSources"><strong>11.2</strong><span>Mapping Domain Classes to Data Sources</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/multipleDataSources.html#dataSourceNamespaces"><strong>11.3</strong><span>Data Source Namespaces</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="./guide/multipleDataSources.html#connectionSources"><strong>11.4</strong><span>The ConnectionSources API</span></a></div>
+                            
+                            <div style="clear:both" ></div>
+                        </div>
+                        
+                        
+                    </div>
+                </td>
+                <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="./guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+            </tr>
+        </table>
+
+        <div id="footer">
+            Copyright &copy; 2022-2025 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
+            
+        </div>
+
+<script type="text/javascript" src="./js/docs.js"></script>
+
+    </body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>2.2 Using GORM in Spring Boot 2023.3.0-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navHeader">
+        
+        <span id="logo">
+            <a href="https://graceframework.org" title="Grace Framework Website">
+                <img src="../img/grace.svg" alt="Grace Framework" />
+            </a>
+        </span>
+        
+        <div class="docHeader">
+            <h1 class="docTitle">Grace Data Hibernate</h1>
+            <h3 class="docSubTitle">Provides integration between Grace and Hibernate through GORM</h3>
+        </div>
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/gettingStarted.html"><strong>2</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/quickStartGuide.html"><strong>3</strong><span>Quick Start Guide</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/configuration.html"><strong>4</strong><span>Configuration</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/domainClasses.html"><strong>5</strong><span>Domain Modelling in GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/persistenceBasics.html"><strong>6</strong><span>Persistence Basics</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/querying.html"><strong>7</strong><span>Querying with GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/services.html"><strong>10</strong><span>GORM Data Services</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <!-- <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li> -->
+            <li class="separator selected">
+                <a id="ref-button" href="../api/index.html">API Docs</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/quickStartGuide.html"><strong>3</strong><span>Quick Start Guide</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>2.2 Using GORM in Spring Boot</h1>
+
+                    <p><strong>Version:</strong> 2023.3.0-SNAPSHOT</p>
+                </div>
+
+                
+
+                
+
+<h2 id="springBoot"><a class="anchor" href="#springBoot"></a>2.2 Using GORM in Spring Boot</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/gettingStarted/springBoot.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To use GORM for Hibernate in Spring Boot add the necessary dependencies to your Boot application:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">compile("org.grails:gorm-hibernate5-spring-boot:2023.3.0-SNAPSHOT")
+compile "org.hibernate:hibernate-core"
+compile "org.hibernate:hibernate-ehcache"
+runtime "com.h2database:h2:1.4.192"
+// for MySQL
+// runtime "mysql:mysql-connector-java"
+
+// for connection pooling
+runtime "org.apache.tomcat:tomcat-jdbc:8.5.0"
+runtime "org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.5.0"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then ensure you have configured a <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-sql.html">datasource and Hibernate as per the Spring Boot guide</a>. For example in the case of MySQL:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">hibernate</span>:
+    <span class="key">hbm2ddl</span>:
+        <span class="key">auto</span>: <span class="string"><span class="content">update</span></span>
+    <span class="key">dialect</span>: <span class="string"><span class="content">org.hibernate.dialect.MySQL5InnoDBDialect</span></span>
+<span class="key">spring</span>:
+    <span class="key">datasource</span>:
+        <span class="key">driverClassName</span>: <span class="string"><span class="content">com.mysql.jdbc.Driver</span></span>
+        <span class="key">url</span>:   <span class="string"><span class="content">jdbc:mysql://127.0.0.1:3306/gorm</span></span>
+        <span class="key">username</span>: <span class="string"><span class="content">root</span></span>
+        <span class="key">password</span>: <span class="string"><span class="delimiter">&quot;</span><span class="delimiter">&quot;</span></span></code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If if you prefer to use the Grails way of configuring the <code>DataSource</code> (with <code>dataSource.url</code> etc.) then you can add <code>@EnableAutoConfiguration(exclude = DataSourceAutoConfiguration)</code> to your <code>Application</code> class, which will allow GORM to take over configuring the data source.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Ensure your Boot <code>Application</code> class is annotated with <code>ComponentScan</code>, for example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.springframework.boot.SpringApplication</span>
+<span class="keyword">import</span> <span class="include">org.springframework.boot.autoconfigure.EnableAutoConfiguration</span>
+<span class="keyword">import</span> <span class="include">org.springframework.context.annotation.*</span>
+
+<span class="annotation">@Configuration</span>
+<span class="annotation">@EnableAutoConfiguration</span>
+<span class="annotation">@ComponentScan</span>
+<span class="type">class</span> <span class="class">Application</span> {
+    <span class="directive">static</span> <span class="type">void</span> main(<span class="predefined-type">String</span><span class="type">[]</span> args) {
+        SpringApplication.run Application, args
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Using <code>ComponentScan</code> without a value results in Boot scanning for classes in the same package or any package nested within the <code>Application</code> class package.
+If your GORM entities are in a different package specify the package name as the value of the <code>ComponentScan</code> annotation.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Finally create your GORM entities and ensure they are annotated with <code>grails.persistence.Entity</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">grails.persistence.*</span>
+
+<span class="annotation">@Entity</span>
+<span class="type">class</span> <span class="class">Person</span> {
+    <span class="predefined-type">String</span> firstName
+    <span class="predefined-type">String</span> lastName
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that Spring Boot does not include any kind of OpenSessionInView interceptor so if you try and invoke GORM methods in a Spring <code>@Controller</code> you may encounter a session not found error. To eliminate this problem make sure your <code>@Controller</code> methods are annotated with <code>@Transactional</code>. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.springframework.transaction.annotation.Transactional</span>
+<span class="keyword">import</span> <span class="include">org.springframework.web.bind.annotation.RequestMapping</span>
+<span class="keyword">import</span> <span class="include">org.springframework.web.bind.annotation.RestController</span>
+
+<span class="annotation">@RestController</span>
+<span class="type">class</span> <span class="class">PersonController</span> {
+
+    <span class="annotation">@RequestMapping</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/people</span><span class="delimiter">&quot;</span></span>)
+    <span class="annotation">@Transactional</span>(readOnly = <span class="predefined-constant">true</span>)
+    <span class="directive">public</span> <span class="predefined-type">List</span>&lt;<span class="predefined-type">String</span>&gt; people() {
+        Person.list().collect { Person p -&gt;
+            <span class="string"><span class="delimiter">&quot;</span><span class="inline"><span class="inline-delimiter">$</span>p</span><span class="content">.firstName </span><span class="inline"><span class="inline-delimiter">$</span>p</span><span class="content">.lastName</span><span class="delimiter">&quot;</span></span>.toString()
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In addition, if you wish to return a GORM instance from a Spring <code>@Controller</code>, it should be noted that Spring uses Jackson for JSON marshalling, and Jackson will attempt to marshal the entire object to JSON, which can present an issue since GORM adds additional persistence related properties to your domain instance. To resolve this issue you should use <code>@JsonIgnoreProperties</code> on your GORM entity class to ignore any properties added by GORM:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">grails.persistence.*</span>
+<span class="keyword">import</span> <span class="include">com.fasterxml.jackson.annotation.JsonIgnoreProperties</span>
+
+<span class="annotation">@Entity</span>
+<span class="annotation">@JsonIgnoreProperties</span>([<span class="string"><span class="delimiter">'</span><span class="content">dirtyPropertyNames</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">errors</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">dirty</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">attached</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">version</span><span class="delimiter">'</span></span>])
+<span class="type">class</span> <span class="class">Person</span> {
+    <span class="predefined-type">String</span> firstName
+    <span class="predefined-type">String</span> lastName
+}</code></pre>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/quickStartGuide.html"><strong>3</strong><span>Quick Start Guide</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright &copy; 2022-2025 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

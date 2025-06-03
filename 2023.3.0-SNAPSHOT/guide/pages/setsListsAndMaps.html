@@ -1,0 +1,340 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>5.4 Sets, Lists and Maps 2023.3.0-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navHeader">
+        
+        <span id="logo">
+            <a href="https://graceframework.org" title="Grace Framework Website">
+                <img src="../img/grace.svg" alt="Grace Framework" />
+            </a>
+        </span>
+        
+        <div class="docHeader">
+            <h1 class="docTitle">Grace Data Hibernate</h1>
+            <h3 class="docSubTitle">Provides integration between Grace and Hibernate through GORM</h3>
+        </div>
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/gettingStarted.html"><strong>2</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/quickStartGuide.html"><strong>3</strong><span>Quick Start Guide</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/configuration.html"><strong>4</strong><span>Configuration</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/domainClasses.html"><strong>5</strong><span>Domain Modelling in GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/persistenceBasics.html"><strong>6</strong><span>Persistence Basics</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/querying.html"><strong>7</strong><span>Querying with GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/services.html"><strong>10</strong><span>GORM Data Services</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <!-- <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li> -->
+            <li class="separator selected">
+                <a id="ref-button" href="../api/index.html">API Docs</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/configuration.html">&lt;&lt; <strong>4</strong><span>Configuration</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/persistenceBasics.html"><strong>6</strong><span>Persistence Basics</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>5.4 Sets, Lists and Maps</h1>
+
+                    <p><strong>Version:</strong> 2023.3.0-SNAPSHOT</p>
+                </div>
+
+                
+
+                
+
+<h2 id="setsListsAndMaps"><a class="anchor" href="#setsListsAndMaps"></a>5.4 Sets, Lists and Maps</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/domainClasses/setsListsAndMaps.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect3">
+<h4 id="_sets_of_objects">Sets of Objects</h4>
+<div class="paragraph">
+<p>By default when you define a relationship with GORM it is a <code>java.util.Set</code> which is an unordered collection that cannot contain duplicates. In other words when you have:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+    <span class="directive">static</span> hasMany = [<span class="key">books</span>: <span class="predefined-type">Book</span>]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The books property that GORM injects is a <code>java.util.Set</code>. Sets guarantee uniqueness but not order, which may not be what you want. To have custom ordering you configure the Set as a <code>SortedSet</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="predefined-type">SortedSet</span> books
+
+    <span class="directive">static</span> hasMany = [<span class="key">books</span>: <span class="predefined-type">Book</span>]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case a <code>java.util.SortedSet</code> implementation is used which means you must implement <code>java.lang.Comparable</code> in your Book class:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Book</span> <span class="directive">implements</span> <span class="predefined-type">Comparable</span> {
+
+    <span class="predefined-type">String</span> title
+    <span class="predefined-type">Date</span> releaseDate = <span class="keyword">new</span> <span class="predefined-type">Date</span>()
+
+    <span class="type">int</span> compareTo(obj) {
+        releaseDate.compareTo(obj.releaseDate)
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The result of the above class is that the Book instances in the books collection of the Author class will be ordered by their release date.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_lists_of_objects">Lists of Objects</h4>
+<div class="paragraph">
+<p>To keep objects in the order which they were added and to be able to reference them by index like an array you can define your collection type as a <code>List</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+
+    <span class="predefined-type">List</span> books
+
+    <span class="directive">static</span> hasMany = [<span class="key">books</span>: <span class="predefined-type">Book</span>]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case when you add new elements to the books collection the order is retained in a sequential list indexed from 0 so you can do:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">author.books&lt;&lt;<span class="integer">0</span>&gt;&gt; <span class="comment">// get the first book</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The way this works at the database level is Hibernate creates a <code>books_idx</code> column where it saves the index of the elements in the collection to retain this order at the database level.</p>
+</div>
+<div class="paragraph">
+<p>When using a <code>List</code>, elements must be added to the collection before being saved, otherwise Hibernate will throw an exception (<code>org.hibernate.HibernateException</code>: null index column for collection):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="comment">// This won't work!</span>
+<span class="keyword">def</span> book = <span class="keyword">new</span> <span class="predefined-type">Book</span>(<span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">The Shining</span><span class="delimiter">'</span></span>)
+book.save()
+author.addToBooks(book)
+
+<span class="comment">// Do it this way instead.</span>
+<span class="keyword">def</span> book = <span class="keyword">new</span> <span class="predefined-type">Book</span>(<span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">Misery</span><span class="delimiter">'</span></span>)
+author.addToBooks(book)
+author.save()</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_bags_of_objects">Bags of Objects</h4>
+<div class="paragraph">
+<p>If ordering and uniqueness aren&#8217;t a concern (or if you manage these explicitly) then you can use the Hibernate <a href="https://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/collections.html">Bag</a> type to represent mapped collections.</p>
+</div>
+<div class="paragraph">
+<p>The only change required for this is to define the collection type as a <code>Collection</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+
+   <span class="predefined-type">Collection</span> books
+
+   <span class="directive">static</span> hasMany = [<span class="key">books</span>: <span class="predefined-type">Book</span>]
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Since uniqueness and order aren&#8217;t managed by Hibernate, adding to or removing from collections mapped as a Bag don&#8217;t trigger a load of all existing instances from the database, so this approach will perform better and require less memory than using a <code>Set</code> or a <code>List</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_maps_of_objects">Maps of Objects</h4>
+<div class="paragraph">
+<p>If you want a simple map of string/value pairs GORM can map this with the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+    <span class="predefined-type">Map</span> books <span class="comment">// map of ISBN:book names</span>
+}
+
+<span class="keyword">def</span> a = <span class="keyword">new</span> Author()
+a.books = [<span class="string"><span class="delimiter">'</span><span class="content">1590597583</span><span class="delimiter">'</span></span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">My Book</span><span class="delimiter">&quot;</span></span>]
+a.save()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case the key and value of the map MUST be strings.</p>
+</div>
+<div class="paragraph">
+<p>If you want a Map of objects then you can do this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Book</span> {
+
+    <span class="predefined-type">Map</span> authors
+
+    <span class="directive">static</span> hasMany = [<span class="key">authors</span>: Author]
+}
+
+<span class="keyword">def</span> a = <span class="keyword">new</span> Author(<span class="key">name</span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">Stephen King</span><span class="delimiter">&quot;</span></span>)
+
+<span class="keyword">def</span> book = <span class="keyword">new</span> <span class="predefined-type">Book</span>()
+book.authors = [<span class="key">stephen</span>:a]
+book.save()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The static <code>hasMany</code> property defines the type of the elements within the Map. The keys for the map <strong>must</strong> be strings.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_a_note_on_collection_types_and_performance">A Note on Collection Types and Performance</h4>
+<div class="paragraph">
+<p>The Java <code>Set</code> type doesn&#8217;t allow duplicates. To ensure uniqueness when adding an entry to a <code>Set</code> association Hibernate has to load the entire associations from the database. If you have a large numbers of entries in the association this can be costly in terms of performance.</p>
+</div>
+<div class="paragraph">
+<p>The same behavior is required for <code>List</code> types, since Hibernate needs to load the entire association to maintain order. Therefore it is recommended that if you anticipate a large numbers of records in the association that you make the association bidirectional so that the link can be created on the inverse side. For example consider the following code:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">def book = <span class="keyword">new</span> <span class="predefined-type">Book</span>(title:<span class="string"><span class="delimiter">&quot;</span><span class="content">New Grails Book</span><span class="delimiter">&quot;</span></span>)
+def author = Author.get(<span class="integer">1</span>)
+book.author = author
+book.save()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example the association link is being created by the child (Book) and hence it is not necessary to manipulate the collection directly resulting in fewer queries and more efficient code. Given an <code>Author</code> with a large number of associated <code>Book</code> instances if you were to write code like the following you would see an impact on performance:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">def book = <span class="keyword">new</span> <span class="predefined-type">Book</span>(title:<span class="string"><span class="delimiter">&quot;</span><span class="content">New Grails Book</span><span class="delimiter">&quot;</span></span>)
+def author = Author.get(<span class="integer">1</span>)
+author.addToBooks(book)
+author.save()</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You could also model the collection as a Hibernate Bag as described above.</p>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/configuration.html">&lt;&lt; <strong>4</strong><span>Configuration</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/persistenceBasics.html"><strong>6</strong><span>Persistence Basics</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright &copy; 2022-2025 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>
