@@ -71,6 +71,15 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
                         </div>
                         
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
                     </div>
                 </div>
             </li>
@@ -112,22 +121,34 @@ function addJsClass() {
                 <div id="table-of-content">
                     <h2>Table of Contents</h2>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#savingAndUpdating"><strong>6.1</strong><span>Saving and Updating</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#transactionalWriteBehind"><strong>6.1</strong><span>Transactional Write-Behind</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#deletingObjects"><strong>6.2</strong><span>Deleting Objects</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#savingAndUpdating"><strong>6.2</strong><span>Saving and Updating</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#cascades"><strong>6.3</strong><span>Understanding Cascading Updates and Deletes</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#deletingObjects"><strong>6.3</strong><span>Deleting Objects</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#fetching"><strong>6.4</strong><span>Eager and Lazy Fetching</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#cascades"><strong>6.4</strong><span>Understanding Cascading Updates and Deletes</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#locking"><strong>6.5</strong><span>Pessimistic and Optimistic Locking</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#fetching"><strong>6.5</strong><span>Eager and Lazy Fetching</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#modificationChecking"><strong>6.6</strong><span>Modification Checking</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#configuringEagerFetching"><strong>6.6</strong><span>Configuring Eager Fetching</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#alteringFetchStrategy"><strong>6.7</strong><span>Altering Fetch Strategy for a Query</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#batchFetching"><strong>6.8</strong><span>Using Batch Fetching</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#locking"><strong>6.9</strong><span>Pessimistic and Optimistic Locking</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#modificationChecking"><strong>6.10</strong><span>Modification Checking</span></a>
                     </div>
                     
                 </div>
@@ -138,7 +159,7 @@ function addJsClass() {
 <h1 id="persistenceBasics"><a class="anchor" href="#persistenceBasics"></a>6 Persistence Basics</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/persistenceBasics.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/persistenceBasics.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -170,8 +191,17 @@ function addJsClass() {
 }</code></pre>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_transactional_write_behind">Transactional Write-Behind</h4>
+
+
+<h2 id="transactionalWriteBehind"><a class="anchor" href="#transactionalWriteBehind"></a>6.1 Transactional Write-Behind</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/persistenceBasics/transactionalWriteBehind.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
 <div class="paragraph">
 <p>A useful feature of Hibernate over direct JDBC calls and even other frameworks is that when you call <a href="../api/org/grails/datastore/gorm/GormEntity.html#save()">save()</a> or <a href="../api/org/grails/datastore/gorm/GormEntity.html#delete()">delete()</a> it does not necessarily perform any SQL operations <strong>at that point</strong>. Hibernate batches up SQL statements and executes them as late as possible, often at the end of the request when flushing and closing the session.</p>
 </div>
@@ -184,13 +214,12 @@ function addJsClass() {
 <div class="paragraph">
 <p>Note that flushing is not the same as committing a transaction. If your actions are performed in the context of a transaction, flushing will execute SQL updates but the database will save the changes in its transaction queue and only finalize the updates when the transaction commits.</p>
 </div>
-</div>
 
 
-<h2 id="savingAndUpdating"><a class="anchor" href="#savingAndUpdating"></a>6.1 Saving and Updating</h2>
+<h2 id="savingAndUpdating"><a class="anchor" href="#savingAndUpdating"></a>6.2 Saving and Updating</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/persistenceBasics/savingAndUpdating.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/persistenceBasics/savingAndUpdating.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -247,10 +276,10 @@ p.save(<span class="key">flush</span>: <span class="predefined-constant">true</s
 </div>
 
 
-<h2 id="deletingObjects"><a class="anchor" href="#deletingObjects"></a>6.2 Deleting Objects</h2>
+<h2 id="deletingObjects"><a class="anchor" href="#deletingObjects"></a>6.3 Deleting Objects</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/persistenceBasics/deletingObjects.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/persistenceBasics/deletingObjects.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -312,10 +341,10 @@ p.delete(<span class="key">flush</span>: <span class="predefined-constant">true<
 </div>
 
 
-<h2 id="cascades"><a class="anchor" href="#cascades"></a>6.3 Understanding Cascading Updates and Deletes</h2>
+<h2 id="cascades"><a class="anchor" href="#cascades"></a>6.4 Understanding Cascading Updates and Deletes</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/persistenceBasics/cascades.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/persistenceBasics/cascades.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -372,8 +401,8 @@ airport.delete()</code></pre>
 <div class="paragraph">
 <p>The above examples are called transitive persistence and are controlled via the <code>belongsTo</code> and the cascade policy. If I were to remove <code>belongsTo</code> then the above cascading deletion code <strong>would not work</strong>.</p>
 </div>
-<div class="sect4">
-<h5 id="_unidirectional_many_to_one_without_belongsto">Unidirectional Many-To-One without belongsTo</h5>
+<div class="sect2">
+<h3 id="_unidirectional_many_to_one_without_belongsto">Unidirectional Many-To-One without belongsTo</h3>
 <div class="paragraph">
 <p>For example, consider the following domain model:</p>
 </div>
@@ -456,8 +485,8 @@ a.save()</code></pre>
 <p>The above example will configure the cascade policy to cascade saves and updates, but not deletes.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_bidirectional_one_to_many_with_belongsto">Bidirectional one-to-many with belongsTo</h5>
+<div class="sect2">
+<h3 id="_bidirectional_one_to_many_with_belongsto">Bidirectional one-to-many with belongsTo</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">A</span> { <span class="directive">static</span> hasMany = [<span class="key">bees</span>: B] }</code></pre>
@@ -475,8 +504,8 @@ a.save()</code></pre>
 <p>What this means is that whenever an instance of <code>A</code> is saved or updated. So will any instances of <code>B</code>. And, critically, whenever any instance of <code>A</code> is <strong>deleted</strong> so will all the associated instances of <code>B</code>!</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_unidirectional_one_to_many">Unidirectional One-to-Many</h5>
+<div class="sect2">
+<h3 id="_unidirectional_one_to_many">Unidirectional One-to-Many</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">A</span> { <span class="directive">static</span> hasMany = [<span class="key">bees</span>: B] }</code></pre>
@@ -497,8 +526,8 @@ a.save()</code></pre>
 <p>Only when you define <code>belongsTo</code> in <code>B</code> or alter the cascading strategy of <code>A</code> will deletes be cascaded.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_bidirectional_one_to_many_no_belongsto">Bidirectional One-to-Many, no belongsTo</h5>
+<div class="sect2">
+<h3 id="_bidirectional_one_to_many_no_belongsto">Bidirectional One-to-Many, no belongsTo</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">A</span> { <span class="directive">static</span> hasMany = [<span class="key">bees</span>: B] }</code></pre>
@@ -526,8 +555,8 @@ a.save()</code></pre>
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_unidirectional_many_to_one_with_belongsto">Unidirectional Many-to-One with belongsTo</h5>
+<div class="sect2">
+<h3 id="_unidirectional_many_to_one_with_belongsto">Unidirectional Many-to-One with belongsTo</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">A</span> {  }</code></pre>
@@ -560,10 +589,10 @@ a.save()</code></pre>
 </div>
 
 
-<h2 id="fetching"><a class="anchor" href="#fetching"></a>6.4 Eager and Lazy Fetching</h2>
+<h2 id="fetching"><a class="anchor" href="#fetching"></a>6.5 Eager and Lazy Fetching</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/persistenceBasics/fetching.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/persistenceBasics/fetching.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -611,8 +640,17 @@ a.save()</code></pre>
 <div class="paragraph">
 <p>GORM will execute a single SQL query to fetch the <code>Airport</code> instance, another to get its flights, and then 1 extra query for <em>each iteration</em> over the <code>flights</code> association to get the current flight&#8217;s destination. In other words you get N+1 queries (if you exclude the original one to get the airport).</p>
 </div>
-<div class="sect2">
-<h3 id="_configuring_eager_fetching">Configuring Eager Fetching</h3>
+
+
+<h2 id="configuringEagerFetching"><a class="anchor" href="#configuringEagerFetching"></a>6.6 Configuring Eager Fetching</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/persistenceBasics/configuringEagerFetching.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
 <div class="paragraph">
 <p>An alternative approach that avoids the N+1 queries is to use eager fetching, which can be specified as follows:</p>
 </div>
@@ -636,9 +674,17 @@ a.save()</code></pre>
 <div class="paragraph">
 <p>Be careful how and where you use eager loading because you could load your entire database into memory with too many eager associations. You can find more information on the mapping options in the <a href="#fetchingDSL">section on the ORM DSL</a>.</p>
 </div>
+
+
+<h2 id="alteringFetchStrategy"><a class="anchor" href="#alteringFetchStrategy"></a>6.7 Altering Fetch Strategy for a Query</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/persistenceBasics/alteringFetchStrategy.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
 </div>
-<div class="sect2">
-<h3 id="_altering_fetch_strategy_for_a_query">Altering Fetch Strategy for a Query</h3>
+
+
 <div class="paragraph">
 <p>Rather than configuring join fetching as the default for an association, it may be better to alter the join strategy only for the queries that require it. This can be done using the <code>fetch</code> argument to most GORM methods:</p>
 </div>
@@ -665,9 +711,17 @@ Author.findAllByNameLike(<span class="string"><span class="delimiter">&quot;</sp
  .list()</code></pre>
 </div>
 </div>
+
+
+<h2 id="batchFetching"><a class="anchor" href="#batchFetching"></a>6.8 Using Batch Fetching</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/persistenceBasics/batchFetching.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
 </div>
-<div class="sect2">
-<h3 id="_using_batch_fetching">Using Batch Fetching</h3>
+
+
 <div class="paragraph">
 <p>Although eager fetching is appropriate for some cases, it is not always desirable. If you made everything eager you could quite possibly load your entire database into memory resulting in performance and memory problems. An alternative to eager fetching is to use batch fetching. You can configure Hibernate to lazily fetch results in "batches". For example:</p>
 </div>
@@ -695,20 +749,19 @@ Author.findAllByNameLike(<span class="string"><span class="delimiter">&quot;</sp
 }</code></pre>
 </div>
 </div>
-</div>
 
 
-<h2 id="locking"><a class="anchor" href="#locking"></a>6.5 Pessimistic and Optimistic Locking</h2>
+<h2 id="locking"><a class="anchor" href="#locking"></a>6.9 Pessimistic and Optimistic Locking</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/persistenceBasics/locking.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/persistenceBasics/locking.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
-<div class="sect3">
-<h4 id="_optimistic_locking">Optimistic Locking</h4>
+<div class="sect2">
+<h3 id="_optimistic_locking">Optimistic Locking</h3>
 <div class="paragraph">
 <p>By default GORM classes are configured for optimistic locking. Optimistic locking is a feature of Hibernate which involves storing a version value in a special <code>version</code> column in the database that is incremented after each update.</p>
 </div>
@@ -760,8 +813,8 @@ The <code>version</code> will only be updated after flushing the session.
 </table>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_pessimistic_locking">Pessimistic Locking</h4>
+<div class="sect2">
+<h3 id="_pessimistic_locking">Pessimistic Locking</h3>
 <div class="paragraph">
 <p>Pessimistic locking is equivalent to doing a SQL "SELECT * FOR UPDATE" statement and locking a row in the database. This has the implication that other read operations will be blocking until the lock is released.</p>
 </div>
@@ -817,10 +870,10 @@ airport.save()</code></pre>
 </div>
 
 
-<h2 id="modificationChecking"><a class="anchor" href="#modificationChecking"></a>6.6 Modification Checking</h2>
+<h2 id="modificationChecking"><a class="anchor" href="#modificationChecking"></a>6.10 Modification Checking</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/persistenceBasics/modificationChecking.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/persistenceBasics/modificationChecking.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -832,8 +885,8 @@ airport.save()</code></pre>
 <div class="paragraph">
 <p>Reloading using another query would trigger a flush which could cause problems if your data isn&#8217;t ready to be flushed yet. So GORM provides some methods to retrieve the original values that Hibernate caches when it loads the instance (which it uses for dirty checking).</p>
 </div>
-<div class="sect3">
-<h4 id="_isdirty">isDirty</h4>
+<div class="sect2">
+<h3 id="_isdirty">isDirty</h3>
 <div class="paragraph">
 <p>You can use the <a href="../api/org/grails/datastore/gorm/GormEntity.html#isDirty(java.lang.String)">isDirty()</a> method to check if any field has been modified:</p>
 </div>
@@ -875,8 +928,8 @@ airport.properties = params
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_isdirty_and_proxies">isDirty and Proxies</h4>
+<div class="sect2">
+<h3 id="_isdirty_and_proxies">isDirty and Proxies</h3>
 <div class="paragraph">
 <p>Dirty checking uses the <code>equals()</code> method to determine if a property has changed. In the case of associations, it is important to recognize that if the association is a proxy, comparing properties on the domain that are not related to the identifier will initialize the proxy, causing another database query.</p>
 </div>
@@ -911,8 +964,8 @@ airport.properties = params
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_getdirtypropertynames">getDirtyPropertyNames</h4>
+<div class="sect2">
+<h3 id="_getdirtypropertynames">getDirtyPropertyNames</h3>
 <div class="paragraph">
 <p>You can use the <a href="../api/org/grails/datastore/gorm/GormEntity.html#getDirtyPropertyNames()">getDirtyPropertyNames()</a> method to retrieve the names of modified fields; this may be empty but will not be null:</p>
 </div>
@@ -929,8 +982,8 @@ airport.properties = params
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_getpersistentvalue">getPersistentValue</h4>
+<div class="sect2">
+<h3 id="_getpersistentvalue">getPersistentValue</h3>
 <div class="paragraph">
 <p>You can use the <a href="../api/org/grails/datastore/gorm/GormEntity.html#getPersistentValue(java.lang.String)">getPersistentValue(fieldName)</a> method to retrieve the value of a modified field:</p>
 </div>

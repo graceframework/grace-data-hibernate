@@ -71,6 +71,15 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
                         </div>
                         
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
                     </div>
                 </div>
             </li>
@@ -112,19 +121,25 @@ function addJsClass() {
                 <div id="table-of-content">
                     <h2>Table of Contents</h2>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#finders"><strong>7.1</strong><span>Dynamic Finders</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#listingInstances"><strong>7.1</strong><span>Listing instances</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#whereQueries"><strong>7.2</strong><span>Where Queries</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#retrievalByIdentifier"><strong>7.2</strong><span>Retrieval by Database Identifier</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#criteria"><strong>7.3</strong><span>Criteria</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#finders"><strong>7.3</strong><span>Dynamic Finders</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#detachedCriteria"><strong>7.4</strong><span>Detached Criteria</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#whereQueries"><strong>7.4</strong><span>Where Queries</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#hql"><strong>7.5</strong><span>Hibernate Query Language (HQL)</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#criteria"><strong>7.5</strong><span>Criteria</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#detachedCriteria"><strong>7.6</strong><span>Detached Criteria</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#hql"><strong>7.7</strong><span>Hibernate Query Language (HQL)</span></a>
                     </div>
                     
                 </div>
@@ -135,7 +150,7 @@ function addJsClass() {
 <h1 id="querying"><a class="anchor" href="#querying"></a>7 Querying with GORM</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/querying.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/querying.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -166,8 +181,17 @@ function addJsClass() {
 <div class="paragraph">
 <p>However, let&#8217;s start with the basics.</p>
 </div>
-<div class="sect3">
-<h4 id="_listing_instances">Listing instances</h4>
+
+
+<h2 id="listingInstances"><a class="anchor" href="#listingInstances"></a>7.1 Listing instances</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/querying/listingInstances.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
 <div class="paragraph">
 <p>Use the <a href="../api/org/grails/datastore/gorm/GormEntity.html#list()">list()</a> method to obtain all instances of a given class:</p>
 </div>
@@ -195,9 +219,17 @@ function addJsClass() {
 <div class="paragraph">
 <p>Here, the <code>sort</code> argument is the name of the domain class property that you wish to sort on, and the <code>order</code> argument is either <code>asc</code> for *asc*ending or <code>desc</code> for *desc*ending.</p>
 </div>
+
+
+<h2 id="retrievalByIdentifier"><a class="anchor" href="#retrievalByIdentifier"></a>7.2 Retrieval by Database Identifier</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/querying/retrievalByIdentifier.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
 </div>
-<div class="sect3">
-<h4 id="_retrieval_by_database_identifier">Retrieval by Database  Identifier</h4>
+
+
 <div class="paragraph">
 <p>The second basic form of retrieval is by database identifier using the <a href="../api/org/grails/datastore/gorm/GormEntity.html#get(java.io.Serializable)">get(id)</a> method:</p>
 </div>
@@ -214,13 +246,12 @@ function addJsClass() {
 <pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> books = <span class="predefined-type">Book</span>.getAll(<span class="integer">23</span>, <span class="integer">93</span>, <span class="integer">81</span>)</code></pre>
 </div>
 </div>
-</div>
 
 
-<h2 id="finders"><a class="anchor" href="#finders"></a>7.1 Dynamic Finders</h2>
+<h2 id="finders"><a class="anchor" href="#finders"></a>7.3 Dynamic Finders</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/querying/finders.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/querying/finders.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -264,8 +295,8 @@ book = <span class="predefined-type">Book</span>.findByReleaseDateGreaterThan(so
 book = <span class="predefined-type">Book</span>.findByTitleLikeOrReleaseDateLessThan(<span class="string"><span class="delimiter">&quot;</span><span class="content">%Something%</span><span class="delimiter">&quot;</span></span>, someDate)</code></pre>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_method_expressions">Method Expressions</h4>
+<div class="sect2">
+<h3 id="_method_expressions">Method Expressions</h3>
 <div class="paragraph">
 <p>A method expression in GORM is made up of the prefix such as <code>findBy*</code> followed by an expression that combines one or more properties. The basic form is:</p>
 </div>
@@ -347,8 +378,8 @@ books = <span class="predefined-type">Book</span>.findAllByReleaseDateIsNotNull(
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_boolean_logic_andor">Boolean logic (AND/OR)</h4>
+<div class="sect2">
+<h3 id="_boolean_logic_andor">Boolean logic (AND/OR)</h3>
 <div class="paragraph">
 <p>Method expressions can also use a boolean operator to combine two or more criteria:</p>
 </div>
@@ -371,8 +402,8 @@ books = <span class="predefined-type">Book</span>.findAllByReleaseDateIsNotNull(
 <p>You can combine as many criteria as you like, but they must all be combined with <code>And</code> or all <code>Or</code>. If you need to combine <code>And</code> and <code>Or</code> or if the number of criteria creates a very long method name, just convert the query to a <a href="#criteria">Criteria</a> or <a href="#hql">HQL</a> query.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_querying_associations">Querying Associations</h4>
+<div class="sect2">
+<h3 id="_querying_associations">Querying Associations</h3>
 <div class="paragraph">
 <p>Associations can also be used within queries:</p>
 </div>
@@ -387,8 +418,8 @@ books = <span class="predefined-type">Book</span>.findAllByReleaseDateIsNotNull(
 <p>In this case if the <code>Author</code> instance is not null we use it in a query to obtain all the <code>Book</code> instances for the given <code>Author</code>.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_pagination_and_sorting">Pagination and Sorting</h4>
+<div class="sect2">
+<h3 id="_pagination_and_sorting">Pagination and Sorting</h3>
 <div class="paragraph">
 <p>The same pagination and sorting parameters available on the <a href="../api/org/grails/datastore/gorm/GormEntity.html#list()">list()</a> method can also be used with dynamic finders by supplying a map as the final parameter:</p>
 </div>
@@ -401,10 +432,10 @@ books = <span class="predefined-type">Book</span>.findAllByReleaseDateIsNotNull(
 </div>
 
 
-<h2 id="whereQueries"><a class="anchor" href="#whereQueries"></a>7.2 Where Queries</h2>
+<h2 id="whereQueries"><a class="anchor" href="#whereQueries"></a>7.4 Where Queries</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/querying/whereQueries.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/querying/whereQueries.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -413,8 +444,8 @@ books = <span class="predefined-type">Book</span>.findAllByReleaseDateIsNotNull(
 <div class="paragraph">
 <p>The <a href="../api/org/grails/datastore/gorm/GormEntity.html#where(groovy.lang.Closure)">where()</a> method builds on the support for <a href="#detachedCriteria">Detached Criteria</a> by providing an enhanced, compile-time checked query DSL for common queries. The <code>where</code> method is more flexible than dynamic finders, less verbose than criteria and provides a powerful mechanism to compose queries.</p>
 </div>
-<div class="sect3">
-<h4 id="_basic_querying">Basic Querying</h4>
+<div class="sect2">
+<h3 id="_basic_querying">Basic Querying</h3>
 <div class="paragraph">
 <p>The <a href="../api/org/grails/datastore/gorm/GormEntity.html#where(groovy.lang.Closure)">where()</a> method accepts a closure that looks very similar to Groovy&#8217;s regular collection methods. The closure should define the logical criteria in regular Groovy syntax, for example:</p>
 </div>
@@ -577,8 +608,8 @@ Note that <code>rlike</code> queries are only supported if the underlying databa
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_query_composition">Query Composition</h4>
+<div class="sect2">
+<h3 id="_query_composition">Query Composition</h3>
 <div class="paragraph">
 <p>Since the return value of the <code>where</code> method is a <a href="#detachedCriteria">DetachedCriteria</a> instance you can compose new queries from the original query:</p>
 </div>
@@ -621,8 +652,8 @@ Person p = bartQuery.find()</code></pre>
 <p>As you can see the closure definition is cast (using the Groovy <code>as</code> keyword) to a <a href="#detachedCriteria">DetachedCriteria</a> instance targeted at the <code>Person</code> class.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_conjunction_disjunction_and_negation">Conjunction, Disjunction and Negation</h4>
+<div class="sect2">
+<h3 id="_conjunction_disjunction_and_negation">Conjunction, Disjunction and Negation</h3>
 <div class="paragraph">
 <p>As mentioned previously you can combine regular Groovy logical operators (<code>||</code> and <code>&amp;&amp;</code>) to form conjunctions and disjunctions:</p>
 </div>
@@ -644,8 +675,8 @@ Person p = bartQuery.find()</code></pre>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_property_comparison_queries">Property Comparison Queries</h4>
+<div class="sect2">
+<h3 id="_property_comparison_queries">Property Comparison Queries</h3>
 <div class="paragraph">
 <p>If you use a property name on both the left hand and right side of a comparison expression then the appropriate property comparison criteria is automatically used:</p>
 </div>
@@ -706,8 +737,8 @@ Person p = bartQuery.find()</code></pre>
 </tbody>
 </table>
 </div>
-<div class="sect3">
-<h4 id="_querying_associations">Querying Associations</h4>
+<div class="sect2">
+<h3 id="_querying_associations">Querying Associations</h3>
 <div class="paragraph">
 <p>Associations can be queried by using the dot operator to specify the property name of the association to be queried:</p>
 </div>
@@ -798,8 +829,8 @@ Person p = bartQuery.find()</code></pre>
 </tbody>
 </table>
 </div>
-<div class="sect3">
-<h4 id="_query_aliases_and_sorting">Query Aliases and Sorting</h4>
+<div class="sect2">
+<h3 id="_query_aliases_and_sorting">Query Aliases and Sorting</h3>
 <div class="paragraph">
 <p>If you define a query for an association an alias is automatically generated for the query. For example the following query:</p>
 </div>
@@ -852,8 +883,8 @@ Pet.where {
 <p>By assigning the name of an association to a local variable it will automatically become an alias usable within the query itself and also for the purposes of sorting or projecting the results.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_subqueries">Subqueries</h4>
+<div class="sect2">
+<h3 id="_subqueries">Subqueries</h3>
 <div class="paragraph">
 <p>It is possible to execute subqueries within where queries. For example to find all the people older than the average age the following query can be used:</p>
 </div>
@@ -926,8 +957,8 @@ Pet.where {
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_more_advanced_subqueries_in_gorm">More Advanced Subqueries in GORM</h4>
+<div class="sect2">
+<h3 id="_more_advanced_subqueries_in_gorm">More Advanced Subqueries in GORM</h3>
 <div class="paragraph">
 <p>The support for subqueries has been extended. You can now use in  with nested subqueries</p>
 </div>
@@ -988,8 +1019,8 @@ Pet.where {
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_other_functions">Other Functions</h4>
+<div class="sect2">
+<h3 id="_other_functions">Other Functions</h3>
 <div class="paragraph">
 <p>There are several functions available to you within the context of a query. These are summarized in the table below:</p>
 </div>
@@ -1080,8 +1111,8 @@ Currently functions can only be applied to properties or associations of domain 
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_batch_updates_and_deletes">Batch Updates and Deletes</h4>
+<div class="sect2">
+<h3 id="_batch_updates_and_deletes">Batch Updates and Deletes</h3>
 <div class="paragraph">
 <p>Since each <code>where</code> method call returns a <a href="#detachedCriteria">DetachedCriteria</a> instance, you can use <code>where</code> queries to execute batch operations such as batch updates and deletes. For example, the following query will update all people with the surname "Simpson" to have the surname "Bloggs":</p>
 </div>
@@ -1119,10 +1150,10 @@ Note that one limitation with regards to batch operations is that join queries (
 </div>
 
 
-<h2 id="criteria"><a class="anchor" href="#criteria"></a>7.3 Criteria</h2>
+<h2 id="criteria"><a class="anchor" href="#criteria"></a>7.5 Criteria</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/querying/criteria.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/querying/criteria.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1174,8 +1205,8 @@ Note that one limitation with regards to batch operations is that join queries (
 <div class="paragraph">
 <p>If no records are found with the above criteria, an empty List is returned.</p>
 </div>
-<div class="sect3">
-<h4 id="_conjunctions_and_disjunctions">Conjunctions and Disjunctions</h4>
+<div class="sect2">
+<h3 id="_conjunctions_and_disjunctions">Conjunctions and Disjunctions</h3>
 <div class="paragraph">
 <p>As demonstrated in the previous example you can group criteria in a logical OR using an <code>or { }</code> block:</p>
 </div>
@@ -1213,8 +1244,8 @@ Note that one limitation with regards to batch operations is that join queries (
 <p>All top level conditions are implied to be AND&#8217;d together.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_querying_associations">Querying Associations</h4>
+<div class="sect2">
+<h3 id="_querying_associations">Querying Associations</h3>
 <div class="paragraph">
 <p>Associations can be queried by having a node that matches the property name. For example say the <code>Account</code> class had many <code>Transaction</code> objects:</p>
 </div>
@@ -1263,8 +1294,8 @@ def results = c.list {
 <p>Here we find all accounts that have either performed transactions in the last 10 days OR have been recently created in the last 10 days.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_querying_with_projections">Querying with Projections</h4>
+<div class="sect2">
+<h3 id="_querying_with_projections">Querying with Projections</h3>
 <div class="paragraph">
 <p>Projections may be used to customise the results. Define a "projections" node within the criteria builder tree to use projections. There are equivalent methods within the projections node to the methods found in the Hibernate <a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/criterion/Projections.html">Projections</a> class:</p>
 </div>
@@ -1283,8 +1314,8 @@ def numberOfBranches = c.get {
 <p>When multiple fields are specified in the projection, a List of values will be returned. A single value will be returned otherwise.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_transforming_projection_results">Transforming Projection Results</h4>
+<div class="sect2">
+<h3 id="_transforming_projection_results">Transforming Projection Results</h3>
 <div class="paragraph">
 <p>If the raw value or simple object array returned by the criteria method doesn&#8217;t suit your needs, the result can be transformed with a <a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/transform/ResultTransformer.html">ResultTransformer</a>. Let&#8217;s say we want to transform the criteria results into a Map so that we can easily reference values by key:</p>
 </div>
@@ -1337,8 +1368,8 @@ def accountsOverview = c.get {
 <p>Each alias must have a corresponding property or explicit setter on the bean otherwise an exception will be thrown.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_sql_projections">SQL Projections</h4>
+<div class="sect2">
+<h3 id="_sql_projections">SQL Projections</h3>
 <div class="paragraph">
 <p>The criteria DSL provides access to Hibernate&#8217;s SQL projection API.</p>
 </div>
@@ -1477,8 +1508,8 @@ is a list of <code>org.hibernate.type.Type</code> instances which correspond to 
 of all of the boxes which have that width.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_using_sql_restrictions">Using SQL Restrictions</h4>
+<div class="sect2">
+<h3 id="_using_sql_restrictions">Using SQL Restrictions</h3>
 <div class="paragraph">
 <p>You can access Hibernate&#8217;s SQL Restrictions capabilities.</p>
 </div>
@@ -1519,8 +1550,8 @@ Note that the parameter there is SQL. The <code>first_name</code> attribute refe
 <p>Also note that the SQL used here is not necessarily portable across databases.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_using_scrollable_results">Using Scrollable Results</h4>
+<div class="sect2">
+<h3 id="_using_scrollable_results">Using Scrollable Results</h3>
 <div class="paragraph">
 <p>You can use Hibernate&#8217;s <a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/ScrollableResults.html">ScrollableResults</a> feature by calling the scroll method:</p>
 </div>
@@ -1552,8 +1583,8 @@ def accountNumber = results.getLong(<span class="string"><span class="delimiter"
 <p>Contrary to JDBC, columns of results are numbered from zero.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_setting_properties_in_the_criteria_instance">Setting properties in the Criteria instance</h4>
+<div class="sect2">
+<h3 id="_setting_properties_in_the_criteria_instance">Setting properties in the Criteria instance</h3>
 <div class="paragraph">
 <p>If a node within the builder tree doesn&#8217;t match a particular criterion it will attempt to set a property on the Criteria object itself. This allows full access to all the properties in this class. This example calls <code>setMaxResults</code> and <code>setFirstResult</code> on the <a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/Criteria.html">Criteria</a> instance:</p>
 </div>
@@ -1569,8 +1600,8 @@ def accountNumber = results.getLong(<span class="string"><span class="delimiter"
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_querying_with_eager_fetching">Querying with Eager Fetching</h4>
+<div class="sect2">
+<h3 id="_querying_with_eager_fetching">Querying with Eager Fetching</h3>
 <div class="paragraph">
 <p>In the section on <a href="#fetching">Eager and Lazy Fetching</a> we discussed how to declaratively specify fetching to avoid the N+1 SELECT problem. However, this can also be achieved using a criteria query:</p>
 </div>
@@ -1630,8 +1661,8 @@ def results = Airport.withCriteria {
 <p>the <code>flights</code> collection would be loaded eagerly via a join even though the fetch mode has not been explicitly set.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_method_reference">Method Reference</h4>
+<div class="sect2">
+<h3 id="_method_reference">Method Reference</h3>
 <div class="paragraph">
 <p>If you invoke the builder with no method name such as:</p>
 </div>
@@ -1683,8 +1714,8 @@ def results = Airport.withCriteria {
 </tbody>
 </table>
 </div>
-<div class="sect3">
-<h4 id="_combining_criteria">Combining Criteria</h4>
+<div class="sect2">
+<h3 id="_combining_criteria">Combining Criteria</h3>
 <div class="paragraph">
 <p>You can combine multiple criteria closures in the following way:</p>
 </div>
@@ -1710,10 +1741,10 @@ A more flexible approach is to use Detached Criteria, as described in the follow
 </div>
 
 
-<h2 id="detachedCriteria"><a class="anchor" href="#detachedCriteria"></a>7.4 Detached Criteria</h2>
+<h2 id="detachedCriteria"><a class="anchor" href="#detachedCriteria"></a>7.6 Detached Criteria</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/querying/detachedCriteria.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/querying/detachedCriteria.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -1722,8 +1753,8 @@ A more flexible approach is to use Detached Criteria, as described in the follow
 <div class="paragraph">
 <p>Detached Criteria are criteria queries that are not associated with any given database session/connection. Supported since Grails 2.0, Detached Criteria queries have many uses including allowing you to create common reusable criteria queries, execute subqueries and execute batch updates/deletes.</p>
 </div>
-<div class="sect3">
-<h4 id="_building_detached_criteria_queries">Building Detached Criteria Queries</h4>
+<div class="sect2">
+<h3 id="_building_detached_criteria_queries">Building Detached Criteria Queries</h3>
 <div class="paragraph">
 <p>The primary point of entry for using the Detached Criteria is the <a href="../api/grails/gorm/DetachedCriteria.html">DetachedCriteria</a> class which accepts a domain class as the only argument to its constructor:</p>
 </div>
@@ -1758,8 +1789,8 @@ def criteria = <span class="keyword">new</span> DetachedCriteria(Person)</code><
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_executing_detached_criteria_queries">Executing Detached Criteria Queries</h4>
+<div class="sect2">
+<h3 id="_executing_detached_criteria_queries">Executing Detached Criteria Queries</h3>
 <div class="paragraph">
 <p>Unlike regular criteria, Detached Criteria are lazy, in that no query is executed at the point of definition. Once a Detached Criteria query has been constructed then there are a number of useful query methods which are summarized in the table below:</p>
 </div>
@@ -1858,8 +1889,8 @@ criteria.each {
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_using_detached_criteria_for_subqueries">Using Detached Criteria for Subqueries</h4>
+<div class="sect2">
+<h3 id="_using_detached_criteria_for_subqueries">Using Detached Criteria for Subqueries</h3>
 <div class="paragraph">
 <p>Within the context of a regular criteria query you can use <code>DetachedCriteria</code> to execute subquery. For example if you want to find all people who are older than the average age the following query will accomplish that:</p>
 </div>
@@ -1952,8 +1983,8 @@ criteria.each {
 </tbody>
 </table>
 </div>
-<div class="sect3">
-<h4 id="_batch_operations_with_detached_criteria">Batch Operations with Detached Criteria</h4>
+<div class="sect2">
+<h3 id="_batch_operations_with_detached_criteria">Batch Operations with Detached Criteria</h3>
 <div class="paragraph">
 <p>The <a href="../api/grails/gorm/DetachedCriteria.html">DetachedCriteria</a> class can be used to execute batch operations such as batch updates and deletes. For example, the following query will update all people with the surname "Simpson" to have the surname "Bloggs":</p>
 </div>
@@ -1991,10 +2022,10 @@ Note that one limitation with regards to batch operations is that join queries (
 </div>
 
 
-<h2 id="hql"><a class="anchor" href="#hql"></a>7.5 Hibernate Query Language (HQL)</h2>
+<h2 id="hql"><a class="anchor" href="#hql"></a>7.7 Hibernate Query Language (HQL)</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/querying/hql.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/querying/hql.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -2015,8 +2046,8 @@ Note that one limitation with regards to batch operations is that join queries (
       <span class="predefined-type">Book</span>.findAll(<span class="string"><span class="delimiter">&quot;</span><span class="content">from Book as b where b.title like 'Lord of the%'</span><span class="delimiter">&quot;</span></span>)</code></pre>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_named_parameters">Named Parameters</h4>
+<div class="sect2">
+<h3 id="_named_parameters">Named Parameters</h3>
 <div class="paragraph">
 <p>In this case the value passed to the query is hard coded, however you can equally use named parameters:</p>
 </div>
@@ -2036,8 +2067,8 @@ def books = <span class="predefined-type">Book</span>.findAll(<span class="strin
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_multiline_queries">Multiline Queries</h4>
+<div class="sect2">
+<h3 id="_multiline_queries">Multiline Queries</h3>
 <div class="paragraph">
 <p>Use the triple quoted strings to separate the query across multiple lines:</p>
 </div>
@@ -2050,8 +2081,8 @@ where b.author = a and a.surname = :surname</span><span class="delimiter">&quot;
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_pagination_and_sorting">Pagination and Sorting</h4>
+<div class="sect2">
+<h3 id="_pagination_and_sorting">Pagination and Sorting</h3>
 <div class="paragraph">
 <p>You can also perform pagination and sorting whilst using HQL queries. To do so simply specify the pagination options as a Map at the end of the method call and include an "ORDER BY" clause in the HQL:</p>
 </div>

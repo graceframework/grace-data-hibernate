@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>4.2 The Default Mapping &amp; Constraints 2023.3.0-SNAPSHOT</title>
+    <title>4.3 The Default Mapping &amp; Constraints 2023.3.0-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -71,6 +71,15 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
                         </div>
                         
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
                     </div>
                 </div>
             </li>
@@ -103,7 +112,7 @@ function addJsClass() {
 
 
                 <div class="project">
-                    <h1>4.2 The Default Mapping &amp; Constraints</h1>
+                    <h1>4.3 The Default Mapping &amp; Constraints</h1>
 
                     <p><strong>Version:</strong> 2023.3.0-SNAPSHOT</p>
                 </div>
@@ -112,10 +121,10 @@ function addJsClass() {
 
                 
 
-<h2 id="configurationDefaults"><a class="anchor" href="#configurationDefaults"></a>4.2 The Default Mapping & Constraints</h2>
+<h2 id="configurationDefaults"><a class="anchor" href="#configurationDefaults"></a>4.3 The Default Mapping & Constraints</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/configuration/configurationDefaults.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/configuration/configurationDefaults.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -124,8 +133,8 @@ function addJsClass() {
 <div class="paragraph">
 <p>The <code>grails.gorm.default.mapping</code> and <code>grails.gorm.default.constraints</code> settings deserve special mention. These define the default <a href="#ormdsl">ORM mapping</a> and the default <a href="#constraints">Validation Constraints</a> used by each entity.</p>
 </div>
-<div class="sect3">
-<h4 id="_altering_the_default_database_mapping">Altering the Default Database Mapping</h4>
+<div class="sect2">
+<h3 id="_altering_the_default_database_mapping">Altering the Default Database Mapping</h3>
 <div class="paragraph">
 <p>You may have reason to want to change how all domain classes map to the database. For example, by default GORM uses the <code>native</code> id generation strategy of the database, whether that be an auto-increment column or a sequence.</p>
 </div>
@@ -133,7 +142,7 @@ function addJsClass() {
 <p>If you wish to globally change all domain classes to use a <code>uuid</code> strategy then you can specify that in the default mapping:</p>
 </div>
 <div class="listingblock">
-<div class="title">grails-app/conf/application.groovy</div>
+<div class="title">app/conf/application.groovy</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy">grails.gorm.default.mapping = {
         cache <span class="predefined-constant">true</span>
@@ -151,14 +160,14 @@ function addJsClass() {
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Because the setting is Groovy configuration it must go into a Groovy-aware configuration format. This can be <code>grails-app/conf/application.groovy</code> in Grails, or <code>src/main/resources/application.groovy</code> in Spring Boot.
+Because the setting is Groovy configuration it must go into a Groovy-aware configuration format. This can be <code>app/conf/application.groovy</code> in Grails, or <code>src/main/resources/application.groovy</code> in Spring Boot.
 </td>
 </tr>
 </table>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_altering_the_default_constraints">Altering the Default Constraints</h4>
+<div class="sect2">
+<h3 id="_altering_the_default_constraints">Altering the Default Constraints</h3>
 <div class="paragraph">
 <p>For validation, GORM applies a default set of <a href="#constraints">constraints</a> to all domain classes.</p>
 </div>
@@ -172,7 +181,7 @@ Because the setting is Groovy configuration it must go into a Groovy-aware confi
 <p>You can alter the default constraints using Groovy configuration using the <code>grails.gorm.default.constraints</code> setting:</p>
 </div>
 <div class="listingblock">
-<div class="title">grails-app/conf/application.groovy</div>
+<div class="title">app/conf/application.groovy</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy">grails.gorm.default.constraints = {
     <span class="string"><span class="delimiter">'</span><span class="content">*</span><span class="delimiter">'</span></span>(<span class="key">nullable</span>: <span class="predefined-constant">true</span>, <span class="key">size</span>: <span class="integer">1</span>..<span class="integer">20</span>)

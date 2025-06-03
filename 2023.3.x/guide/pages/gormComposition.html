@@ -71,6 +71,15 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
                         </div>
                         
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
                     </div>
                 </div>
             </li>
@@ -115,7 +124,7 @@ function addJsClass() {
 <h2 id="gormComposition"><a class="anchor" href="#gormComposition"></a>5.2 Composition in GORM</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/domainClasses/gormComposition.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/domainClasses/gormComposition.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -153,7 +162,7 @@ function addJsClass() {
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If you define the <code>Address</code> class in a separate Groovy file in the <code>grails-app/domain</code> directory you will also get an <code>address</code> table. If you don&#8217;t want this to happen use Groovy&#8217;s ability to define multiple classes per file and include the <code>Address</code> class below the <code>Person</code> class in the <code>grails-app/domain/Person.groovy</code> file. Another option is to define the <code>Address</code> class in <code>src/main/groovy/Address.groovy</code> and annotate it with <code>grails.gorm.annotation.Entity</code>
+If you define the <code>Address</code> class in a separate Groovy file in the <code>app/domain</code> directory you will also get an <code>address</code> table. If you don&#8217;t want this to happen use Groovy&#8217;s ability to define multiple classes per file and include the <code>Address</code> class below the <code>Person</code> class in the <code>app/domain/Person.groovy</code> file. Another option is to define the <code>Address</code> class in <code>src/main/groovy/Address.groovy</code> and annotate it with <code>grails.gorm.annotation.Entity</code>
 </td>
 </tr>
 </table>

@@ -71,6 +71,15 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
                         </div>
                         
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
                     </div>
                 </div>
             </li>
@@ -115,7 +124,7 @@ function addJsClass() {
 <h3 id="customNamingStrategy"><a class="anchor" href="#customNamingStrategy"></a>8.2.12 Custom Naming Strategy</h3>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/ormdsl/customNamingStrategy.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/advancedGORMFeatures/ormdsl/customNamingStrategy.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -125,7 +134,7 @@ function addJsClass() {
 <p>By default GORM uses Hibernate&#8217;s <code>ImprovedNamingStrategy</code> to convert domain class Class and field names to SQL table and column names by converting from camel-cased Strings to ones that use underscores as word separators. You can customize these on a per-class basis in the <code>mapping</code> closure but if there&#8217;s a consistent pattern you can specify a different <code>NamingStrategy</code> class to use.</p>
 </div>
 <div class="paragraph">
-<p>Configure the class name to be used in <code>grails-app/conf/application.groovy</code> in the <code>hibernate</code> section, e.g.</p>
+<p>Configure the class name to be used in <code>app/conf/application.groovy</code> in the <code>hibernate</code> section, e.g.</p>
 </div>
 <div class="listingblock">
 <div class="content">

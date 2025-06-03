@@ -71,6 +71,15 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
                         </div>
                         
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
                     </div>
                 </div>
             </li>
@@ -115,14 +124,14 @@ function addJsClass() {
 <h3 id="tableAndColumnNames"><a class="anchor" href="#tableAndColumnNames"></a>8.2.1 Table and Column Names</h3>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/ormdsl/tableAndColumnNames.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/advancedGORMFeatures/ormdsl/tableAndColumnNames.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
-<div class="sect4">
-<h5 id="_table_names">Table names</h5>
+<div class="sect3">
+<h4 id="_table_names">Table names</h4>
 <div class="paragraph">
 <p>The database table name which the class maps to can be customized using the <code>table</code> method:</p>
 </div>
@@ -140,8 +149,8 @@ function addJsClass() {
 <p>In this case the class would be mapped to a table called <code>people</code> instead of the default name of <code>person</code>.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_column_names">Column names</h5>
+<div class="sect3">
+<h4 id="_column_names">Column names</h4>
 <div class="paragraph">
 <p>It is also possible to customize the mapping for individual columns onto the database. For example to change the name you can do:</p>
 </div>
@@ -162,8 +171,8 @@ function addJsClass() {
 <p>Here <code>firstName</code> is a dynamic method within the <code>mapping</code> Closure that has a single Map parameter. Since its name corresponds to a domain class persistent field, the parameter values (in this case just <code>"column"</code>) are used to configure the mapping for that property.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_column_type">Column type</h5>
+<div class="sect3">
+<h4 id="_column_type">Column type</h4>
 <div class="paragraph">
 <p>GORM supports configuration of Hibernate types with the DSL using the type attribute. This includes specifying user types that implement the Hibernate <a href="https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/usertype/UserType.html">org.hibernate.usertype.UserType</a> interface, which allows complete customization of how a type is persisted. As an example if you had a <code>PostCodeType</code> you could use it as follows:</p>
 </div>
@@ -203,8 +212,8 @@ function addJsClass() {
 <p>See the Hibernate documentation regarding <a href="https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#basic-explicit">Basic Types</a> for further information.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_many_to_oneone_to_one_mappings">Many-to-One/One-to-One Mappings</h5>
+<div class="sect3">
+<h4 id="_many_to_oneone_to_one_mappings">Many-to-One/One-to-One Mappings</h4>
 <div class="paragraph">
 <p>In the case of associations it is also possible to configure the foreign keys used to map associations. In the case of a many-to-one or one-to-one association this is exactly the same as any regular column. For example consider the following:</p>
 </div>
@@ -227,8 +236,8 @@ function addJsClass() {
 <p>By default the <code>address</code> association would map to a foreign key column called <code>address_id</code>. By using the above mapping we have changed the name of the foreign key column to <code>Person_Adress_Id</code>.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_one_to_many_mapping">One-to-Many Mapping</h5>
+<div class="sect3">
+<h4 id="_one_to_many_mapping">One-to-Many Mapping</h4>
 <div class="paragraph">
 <p>With a bidirectional one-to-many you can change the foreign key column used by changing the column name on the many side of the association as per the example in the previous section on one-to-one associations. However, with unidirectional associations the foreign key needs to be specified on the association itself. For example given a unidirectional one-to-many relationship between <code>Person</code> and <code>Address</code> the following code will change the foreign key in the <code>address</code> table:</p>
 </div>
@@ -270,8 +279,8 @@ function addJsClass() {
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_many_to_many_mapping">Many-to-Many Mapping</h5>
+<div class="sect3">
+<h4 id="_many_to_many_mapping">Many-to-Many Mapping</h4>
 <div class="paragraph">
 <p>GORM, by default maps a many-to-many association using a join table. For example consider this many-to-many association:</p>
 </div>

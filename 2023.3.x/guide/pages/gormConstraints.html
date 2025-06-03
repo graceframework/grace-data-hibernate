@@ -1,0 +1,345 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>13.5 Constraints and Database Mapping 2023.3.0-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navHeader">
+        
+        <span id="logo">
+            <a href="https://graceframework.org" title="Grace Framework Website">
+                <img src="../img/grace.svg" alt="Grace Framework" />
+            </a>
+        </span>
+        
+        <div class="docHeader">
+            <h1 class="docTitle">Grace Data Hibernate</h1>
+            <h3 class="docSubTitle">Provides integration between Grace and Hibernate through GORM</h3>
+        </div>
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/gettingStarted.html"><strong>2</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/quickStartGuide.html"><strong>3</strong><span>Quick Start Guide</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/configuration.html"><strong>4</strong><span>Configuration</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/domainClasses.html"><strong>5</strong><span>Domain Modelling in GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/persistenceBasics.html"><strong>6</strong><span>Persistence Basics</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/querying.html"><strong>7</strong><span>Querying with GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/services.html"><strong>10</strong><span>GORM Data Services</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <!-- <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li> -->
+            <li class="separator selected">
+                <a id="ref-button" href="../api/index.html">API Docs</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/multiTenancy.html">&lt;&lt; <strong>12</strong><span>Multi-Tenancy</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/testing.html"><strong>14</strong><span>GORM and Testing</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>13.5 Constraints and Database Mapping</h1>
+
+                    <p><strong>Version:</strong> 2023.3.0-SNAPSHOT</p>
+                </div>
+
+                
+
+                
+
+<h2 id="gormConstraints"><a class="anchor" href="#gormConstraints"></a>13.5 Constraints and Database Mapping</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/constraints/gormConstraints.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>Although constraints are primarily for validation, it is important to understand that constraints can affect the way in which the database schema is generated.</p>
+</div>
+<div class="paragraph">
+<p>Where feasible, GORM uses a domain class&#8217;s constraints to influence the database columns generated for the corresponding domain class properties.</p>
+</div>
+<div class="paragraph">
+<p>Consider the following example.  Suppose we have a domain model with the following properties:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="predefined-type">String</span> name
+<span class="predefined-type">String</span> description</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default, in MySQL, GORM would define these columns as</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Data Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">varchar(255)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">varchar(255)</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>But perhaps the business rules for this domain class state that a description can be up to 1000 characters in length.  If that were the case, we would likely define the column as follows <em>if</em> we were creating the table with an SQL script.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Column</th>
+<th class="tableblock halign-left valign-top">Data Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">description</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TEXT</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Chances are we would also want to have some application-based validation to make sure we don&#8217;t exceed that 1000 character limit <em>before</em> we persist any records.  In GORM, we achieve this validation with <a href="#constraints">constraints</a>.  We would add the following constraint declaration to the domain class.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> constraints = {
+    description <span class="key">maxSize</span>: <span class="integer">1000</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This constraint would provide both the application-based validation we want and it would also cause the schema to be generated as shown above.  Below is a description of the other constraints that influence schema generation.</p>
+</div>
+<div class="sect2">
+<h3 id="_constraints_affecting_string_properties">Constraints Affecting String Properties</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><code>inList</code></p>
+</li>
+<li>
+<p><code>maxSize</code></p>
+</li>
+<li>
+<p><code>size</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If either the <code>maxSize</code> or the <code>size</code> constraint is defined, Grails sets the maximum column length based on the constraint value.</p>
+</div>
+<div class="paragraph">
+<p>In general, it&#8217;s not advisable to use both constraints on the same domain class property.  However, if both the <code>maxSize</code> constraint and the <code>size</code> constraint are defined, then GORM sets the column length to the minimum of the <code>maxSize</code> constraint and the upper bound of the size constraint.  (GORM uses the minimum of the two, because any length that exceeds that minimum will result in a validation error.)</p>
+</div>
+<div class="paragraph">
+<p>If the <code>inList</code> constraint is defined (and the <code>maxSize</code> and the <code>size</code> constraints are not defined), then GORM sets the maximum column length based on the length of the longest string in the list of valid values.  For example, given a list including values "Java", "Groovy", and "C++", GORM would set the column length to 6 (i.e., the number of characters in the string "Groovy").</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_constraints_affecting_numeric_properties">Constraints Affecting Numeric Properties</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><code>min</code></p>
+</li>
+<li>
+<p><code>max</code></p>
+</li>
+<li>
+<p><code>range</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If the <code>max</code>, <code>min</code>, or <code>range</code> constraint is defined, GORM attempts to set the column precision based on the constraint value.  (The success of this attempted influence is largely dependent on how Hibernate interacts with the underlying DBMS.)</p>
+</div>
+<div class="paragraph">
+<p>In general, it&#8217;s not advisable to combine the pair <code>min</code>/<code>max</code> and <code>range</code> constraints together on the same domain class property.  However, if both of these constraints is defined, then GORM uses the minimum precision value from the constraints.  (GORM uses the minimum of the two, because any length that exceeds that minimum precision will result in a validation error.)</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>scale</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If the scale constraint is defined, then GORM attempts to set the column <a href="#ref-constraints-scale">scale</a> based on the constraint value.  This rule only applies to floating point numbers (i.e., <code>java.lang.Float</code>, <code>java.Lang.Double</code>, <code>java.lang.BigDecimal</code>, or subclasses of <code>java.lang.BigDecimal</code>). The success of this attempted influence is largely dependent on how Hibernate interacts with the underlying DBMS.</p>
+</div>
+<div class="paragraph">
+<p>The constraints define the minimum/maximum numeric values, and GORM derives the maximum number of digits for use in the precision. Keep in mind that specifying only one of <code>min</code>/<code>max</code> constraints will not affect schema generation (since there could be large negative value of property with max:100, for example), unless the specified constraint value requires more digits than default Hibernate column precision is (19 at the moment). For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">someFloatValue <span class="key">max</span>: <span class="integer">1000000</span>, <span class="key">scale</span>: <span class="integer">3</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>would yield:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">someFloatValue DECIMAL(<span class="integer">19</span>, <span class="integer">3</span>) <span class="comment">// precision is default</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>but</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">someFloatValue <span class="key">max</span>: <span class="integer">12345678901234567890</span>, <span class="key">scale</span>: <span class="integer">5</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>would yield:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">someFloatValue DECIMAL(<span class="integer">25</span>, <span class="integer">5</span>) <span class="comment">// precision = digits in max + scale</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">someFloatValue <span class="key">max</span>: <span class="integer">100</span>, <span class="key">min</span>: -<span class="integer">100000</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>would yield:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">someFloatValue DECIMAL(<span class="integer">8</span>, <span class="integer">2</span>) <span class="comment">// precision = digits in min + default scale</span></code></pre>
+</div>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/multiTenancy.html">&lt;&lt; <strong>12</strong><span>Multi-Tenancy</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/testing.html"><strong>14</strong><span>GORM and Testing</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright &copy; 2022-2025 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

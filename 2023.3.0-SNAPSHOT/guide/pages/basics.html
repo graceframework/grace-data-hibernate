@@ -71,6 +71,15 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
                         </div>
                         
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
                     </div>
                 </div>
             </li>
@@ -115,16 +124,16 @@ function addJsClass() {
 <h2 id="basics"><a class="anchor" href="#basics"></a>10.1 Data Service Basics</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/services/basics.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/services/basics.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
-<div class="sect3">
-<h4 id="_writing_a_simple_data_service">Writing a Simple Data Service</h4>
+<div class="sect2">
+<h3 id="_writing_a_simple_data_service">Writing a Simple Data Service</h3>
 <div class="paragraph">
-<p>In a Grails application you can create a Data Service in either <code>src/main/groovy</code> or <code>grails-app/services</code>. To write a Data Service you should create either an interface (although abstract classes can also be used, more about that later) and annotate it with the <code>grails.gorm.services.Service</code> annotation with the domain class the service applies to:</p>
+<p>In a Grails application you can create a Data Service in either <code>src/main/groovy</code> or <code>app/services</code>. To write a Data Service you should create either an interface (although abstract classes can also be used, more about that later) and annotate it with the <code>grails.gorm.services.Service</code> annotation with the domain class the service applies to:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -163,8 +172,8 @@ The above example also works in Spock unit tests that extend <code>HibernateSpec
 </table>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_how_does_it_work">How Does it Work?</h4>
+<div class="sect2">
+<h3 id="_how_does_it_work">How Does it Work?</h3>
 <div class="paragraph">
 <p>The <code>@Service</code> transformation will look at the the method signatures of the interface and make a best effort to find a way to implement each method.</p>
 </div>
@@ -175,8 +184,8 @@ The above example also works in Spock unit tests that extend <code>HibernateSpec
 <p>The <code>@Service</code> transformation will also generate a <code>META-INF/services</code> file for the service so it can be discovered via the standard Java service loader. So no additional configuration is necessary.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_advantages_of_data_services">Advantages of Data Services</h4>
+<div class="sect2">
+<h3 id="_advantages_of_data_services">Advantages of Data Services</h3>
 <div class="paragraph">
 <p>There are several advantages to Data Services that make them worth considering to abstract your persistence logic.</p>
 </div>
@@ -197,8 +206,8 @@ The above example also works in Spock unit tests that extend <code>HibernateSpec
 </ul>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_abstract_class_support">Abstract Class Support</h4>
+<div class="sect2">
+<h3 id="_abstract_class_support">Abstract Class Support</h3>
 <div class="paragraph">
 <p>If you come across a method that GORM doesn&#8217;t know how to implement, then you can provide an implementation by using an abstract class.</p>
 </div>

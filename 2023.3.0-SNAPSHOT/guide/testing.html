@@ -1,0 +1,413 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>14 GORM and Testing 2023.3.0-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navHeader">
+        
+        <span id="logo">
+            <a href="https://graceframework.org" title="Grace Framework Website">
+                <img src="../img/grace.svg" alt="Grace Framework" />
+            </a>
+        </span>
+        
+        <div class="docHeader">
+            <h1 class="docTitle">Grace Data Hibernate</h1>
+            <h3 class="docSubTitle">Provides integration between Grace and Hibernate through GORM</h3>
+        </div>
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/gettingStarted.html"><strong>2</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/quickStartGuide.html"><strong>3</strong><span>Quick Start Guide</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/configuration.html"><strong>4</strong><span>Configuration</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/domainClasses.html"><strong>5</strong><span>Domain Modelling in GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/persistenceBasics.html"><strong>6</strong><span>Persistence Basics</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/querying.html"><strong>7</strong><span>Querying with GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/advancedGORMFeatures.html"><strong>8</strong><span>Advanced GORM Features</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/programmaticTransactions.html"><strong>9</strong><span>Programmatic Transactions</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/services.html"><strong>10</strong><span>GORM Data Services</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <!-- <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li> -->
+            <li class="separator selected">
+                <a id="ref-button" href="../api/index.html">API Docs</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../guide/constraints.html">&lt;&lt; <strong>13</strong><span>Validation and Constraints</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+
+
+                <div class="project">
+                    <h1>14 GORM and Testing</h1>
+
+                    <p><strong>Version:</strong> 2023.3.0-SNAPSHOT</p>
+                </div>
+
+                
+                <div id="table-of-content">
+                    <h2>Table of Contents</h2>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#spock"><strong>14.1</strong><span>Unit Testing with Spock</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#junit"><strong>14.2</strong><span>Unit Testing with JUnit</span></a>
+                    </div>
+                    
+                </div>
+                
+
+                
+
+<h1 id="testing"><a class="anchor" href="#testing"></a>14 GORM and Testing</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/testing.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>In previous versions of GORM it was much more difficult to setup a unit test to test your GORM logic.</p>
+</div>
+<div class="paragraph">
+<p>However, since GORM 6.0, this situation has changed and it is relatively trivial to setup GORM for testing.</p>
+</div>
+
+
+<h2 id="spock"><a class="anchor" href="#spock"></a>14.1 Unit Testing with Spock</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/testing/spock.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p><a href="https://docs.spockframework.org">Spock</a> is the recommended tool for writing unit tests with GORM and is trivial to setup.</p>
+</div>
+<div class="sect2">
+<h3 id="_gorm_with_hibernate_and_spock_basics">GORM with Hibernate and Spock Basics</h3>
+<div class="paragraph">
+<p>The following is an example Spock unit test:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">spock.lang.*</span>
+<span class="keyword">import</span> <span class="include">grails.gorm.annotation.Entity</span>
+<span class="keyword">import</span> <span class="include">org.grails.orm.hibernate.HibernateDatastore</span>
+
+<span class="type">class</span> <span class="class">ExampleSpec</span> <span class="directive">extends</span> Specification { <i class="conum" data-value="1"></i><b>(1)</b>
+
+    <span class="annotation">@Shared</span> <span class="annotation">@AutoCleanup</span> HibernateDatastore hibernateDatastore <i class="conum" data-value="2"></i><b>(2)</b>
+
+    <span class="type">void</span> setupSpec() {
+       hibernateDatastore = <span class="keyword">new</span> HibernateDatastore(Person) <i class="conum" data-value="3"></i><b>(3)</b>
+    }
+
+    <span class="type">void</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">test something</span><span class="delimiter">&quot;</span></span>() { <i class="conum" data-value="4"></i><b>(4)</b>
+       <span class="comment">// your logic here</span>
+    }
+}
+
+<span class="annotation">@Entity</span> <i class="conum" data-value="5"></i><b>(5)</b>
+<span class="type">class</span> <span class="class">Person</span> {
+    ...
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The test should extend <code>spock.lang.Specification</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>Shared</code> annotation is used to indicate to Spock that the <code>HibernateDatastore</code> is shared across all tests. The <code>AutoCleanup</code> annotation makes sure that <code>HibernateDatastore</code> is shutdown when all tests finish executing.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Within the <code>setupSpec</code> method a new <code>HibernateDatastore</code> is constructed with the classes to use as the argument to the constructor.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>You then write your test logic within each method</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>You can inline domain classes within the unit test if you annotate them with <code>@Entity</code></td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_spock_and_transactions">Spock and Transactions</h3>
+<div class="paragraph">
+<p>Note that in general you have to wrap your test execution logic in a session or transaction. The easiest way to do this is with <code>grails.gorm.transactions.Transactional</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">...
+import grails.gorm.transactions.*
+<span class="keyword">import</span> <span class="include">org.springframework.transaction.PlatformTransactionManager</span>
+
+<span class="type">class</span> <span class="class">ExampleSpec</span> <span class="directive">extends</span> Specification {
+
+    <span class="annotation">@Shared</span> <span class="annotation">@AutoCleanup</span> HibernateDatastore hibernateDatastore
+    <span class="annotation">@Shared</span> PlatformTransactionManager transactionManager <i class="conum" data-value="1"></i><b>(1)</b>
+
+    <span class="type">void</span> setupSpec() {
+        hibernateDatastore = <span class="keyword">new</span> HibernateDatastore(Person)
+        transactionManager = hibernateDatastore.getTransactionManager() <i class="conum" data-value="2"></i><b>(2)</b>
+    }
+
+    <span class="annotation">@Transactional</span> <i class="conum" data-value="3"></i><b>(3)</b>
+    <span class="keyword">def</span> <span class="function">setup</span>() {
+        <span class="keyword">new</span> Person(<span class="key">firstName</span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">Fred</span><span class="delimiter">&quot;</span></span>).save()
+    }
+
+    <span class="annotation">@Rollback</span> <i class="conum" data-value="4"></i><b>(4)</b>
+    <span class="type">void</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">test execute GORM standalone in a unit test</span><span class="delimiter">&quot;</span></span>() {
+        <span class="comment">// your logic here</span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <code>PlatformTransactionManager</code> is defined as a <code>Shared</code> field</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>You can obtain the <code>PlatformTransactionManager</code> from the <code>HibernateDatastore</code></td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The <code>Transactional</code> annotation is used to setup test data</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>The <code>Rollback</code> annotation is used to rollback any changes made within each test</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In the example above, each test method is wrapped in a transaction that rolls back any changes using the <code>grails.gorm.transactions.Rollback</code> annotation.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you want to setup some test data within the <code>setupSpec</code> method that is shared across all tests then you can use <code>withTransaction</code>:
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">...
+void setupSpec() {
+    hibernateDatastore = <span class="keyword">new</span> HibernateDatastore(Person)
+    ...
+    Person.withTransaction {
+        <span class="keyword">new</span> Person(<span class="key">firstName</span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">Fred</span><span class="delimiter">&quot;</span></span>).save()
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configuring_gorm_in_spock">Configuring GORM in Spock</h3>
+<div class="paragraph">
+<p>If you need to configure GORM within a Spock unit test you can pass a map to the constructor of <code>HibernateDatastore</code>. For example to setup multi-tenancy:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">...
+void setupSpec() {
+    <span class="predefined-type">Map</span> configuration = [
+        <span class="string"><span class="delimiter">'</span><span class="content">grails.gorm.multiTenancy.mode</span><span class="delimiter">'</span></span>:<span class="string"><span class="delimiter">'</span><span class="content">DISCRIMINATOR</span><span class="delimiter">'</span></span>,
+        <span class="string"><span class="delimiter">'</span><span class="content">grails.gorm.multiTenancy.tenantResolverClass</span><span class="delimiter">'</span></span>:SystemPropertyTenantResolver
+    ]
+    hibernateDatastore = <span class="keyword">new</span> HibernateDatastore(configuration, Person)
+    ...
+}</code></pre>
+</div>
+</div>
+</div>
+
+
+<h2 id="junit"><a class="anchor" href="#junit"></a>14.2 Unit Testing with JUnit</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/testing/junit.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>To unit test with <a href="https://junit.org/junit4">JUnit</a> it is largely similar to Spock, just following different idioms.</p>
+</div>
+<div class="paragraph">
+<p>So instead of <code>setupSpec</code> use <code>@BeforeClass</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">org.junit.*</span>
+<span class="keyword">import</span> <span class="include">grails.gorm.transactions.*</span>
+<span class="keyword">import</span> <span class="include">org.grails.orm.hibernate.HibernateDatastore</span>
+<span class="keyword">import</span> <span class="include">org.springframework.transaction.PlatformTransactionManager</span>
+
+<span class="type">class</span> <span class="class">ExampleTest</span>  {
+
+    <span class="directive">static</span> HibernateDatastore hibernateDatastore
+
+    PlatformTransactionManager transactionManager
+
+    <span class="annotation">@BeforeClass</span>
+    <span class="type">void</span> setupGorm() {
+       hibernateDatastore = <span class="keyword">new</span> HibernateDatastore(Person)
+    }
+
+    <span class="annotation">@AfterClass</span>
+    <span class="type">void</span> shutdownGorm() {
+       hibernateDatastore.close()
+    }
+
+    <span class="annotation">@Before</span>
+    <span class="type">void</span> setup() {
+        transactionManager = hibernateDatastore.getTransactionManager()
+    }
+
+    <span class="annotation">@Rollback</span>
+    <span class="annotation">@Test</span>
+    <span class="type">void</span> testSomething() {
+       <span class="comment">// your logic here</span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+JUnit doesn&#8217;t have anything like Spock&#8217;s <code>AutoCleanup</code> so you must call <code>close()</code> on the <code>HibernateDatastore</code> manually!
+</td>
+</tr>
+</table>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../guide/constraints.html">&lt;&lt; <strong>13</strong><span>Validation and Constraints</span></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright &copy; 2022-2025 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

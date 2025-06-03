@@ -71,6 +71,15 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
                         </div>
                         
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
                     </div>
                 </div>
             </li>
@@ -115,7 +124,7 @@ function addJsClass() {
 <h2 id="eventsAutoTimestamping"><a class="anchor" href="#eventsAutoTimestamping"></a>8.1 Events and Auto Timestamping</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/eventsAutoTimestamping.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/advancedGORMFeatures/eventsAutoTimestamping.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -167,8 +176,8 @@ Do not attempt to flush the session within an event (such as with obj.save(flush
 </tr>
 </table>
 </div>
-<div class="sect3">
-<h4 id="_the_beforeinsert_event">The beforeInsert event</h4>
+<div class="sect2">
+<h3 id="_the_beforeinsert_event">The beforeInsert event</h3>
 <div class="paragraph">
 <p>Fired before an object is saved to the database</p>
 </div>
@@ -190,8 +199,8 @@ Do not attempt to flush the session within an event (such as with obj.save(flush
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_the_beforeupdate_event">The beforeUpdate event</h4>
+<div class="sect2">
+<h3 id="_the_beforeupdate_event">The beforeUpdate event</h3>
 <div class="paragraph">
 <p>Fired before an existing object is updated</p>
 </div>
@@ -216,8 +225,8 @@ Do not attempt to flush the session within an event (such as with obj.save(flush
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_the_beforedelete_event">The beforeDelete event</h4>
+<div class="sect2">
+<h3 id="_the_beforedelete_event">The beforeDelete event</h3>
 <div class="paragraph">
 <p>Fired before an object is deleted.</p>
 </div>
@@ -241,8 +250,8 @@ Do not attempt to flush the session within an event (such as with obj.save(flush
 <p>Fortunately the <code>withNewSession</code> method lets you share the same transactional JDBC connection even though you&#8217;re using a different underlying <code>Session</code>.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_the_beforevalidate_event">The beforeValidate event</h4>
+<div class="sect2">
+<h3 id="_the_beforevalidate_event">The beforeValidate event</h3>
 <div class="paragraph">
 <p>Fired before an object is validated.</p>
 </div>
@@ -324,8 +333,8 @@ no-arg version if no arguments are passed to <code>validate</code> but will fall
 <code>List</code> version if the no-arg version does not exist.  In that case, <code>null</code> is passed to <code>beforeValidate</code>.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_the_onloadbeforeload_event">The onLoad/beforeLoad event</h4>
+<div class="sect2">
+<h3 id="_the_onloadbeforeload_event">The onLoad/beforeLoad event</h3>
 <div class="paragraph">
 <p>Fired immediately before an object is loaded from the database:</p>
 </div>
@@ -346,8 +355,8 @@ no-arg version if no arguments are passed to <code>validate</code> but will fall
 <p><code>beforeLoad()</code> is effectively a synonym for <code>onLoad()</code>, so only declare one or the other.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_the_afterload_event">The afterLoad event</h4>
+<div class="sect2">
+<h3 id="_the_afterload_event">The afterLoad event</h3>
 <div class="paragraph">
 <p>Fired immediately after an object is loaded from the database:</p>
 </div>
@@ -365,8 +374,8 @@ no-arg version if no arguments are passed to <code>validate</code> but will fall
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_custom_event_listeners">Custom Event Listeners</h4>
+<div class="sect2">
+<h3 id="_custom_event_listeners">Custom Event Listeners</h3>
 <div class="paragraph">
 <p>To register a custom event listener you need to subclass <code>AbstractPersistenceEventListener</code> (in package <em>org.grails.datastore.mapping.engine.event</em>) and implement the methods <code>onPersistenceEvent</code> and <code>supportsEventType</code>. You also must provide a reference to the datastore to the listener.  The simplest possible implementation can be seen below:</p>
 </div>
@@ -435,13 +444,13 @@ datastore.getApplicationEventPublisher()
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_hibernate_events">Hibernate Events</h4>
+<div class="sect2">
+<h3 id="_hibernate_events">Hibernate Events</h3>
 <div class="paragraph">
 <p>It is generally encouraged to use the non-Hibernate specific API described above, but if you need access to more detailed Hibernate events then you can define custom Hibernate-specific event listeners.</p>
 </div>
 <div class="paragraph">
-<p>You can also register event handler classes in an application&#8217;s <code>grails-app/conf/spring/resources.groovy</code> or in the <code>doWithSpring</code> closure in a plugin descriptor by registering a Spring bean named <code>hibernateEventListeners</code>. This bean has one property, <code>listenerMap</code> which specifies the listeners to register for various Hibernate events.</p>
+<p>You can also register event handler classes in an application&#8217;s <code>app/conf/spring/resources.groovy</code> or in the <code>doWithSpring</code> closure in a plugin descriptor by registering a Spring bean named <code>hibernateEventListeners</code>. This bean has one property, <code>listenerMap</code> which specifies the listeners to register for various Hibernate events.</p>
 </div>
 <div class="paragraph">
 <p>The values of the Map are instances of classes that implement one or more Hibernate listener interfaces. You can use one class that implements all of the required interfaces, or one concrete class per interface, or any combination. The valid Map keys and corresponding interfaces are listed here:</p>
@@ -631,8 +640,8 @@ datastore.getApplicationEventPublisher()
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_automatic_timestamping">Automatic timestamping</h4>
+<div class="sect2">
+<h3 id="_automatic_timestamping">Automatic timestamping</h3>
 <div class="paragraph">
 <p>If you define a <code>dateCreated</code> property it will be set to the current date for you when you create new instances. Likewise, if you define a <code>lastUpdated</code> property it will be automatically be updated for you when you change persistent instances.</p>
 </div>

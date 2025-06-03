@@ -71,6 +71,15 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
                         </div>
                         
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
                     </div>
                 </div>
             </li>
@@ -115,14 +124,14 @@ function addJsClass() {
 <h3 id="fetchingDSL"><a class="anchor" href="#fetchingDSL"></a>8.2.8 Eager and Lazy Fetching</h3>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/ormdsl/fetchingDSL.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/advancedGORMFeatures/ormdsl/fetchingDSL.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
-<div class="sect4">
-<h5 id="_lazy_collections">Lazy Collections</h5>
+<div class="sect3">
+<h4 id="_lazy_collections">Lazy Collections</h4>
 <div class="paragraph">
 <p>As discussed in the section on <a href="#fetching">Eager and Lazy fetching</a>, GORM collections are lazily loaded by default but you can change this behaviour with the ORM DSL. There are several options available to you, but the most common ones are:</p>
 </div>
@@ -209,8 +218,8 @@ function addJsClass() {
 <p>You can find out more about these options in the <a href="https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#fetching">Hibernate user guide</a>. Note that ORM DSL does not currently support the "subselect" fetching strategy.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_lazy_single_ended_associations">Lazy Single-Ended Associations</h5>
+<div class="sect3">
+<h4 id="_lazy_single_ended_associations">Lazy Single-Ended Associations</h4>
 <div class="paragraph">
 <p>In GORM, one-to-one and many-to-one associations are by default lazy. Non-lazy single ended associations can be problematic when you load many entities because each non-lazy association will result in an extra SELECT statement. If the associated entities also have non-lazy associations, the number of queries grows significantly!</p>
 </div>
@@ -243,8 +252,8 @@ function addJsClass() {
 <p>Here we configure GORM to load the associated <code>Person</code> instance (through the <code>person</code> property) whenever an <code>Address</code> is loaded.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_lazy_associations_and_proxies">Lazy Associations and Proxies</h5>
+<div class="sect3">
+<h4 id="_lazy_associations_and_proxies">Lazy Associations and Proxies</h4>
 <div class="paragraph">
 <p>Hibernate uses runtime-generated proxies to facilitate single-ended lazy associations; Hibernate dynamically subclasses the entity class to create the proxy.</p>
 </div>

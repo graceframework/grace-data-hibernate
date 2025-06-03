@@ -71,6 +71,15 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
                         </div>
                         
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
                     </div>
                 </div>
             </li>
@@ -118,13 +127,16 @@ function addJsClass() {
                     <div class="toc-item" style="margin-left:0px"><a href="#queries"><strong>10.2</strong><span>Data Service Queries</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#writeOperations"><strong>10.3</strong><span>Data Service Write Operations</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#queryJoins"><strong>10.3</strong><span>Query Joins</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#serviceValidation"><strong>10.4</strong><span>Validating Data Services</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#writeOperations"><strong>10.4</strong><span>Data Service Write Operations</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#rxServices"><strong>10.5</strong><span>RxJava Support</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#serviceValidation"><strong>10.5</strong><span>Validating Data Services</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#rxServices"><strong>10.6</strong><span>RxJava Support</span></a>
                     </div>
                     
                 </div>
@@ -135,7 +147,7 @@ function addJsClass() {
 <h1 id="services"><a class="anchor" href="#services"></a>10 GORM Data Services</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/services.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/services.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -152,16 +164,16 @@ function addJsClass() {
 <h2 id="basics"><a class="anchor" href="#basics"></a>10.1 Data Service Basics</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/services/basics.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/services/basics.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
-<div class="sect3">
-<h4 id="_writing_a_simple_data_service">Writing a Simple Data Service</h4>
+<div class="sect2">
+<h3 id="_writing_a_simple_data_service">Writing a Simple Data Service</h3>
 <div class="paragraph">
-<p>In a Grails application you can create a Data Service in either <code>src/main/groovy</code> or <code>grails-app/services</code>. To write a Data Service you should create either an interface (although abstract classes can also be used, more about that later) and annotate it with the <code>grails.gorm.services.Service</code> annotation with the domain class the service applies to:</p>
+<p>In a Grails application you can create a Data Service in either <code>src/main/groovy</code> or <code>app/services</code>. To write a Data Service you should create either an interface (although abstract classes can also be used, more about that later) and annotate it with the <code>grails.gorm.services.Service</code> annotation with the domain class the service applies to:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -200,8 +212,8 @@ The above example also works in Spock unit tests that extend <code>HibernateSpec
 </table>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_how_does_it_work">How Does it Work?</h4>
+<div class="sect2">
+<h3 id="_how_does_it_work">How Does it Work?</h3>
 <div class="paragraph">
 <p>The <code>@Service</code> transformation will look at the the method signatures of the interface and make a best effort to find a way to implement each method.</p>
 </div>
@@ -212,8 +224,8 @@ The above example also works in Spock unit tests that extend <code>HibernateSpec
 <p>The <code>@Service</code> transformation will also generate a <code>META-INF/services</code> file for the service so it can be discovered via the standard Java service loader. So no additional configuration is necessary.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_advantages_of_data_services">Advantages of Data Services</h4>
+<div class="sect2">
+<h3 id="_advantages_of_data_services">Advantages of Data Services</h3>
 <div class="paragraph">
 <p>There are several advantages to Data Services that make them worth considering to abstract your persistence logic.</p>
 </div>
@@ -234,8 +246,8 @@ The above example also works in Spock unit tests that extend <code>HibernateSpec
 </ul>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_abstract_class_support">Abstract Class Support</h4>
+<div class="sect2">
+<h3 id="_abstract_class_support">Abstract Class Support</h3>
 <div class="paragraph">
 <p>If you come across a method that GORM doesn&#8217;t know how to implement, then you can provide an implementation by using an abstract class.</p>
 </div>
@@ -321,7 +333,7 @@ If you have <code>public</code> methods that you do not wish to be transactional
 <h2 id="queries"><a class="anchor" href="#queries"></a>10.2 Data Service Queries</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/services/queries.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/services/queries.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -336,32 +348,195 @@ If you have <code>public</code> methods that you do not wish to be transactional
 <div class="paragraph">
 <p>The following table summarizes the conventions:</p>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in &lt;stdin&gt; - include::queryConventions.adoc[]</p>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Data Service Conventions</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Method Stem</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Possible Return Types</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>count*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Count the number of results</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Subclass of <code>Number</code> or <code>Observable&lt;Number&gt;</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>countBy*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dynamic Finder Count the number of results</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Subclass of <code>Number</code> or <code>Observable&lt;Number&gt;</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>delete*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Delete an instance for the given arguments</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>T</code>, <code>void</code>, subclass of <code>Number</code> or <code>Observable&lt;Number&gt;</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>find*</code>, <code>get*</code>, <code>list*</code> or <code>retrieve*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Query for the given parameters</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>T</code>, <code>Iterable&lt;T&gt;</code>, <code>T[]</code>, <code>List&lt;T&gt;</code>, <code>Observable&lt;T&gt;</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>findBy*</code>, <code>listBy*</code>, <code>findAllBy*</code> or <code>getBy*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dynamic finder query for given parameters</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>T</code>, <code>Iterable&lt;T&gt;</code>, <code>T[]</code>, <code>List&lt;T&gt;</code>, <code>Observable&lt;T&gt;</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>save*</code>, <code>store*</code>, or <code>persist*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Save a new instance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>T</code> or <code>Observable&lt;T&gt;</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>update*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Updates an existing instance. First parameter should be <code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>T</code> or <code>Observable&lt;T&gt;</code></p></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
 <p>The conventions are extensible (more on that later), in terms of queries there are two distinct types.</p>
 </div>
-<div class="sect3">
-<h4 id="_simple_queries">Simple Queries</h4>
+<div class="sect2">
+<h3 id="_simple_queries">Simple Queries</h3>
 <div class="paragraph">
-<p>Unresolved directive in &lt;stdin&gt; - include::simpleQueries.adoc[]</p>
+<p>Simple queries are queries that use the arguments of the method. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+    <span class="predefined-type">Book</span> findBook(<span class="predefined-type">String</span> title)
+}</code></pre>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_dynamic_finder_queries">Dynamic Finder Queries</h4>
 <div class="paragraph">
-<p>Unresolved directive in &lt;stdin&gt; - include::finderQueries.adoc[]</p>
+<p>In the example above the Data Service will generate the implementation based on the fact that the <code>title</code> parameter matches the <code>title</code> property of the <code>Book</code> class both in terms of name and type.</p>
 </div>
-</div>
-<div class="sect3">
-<h4 id="_where_queries">Where Queries</h4>
 <div class="paragraph">
-<p>Unresolved directive in &lt;stdin&gt; - include::whereQueries.adoc[]</p>
+<p>If you were to misspell the <code>title</code> parameter or use an incorrect type then a compilation error will occur.</p>
+</div>
+<div class="paragraph">
+<p>You can alter the return type to return more results:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+    <span class="predefined-type">List</span>&lt;<span class="predefined-type">Book</span>&gt; findBooks(<span class="predefined-type">String</span> title)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And if you wish to control pagination and query arguments you can add an <code>args</code> parameter that should be a <code>Map</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+    <span class="predefined-type">List</span>&lt;<span class="predefined-type">Book</span>&gt; findBooks(<span class="predefined-type">String</span> title, <span class="predefined-type">Map</span> args)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case the following query will control pagination and ordering:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="predefined-type">List</span>&lt;<span class="predefined-type">Book</span>&gt; books = bookService.findBooks(
+    <span class="string"><span class="delimiter">&quot;</span><span class="content">The Stand</span><span class="delimiter">&quot;</span></span>,
+    [<span class="key">offset</span>:<span class="integer">10</span>, <span class="key">max</span>:<span class="integer">10</span>, <span class="key">sort</span>:<span class="string"><span class="delimiter">'</span><span class="content">title</span><span class="delimiter">'</span></span>, <span class="key">order</span>:<span class="string"><span class="delimiter">'</span><span class="content">desc</span><span class="delimiter">'</span></span>]
+)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can include multiple parameters in the query:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+    <span class="predefined-type">List</span>&lt;<span class="predefined-type">Book</span>&gt; findBooks(<span class="predefined-type">String</span> title, <span class="predefined-type">Date</span> publishDate)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case a conjunction (<code>AND</code>) query will be executed. If you need to do a disjunction (<code>OR</code>) then it is time you learn about Dynamic Finder-style queries.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_query_joins">Query Joins</h3>
+<h3 id="_dynamic_finder_queries">Dynamic Finder Queries</h3>
+<div class="paragraph">
+<p>Dynamic finder styles queries use the stem plus the word <code>By</code> and then a <a href="#finders">Dynamic Finder expression</a>.</p>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+    <span class="predefined-type">List</span>&lt;<span class="predefined-type">Book</span>&gt; findByTitleAndPublishDateGreaterThan(<span class="predefined-type">String</span> title, <span class="predefined-type">Date</span> publishDate)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The signature above will produce a dynamic finder query using the method signature expression.</p>
+</div>
+<div class="paragraph">
+<p>The possible method expressions are the same as those possible with GORM&#8217;s static <a href="#finders">Dynamic Finders</a></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+In this case the names of the properties to query are inferred from the method signature and the parameter names are not critical. If you misspell the method signature a compilation error will occur.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_where_queries">Where Queries</h3>
+<div class="paragraph">
+<p>If you have a more complex query then you may want to consider using the <code>@Where</code> annotation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">    <span class="annotation">@Where</span>({ title ==~ pattern &amp;&amp; releaseDate &gt; fromDate })
+    <span class="predefined-type">Book</span> searchBooks(<span class="predefined-type">String</span> pattern, <span class="predefined-type">Date</span> fromDate)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With the <code>@Where</code> annotation the method name can be anything you want and query is expressed within a closure passed with the <code>@Where</code> annotation.</p>
+</div>
+<div class="paragraph">
+<p>The query will be type checked against the parameters and compilation will fail if you misspell a parameter or property name.</p>
+</div>
+<div class="paragraph">
+<p>The syntax is the same as what is passed to GORM&#8217;s static <code>where</code> method, see the section on <a href="#whereQueries">Where Queries</a> for more information.</p>
+</div>
+</div>
+
+
+<h2 id="queryJoins"><a class="anchor" href="#queryJoins"></a>10.3 Query Joins</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/services/queryJoins.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
 <div class="paragraph">
 <p>You can specify query joins using the <code>@Join</code> annotation:</p>
 </div>
@@ -391,25 +566,173 @@ If you have <code>public</code> methods that you do not wish to be transactional
 </tr>
 </table>
 </div>
-<div class="sect3">
-<h4 id="_jpa_ql_queries">JPA-QL Queries</h4>
+<div class="sect2">
+<h3 id="_jpa_ql_queries">JPA-QL Queries</h3>
 <div class="paragraph">
-<p>Unresolved directive in &lt;stdin&gt; - include::hqlQueries.adoc[]</p>
+<p>If you need even more flexibility, then HQL queries can be used via the <code>@Query</code> annotation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Query</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">from </span><span class="inline"><span class="inline-delimiter">$</span><span class="predefined-type">Book</span></span><span class="content"> as book where book.title like </span><span class="inline"><span class="inline-delimiter">$</span>pattern</span><span class="delimiter">&quot;</span></span>)
+<span class="predefined-type">Book</span> searchByTitle(<span class="predefined-type">String</span> pattern)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that in the example above, if you misspell the <code>pattern</code> parameter passed to the query a compilation error will occur.</p>
+</div>
+<div class="paragraph">
+<p>However, if you were to incorrectly input the <code>title</code> property no error would occur since it is part of the String and not a variable.</p>
+</div>
+<div class="paragraph">
+<p>You can resolve this by declaring the value of <code>book</code> within the passed GString:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Query</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">from </span><span class="inline"><span class="inline-delimiter">${</span><span class="predefined-type">Book</span> book<span class="inline-delimiter">}</span></span><span class="content"> where </span><span class="inline"><span class="inline-delimiter">${</span>book.title<span class="inline-delimiter">}</span></span><span class="content"> like </span><span class="inline"><span class="inline-delimiter">$</span>pattern</span><span class="delimiter">&quot;</span></span>)
+<span class="predefined-type">Book</span> searchByTitle(<span class="predefined-type">String</span> pattern)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the above example if you misspell the <code>title</code> property then a compilation error will occur. This is extremely powerful as it gives you the ability to type check HQL queries, which has always been one of the disadvantages of using them in comparison to criteria.</p>
+</div>
+<div class="paragraph">
+<p>This support for type checked queries extends to joins. For example consider this query:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Query</span>(<span class="string"><span class="delimiter">&quot;&quot;&quot;</span><span class="content">
+ from </span><span class="inline"><span class="inline-delimiter">${</span><span class="predefined-type">Book</span> book<span class="inline-delimiter">}</span></span><span class="content"> <i class="conum" data-value="1"></i><b>(1)</b>
+ inner join </span><span class="inline"><span class="inline-delimiter">${</span>Author author = book.author<span class="inline-delimiter">}</span></span><span class="content"> <i class="conum" data-value="2"></i><b>(2)</b>
+ where </span><span class="inline"><span class="inline-delimiter">$</span>book</span><span class="content">.title = </span><span class="inline"><span class="inline-delimiter">$</span>title</span><span class="content"> and </span><span class="inline"><span class="inline-delimiter">$</span>author</span><span class="content">.name = </span><span class="inline"><span class="inline-delimiter">$</span>author</span><span class="delimiter">&quot;&quot;&quot;</span></span>) <i class="conum" data-value="3"></i><b>(3)</b>
+<span class="predefined-type">Book</span> find(<span class="predefined-type">String</span> title, <span class="predefined-type">String</span> author)</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Using <code>from</code> to define the root query</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Use inner join and a declaration to define the association to join on</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Apply any conditions in the <code>where</code> clause</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_query_projections">Query Projections</h3>
+<div class="paragraph">
+<p>There are a few ways to implement projections. One way is to is to use the convention <code>T find[Domain Class][Property]</code>. For example say the <code>Book</code> class has a <code>releaseDate</code> property of type <code>Date</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+   <span class="predefined-type">Date</span> findBookReleaseDate(<span class="predefined-type">String</span> title)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This also works for multiple results:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+   <span class="predefined-type">List</span>&lt;<span class="predefined-type">Date</span>&gt; findBookReleaseDate(<span class="predefined-type">String</span> publisher)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And you can use the <code>Map</code> argument to provide ordering and pagination if necessary:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+   <span class="predefined-type">List</span>&lt;<span class="predefined-type">Date</span>&gt; findBookReleaseDate(<span class="predefined-type">String</span> publisher, <span class="predefined-type">Map</span> args)
+}</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_query_projections">Query Projections</h4>
+<h4 id="_jpa_ql_projections">JPA-QL Projections</h4>
 <div class="paragraph">
-<p>Unresolved directive in &lt;stdin&gt; - include::queryProjections.adoc[]</p>
+<p>You can also use a JPA-QL query to perform a projection:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+   <span class="annotation">@Query</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">select </span><span class="inline"><span class="inline-delimiter">$</span>b</span><span class="content">.releaseDate from </span><span class="inline"><span class="inline-delimiter">${</span><span class="predefined-type">Book</span> b<span class="inline-delimiter">}</span></span><span class="content"> where </span><span class="inline"><span class="inline-delimiter">$</span>b</span><span class="content">.publisher = </span><span class="inline"><span class="inline-delimiter">$</span>publisher</span><span class="content"> order by </span><span class="inline"><span class="inline-delimiter">$</span>b</span><span class="content">.releaseDate</span><span class="delimiter">&quot;</span></span>)
+   <span class="predefined-type">List</span>&lt;<span class="predefined-type">Date</span>&gt; findBookReleaseDates(<span class="predefined-type">String</span> publisher)
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_interface_projections">Interface Projections</h4>
+<div class="paragraph">
+<p>Sometimes you want to expose a more limited set of a data to the calling class. In this case it is possible to use interface projections.</p>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">Author</span> {
+    <span class="predefined-type">String</span> name
+    <span class="predefined-type">Date</span> dateOfBirth <i class="conum" data-value="1"></i><b>(1)</b>
+}
+<span class="type">interface</span> AuthorInfo {
+    <span class="predefined-type">String</span> getName() <i class="conum" data-value="2"></i><b>(2)</b>
+}
+<span class="annotation">@Service</span>(Author)
+<span class="type">interface</span> AuthorService {
+   AuthorInfo find(<span class="predefined-type">String</span> name) <i class="conum" data-value="3"></i><b>(3)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The domain class <code>Author</code> has a property called <code>dateOfBirth</code> that we do not want to make available to the client</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>You can define an interface that only exposes the properties you want to expose</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Return the interface from the service.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If a property exists on the interface but not on the domain class you will receive a compilation error.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
 
 
-<h2 id="writeOperations"><a class="anchor" href="#writeOperations"></a>10.3 Data Service Write Operations</h2>
+<h2 id="writeOperations"><a class="anchor" href="#writeOperations"></a>10.4 Data Service Write Operations</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/services/writeOperations.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/services/writeOperations.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -421,8 +744,8 @@ If you have <code>public</code> methods that you do not wish to be transactional
 <div class="paragraph">
 <p>The following sections discuss the details of the different write operations.</p>
 </div>
-<div class="sect3">
-<h4 id="_create">Create</h4>
+<div class="sect2">
+<h3 id="_create">Create</h3>
 <div class="paragraph">
 <p>To create a new entity the method should return the new entity and feature either the parameters to be used to create the entity or the entity itself.</p>
 </div>
@@ -446,8 +769,8 @@ If you have <code>public</code> methods that you do not wish to be transactional
 <p>If a validation error occurs then a <code>ValidationException</code> will be thrown from the service.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_update">Update</h4>
+<div class="sect2">
+<h3 id="_update">Update</h3>
 <div class="paragraph">
 <p>Update operations are similar to Create operations, the main difference being that the first argument should be the <code>id</code> of the object to update.</p>
 </div>
@@ -478,8 +801,8 @@ If you have <code>public</code> methods that you do not wish to be transactional
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_delete">Delete</h4>
+<div class="sect2">
+<h3 id="_delete">Delete</h3>
 <div class="paragraph">
 <p>Delete operations can either return <code>void</code> or return the instance that was deleted. In the latter case an extra query is required to fetch the entity prior to issue a delete.</p>
 </div>
@@ -514,10 +837,10 @@ If you have <code>public</code> methods that you do not wish to be transactional
 </div>
 
 
-<h2 id="serviceValidation"><a class="anchor" href="#serviceValidation"></a>10.4 Validating Data Services</h2>
+<h2 id="serviceValidation"><a class="anchor" href="#serviceValidation"></a>10.5 Validating Data Services</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/services/serviceValidation.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/services/serviceValidation.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -545,10 +868,10 @@ If you have <code>public</code> methods that you do not wish to be transactional
 </div>
 
 
-<h2 id="rxServices"><a class="anchor" href="#rxServices"></a>10.5 RxJava Support</h2>
+<h2 id="rxServices"><a class="anchor" href="#rxServices"></a>10.6 RxJava Support</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/services/rxServices.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/services/rxServices.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>

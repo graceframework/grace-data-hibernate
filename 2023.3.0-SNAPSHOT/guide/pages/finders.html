@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>7.1 Dynamic Finders 2023.3.0-SNAPSHOT</title>
+    <title>7.3 Dynamic Finders 2023.3.0-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -71,6 +71,15 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
                         </div>
                         
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
                     </div>
                 </div>
             </li>
@@ -103,7 +112,7 @@ function addJsClass() {
 
 
                 <div class="project">
-                    <h1>7.1 Dynamic Finders</h1>
+                    <h1>7.3 Dynamic Finders</h1>
 
                     <p><strong>Version:</strong> 2023.3.0-SNAPSHOT</p>
                 </div>
@@ -112,10 +121,10 @@ function addJsClass() {
 
                 
 
-<h2 id="finders"><a class="anchor" href="#finders"></a>7.1 Dynamic Finders</h2>
+<h2 id="finders"><a class="anchor" href="#finders"></a>7.3 Dynamic Finders</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/querying/finders.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/querying/finders.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -159,8 +168,8 @@ book = <span class="predefined-type">Book</span>.findByReleaseDateGreaterThan(so
 book = <span class="predefined-type">Book</span>.findByTitleLikeOrReleaseDateLessThan(<span class="string"><span class="delimiter">&quot;</span><span class="content">%Something%</span><span class="delimiter">&quot;</span></span>, someDate)</code></pre>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_method_expressions">Method Expressions</h4>
+<div class="sect2">
+<h3 id="_method_expressions">Method Expressions</h3>
 <div class="paragraph">
 <p>A method expression in GORM is made up of the prefix such as <code>findBy*</code> followed by an expression that combines one or more properties. The basic form is:</p>
 </div>
@@ -242,8 +251,8 @@ books = <span class="predefined-type">Book</span>.findAllByReleaseDateIsNotNull(
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_boolean_logic_andor">Boolean logic (AND/OR)</h4>
+<div class="sect2">
+<h3 id="_boolean_logic_andor">Boolean logic (AND/OR)</h3>
 <div class="paragraph">
 <p>Method expressions can also use a boolean operator to combine two or more criteria:</p>
 </div>
@@ -266,8 +275,8 @@ books = <span class="predefined-type">Book</span>.findAllByReleaseDateIsNotNull(
 <p>You can combine as many criteria as you like, but they must all be combined with <code>And</code> or all <code>Or</code>. If you need to combine <code>And</code> and <code>Or</code> or if the number of criteria creates a very long method name, just convert the query to a <a href="#criteria">Criteria</a> or <a href="#hql">HQL</a> query.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_querying_associations">Querying Associations</h4>
+<div class="sect2">
+<h3 id="_querying_associations">Querying Associations</h3>
 <div class="paragraph">
 <p>Associations can also be used within queries:</p>
 </div>
@@ -282,8 +291,8 @@ books = <span class="predefined-type">Book</span>.findAllByReleaseDateIsNotNull(
 <p>In this case if the <code>Author</code> instance is not null we use it in a query to obtain all the <code>Book</code> instances for the given <code>Author</code>.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_pagination_and_sorting">Pagination and Sorting</h4>
+<div class="sect2">
+<h3 id="_pagination_and_sorting">Pagination and Sorting</h3>
 <div class="paragraph">
 <p>The same pagination and sorting parameters available on the <a href="../api/org/grails/datastore/gorm/GormEntity.html#list()">list()</a> method can also be used with dynamic finders by supplying a map as the final parameter:</p>
 </div>

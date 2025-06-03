@@ -71,6 +71,15 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
                         </div>
                         
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
                     </div>
                 </div>
             </li>
@@ -115,14 +124,14 @@ function addJsClass() {
 <h2 id="setsListsAndMaps"><a class="anchor" href="#setsListsAndMaps"></a>5.4 Sets, Lists and Maps</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/domainClasses/setsListsAndMaps.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/domainClasses/setsListsAndMaps.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
-<div class="sect3">
-<h4 id="_sets_of_objects">Sets of Objects</h4>
+<div class="sect2">
+<h3 id="_sets_of_objects">Sets of Objects</h3>
 <div class="paragraph">
 <p>By default when you define a relationship with GORM it is a <code>java.util.Set</code> which is an unordered collection that cannot contain duplicates. In other words when you have:</p>
 </div>
@@ -166,8 +175,8 @@ function addJsClass() {
 <p>The result of the above class is that the Book instances in the books collection of the Author class will be ordered by their release date.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_lists_of_objects">Lists of Objects</h4>
+<div class="sect2">
+<h3 id="_lists_of_objects">Lists of Objects</h3>
 <div class="paragraph">
 <p>To keep objects in the order which they were added and to be able to reference them by index like an array you can define your collection type as a <code>List</code>:</p>
 </div>
@@ -209,8 +218,8 @@ author.save()</code></pre>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_bags_of_objects">Bags of Objects</h4>
+<div class="sect2">
+<h3 id="_bags_of_objects">Bags of Objects</h3>
 <div class="paragraph">
 <p>If ordering and uniqueness aren&#8217;t a concern (or if you manage these explicitly) then you can use the Hibernate <a href="https://docs.jboss.org/hibernate/core/3.6/reference/en-US/html/collections.html">Bag</a> type to represent mapped collections.</p>
 </div>
@@ -231,8 +240,8 @@ author.save()</code></pre>
 <p>Since uniqueness and order aren&#8217;t managed by Hibernate, adding to or removing from collections mapped as a Bag don&#8217;t trigger a load of all existing instances from the database, so this approach will perform better and require less memory than using a <code>Set</code> or a <code>List</code>.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_maps_of_objects">Maps of Objects</h4>
+<div class="sect2">
+<h3 id="_maps_of_objects">Maps of Objects</h3>
 <div class="paragraph">
 <p>If you want a simple map of string/value pairs GORM can map this with the following:</p>
 </div>
@@ -273,8 +282,8 @@ book.save()</code></pre>
 <p>The static <code>hasMany</code> property defines the type of the elements within the Map. The keys for the map <strong>must</strong> be strings.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_a_note_on_collection_types_and_performance">A Note on Collection Types and Performance</h4>
+<div class="sect2">
+<h3 id="_a_note_on_collection_types_and_performance">A Note on Collection Types and Performance</h3>
 <div class="paragraph">
 <p>The Java <code>Set</code> type doesn&#8217;t allow duplicates. To ensure uniqueness when adding an entry to a <code>Set</code> association Hibernate has to load the entire associations from the database. If you have a large numbers of entries in the association this can be costly in terms of performance.</p>
 </div>

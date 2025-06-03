@@ -71,6 +71,15 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
                         </div>
                         
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
                     </div>
                 </div>
             </li>
@@ -112,13 +121,16 @@ function addJsClass() {
                 <div id="table-of-content">
                     <h2>Table of Contents</h2>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#hibernateVersions"><strong>2.1</strong><span>Configuring Different Hibernate Versions</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#commonProblems"><strong>2.1</strong><span>Common Problems</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#springBoot"><strong>2.2</strong><span>Using GORM in Spring Boot</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#hibernateVersions"><strong>2.2</strong><span>Configuring Different Hibernate Versions</span></a>
                     </div>
                     
-                    <div class="toc-item" style="margin-left:0px"><a href="#outsideGrails"><strong>2.3</strong><span>Using GORM for Hibernate Outside Grails</span></a>
+                    <div class="toc-item" style="margin-left:0px"><a href="#springBoot"><strong>2.3</strong><span>Using GORM in Spring Boot</span></a>
+                    </div>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#outsideGrails"><strong>2.4</strong><span>Using GORM for Hibernate Outside Grails</span></a>
                     </div>
                     
                 </div>
@@ -129,7 +141,7 @@ function addJsClass() {
 <h1 id="gettingStarted"><a class="anchor" href="#gettingStarted"></a>2 Getting Started</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/gettingStarted.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/gettingStarted.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -173,8 +185,17 @@ dependencies {
 }</code></pre>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_common_problems">Common Problems</h3>
+
+
+<h2 id="commonProblems"><a class="anchor" href="#commonProblems"></a>2.1 Common Problems</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/gettingStarted/commonProblems.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
 <div class="paragraph">
 <p>If you receive an error that indicates a failure to resolve the <code>grails-datastore-simple</code> dependency you may need to add the following to <code>build.gradle</code> directly above the <code>dependencies</code> block:</p>
 </div>
@@ -186,13 +207,12 @@ dependencies {
 }</code></pre>
 </div>
 </div>
-</div>
 
 
-<h2 id="hibernateVersions"><a class="anchor" href="#hibernateVersions"></a>2.1 Configuring Different Hibernate Versions</h2>
+<h2 id="hibernateVersions"><a class="anchor" href="#hibernateVersions"></a>2.2 Configuring Different Hibernate Versions</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/gettingStarted/hibernateVersions.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/gettingStarted/hibernateVersions.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -259,10 +279,10 @@ configurations.all {
 </div>
 
 
-<h2 id="springBoot"><a class="anchor" href="#springBoot"></a>2.2 Using GORM in Spring Boot</h2>
+<h2 id="springBoot"><a class="anchor" href="#springBoot"></a>2.3 Using GORM in Spring Boot</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/gettingStarted/springBoot.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/gettingStarted/springBoot.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -400,10 +420,10 @@ If your GORM entities are in a different package specify the package name as the
 </div>
 
 
-<h2 id="outsideGrails"><a class="anchor" href="#outsideGrails"></a>2.3 Using GORM for Hibernate Outside Grails</h2>
+<h2 id="outsideGrails"><a class="anchor" href="#outsideGrails"></a>2.4 Using GORM for Hibernate Outside Grails</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/gettingStarted/outsideGrails.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/gettingStarted/outsideGrails.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -461,7 +481,7 @@ Normal databases (<code>MySql</code>, <code>Postgres</code> or even file-based <
 <td><i class="conum" data-value="1"></i><b>1</b></td>
 <td>Use of <code>GormEntity</code> is merely to aid IDE support outside of Grails.
 When used inside a Grails context, some IDEs will use the
-<code>grails-app/domain</code> location as a hint to enable code completion.</td>
+<code>app/domain</code> location as a hint to enable code completion.</td>
 </tr>
 </table>
 </div>

@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>2.3 Using GORM for Hibernate Outside Grails 2023.3.0-SNAPSHOT</title>
+    <title>2.4 Using GORM for Hibernate Outside Grails 2023.3.0-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -71,6 +71,15 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
                         </div>
                         
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
                     </div>
                 </div>
             </li>
@@ -103,7 +112,7 @@ function addJsClass() {
 
 
                 <div class="project">
-                    <h1>2.3 Using GORM for Hibernate Outside Grails</h1>
+                    <h1>2.4 Using GORM for Hibernate Outside Grails</h1>
 
                     <p><strong>Version:</strong> 2023.3.0-SNAPSHOT</p>
                 </div>
@@ -112,10 +121,10 @@ function addJsClass() {
 
                 
 
-<h2 id="outsideGrails"><a class="anchor" href="#outsideGrails"></a>2.3 Using GORM for Hibernate Outside Grails</h2>
+<h2 id="outsideGrails"><a class="anchor" href="#outsideGrails"></a>2.4 Using GORM for Hibernate Outside Grails</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/gettingStarted/outsideGrails.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/gettingStarted/outsideGrails.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -173,7 +182,7 @@ Normal databases (<code>MySql</code>, <code>Postgres</code> or even file-based <
 <td><i class="conum" data-value="1"></i><b>1</b></td>
 <td>Use of <code>GormEntity</code> is merely to aid IDE support outside of Grails.
 When used inside a Grails context, some IDEs will use the
-<code>grails-app/domain</code> location as a hint to enable code completion.</td>
+<code>app/domain</code> location as a hint to enable code completion.</td>
 </tr>
 </table>
 </div>

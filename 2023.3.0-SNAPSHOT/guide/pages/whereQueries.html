@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>7.2 Where Queries 2023.3.0-SNAPSHOT</title>
+    <title>7.4 Where Queries 2023.3.0-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -71,6 +71,15 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
                         </div>
                         
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
                     </div>
                 </div>
             </li>
@@ -103,7 +112,7 @@ function addJsClass() {
 
 
                 <div class="project">
-                    <h1>7.2 Where Queries</h1>
+                    <h1>7.4 Where Queries</h1>
 
                     <p><strong>Version:</strong> 2023.3.0-SNAPSHOT</p>
                 </div>
@@ -112,10 +121,10 @@ function addJsClass() {
 
                 
 
-<h2 id="whereQueries"><a class="anchor" href="#whereQueries"></a>7.2 Where Queries</h2>
+<h2 id="whereQueries"><a class="anchor" href="#whereQueries"></a>7.4 Where Queries</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/querying/whereQueries.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/querying/whereQueries.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -124,8 +133,8 @@ function addJsClass() {
 <div class="paragraph">
 <p>The <a href="../api/org/grails/datastore/gorm/GormEntity.html#where(groovy.lang.Closure)">where()</a> method builds on the support for <a href="#detachedCriteria">Detached Criteria</a> by providing an enhanced, compile-time checked query DSL for common queries. The <code>where</code> method is more flexible than dynamic finders, less verbose than criteria and provides a powerful mechanism to compose queries.</p>
 </div>
-<div class="sect3">
-<h4 id="_basic_querying">Basic Querying</h4>
+<div class="sect2">
+<h3 id="_basic_querying">Basic Querying</h3>
 <div class="paragraph">
 <p>The <a href="../api/org/grails/datastore/gorm/GormEntity.html#where(groovy.lang.Closure)">where()</a> method accepts a closure that looks very similar to Groovy&#8217;s regular collection methods. The closure should define the logical criteria in regular Groovy syntax, for example:</p>
 </div>
@@ -288,8 +297,8 @@ Note that <code>rlike</code> queries are only supported if the underlying databa
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_query_composition">Query Composition</h4>
+<div class="sect2">
+<h3 id="_query_composition">Query Composition</h3>
 <div class="paragraph">
 <p>Since the return value of the <code>where</code> method is a <a href="#detachedCriteria">DetachedCriteria</a> instance you can compose new queries from the original query:</p>
 </div>
@@ -332,8 +341,8 @@ Person p = bartQuery.find()</code></pre>
 <p>As you can see the closure definition is cast (using the Groovy <code>as</code> keyword) to a <a href="#detachedCriteria">DetachedCriteria</a> instance targeted at the <code>Person</code> class.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_conjunction_disjunction_and_negation">Conjunction, Disjunction and Negation</h4>
+<div class="sect2">
+<h3 id="_conjunction_disjunction_and_negation">Conjunction, Disjunction and Negation</h3>
 <div class="paragraph">
 <p>As mentioned previously you can combine regular Groovy logical operators (<code>||</code> and <code>&amp;&amp;</code>) to form conjunctions and disjunctions:</p>
 </div>
@@ -355,8 +364,8 @@ Person p = bartQuery.find()</code></pre>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_property_comparison_queries">Property Comparison Queries</h4>
+<div class="sect2">
+<h3 id="_property_comparison_queries">Property Comparison Queries</h3>
 <div class="paragraph">
 <p>If you use a property name on both the left hand and right side of a comparison expression then the appropriate property comparison criteria is automatically used:</p>
 </div>
@@ -417,8 +426,8 @@ Person p = bartQuery.find()</code></pre>
 </tbody>
 </table>
 </div>
-<div class="sect3">
-<h4 id="_querying_associations">Querying Associations</h4>
+<div class="sect2">
+<h3 id="_querying_associations">Querying Associations</h3>
 <div class="paragraph">
 <p>Associations can be queried by using the dot operator to specify the property name of the association to be queried:</p>
 </div>
@@ -509,8 +518,8 @@ Person p = bartQuery.find()</code></pre>
 </tbody>
 </table>
 </div>
-<div class="sect3">
-<h4 id="_query_aliases_and_sorting">Query Aliases and Sorting</h4>
+<div class="sect2">
+<h3 id="_query_aliases_and_sorting">Query Aliases and Sorting</h3>
 <div class="paragraph">
 <p>If you define a query for an association an alias is automatically generated for the query. For example the following query:</p>
 </div>
@@ -563,8 +572,8 @@ Pet.where {
 <p>By assigning the name of an association to a local variable it will automatically become an alias usable within the query itself and also for the purposes of sorting or projecting the results.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_subqueries">Subqueries</h4>
+<div class="sect2">
+<h3 id="_subqueries">Subqueries</h3>
 <div class="paragraph">
 <p>It is possible to execute subqueries within where queries. For example to find all the people older than the average age the following query can be used:</p>
 </div>
@@ -637,8 +646,8 @@ Pet.where {
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_more_advanced_subqueries_in_gorm">More Advanced Subqueries in GORM</h4>
+<div class="sect2">
+<h3 id="_more_advanced_subqueries_in_gorm">More Advanced Subqueries in GORM</h3>
 <div class="paragraph">
 <p>The support for subqueries has been extended. You can now use in  with nested subqueries</p>
 </div>
@@ -699,8 +708,8 @@ Pet.where {
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_other_functions">Other Functions</h4>
+<div class="sect2">
+<h3 id="_other_functions">Other Functions</h3>
 <div class="paragraph">
 <p>There are several functions available to you within the context of a query. These are summarized in the table below:</p>
 </div>
@@ -791,8 +800,8 @@ Currently functions can only be applied to properties or associations of domain 
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_batch_updates_and_deletes">Batch Updates and Deletes</h4>
+<div class="sect2">
+<h3 id="_batch_updates_and_deletes">Batch Updates and Deletes</h3>
 <div class="paragraph">
 <p>Since each <code>where</code> method call returns a <a href="#detachedCriteria">DetachedCriteria</a> instance, you can use <code>where</code> queries to execute batch operations such as batch updates and deletes. For example, the following query will update all people with the surname "Simpson" to have the surname "Bloggs":</p>
 </div>

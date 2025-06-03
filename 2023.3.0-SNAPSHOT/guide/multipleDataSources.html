@@ -71,6 +71,15 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
                         </div>
                         
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
                     </div>
                 </div>
             </li>
@@ -97,6 +106,8 @@ function addJsClass() {
 
                 <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
 
+                
+                    <div class="toc-item next-right"><a href="../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span> >></a></div>
                 
 
 
@@ -130,7 +141,7 @@ function addJsClass() {
 <h1 id="multipleDataSources"><a class="anchor" href="#multipleDataSources"></a>11 Multiple Data Sources</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/multipleDataSources.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/multipleDataSources.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -144,7 +155,7 @@ function addJsClass() {
 <h2 id="dataSourceConfiguration"><a class="anchor" href="#dataSourceConfiguration"></a>11.1 Configuring Multiple Data Sources</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/multipleDataSources/dataSourceConfiguration.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/multipleDataSources/dataSourceConfiguration.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -191,7 +202,7 @@ For more information on configuration see the <a href="#configuration">Configura
 <h2 id="mappingDomainsToDataSources"><a class="anchor" href="#mappingDomainsToDataSources"></a>11.2 Mapping Domain Classes to Data Sources</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/multipleDataSources/mappingDomainsToDataSources.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/multipleDataSources/mappingDomainsToDataSources.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -266,7 +277,7 @@ For more information on configuration see the <a href="#configuration">Configura
 <h2 id="dataSourceNamespaces"><a class="anchor" href="#dataSourceNamespaces"></a>11.3 Data Source Namespaces</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/multipleDataSources/dataSourceNamespaces.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/multipleDataSources/dataSourceNamespaces.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -305,14 +316,12 @@ zipCode.auditing.save()</code></pre>
 <h2 id="connectionSources"><a class="anchor" href="#connectionSources"></a>11.4 The ConnectionSources API</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/multipleDataSources/connectionSources.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/multipleDataSources/connectionSources.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
-<div class="sect2">
-<h3 id="_the_connectionsources_api">The ConnectionSources API</h3>
 <div class="paragraph">
 <p>Introduced in GORM 6.0, the <a href="../api/org/grails/datastore/mapping/core/connections/ConnectionSources.html">ConnectionSources</a> API allows you to introspect the data sources configured for the application:</p>
 </div>
@@ -330,12 +339,13 @@ ConnectionSources&lt;SessionFactory, HibernateConnectionSourceSettings&gt; conne
 }</code></pre>
 </div>
 </div>
-</div>
 
 
                 <div style="clear:both;margin-top:15px;"></div>
                 
                     <div class="toc-item prev-left"><a href="../guide/services.html">&lt;&lt; <strong>10</strong><span>GORM Data Services</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span> >></a></div>
                 
                 <div style="clear:both"></div>
             </div>

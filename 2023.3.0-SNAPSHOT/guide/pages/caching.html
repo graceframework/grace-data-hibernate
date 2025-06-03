@@ -71,6 +71,15 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
                         </div>
                         
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
                     </div>
                 </div>
             </li>
@@ -115,16 +124,16 @@ function addJsClass() {
 <h3 id="caching"><a class="anchor" href="#caching"></a>8.2.2 Caching Strategy</h3>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/advancedGORMFeatures/ormdsl/caching.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/advancedGORMFeatures/ormdsl/caching.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
-<div class="sect4">
-<h5 id="_setting_up_caching">Setting up caching</h5>
+<div class="sect3">
+<h4 id="_setting_up_caching">Setting up caching</h4>
 <div class="paragraph">
-<p><a href="https://www.hibernate.org/">Hibernate</a> features a second-level cache with a customizable cache provider. This needs to be configured in the <code>grails-app/conf/application.yml</code> file as follows:</p>
+<p><a href="https://www.hibernate.org/">Hibernate</a> features a second-level cache with a customizable cache provider. This needs to be configured in the <code>app/conf/application.yml</code> file as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -152,8 +161,8 @@ For further reading on caching and in particular Hibernate&#8217;s second-level 
 </table>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_caching_instances">Caching instances</h5>
+<div class="sect3">
+<h4 id="_caching_instances">Caching instances</h4>
 <div class="paragraph">
 <p>Call the <code>cache</code> method in your mapping block to enable caching with the default settings:</p>
 </div>
@@ -183,8 +192,8 @@ For further reading on caching and in particular Hibernate&#8217;s second-level 
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_caching_associations">Caching associations</h5>
+<div class="sect3">
+<h4 id="_caching_associations">Caching associations</h4>
 <div class="paragraph">
 <p>As well as the ability to use Hibernate&#8217;s second level cache to cache instances you can also cache collections (associations) of objects. For example:</p>
 </div>
@@ -224,8 +233,8 @@ For further reading on caching and in particular Hibernate&#8217;s second-level 
 <p>to further configure the cache usage.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_caching_queries">Caching Queries</h5>
+<div class="sect3">
+<h4 id="_caching_queries">Caching Queries</h4>
 <div class="paragraph">
 <p>In order for the results of queries to be cached, you must enable caching in your mapping:</p>
 </div>
@@ -266,8 +275,8 @@ For further reading on caching and in particular Hibernate&#8217;s second-level 
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_cache_usages">Cache usages</h5>
+<div class="sect3">
+<h4 id="_cache_usages">Cache usages</h4>
 <div class="paragraph">
 <p>Below is a description of the different cache settings and their usages:</p>
 </div>
@@ -283,7 +292,7 @@ For further reading on caching and in particular Hibernate&#8217;s second-level 
 <p><code>nonstrict-read-write</code> - If the application only occasionally needs to update data (i.e. if it is very unlikely that two transactions would try to update the same item simultaneously) and strict transaction isolation is not required, a <code>nonstrict-read-write</code> cache might be appropriate.</p>
 </li>
 <li>
-<p><code>transactional</code> - The <code>transactional</code> cache strategy provides support for fully transactional cache providers such as JBoss TreeCache. Such a cache may only be used in a JTA environment and you must specify <code>hibernate.transaction.manager_lookup_class</code> in the <code>grails-app/conf/application.groovy</code> file&#8217;s <code>hibernate</code> config.</p>
+<p><code>transactional</code> - The <code>transactional</code> cache strategy provides support for fully transactional cache providers such as JBoss TreeCache. Such a cache may only be used in a JTA environment and you must specify <code>hibernate.transaction.manager_lookup_class</code> in the <code>app/conf/application.groovy</code> file&#8217;s <code>hibernate</code> config.</p>
 </li>
 </ul>
 </div>

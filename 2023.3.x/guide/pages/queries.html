@@ -71,6 +71,15 @@ function addJsClass() {
                         <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>11</strong><span>Multiple Data Sources</span></a>
                         </div>
                         
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multiTenancy.html"><strong>12</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/constraints.html"><strong>13</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/testing.html"><strong>14</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
                     </div>
                 </div>
             </li>
@@ -115,7 +124,7 @@ function addJsClass() {
 <h2 id="queries"><a class="anchor" href="#queries"></a>10.2 Data Service Queries</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/docs/guide/services/queries.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/services/queries.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -130,72 +139,182 @@ function addJsClass() {
 <div class="paragraph">
 <p>The following table summarizes the conventions:</p>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in &lt;stdin&gt; - include::queryConventions.adoc[]</p>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Data Service Conventions</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Method Stem</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Possible Return Types</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>count*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Count the number of results</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Subclass of <code>Number</code> or <code>Observable&lt;Number&gt;</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>countBy*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dynamic Finder Count the number of results</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Subclass of <code>Number</code> or <code>Observable&lt;Number&gt;</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>delete*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Delete an instance for the given arguments</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>T</code>, <code>void</code>, subclass of <code>Number</code> or <code>Observable&lt;Number&gt;</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>find*</code>, <code>get*</code>, <code>list*</code> or <code>retrieve*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Query for the given parameters</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>T</code>, <code>Iterable&lt;T&gt;</code>, <code>T[]</code>, <code>List&lt;T&gt;</code>, <code>Observable&lt;T&gt;</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>findBy*</code>, <code>listBy*</code>, <code>findAllBy*</code> or <code>getBy*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dynamic finder query for given parameters</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>T</code>, <code>Iterable&lt;T&gt;</code>, <code>T[]</code>, <code>List&lt;T&gt;</code>, <code>Observable&lt;T&gt;</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>save*</code>, <code>store*</code>, or <code>persist*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Save a new instance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>T</code> or <code>Observable&lt;T&gt;</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>update*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Updates an existing instance. First parameter should be <code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>T</code> or <code>Observable&lt;T&gt;</code></p></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
 <p>The conventions are extensible (more on that later), in terms of queries there are two distinct types.</p>
 </div>
-<div class="sect3">
-<h4 id="_simple_queries">Simple Queries</h4>
-<div class="paragraph">
-<p>Unresolved directive in &lt;stdin&gt; - include::simpleQueries.adoc[]</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_dynamic_finder_queries">Dynamic Finder Queries</h4>
-<div class="paragraph">
-<p>Unresolved directive in &lt;stdin&gt; - include::finderQueries.adoc[]</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_where_queries">Where Queries</h4>
-<div class="paragraph">
-<p>Unresolved directive in &lt;stdin&gt; - include::whereQueries.adoc[]</p>
-</div>
-</div>
 <div class="sect2">
-<h3 id="_query_joins">Query Joins</h3>
+<h3 id="_simple_queries">Simple Queries</h3>
 <div class="paragraph">
-<p>You can specify query joins using the <code>@Join</code> annotation:</p>
+<p>Simple queries are queries that use the arguments of the method. For example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">static</span> <span class="include">javax.persistence.criteria.JoinType.*</span>
-
-<span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
 <span class="type">interface</span> BookService {
-    <span class="annotation">@Join</span>(<span class="string"><span class="delimiter">'</span><span class="content">author</span><span class="delimiter">'</span></span>)
-    <span class="predefined-type">Book</span> find(<span class="predefined-type">String</span> title) <i class="conum" data-value="1"></i><b>(1)</b>
-
-    <span class="annotation">@Join</span>(value=<span class="string"><span class="delimiter">'</span><span class="content">author</span><span class="delimiter">'</span></span>, type=LEFT) <i class="conum" data-value="2"></i><b>(2)</b>
-    <span class="predefined-type">Book</span> findAnother(<span class="predefined-type">String</span> title)
+    <span class="predefined-type">Book</span> findBook(<span class="predefined-type">String</span> title)
 }</code></pre>
 </div>
 </div>
-<div class="colist arabic">
+<div class="paragraph">
+<p>In the example above the Data Service will generate the implementation based on the fact that the <code>title</code> parameter matches the <code>title</code> property of the <code>Book</code> class both in terms of name and type.</p>
+</div>
+<div class="paragraph">
+<p>If you were to misspell the <code>title</code> parameter or use an incorrect type then a compilation error will occur.</p>
+</div>
+<div class="paragraph">
+<p>You can alter the return type to return more results:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+    <span class="predefined-type">List</span>&lt;<span class="predefined-type">Book</span>&gt; findBooks(<span class="predefined-type">String</span> title)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And if you wish to control pagination and query arguments you can add an <code>args</code> parameter that should be a <code>Map</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+    <span class="predefined-type">List</span>&lt;<span class="predefined-type">Book</span>&gt; findBooks(<span class="predefined-type">String</span> title, <span class="predefined-type">Map</span> args)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case the following query will control pagination and ordering:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="predefined-type">List</span>&lt;<span class="predefined-type">Book</span>&gt; books = bookService.findBooks(
+    <span class="string"><span class="delimiter">&quot;</span><span class="content">The Stand</span><span class="delimiter">&quot;</span></span>,
+    [<span class="key">offset</span>:<span class="integer">10</span>, <span class="key">max</span>:<span class="integer">10</span>, <span class="key">sort</span>:<span class="string"><span class="delimiter">'</span><span class="content">title</span><span class="delimiter">'</span></span>, <span class="key">order</span>:<span class="string"><span class="delimiter">'</span><span class="content">desc</span><span class="delimiter">'</span></span>]
+)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can include multiple parameters in the query:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+    <span class="predefined-type">List</span>&lt;<span class="predefined-type">Book</span>&gt; findBooks(<span class="predefined-type">String</span> title, <span class="predefined-type">Date</span> publishDate)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this case a conjunction (<code>AND</code>) query will be executed. If you need to do a disjunction (<code>OR</code>) then it is time you learn about Dynamic Finder-style queries.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dynamic_finder_queries">Dynamic Finder Queries</h3>
+<div class="paragraph">
+<p>Dynamic finder styles queries use the stem plus the word <code>By</code> and then a <a href="#finders">Dynamic Finder expression</a>.</p>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="type">interface</span> BookService {
+    <span class="predefined-type">List</span>&lt;<span class="predefined-type">Book</span>&gt; findByTitleAndPublishDateGreaterThan(<span class="predefined-type">String</span> title, <span class="predefined-type">Date</span> publishDate)
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The signature above will produce a dynamic finder query using the method signature expression.</p>
+</div>
+<div class="paragraph">
+<p>The possible method expressions are the same as those possible with GORM&#8217;s static <a href="#finders">Dynamic Finders</a></p>
+</div>
+<div class="admonitionblock note">
 <table>
 <tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Join on the <code>author</code> property</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Join on the <code>author</code> property using a <code>LEFT OUTER</code> join</td>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+In this case the names of the properties to query are inferred from the method signature and the parameter names are not critical. If you misspell the method signature a compilation error will occur.
+</td>
 </tr>
 </table>
 </div>
-<div class="sect3">
-<h4 id="_jpa_ql_queries">JPA-QL Queries</h4>
+</div>
+<div class="sect2">
+<h3 id="_where_queries">Where Queries</h3>
 <div class="paragraph">
-<p>Unresolved directive in &lt;stdin&gt; - include::hqlQueries.adoc[]</p>
+<p>If you have a more complex query then you may want to consider using the <code>@Where</code> annotation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">    <span class="annotation">@Where</span>({ title ==~ pattern &amp;&amp; releaseDate &gt; fromDate })
+    <span class="predefined-type">Book</span> searchBooks(<span class="predefined-type">String</span> pattern, <span class="predefined-type">Date</span> fromDate)</code></pre>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_query_projections">Query Projections</h4>
 <div class="paragraph">
-<p>Unresolved directive in &lt;stdin&gt; - include::queryProjections.adoc[]</p>
+<p>With the <code>@Where</code> annotation the method name can be anything you want and query is expressed within a closure passed with the <code>@Where</code> annotation.</p>
 </div>
+<div class="paragraph">
+<p>The query will be type checked against the parameters and compilation will fail if you misspell a parameter or property name.</p>
+</div>
+<div class="paragraph">
+<p>The syntax is the same as what is passed to GORM&#8217;s static <code>where</code> method, see the section on <a href="#whereQueries">Where Queries</a> for more information.</p>
 </div>
 </div>
 
