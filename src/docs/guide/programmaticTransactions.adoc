@@ -1,0 +1,3 @@
+GORM's transaction management is built on Spring and uses Spring's Transaction abstraction for dealing with programmatic transactions.
+
+However, GORM classes have been enhanced to make this simpler with the link:../api/org/grails/datastore/gorm/GormEntity.html#withTransaction(groovy.lang.Closure)[withTransaction(Closure)]  method. This method has a single parameter, a Closure, which has a single parameter which is a Spring https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/transaction/TransactionStatus.html[TransactionStatus] instance.

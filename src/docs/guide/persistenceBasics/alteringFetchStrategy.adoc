@@ -1,0 +1,23 @@
+Rather than configuring join fetching as the default for an association, it may be better to alter the join strategy only for the queries that require it. This can be done using the `fetch` argument to most GORM methods:
+
+[source,groovy]
+----
+// Using the list method
+Author.list(fetch: [location: 'join']).each { a ->
+    println a.location.city
+}
+// Using a dynamic finder
+Author.findAllByNameLike("John%", [ sort: 'name', order: 'asc', fetch: [location: 'join'] ]).each { a->
+    ...
+}
+----
+
+Or using the `join` method when using <<whereQueries, Where Queries>> or criteria:
+
+[source,groovy]
+----
+Author.where {
+    name == "Stephen King"
+}.join('location')
+ .list()
+----

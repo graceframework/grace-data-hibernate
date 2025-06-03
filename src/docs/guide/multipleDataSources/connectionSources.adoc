@@ -1,0 +1,15 @@
+Introduced in GORM 6.0, the link:../api/org/grails/datastore/mapping/core/connections/ConnectionSources.html[ConnectionSources] API allows you to introspect the data sources configured for the application:
+
+[source,groovy]
+----
+@Autowired
+HibernateDatastore hibernateDatastore
+...
+ConnectionSources<SessionFactory, HibernateConnectionSourceSettings> connectionSources
+					= hibernateDatastore.getConnectionSources()
+
+for(ConnectionSource<SessionFactory, HibernateConnectionSourceSettings> connectionSource in connectionSources) {
+	println "Name $connectionSource.name"
+	SessionFactory sessionFactory = connectionSource.source
+}
+----

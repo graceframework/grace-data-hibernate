@@ -1,0 +1,139 @@
+GORM Data Services will implement queries for you using a number of different strategies and conventions.
+
+It does this by looking at the return type of a method and the method stem and picking the most appropriate implementation.
+
+The following table summarizes the conventions:
+
+.Data Service Conventions
+|===
+|Method Stem |Description |Possible Return Types
+
+|`count*`
+| Count the number of results
+| Subclass of `Number` or `Observable<Number>`
+
+|`countBy*`
+| Dynamic Finder Count the number of results
+| Subclass of `Number` or `Observable<Number>`
+
+|`delete*`
+| Delete an instance for the given arguments
+| `T`, `void`, subclass of `Number` or `Observable<Number>`
+
+|`find*`, `get*`, `list*` or `retrieve*`
+| Query for the given parameters
+| `T`, `Iterable<T>`, `T[]`, `List<T>`, `Observable<T>`
+
+|`findBy*`, `listBy*`, `findAllBy*` or `getBy*`
+| Dynamic finder query for given parameters
+| `T`, `Iterable<T>`, `T[]`, `List<T>`, `Observable<T>`
+
+|`save*`, `store*`, or `persist*`
+| Save a new instance
+| `T` or `Observable<T>`
+
+|`update*`
+| Updates an existing instance. First parameter should be `id`
+| `T` or `Observable<T>`
+
+|===
+
+The conventions are extensible (more on that later), in terms of queries there are two distinct types.
+
+=== Simple Queries
+
+Simple queries are queries that use the arguments of the method. For example:
+
+[source,groovy]
+----
+@Service(Book)
+interface BookService {
+    Book findBook(String title)
+}
+----
+
+In the example above the Data Service will generate the implementation based on the fact that the `title` parameter matches the `title` property of the `Book` class both in terms of name and type.
+
+If you were to misspell the `title` parameter or use an incorrect type then a compilation error will occur.
+
+You can alter the return type to return more results:
+
+[source,groovy]
+----
+@Service(Book)
+interface BookService {
+    List<Book> findBooks(String title)
+}
+----
+
+And if you wish to control pagination and query arguments you can add an `args` parameter that should be a `Map`:
+
+
+[source,groovy]
+----
+@Service(Book)
+interface BookService {
+    List<Book> findBooks(String title, Map args)
+}
+----
+
+In this case the following query will control pagination and ordering:
+
+
+[source,groovy]
+----
+List<Book> books = bookService.findBooks(
+    "The Stand",
+    [offset:10, max:10, sort:'title', order:'desc']
+)
+----
+
+You can include multiple parameters in the query:
+
+[source,groovy]
+----
+@Service(Book)
+interface BookService {
+    List<Book> findBooks(String title, Date publishDate)
+}
+----
+
+In this case a conjunction (`AND`) query will be executed. If you need to do a disjunction (`OR`) then it is time you learn about Dynamic Finder-style queries.
+
+=== Dynamic Finder Queries
+
+Dynamic finder styles queries use the stem plus the word `By` and then a <<finders,Dynamic Finder expression>>.
+
+For example:
+
+[source,groovy]
+----
+@Service(Book)
+interface BookService {
+    List<Book> findByTitleAndPublishDateGreaterThan(String title, Date publishDate)
+}
+----
+
+The signature above will produce a dynamic finder query using the method signature expression.
+
+The possible method expressions are the same as those possible with GORM's static <<finders,Dynamic Finders>>
+
+NOTE: In this case the names of the properties to query are inferred from the method signature and the parameter names are not critical. If you misspell the method signature a compilation error will occur.
+
+=== Where Queries
+
+If you have a more complex query then you may want to consider using the `@Where` annotation:
+
+
+[source,groovy]
+----
+    @Where({ title ==~ pattern && releaseDate > fromDate })
+    Book searchBooks(String pattern, Date fromDate)
+----
+
+With the `@Where` annotation the method name can be anything you want and query is expressed within a closure passed with the `@Where` annotation.
+
+The query will be type checked against the parameters and compilation will fail if you misspell a parameter or property name.
+
+The syntax is the same as what is passed to GORM's static `where` method, see the section on <<whereQueries,Where Queries>> for more information.
+

@@ -1,0 +1,38 @@
+Associations in GORM are by default lazy. This is best explained by example:
+
+[source,groovy]
+----
+class Airport {
+    String name
+    static hasMany = [flights: Flight]
+}
+----
+
+[source,groovy]
+----
+class Flight {
+    String number
+    Location destination
+    static belongsTo = [airport: Airport]
+}
+----
+
+[source,groovy]
+----
+class Location {
+    String city
+    String country
+}
+----
+
+Given the above domain classes and the following code:
+
+[source,groovy]
+----
+def airport = Airport.findByName("Gatwick")
+for (flight in airport.flights) {
+    println flight.destination.city
+}
+----
+
+GORM will execute a single SQL query to fetch the `Airport` instance, another to get its flights, and then 1 extra query for _each iteration_ over the `flights` association to get the current flight's destination. In other words you get N+1 queries (if you exclude the original one to get the airport).

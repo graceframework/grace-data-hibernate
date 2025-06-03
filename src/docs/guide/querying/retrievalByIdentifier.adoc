@@ -1,0 +1,13 @@
+The second basic form of retrieval is by database identifier using the link:../api/org/grails/datastore/gorm/GormEntity.html#get(java.io.Serializable)[get(id)] method:
+
+[source,groovy]
+----
+def book = Book.get(23)
+----
+
+You can also obtain a list of instances for a set of identifiers using link:../api/org/grails/datastore/gorm/GormEntity.html#getAll(java.io.Serializable)[getAll()]:
+
+[source,groovy]
+----
+def books = Book.getAll(23, 93, 81)
+----

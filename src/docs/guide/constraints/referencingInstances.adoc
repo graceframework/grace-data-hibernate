@@ -1,0 +1,29 @@
+It's very easy to attempt to reference instance variables from the static constraints block, but this isn't legal in Groovy (or Java). If you do so, you will get a `MissingPropertyException` for your trouble. For example, you may try the following:
+
+[source,groovy]
+----
+class Response {
+    Survey survey
+    Answer answer
+
+    static constraints = {
+        survey blank: false
+        answer blank: false, inList: survey.answers
+    }
+}
+----
+
+See how the `inList` constraint references the instance property `survey`? That won't work. Instead, use a custom `validator` constraint:
+
+[source,groovy]
+----
+class Response {
+    ...
+    static constraints = {
+        survey blank: false
+        answer blank: false, validator: { val, Response obj -> val in obj.survey.answers }
+    }
+}
+----
+
+In this example, the `obj` argument to the custom validator is the domain _instance_ that is being validated, so we can access its `survey` property and return a boolean to indicate whether the new value for the `answer` property, `val`, is valid.

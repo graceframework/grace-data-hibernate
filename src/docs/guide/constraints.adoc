@@ -1,0 +1,1 @@
+Constraints are how you define validation when using GORM entities.

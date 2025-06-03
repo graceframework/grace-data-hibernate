@@ -1,0 +1,3 @@
+GORM for Hibernate can be configured with the `app/conf/application.yml` file when using Grails, the `src/main/resources/application.yml` file when using Spring Boot or by passing a `Map` or instanceof the `PropertyResolver` interface to the `org.grails.orm.hibernate.HibernateDatastore` class when used standalone.
+
+All configuration options are read and materialized into an instance of link:../api/org/grails/orm/hibernate/connections/HibernateConnectionSourceSettings.html[HibernateConnectionSourceSettings].

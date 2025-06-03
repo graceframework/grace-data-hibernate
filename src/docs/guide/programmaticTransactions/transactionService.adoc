@@ -1,0 +1,19 @@
+Since GORM 6.1, if you need more flexibility then instead you can instead take advantage of the link:../api/grails/gorm/transactions/TransactionService.html[TransactionService], which can be obtained by looking it up from from the `HibernateDatastore`:
+
+[source,groovy]
+----
+import grails.gorm.transactions.*
+
+TransactionService transactionService = datastore.getService(TransactionService)
+----
+
+Or via dependency injection:
+
+[source,groovy]
+----
+import grails.gorm.transactions.*
+
+@Autowired TransactionService transactionService
+----
+
+Once you have an instance then there are various including `withTransaction`, `withRollback`, `withNewTransaction` etc. which helps with the construction of programmatic transactions.

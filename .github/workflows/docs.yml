@@ -4,7 +4,7 @@ on:
     branches:
       - 2023.3.x
     paths:
-      - 'docs/**'
+      - 'src/docs/**'
 jobs:
   # Build job
   build:

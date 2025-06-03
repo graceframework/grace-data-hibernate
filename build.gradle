@@ -303,5 +303,5 @@ tasks.withType(Groovydoc) {
 
 docs {
     dependsOn groovydoc
-    sourceDir = project.file('docs')
+    sourceDir = project.file('src/docs')
 }

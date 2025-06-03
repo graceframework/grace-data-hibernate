@@ -1,0 +1,130 @@
+You can specify query joins using the `@Join` annotation:
+
+[source,groovy]
+----
+import static javax.persistence.criteria.JoinType.*
+
+@Service(Book)
+interface BookService {
+    @Join('author')
+    Book find(String title) <1>
+
+    @Join(value='author', type=LEFT) <2>
+    Book findAnother(String title)
+}
+----
+
+<1> Join on the `author` property
+<2> Join on the `author` property using a `LEFT OUTER` join
+
+=== JPA-QL Queries
+
+If you need even more flexibility, then HQL queries can be used via the `@Query` annotation:
+
+[source,groovy]
+----
+@Query("from $Book as book where book.title like $pattern")
+Book searchByTitle(String pattern)
+----
+
+Note that in the example above, if you misspell the `pattern` parameter passed to the query a compilation error will occur.
+
+However, if you were to incorrectly input the `title` property no error would occur since it is part of the String and not a variable.
+
+You can resolve this by declaring the value of `book` within the passed GString:
+
+[source,groovy]
+----
+@Query("from ${Book book} where ${book.title} like $pattern")
+Book searchByTitle(String pattern)
+----
+
+In the above example if you misspell the `title` property then a compilation error will occur. This is extremely powerful as it gives you the ability to type check HQL queries, which has always been one of the disadvantages of using them in comparison to criteria.
+
+This support for type checked queries extends to joins. For example consider this query:
+
+[source,groovy]
+----
+@Query("""
+ from ${Book book} <1>
+ inner join ${Author author = book.author} <2>
+ where $book.title = $title and $author.name = $author""") <3>
+Book find(String title, String author)
+----
+
+<1> Using `from` to define the root query
+<2> Use inner join and a declaration to define the association to join on
+<3> Apply any conditions in the `where` clause
+
+=== Query Projections
+
+There are a few ways to implement projections. One way is to is to use the convention `T find[Domain Class][Property]`. For example say the `Book` class has a `releaseDate` property of type `Date`:
+
+[source,groovy]
+----
+@Service(Book)
+interface BookService {
+   Date findBookReleaseDate(String title)
+}
+----
+
+This also works for multiple results:
+
+[source,groovy]
+----
+@Service(Book)
+interface BookService {
+   List<Date> findBookReleaseDate(String publisher)
+}
+----
+
+And you can use the `Map` argument to provide ordering and pagination if necessary:
+
+[source,groovy]
+----
+@Service(Book)
+interface BookService {
+   List<Date> findBookReleaseDate(String publisher, Map args)
+}
+----
+
+==== JPA-QL Projections
+
+You can also use a JPA-QL query to perform a projection:
+
+[source,groovy]
+----
+@Service(Book)
+interface BookService {
+   @Query("select $b.releaseDate from ${Book b} where $b.publisher = $publisher order by $b.releaseDate")
+   List<Date> findBookReleaseDates(String publisher)
+}
+----
+
+==== Interface Projections
+
+Sometimes you want to expose a more limited set of a data to the calling class. In this case it is possible to use interface projections.
+
+For example:
+
+
+[source,groovy]
+----
+class Author {
+    String name
+    Date dateOfBirth <1>
+}
+interface AuthorInfo {
+    String getName() <2>
+}
+@Service(Author)
+interface AuthorService {
+   AuthorInfo find(String name) <3>
+}
+----
+
+<1> The domain class `Author` has a property called `dateOfBirth` that we do not want to make available to the client
+<2> You can define an interface that only exposes the properties you want to expose
+<3> Return the interface from the service.
+
+NOTE: If a property exists on the interface but not on the domain class you will receive a compilation error.
