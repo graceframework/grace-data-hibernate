@@ -1,0 +1,75 @@
+introduction:
+    title: Introduction
+    releaseHistory: Release History
+    upgradeNotes: Upgrade Notes
+gettingStarted:
+    title: Getting Started
+    hibernateVersions: Configuring Different Hibernate Versions
+    springBoot: Using GORM in Spring Boot
+    outsideGrails: Using GORM for Hibernate Outside Grails
+quickStartGuide:
+    title: Quick Start Guide
+    basicCRUD: Basic CRUD
+configuration:
+    title: Configuration
+    configurationReference: Configuration Reference
+    configurationDefaults: The Default Mapping & Constraints
+    hibernateCustomization: Hibernate Customization
+domainClasses:
+    title: Domain Modelling in GORM
+    gormAssociation:
+        title: Association in GORM
+        manyToOneAndOneToOne: Many-to-one and one-to-one
+        oneToMany: One-to-many
+        manyToMany: Many-to-many
+        basicCollectionTypes: Basic Collection Types
+    gormComposition: Composition in GORM
+    inheritanceInGORM: Inheritance in GORM
+    setsListsAndMaps: Sets, Lists and Maps
+persistenceBasics: 
+    title: Persistence Basics
+    savingAndUpdating: Saving and Updating
+    deletingObjects: Deleting Objects
+    cascades: Understanding Cascading Updates and Deletes
+    fetching: Eager and Lazy Fetching
+    locking: Pessimistic and Optimistic Locking
+    modificationChecking: Modification Checking
+querying:
+    title: Querying with GORM
+    finders: Dynamic Finders
+    whereQueries: Where Queries
+    criteria: Criteria
+    detachedCriteria: Detached Criteria
+    hql: Hibernate Query Language (HQL)
+advancedGORMFeatures:
+    title: Advanced GORM Features
+    eventsAutoTimestamping: Events and Auto Timestamping
+    ormdsl:
+        title: Custom ORM Mapping
+        tableAndColumnNames: Table and Column Names
+        caching: Caching Strategy
+        inheritanceStrategies: Inheritance Strategies
+        identity: Custom Database Identity
+        compositePrimaryKeys: Composite Primary Keys
+        databaseIndices: Database Indices
+        optimisticLockingAndVersioning: Optimistic Locking and Versioning
+        fetchingDSL: Eager and Lazy Fetching
+        customCascadeBehaviour: Custom Cascade Behaviour
+        customHibernateTypes: Custom Hibernate Types
+        derivedProperties: Derived Properties
+        customNamingStrategy: Custom Naming Strategy
+    defaultSortOrder: Default Sort Order
+programmaticTransactions: Programmatic Transactions
+services:
+    title: GORM Data Services
+    basics: Data Service Basics
+    queries: Data Service Queries
+    writeOperations: Data Service Write Operations
+    serviceValidation: Validating Data Services
+    rxServices: RxJava Support
+multipleDataSources:
+    title: Multiple Data Sources
+    dataSourceConfiguration: Configuring Multiple Data Sources
+    mappingDomainsToDataSources: Mapping Domain Classes to Data Sources
+    dataSourceNamespaces: Data Source Namespaces
+    connectionSources: The ConnectionSources API

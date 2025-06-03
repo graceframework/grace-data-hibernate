@@ -10,7 +10,6 @@ buildscript {
     }
     dependencies {
         classpath "io.github.gradle-nexus:publish-plugin:2.0.0"
-        classpath "org.asciidoctor:asciidoctor-gradle-jvm:4.0.3"
         classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
         // classpath "com.github.erdi:webdriver-binaries-gradle-plugin:$webdriverBinariesVersion"
         classpath "org.gradle:test-retry-gradle-plugin:1.6.0"
@@ -36,8 +35,31 @@ ext['grace-gorm.version'] = project.gormVersion
 
 logger.lifecycle "GORM VERSION = ${project.gormVersion}"
 
+apply plugin: 'groovy'
 apply plugin: 'maven-publish'
 apply plugin: "io.github.gradle-nexus.publish-plugin"
+apply plugin: 'org.graceframework.grace-doc'
+
+allprojects {
+    repositories {
+        mavenCentral()
+        if (project.projectVersion.endsWith('-SNAPSHOT')) {
+            maven {
+                url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            }
+        }
+    }
+
+    configurations {
+        documentation
+    }
+
+    dependencies {
+        documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"
+        documentation "org.apache.groovy:groovy:$groovyVersion"
+        documentation "org.apache.groovy:groovy-ant:$groovyVersion"
+    }
+}
 
 nexusPublishing {
     repositories {
@@ -127,11 +149,6 @@ subprojects { Project subproject ->
     }
 
     dependencies {
-        documentation "org.fusesource.jansi:jansi:$jansiVersion"
-        documentation "org.apache.groovy:groovy-dateutil"
-        documentation "org.apache.groovy:groovy-xml"
-        documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"
-
         testImplementation "org.spockframework:spock-core", {
             exclude group: "org.junit.platform", module: "junit-platform-engine"
         }
@@ -166,8 +183,6 @@ subprojects { Project subproject ->
             }
         }
     }
-
-    groovydoc.classpath = configurations.documentation
 
     publishing {
         publications {
@@ -249,4 +264,44 @@ subprojects { Project subproject ->
         setConfigFile(new File("$rootDir/gradle/codenarc/codenarc.groovy"))
     }
 
+}
+
+
+def cleanTask = project.tasks.findByName('clean')
+if (cleanTask == null) {
+    task clean(type: Delete) {
+        delete(buildDir)
+    }
+}
+else {
+    cleanTask.doLast {
+        ant.delete(dir: 'build/docs')
+    }
+}
+
+tasks.withType(Groovydoc) {
+    group = 'Documentation'
+    docTitle = "Grace Data Hibernate - ${project.version}"
+    destinationDir = project.file('build/docs/manual/api')
+    def files = []
+    project.rootProject.subprojects
+            .findAll { !it.name != 'docs' && !it.name.startsWith('examples') }
+            .each { subproject ->
+                if(subproject.file('src/main/groovy').exists()) {
+                    files += subproject.files('src/main/groovy')
+                }
+                if(subproject.file('src/main/java').exists()) {
+                    files += subproject.files('src/main/java')
+                }
+            }
+    if (project.file('src/main/groovy').exists()) {
+        files += project.files('src/main/groovy')
+    }
+    source = files
+    classpath += configurations.documentation
+}
+
+docs {
+    dependsOn groovydoc
+    sourceDir = project.file('docs')
 }

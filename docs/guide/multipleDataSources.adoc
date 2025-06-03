@@ -1,0 +1,1 @@
+GORM supports the notion of multiple data sources where multiple individual SQL `DataSource` instances can be configured and switched between.

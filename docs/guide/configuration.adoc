@@ -27,14 +27,3 @@ Each one of the settings under the `dataSource` block is set on the link:../api/
 
 Whilst each setting under the `hibernate` block is set on the link:../api/org/grails/orm/hibernate/connections/HibernateConnectionSourceSettings.HibernateSettings.html[HibernateSettings] property.
 
-=== Configuration Reference
-
-include::configurationReference.adoc[]
-
-=== The Default Mapping & Constraints
-
-include::configurationDefaults.adoc[]
-
-=== Hibernate Customization
-
-include::hibernateCustomization.adoc[]
