@@ -1,0 +1,1499 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>2 Release History 2023.3.0-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navHeader">
+        
+        <span id="logo">
+            <a href="https://graceframework.org" title="Grace Framework Website">
+                <img src="../img/grace.svg" alt="Grace Framework" />
+            </a>
+        </span>
+        
+        <div class="docHeader">
+            <h1 class="docTitle">Grace Data Hibernate</h1>
+            <h3 class="docSubTitle">Provides integration between Grace and Hibernate through GORM</h3>
+        </div>
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/releases.html"><strong>2</strong><span>Release History</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/quickStartGuide.html"><strong>4</strong><span>Quick Start Guide</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/configuration.html"><strong>5</strong><span>Configuration</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/domainClasses.html"><strong>6</strong><span>Domain Modelling in GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/persistenceBasics.html"><strong>7</strong><span>Persistence Basics</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/querying.html"><strong>8</strong><span>Querying with GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/advancedGORMFeatures.html"><strong>9</strong><span>Advanced GORM Features</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/programmaticTransactions.html"><strong>10</strong><span>Programmatic Transactions</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/services.html"><strong>11</strong><span>GORM Data Services</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/multipleDataSources.html"><strong>12</strong><span>Multiple Data Sources</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/multiTenancy.html"><strong>13</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/constraints.html"><strong>14</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/testing.html"><strong>15</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/support.html"><strong>16</strong><span>Support</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <!-- <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li> -->
+            <li class="separator selected">
+                <a id="ref-button" href="../api/index.html">API Docs</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>2 Release History</h1>
+
+                    <p><strong>Version:</strong> 2023.3.0-SNAPSHOT</p>
+                </div>
+
+                
+                <div id="table-of-content">
+                    <h2>Table of Contents</h2>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#2023.x"><strong>2.1</strong><span>What's new in 2023.x</span></a>
+                    </div>
+                    
+                </div>
+                
+
+                
+
+<h1 id="releases"><a class="anchor" href="#releases"></a>2 Release History</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/releases.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect1">
+<h2 id="releases">Release History</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To make it easier for users to use and upgrade, Plugin adopts a version policy consistent with the <a href="https://github.com/graceframework/grace-framework">Grace Framework</a>.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Plugin Version</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Grace Version</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2023.3.x</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2023.3.x</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2023.2.x</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2023.2.x</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2023.1.x</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2023.1.x</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2023.0.x</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2023.0.x</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2022.2.x</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2022.2.x</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2022.1.x</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2022.1.x</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2022.0.x</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2022.0.x</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+<h2 id="2023.x"><a class="anchor" href="#2023.x"></a>2.1 What's new in 2023.x</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2023.3.x/src/docs/guide/releases/2023.x.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect2">
+<h3 id="_2023_3_0">2023.3.0</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.3.0">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>⭐️ New Features</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Setup github docs workflows</p>
+</li>
+<li>
+<p>Use 'grace-doc' Gradle plugin to generate documentation</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Don&#8217;t use deprecated gradle/actions/wrapper-validation in the release workflow</p>
+</li>
+<li>
+<p>Update github workflows - Upgrade to setup-gradle@v4</p>
+</li>
+<li>
+<p>Move docs to src/docs - Update the ToC and header levels of documentation</p>
+</li>
+<li>
+<p>Prohibit executing integration test cases in examples Because webdriver-binaries-gradle-plugin does not support Gradle 8.6+ <a href="https://github.com/graceframework/grace-data-hibernate/issues/110">#110</a> <a href="https://github.com/graceframework/grace-data-hibernate/issues/86">#86</a></p>
+</li>
+<li>
+<p>Migrate examples to Grace <a href="https://github.com/graceframework/grace-data-hibernate/issues/86">#86</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Grace 2023.3.0-RC2 <a href="https://github.com/graceframework/grace-data-hibernate/issues/107">#107</a></p>
+</li>
+<li>
+<p>Upgrade to Grace 2023.3.0-RC1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/104">#104</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 6.3.0-RC1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/108">#108</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 6.3.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/111">#111</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2023.3.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/105">#105</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Views 6.3.0-RC1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/109">#109</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Views 6.3.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/112">#112</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle 8.14 <a href="https://github.com/graceframework/grace-data-hibernate/issues/106">#106</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2023_3_0_rc1">2023.3.0-RC1</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.3.0-RC1">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Update README Update badge versions of Grace, Groovy and Spring Boot</p>
+</li>
+<li>
+<p>Streamline Gradle build scripts: using the Spring Dependency Management Plugin to manage dependencies and versions <a href="https://github.com/graceframework/grace-data-hibernate/issues/103">#103</a></p>
+</li>
+<li>
+<p>Remove the unnecessary workaround for removing the generated extra dependencyManagement of POM <a href="https://github.com/graceframework/grace-data-hibernate/issues/98">#98</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Grace 2023.3.0-M2 <a href="https://github.com/graceframework/grace-data-hibernate/issues/92">#92</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2023.3.0-RC1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/93">#93</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle 8.13 <a href="https://github.com/graceframework/grace-data-hibernate/issues/102">#102</a></p>
+</li>
+<li>
+<p>Upgrade to Groovy 4.0.26 <a href="https://github.com/graceframework/grace-data-hibernate/issues/94">#94</a></p>
+</li>
+<li>
+<p>Upgrade to Jansi 2.4.1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/100">#100</a></p>
+</li>
+<li>
+<p>Upgrade to Java Parser 3.26.4 <a href="https://github.com/graceframework/grace-data-hibernate/issues/99">#99</a></p>
+</li>
+<li>
+<p>Upgrade to SLF4J 2.0.17 <a href="https://github.com/graceframework/grace-data-hibernate/issues/101">#101</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Boot 3.3.10 <a href="https://github.com/graceframework/grace-data-hibernate/issues/95">#95</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 6.1.18 <a href="https://github.com/graceframework/grace-data-hibernate/issues/96">#96</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.39 <a href="https://github.com/graceframework/grace-data-hibernate/issues/97">#97</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2023.3.0-RC1</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2023_3_0_m1">2023.3.0-M1</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.3.0-M1">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Update README</p>
+</li>
+<li>
+<p>Rename duplicated 'assemble' task to 'assembleDocs' <a href="https://github.com/graceframework/grace-data-hibernate/issues/91">#91</a></p>
+</li>
+<li>
+<p>Update asciidoctor gradle plugin, make documentation generation task work <a href="https://github.com/graceframework/grace-data-hibernate/issues/91">#91</a></p>
+</li>
+<li>
+<p>Migrate examples to Grace <a href="https://github.com/graceframework/grace-data-hibernate/issues/86">#86</a></p>
+</li>
+<li>
+<p>Add jakarta.el dependency to run tests</p>
+</li>
+<li>
+<p>Update github workflows Switch to 2023.3.x branch</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🐞 Bug Fixes</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Fixes 'assembleDocs' task errors <a href="https://github.com/graceframework/grace-data-hibernate/issues/91">#91</a></p>
+</li>
+<li>
+<p>Fixed failed tests * TwoUnidirectionalHasManySpec * MultipleDataSourceConnectionsSpec</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Grace 2023.3.0-M1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/83">#83</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 6.3.0-M1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/87">#87</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2023.3.0-M1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/85">#85</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Fields Plugin 6.3.0-M1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/89">#89</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Scaffolding Plugin 6.3.0-M1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/88">#88</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Views 6.3.0-M1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/90">#90</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Boot 3.3.7 <a href="https://github.com/graceframework/grace-data-hibernate/issues/84">#84</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2023.3.0-M1</p>
+</li>
+<li>
+<p>Set version to 2023.3.0-SNAPSHOT</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2023_2_0">2023.2.0</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.2.0">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove hibernate-core-jakarta from the build classpath <a href="https://github.com/graceframework/grace-data-hibernate/issues/78">#78</a></p>
+</li>
+<li>
+<p>Rerun tests related GROOVY-5106 <a href="https://github.com/graceframework/grace-data-hibernate/issues/77">#77</a></p>
+</li>
+<li>
+<p>Configure test task <a href="https://github.com/graceframework/grace-data-hibernate/issues/76">#76</a></p>
+</li>
+<li>
+<p>Remove runtimeOnly dependencies <code>jakarta.el-api</code> and <code>jakarta.xml.bind-api</code> <a href="https://github.com/graceframework/grace-data-hibernate/issues/74">#74</a></p>
+</li>
+<li>
+<p>Update README</p>
+</li>
+<li>
+<p>Add GitHub issue template <a href="https://github.com/graceframework/grace-data-hibernate/issues/73">#73</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🐞 Bug Fixes</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Update build scripts to avoid deprecation warnings with Gradle 8 <a href="https://github.com/graceframework/grace-data-hibernate/issues/72">#72</a></p>
+</li>
+<li>
+<p>Resolve JUnit version conflicts <a href="https://github.com/graceframework/grace-data-hibernate/issues/75">#75</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Grace 2023.2.0-RC1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/70">#70</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 6.2.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/79">#79</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2023.2.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/71">#71</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Fields Plugin 6.2.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/81">#81</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Scaffolding Plugin 6.2.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/80">#80</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2023.2.0</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2023_2_0_rc1">2023.2.0-RC1</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.2.0-RC1">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>⭐️ New Features</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Supports for Multiple Data Sources <a href="https://github.com/graceframework/grace-data-hibernate/issues/64">#64</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove unused submodule <code>boot-plugin</code> <a href="https://github.com/graceframework/grace-data-hibernate/issues/69">#69</a></p>
+</li>
+<li>
+<p>Improvements for <code>HibernateDatastoreConnectionSourcesRegistrar</code> <a href="https://github.com/graceframework/grace-data-hibernate/issues/63">#63</a></p>
+</li>
+<li>
+<p>Remove unused testVerbose.gradle <a href="https://github.com/graceframework/grace-data-hibernate/issues/62">#62</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Grace 2023.2.0-M2 <a href="https://github.com/graceframework/grace-data-hibernate/issues/56">#56</a></p>
+</li>
+<li>
+<p>Upgrade to Grace 2023.2.0-M3 <a href="https://github.com/graceframework/grace-data-hibernate/issues/60">#60</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 6.2.0-RC1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/66">#66</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Fields Plugin 6.2.0-RC1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/68">#68</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Scaffolding Plugin 6.2.0-RC1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/67">#67</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2023.2.0-RC1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/57">#57</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle 8.12 <a href="https://github.com/graceframework/grace-data-hibernate/issues/61">#61</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.34 <a href="https://github.com/graceframework/grace-data-hibernate/issues/59">#59</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 6.1.16 <a href="https://github.com/graceframework/grace-data-hibernate/issues/58">#58</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2023.2.0-RC1</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2023_2_0_m1">2023.2.0-M1</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.2.0-M1">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Set order to <code>HibernateGormAutoConfiguration</code> and add bean <code>transactionManager</code> <a href="https://github.com/graceframework/grace-data-hibernate/issues/52">#52</a></p>
+</li>
+<li>
+<p>Update README Update badge of Grace to current version</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Grace 2023.2.0-M1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/41">#41</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 6.2.0-M2 <a href="https://github.com/graceframework/grace-data-hibernate/issues/53">#53</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2023.2.0-M1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/49">#49</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Fields Plugin 6.2.0-M1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/55">#55</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Scaffolding Plugin 6.2.0-M1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/54">#54</a></p>
+</li>
+<li>
+<p>Upgrade to Hibernate Validator 8.0.2.Final <a href="https://github.com/graceframework/grace-data-hibernate/issues/50">#50</a></p>
+</li>
+<li>
+<p>Upgrade to H2 2.2.224 <a href="https://github.com/graceframework/grace-data-hibernate/issues/48">#48</a></p>
+</li>
+<li>
+<p>Upgrade to JUnit Jupiter 5.10.5 <a href="https://github.com/graceframework/grace-data-hibernate/issues/44">#44</a></p>
+</li>
+<li>
+<p>Upgrade to JUnit Platform 1.10.5 <a href="https://github.com/graceframework/grace-data-hibernate/issues/45">#45</a></p>
+</li>
+<li>
+<p>Upgrade to SLF4J 2.0.16 <a href="https://github.com/graceframework/grace-data-hibernate/issues/46">#46</a></p>
+</li>
+<li>
+<p>Upgrade to SnakeYAML 2.2 <a href="https://github.com/graceframework/grace-data-hibernate/issues/47">#47</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Boot 3.2.12 <a href="https://github.com/graceframework/grace-data-hibernate/issues/43">#43</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 6.1.15 <a href="https://github.com/graceframework/grace-data-hibernate/issues/42">#42</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Next development version: 2023.2.0-SNAPSHOT</p>
+</li>
+<li>
+<p>Release v2023.2.0-M1</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2023_1_1">2023.1.1</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.1.1">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Set order to <code>HibernateGormAutoConfiguration</code> and add bean <code>transactionManager</code> <a href="https://github.com/graceframework/grace-data-hibernate/issues/51">#51</a></p>
+</li>
+<li>
+<p>Update README Update badge of Grace to current version</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Grace 2023.1.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/40">#40</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2023.1.1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/65">#65</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2023.1.1</p>
+</li>
+<li>
+<p>Next development version: 2023.1.1-SNAPSHOT</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2023_1_0">2023.1.0</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.1.0">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>⭐️ New Features</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Support using <code>@GrailsComponentScan</code> to customize GORM <code>@Entity</code> scanning locations <a href="https://github.com/graceframework/grace-data-hibernate/issues/36">#36</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Update Badges</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🐞 Bug Fixes</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Change <code>proxyHandler</code> bean type from <code>ProxyHandlerAdapter</code> to <code>ProxyHandler</code> <a href="https://github.com/graceframework/grace-data-hibernate/issues/35">#35</a></p>
+</li>
+<li>
+<p>Correct configuration property name <code>hibernate.cache.use_second_level_cache</code> <a href="https://github.com/graceframework/grace-data-hibernate/issues/33">#33</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Grace 2023.1.0-RC1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/30">#30</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 6.1.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/37">#37</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2023.1.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/32">#32</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Fields Plugin 6.1.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/39">#39</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Scaffolding Plugin 6.1.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/38">#38</a></p>
+</li>
+<li>
+<p>Upgrade to Groovy 4.0.24 <a href="https://github.com/graceframework/grace-data-hibernate/issues/31">#31</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.33 <a href="https://github.com/graceframework/grace-data-hibernate/issues/34">#34</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2023.1.0</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2023_1_0_rc1">2023.1.0-RC1</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.1.0-RC1">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Use <code>classesDirectory</code> property instead of deprecated <code>outputDir</code> <a href="https://github.com/graceframework/grace-data-hibernate/issues/29">#29</a></p>
+</li>
+<li>
+<p>Use <code>gradlePluginPortal()</code> <a href="https://github.com/graceframework/grace-data-hibernate/issues/27">#27</a></p>
+</li>
+<li>
+<p>Rename <code>hibernate5Version</code> to <code>hibernateCoreVersion</code> <a href="https://github.com/graceframework/grace-data-hibernate/issues/23">#23</a></p>
+</li>
+<li>
+<p>Update additional Spring Boot configuration metadata file <a href="https://github.com/graceframework/grace-data-hibernate/issues/22">#22</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Grace 2023.1.0-M3 <a href="https://github.com/graceframework/grace-data-hibernate/issues/20">#20</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 6.1.0-RC1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/24">#24</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2023.1.0-RC1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/21">#21</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Fields Plugin 6.1.0-RC1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/26">#26</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Scaffolding Plugin 6.1.0-RC1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/25">#25</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle Nexus Publish Plugin 2.0.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/28">#28</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2023.1.0-RC1</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2023_1_0_m3">2023.1.0-M3</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.1.0-M3">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove <code>@AutoConfigureOrder</code> on <code>HibernateGormAutoConfiguration</code> <a href="https://github.com/graceframework/grace-data-hibernate/issues/14">#14</a></p>
+</li>
+<li>
+<p>Provide additional Spring Boot configuration metadata file <a href="https://github.com/graceframework/grace-data-hibernate/issues/13">#13</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Grace 2023.1.0-M2 <a href="https://github.com/graceframework/grace-data-hibernate/issues/12">#12</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 6.1.0-M3 <a href="https://github.com/graceframework/grace-data-hibernate/issues/17">#17</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2023.1.0-M3 <a href="https://github.com/graceframework/grace-data-hibernate/issues/15">#15</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Fields Plugin 6.1.0-M3 <a href="https://github.com/graceframework/grace-data-hibernate/issues/19">#19</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Scaffolding Plugin 6.1.0-M3 <a href="https://github.com/graceframework/grace-data-hibernate/issues/18">#18</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.31 <a href="https://github.com/graceframework/grace-data-hibernate/issues/16">#16</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2023.1.0-M3</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2023_1_0_m2">2023.1.0-M2</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.1.0-M2">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>⭐️ New Features</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Auto-Configure Hibernate Plugin <a href="https://github.com/graceframework/grace-data-hibernate/issues/5">#5</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Update tests: setup <code>HibernateDatastore</code> with config <a href="https://github.com/graceframework/grace-data-hibernate/issues/7">#7</a></p>
+</li>
+<li>
+<p>Update tests: setup <code>HibernateDatastore</code> with config <a href="https://github.com/graceframework/grace-data-hibernate/issues/7">#7</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Grace 2023.1.0-M1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/4">#4</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2023.1.0-M2 <a href="https://github.com/graceframework/grace-data-hibernate/issues/6">#6</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 6.1.0-M2 <a href="https://github.com/graceframework/grace-data-hibernate/issues/9">#9</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Fields Plugin 6.1.0-M2 <a href="https://github.com/graceframework/grace-data-hibernate/issues/11">#11</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Scaffolding Plugin 6.1.0-M2 <a href="https://github.com/graceframework/grace-data-hibernate/issues/10">#10</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.30 <a href="https://github.com/graceframework/grace-data-hibernate/issues/8">#8</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2023.1.0-M2</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2023_1_0_m1">2023.1.0-M1</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.1.0-M1">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>⭐️ New Features</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Support Groovy 5 <a href="https://github.com/graceframework/grace-data-hibernate/issues/1">#1</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove asciidoctor gradle plugin Dependency <code>grolifant-0.10.jar</code> not found</p>
+</li>
+<li>
+<p>Remove publishing <code>DatastoreInitializedEvent</code> in <code>HibernateDatastore</code> <a href="https://github.com/graceframework/grace-data-hibernate/issues/2">#2</a></p>
+</li>
+<li>
+<p>Start building against Grace Data 2023.1.0 snapshots</p>
+</li>
+<li>
+<p>Update README</p>
+</li>
+<li>
+<p>Update README</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Groovy 4.0.23</p>
+</li>
+<li>
+<p>Upgrade to Grace 2023.0.2</p>
+</li>
+<li>
+<p>Upgrade to Grace 2023.0.1</p>
+</li>
+<li>
+<p>Upgrade to GORM 2023.1.0-M1</p>
+</li>
+<li>
+<p>Upgrade to Hibernate Validator 8.0.1.Final</p>
+</li>
+<li>
+<p>Upgrade to Jakarta XML Bind 4.0.2</p>
+</li>
+<li>
+<p>Upgrade to JavaParser 3.26.2</p>
+</li>
+<li>
+<p>Upgrade to Spring Boot 3.1.12</p>
+</li>
+<li>
+<p>Upgrade to SLF4J 2.0.13</p>
+</li>
+<li>
+<p>Upgrade to Webdriver Binaries Gradle Plugin 3.2</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2023.1.0-M1</p>
+</li>
+<li>
+<p>Update github workflows</p>
+</li>
+<li>
+<p>Next development version: 2023.1.0-SNAPSHOT</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2023_0_1">2023.0.1</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.0.1">release notes</a></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2023.0.1</p>
+</li>
+<li>
+<p>Upgrade to Grace Fields Plugin 6.0.1</p>
+</li>
+<li>
+<p>Upgrade to Grace Scaffolding 6.0.1</p>
+</li>
+<li>
+<p>Upgrade to Geb 7.0</p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 6.0.1</p>
+</li>
+<li>
+<p>Upgrade to GORM 2023.0.1</p>
+</li>
+<li>
+<p>Update build scripts</p>
+</li>
+<li>
+<p>Upgrade to Grace 2023.0.0</p>
+</li>
+<li>
+<p>Next development version: 2023.0.1-SNAPSHOT</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2023_0_0">2023.0.0</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.0.0">release notes</a></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2023.0.0</p>
+</li>
+<li>
+<p>Upgrade to Grace Fields Plugin 6.0.0</p>
+</li>
+<li>
+<p>Upgrade to Grace Scaffolding 6.0.0</p>
+</li>
+<li>
+<p>Upgrade to Grace Scaffolding 6.0.0-RC1</p>
+</li>
+<li>
+<p>Upgrade to Grace Fields Plugin 6.0.0-RC1</p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 6.0.0</p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.28</p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 6.0.23</p>
+</li>
+<li>
+<p>Upgrade to GORM 2023.0.0</p>
+</li>
+<li>
+<p>Upgrade to Grace 2023.0.0-RC2</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2023_0_0_rc1">2023.0.0-RC1</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.0.0-RC1">release notes</a></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2023.0.0-RC1</p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2023.0.0-RC1</p>
+</li>
+<li>
+<p>Upgrade to Gradle Wrapper 7.6.4</p>
+</li>
+<li>
+<p>Rename to Grace <code>app</code> root</p>
+</li>
+<li>
+<p>Upgrade to Grace Asset Pipeline Plugin 6.0.0-M4</p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.25</p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 6.0.22</p>
+</li>
+<li>
+<p>Upgrade to Groovy 4.0.22</p>
+</li>
+<li>
+<p>Upgrade to Grace 2023.0.0-M7</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2023_0_0_m5">2023.0.0-M5</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.0.0-M5">release notes</a></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2023.0.0-M5</p>
+</li>
+<li>
+<p>Upgrade to Grace GORM 2023.0.0-M5</p>
+</li>
+<li>
+<p>Update build scripts</p>
+</li>
+<li>
+<p>Update plugin meta info</p>
+</li>
+<li>
+<p>Update README</p>
+</li>
+<li>
+<p>Update README</p>
+</li>
+<li>
+<p>BREAKING CHANGES</p>
+</li>
+<li>
+<p>Upgrade to SnakeYaml 2.0</p>
+</li>
+<li>
+<p>Upgrade to SLF4J 2.0.9</p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.16</p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 6.0.14</p>
+</li>
+<li>
+<p>Upgrade to Spring Boot 3.0.13</p>
+</li>
+<li>
+<p>Upgrade to Groovy 4.0.21</p>
+</li>
+<li>
+<p>Upgrade to Groovy 4.0.12</p>
+</li>
+<li>
+<p>Upgrade to Grace 2023.0.0-M6</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2023_0_0_m4">2023.0.0-M4</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.0.0-M4">release notes</a></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2023.0.0-M4</p>
+</li>
+<li>
+<p>Upgrade to Grace GORM 2023.0.0-M4</p>
+</li>
+<li>
+<p>Upgrade to Grace 2023.0.0-M5</p>
+</li>
+<li>
+<p>Fixed build error</p>
+</li>
+<li>
+<p>Grace: update github workflows</p>
+</li>
+<li>
+<p>remove direct dependency <code>com.sun.xml.bind:jaxb-impl</code>, use <code>hibernate-core-jakarta</code> its own dependencies</p>
+</li>
+<li>
+<p>Grace: update github workflows</p>
+</li>
+<li>
+<p>Use <code>junitJupiterPlatformVersion</code></p>
+</li>
+<li>
+<p>Downgrade to Grace 2023.0.0-M3</p>
+</li>
+<li>
+<p>Upgrade to Grace 2023.0.0-M4</p>
+</li>
+<li>
+<p>Grace: update github workflows</p>
+</li>
+<li>
+<p>Grace: migrate to grace</p>
+</li>
+<li>
+<p>Update dependencies grails-plugin</p>
+</li>
+<li>
+<p>Add Dependency: Jakarta Transaction API 2.0.1</p>
+</li>
+<li>
+<p>Update dependencies for example projects</p>
+</li>
+<li>
+<p>Upgrade to JUnit Jupiter 5.9.3 and JUnit Platform 1.9.3</p>
+</li>
+<li>
+<p>Upgrade to SLF4J 2.0.7</p>
+</li>
+<li>
+<p>Add Dependency: Jakarta Persistence API 3.1.0</p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 6.0.9</p>
+</li>
+<li>
+<p>Upgrade to Spring Boot 3.0.7</p>
+</li>
+<li>
+<p>Upgrade to GORM 2023.0.0-M4</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2023_0_0_m3">2023.0.0-M3</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.0.0-M3">release notes</a></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2023.0.0-M3</p>
+</li>
+<li>
+<p>Cleanup gradle properties</p>
+</li>
+<li>
+<p>Upgrade to GORM 2023.0.0-M3</p>
+</li>
+<li>
+<p>Grace: update github workflows</p>
+</li>
+<li>
+<p>Grace: migrate to grace</p>
+</li>
+<li>
+<p>Upgrade to GORM 2023.0.0-M3</p>
+</li>
+<li>
+<p>Use <code>GormMappingConfigurationStrategy</code> in <code>HibernateMappingContext</code></p>
+</li>
+<li>
+<p>Replace argument with empty array</p>
+</li>
+<li>
+<p>Remove explicit type arguments</p>
+</li>
+<li>
+<p>Deprecated <code>HibernateVersionSupport</code></p>
+</li>
+<li>
+<p>Migrate to <code>HibernateFlushMode</code></p>
+</li>
+<li>
+<p>Correct log in <code>HibernatePersistenceContextInterceptor</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2023_0_0_m2">2023.0.0-M2</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.0.0-M2">release notes</a></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2023.0.0-M2</p>
+</li>
+<li>
+<p>Excluding the old groovy 3 dependencies</p>
+</li>
+<li>
+<p>Upgrade to Grace 2023.0.0-M2</p>
+</li>
+<li>
+<p>Grace: update github workflows</p>
+</li>
+<li>
+<p>Grace: migrate to grace</p>
+</li>
+<li>
+<p>Release 2023.0.0-M2</p>
+</li>
+<li>
+<p>Ignore spock tests related inheritance in GORM</p>
+</li>
+<li>
+<p>Upgrade to Groovy 4.0.11</p>
+</li>
+<li>
+<p>Upgrade to GORM 2023.0.0-M2</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2023_0_0_m1">2023.0.0-M1</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2023.0.0-M1">release notes</a></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2023.0.0-M1</p>
+</li>
+<li>
+<p>Upgrade to Grace GORM 2023.0.0-M1</p>
+</li>
+<li>
+<p>Grace: update readme</p>
+</li>
+<li>
+<p>Grace: update github workflows</p>
+</li>
+<li>
+<p>Grace: update gradle build scripts</p>
+</li>
+<li>
+<p>Grace: rename all sub-projects</p>
+</li>
+<li>
+<p>Migrate to Jakarta in all Examples</p>
+</li>
+<li>
+<p>Migrate to Jakarta: using jakarta.el jakarta.xml.bind jakarta.servlet dependencies</p>
+</li>
+<li>
+<p>Migrate to Jakarta: using jakarta.* namespace in Spock tests</p>
+</li>
+<li>
+<p>Adding dependency: jakarta.annotation-api</p>
+</li>
+<li>
+<p>Upgrade to Hibernate Validator 7.0.5.Final</p>
+</li>
+<li>
+<p>Upgrade to GORM 2023.0.0-M1</p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.8</p>
+</li>
+<li>
+<p>Upgrade to Spring Boot 3.0.6</p>
+</li>
+<li>
+<p>Add missing <code>jakartaValidationVersion</code></p>
+</li>
+<li>
+<p>Jakarta: migrate to jakarta.* namespace</p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.1</p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 6.0.2 and Spring Boot 3.0.0</p>
+</li>
+<li>
+<p>Build target to JDK 17</p>
+</li>
+<li>
+<p>Ignore test <code>SimpleJpaEntitySpec</code>, because GORM does not support JPA now</p>
+</li>
+<li>
+<p>Cleanup build.gradle</p>
+</li>
+<li>
+<p>Upgrade EHcache to 2.10.6</p>
+</li>
+<li>
+<p>Relocate HibernateSpec to <code>src/test/groovy</code></p>
+</li>
+<li>
+<p>Update Dependencies and Examples</p>
+</li>
+<li>
+<p>Boot Plugin: Migrate <code>spring-boot-cli</code> to <code>grails-shell</code></p>
+</li>
+<li>
+<p>Next development version: 2023.0.0-SNAPSHOT</p>
+</li>
+</ul>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright &copy; 2022-2025 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>
