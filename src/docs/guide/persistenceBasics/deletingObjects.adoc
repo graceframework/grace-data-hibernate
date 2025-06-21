@@ -1,4 +1,4 @@
-An example of the link:../api/org/grails/datastore/gorm/GormEntity.html#delete()[delete()] method can be seen below:
+An example of the link:{gormapi}/org/grails/datastore/gorm/GormEntity.html#delete()[delete()] method can be seen below:
 
 [source,groovy]
 ----
@@ -39,7 +39,7 @@ Person.where {
 }.deleteAll()
 ----
 
-Another alternative is to use an HQL statement within the link:../api/org/grails/datastore/gorm/GormEntity.html#executeUpdate(java.lang.String)[executeUpdate(...)] method:
+Another alternative is to use an HQL statement within the link:{gormapi}/org/grails/datastore/gorm/GormEntity.html#executeUpdate(java.lang.String)[executeUpdate(...)] method:
 
 [source,groovy]
 ----

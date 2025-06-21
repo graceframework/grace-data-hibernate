@@ -14,7 +14,6 @@ class Person {
 
 In this case the class would be mapped to a table called `people` instead of the default name of `person`.
 
-
 ==== Column names
 
 It is also possible to customize the mapping for individual columns onto the database. For example to change the name you can do:
@@ -34,10 +33,9 @@ class Person {
 
 Here `firstName` is a dynamic method within the `mapping` Closure that has a single Map parameter. Since its name corresponds to a domain class persistent field, the parameter values (in this case just `"column"`) are used to configure the mapping for that property.
 
-
 ==== Column type
 
-GORM supports configuration of Hibernate types with the DSL using the type attribute. This includes specifying user types that implement the Hibernate https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/usertype/UserType.html[org.hibernate.usertype.UserType] interface, which allows complete customization of how a type is persisted. As an example if you had a `PostCodeType` you could use it as follows:
+GORM supports configuration of Hibernate types with the DSL using the type attribute. This includes specifying user types that implement the Hibernate link:{hibernatejavadoc}/org/hibernate/usertype/UserType.html[org.hibernate.usertype.UserType] interface, which allows complete customization of how a type is persisted. As an example if you had a `PostCodeType` you could use it as follows:
 
 [source,java]
 ----
@@ -69,8 +67,7 @@ class Address {
 
 This would make the `postCode` column map to the default large-text type for the database you're using (for example TEXT or CLOB).
 
-See the Hibernate documentation regarding https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#basic-explicit[Basic Types] for further information.
-
+See the Hibernate documentation regarding link:{hibernateuserguide}/html_single/Hibernate_User_Guide.html#basic-explicit[Basic Types] for further information.
 
 ==== Many-to-One/One-to-One Mappings
 
@@ -132,7 +129,6 @@ class Person {
     }
 }
 ----
-
 
 ==== Many-to-Many Mapping
 

@@ -90,4 +90,3 @@ class Flight {
     Airport destinationAirport
 }
 ----
-

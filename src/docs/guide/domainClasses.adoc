@@ -2,7 +2,6 @@ When building applications you have to consider the problem domain you are tryin
 
 These are modeled in GORM as Groovy classes, so a `Book` class may have a title, a release date, an ISBN number and so on. The next few sections show how to model the domain in GORM.
 
-
 Consider the following domain class:
 
 [source,groovy]

@@ -1,6 +1,4 @@
-
 === Optimistic Locking
-
 
 By default GORM classes are configured for optimistic locking. Optimistic locking is a feature of Hibernate which involves storing a version value in a special `version` column in the database that is incremented after each update.
 
@@ -13,7 +11,7 @@ def airport = Airport.get(10)
 println airport.version
 ----
 
-When you perform updates Hibernate will automatically check the version property against the  version column in the database and if they differ will throw a https://docs.jboss.org/hibernate/orm/5.6/javadocs/org/hibernate/StaleObjectStateException.html[StaleObjectException]. This will roll back the transaction if one is active.
+When you perform updates Hibernate will automatically check the version property against the  version column in the database and if they differ will throw a link:{hibernatejavadoc}/org/hibernate/StaleObjectStateException.html[StaleObjectException]. This will roll back the transaction if one is active.
 
 This is useful as it allows a certain level of atomicity without resorting to pessimistic locking that has an inherit performance penalty. The downside is that you have to deal with this exception if you have highly concurrent writes. This requires flushing the session:
 
@@ -36,13 +34,11 @@ Alternatively, if it becomes a problem you can resort to pessimistic locking.
 
 NOTE: The `version` will only be updated after flushing the session.
 
-
 === Pessimistic Locking
-
 
 Pessimistic locking is equivalent to doing a SQL "SELECT * FOR UPDATE" statement and locking a row in the database. This has the implication that other read operations will be blocking until the lock is released.
 
-In GORM pessimistic locking is performed on an existing instance with the link:../api/org/grails/datastore/gorm/GormEntity.html#lock()[lock()] method:
+In GORM pessimistic locking is performed on an existing instance with the link:{gormapi}/org/grails/datastore/gorm/GormEntity.html#lock()[lock()] method:
 
 [source,groovy]
 ----
@@ -56,7 +52,7 @@ GORM will automatically deal with releasing the lock for you once the transactio
 
 However, in the above case what we are doing is "upgrading" from a regular SELECT to a SELECT..FOR UPDATE and another thread could still have updated the record in between the call to `get()` and the call to `lock()`.
 
-To get around this problem you can use the static link:../api/org/grails/datastore/gorm/GormEntity.html#lock(java.io.Serializable)[lock(id)] method that takes an id just like link:../api/org/grails/datastore/gorm/GormEntity.html#get(java.io.Serializable)[get(id)]:
+To get around this problem you can use the static link:{gormapi}/org/grails/datastore/gorm/GormEntity.html#lock(java.io.Serializable)[lock(id)] method that takes an id just like link:{gormapi}/org/grails/datastore/gorm/GormEntity.html#get(java.io.Serializable)[get(id)]:
 
 [source,groovy]
 ----
@@ -67,7 +63,7 @@ airport.save()
 
 In this case only SELECT..FOR UPDATE is issued.
 
-As well as the link:../api/org/grails/datastore/gorm/GormEntity.html#lock(java.io.Serializable)[lock(id)] method you can also obtain a pessimistic locking using queries. For example using a dynamic finder:
+As well as the link:{gormapi}/org/grails/datastore/gorm/GormEntity.html#lock(java.io.Serializable)[lock(id)] method you can also obtain a pessimistic locking using queries. For example using a dynamic finder:
 
 [source,java]
 ----
@@ -83,4 +79,3 @@ def airport = Airport.createCriteria().get {
     lock true
 }
 ----
-

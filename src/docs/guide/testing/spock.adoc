@@ -74,9 +74,7 @@ class ExampleSpec extends Specification {
 
 In the example above, each test method is wrapped in a transaction that rolls back any changes using the `grails.gorm.transactions.Rollback` annotation.
 
-
 TIP: If you want to setup some test data within the `setupSpec` method that is shared across all tests then you can use `withTransaction`:
-
 
 [source,groovy]
 ----
@@ -106,4 +104,3 @@ void setupSpec() {
     ...
 }
 ----
-

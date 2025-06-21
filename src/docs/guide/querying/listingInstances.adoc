@@ -1,11 +1,11 @@
-Use the link:../api/org/grails/datastore/gorm/GormEntity.html#list()[list()] method to obtain all instances of a given class:
+Use the link:{gormapi}/org/grails/datastore/gorm/GormEntity.html#list()[list()] method to obtain all instances of a given class:
 
 [source,groovy]
 ----
 def books = Book.list()
 ----
 
-The link:../api/org/grails/datastore/gorm/GormEntity.html#list(java.util.Map)[list()] method supports arguments to perform pagination:
+The link:{gormapi}/org/grails/datastore/gorm/GormEntity.html#list(java.util.Map)[list()] method supports arguments to perform pagination:
 
 [source,groovy]
 ----

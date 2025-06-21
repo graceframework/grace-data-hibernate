@@ -1,4 +1,4 @@
-Since GORM 6.1, if you need more flexibility then instead you can instead take advantage of the link:../api/grails/gorm/transactions/TransactionService.html[TransactionService], which can be obtained by looking it up from from the `HibernateDatastore`:
+Since GORM 6.1, if you need more flexibility then instead you can instead take advantage of the link:{gormapi}/grails/gorm/transactions/TransactionService.html[TransactionService], which can be obtained by looking it up from from the `HibernateDatastore`:
 
 [source,groovy]
 ----

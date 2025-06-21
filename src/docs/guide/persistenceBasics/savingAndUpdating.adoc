@@ -1,4 +1,4 @@
-An example of using the link:../api/org/grails/datastore/gorm/GormEntity.html#save()[save()] method can be seen below:
+An example of using the link:{gormapi}/org/grails/datastore/gorm/GormEntity.html#save()[save()] method can be seen below:
 
 [source,groovy]
 ----

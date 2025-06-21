@@ -1,13 +1,15 @@
 introduction:
     title: Introduction
-    releaseHistory: Release History
     upgradeNotes: Upgrade Notes
+releases:
+    title: Release History
+    2023.x: What's new in 2023.x
 gettingStarted:
     title: Getting Started
-    commonProblems: Common Problems
-    hibernateVersions: Configuring Different Hibernate Versions
-    springBoot: Using GORM in Spring Boot
-    outsideGrails: Using GORM for Hibernate Outside Grails
+    # commonProblems: Common Problems
+    # hibernateVersions: Configuring Different Hibernate Versions
+    # springBoot: Using GORM in Spring Boot
+    # outsideGrails: Using GORM for Hibernate Outside Grails
 quickStartGuide:
     title: Quick Start Guide
     basicCRUD: Basic CRUD
@@ -78,7 +80,7 @@ services:
     queryJoins: Query Joins
     writeOperations: Data Service Write Operations
     serviceValidation: Validating Data Services
-    rxServices: RxJava Support
+    # rxServices: RxJava Support
 multipleDataSources:
     title: Multiple Data Sources
     dataSourceConfiguration: Configuring Multiple Data Sources
@@ -104,3 +106,4 @@ testing:
     title: GORM and Testing
     spock: Unit Testing with Spock
     junit: Unit Testing with JUnit
+support: Support

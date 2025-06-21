@@ -1,4 +1,4 @@
-If you are using Grails or Spring Boot, the following is an example of configuration specified in `application.yml`:
+If you are using Grace or Spring Boot, the following is an example of configuration specified in `application.yml`:
 
 [source,yaml]
 ----
@@ -17,7 +17,7 @@ hibernate:
         region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
 ----
 
-Each one of the settings under the `dataSource` block is set on the link:../api/org/grails/datastore/gorm/jdbc/connections/DataSourceSettings.html[DataSourceSettings] property of `HibernateConnectionSourceSettings`.
+Each one of the settings under the `dataSource` block is set on the link:{gormapi}/org/grails/datastore/gorm/jdbc/connections/DataSourceSettings.html[DataSourceSettings] property of `HibernateConnectionSourceSettings`.
 
-Whilst each setting under the `hibernate` block is set on the link:../api/org/grails/orm/hibernate/connections/HibernateConnectionSourceSettings.HibernateSettings.html[HibernateSettings] property.
+Whilst each setting under the `hibernate` block is set on the link:{api}/org/grails/orm/hibernate/connections/HibernateConnectionSourceSettings.HibernateSettings.html[HibernateSettings] property.
 

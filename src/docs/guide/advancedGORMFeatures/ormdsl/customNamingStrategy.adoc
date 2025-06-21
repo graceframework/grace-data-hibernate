@@ -59,4 +59,3 @@ class CustomNamingStrategy extends ImprovedNamingStrategy {
     }
 }
 ----
-

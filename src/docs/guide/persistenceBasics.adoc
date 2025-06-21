@@ -1,8 +1,8 @@
 A key thing to remember about GORM is that under the surface GORM is using https://www.hibernate.org/[Hibernate] for persistence. If you are coming from a background of using https://api.rubyonrails.org/classes/ActiveRecord/Base.html[ActiveRecord] or https://www.mybatis.org/[iBatis/MyBatis], Hibernate's "session" model may feel a little strange.
 
-If you are using Grails, then Grails automatically binds a Hibernate session to the currently executing request. This lets you use the `save()` and `delete` methods as well as other GORM methods transparently.
+If you are using Grace, then Grace automatically binds a Hibernate session to the currently executing request. This lets you use the `save()` and `delete` methods as well as other GORM methods transparently.
 
-If you are not using Grails then you have to make sure that a session is bound to the current request. One way to to achieve that is with the link:../api/org/grails/datastore/gorm/GormEntity.html#withNewSession(groovy.lang.Closure)[withNewSession(Closure)] method:
+If you are not using Grace then you have to make sure that a session is bound to the current request. One way to to achieve that is with the link:{gormapi}/org/grails/datastore/gorm/GormEntity.html#withNewSession(groovy.lang.Closure)[withNewSession(Closure)] method:
 
 [source,groovy]
 ----
@@ -11,7 +11,7 @@ Book.withNewSession {
 }
 ----
 
-Another option is to bind a transaction using the link:../api/org/grails/datastore/gorm/GormEntity.html#withTransaction(groovy.lang.Closure)[withTransaction(Closure)] method:
+Another option is to bind a transaction using the link:{gormapi}/org/grails/datastore/gorm/GormEntity.html#withTransaction(groovy.lang.Closure)[withTransaction(Closure)] method:
 
 [source,groovy]
 ----

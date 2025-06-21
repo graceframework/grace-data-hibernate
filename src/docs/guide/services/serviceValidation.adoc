@@ -1,6 +1,6 @@
 GORM Data Services have built in support for `javax.validation` annotations for method parameters.
 
-You will need to have a `javax.validation` implementation on your classpath (such as `hibernate-validator` and then simply annotate your method parameters using the appropriate annotation. For example:
+You will need to have a `javax.validation` implementation on your classpath (such as `hibernate-validator`) and then simply annotate your method parameters using the appropriate annotation. For example:
 
 [source,groovy]
 ----

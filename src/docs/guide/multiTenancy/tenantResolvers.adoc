@@ -1,4 +1,4 @@
-As mentioned previously the link:../api/org/grails/datastore/mapping/multitenancy/TenantResolver.html[TenantResolver] interface is how you define the value of the link:../api/grails/gorm/multitenancy/Tenants.html#currentId()[current tenant].
+As mentioned previously the link:{gormapi}/org/grails/datastore/mapping/multitenancy/TenantResolver.html[TenantResolver] interface is how you define the value of the link:{gormapi}/grails/gorm/multitenancy/Tenants.html#currentId()[current tenant].
 
 This section will cover a few more details about implementing `TenantResolver` instances.
 
@@ -15,7 +15,7 @@ grails:
             tenantResolverClass: org.grails.datastore.mapping.multitenancy.web.SubDomainTenantResolver
 ----
 
-However, if you are using Grails or Spring Boot then the `TenantResolver` can also be specified as a Spring bean and it will automatically be injected, this allows you to use dependency injection to configure the dependencies of the resolver.
+However, if you are using Grace or Spring Boot then the `TenantResolver` can also be specified as a Spring bean and it will automatically be injected, this allows you to use dependency injection to configure the dependencies of the resolver.
 
 === Built-in Tenant Resolvers
 
@@ -42,7 +42,7 @@ compile "org.grails:grails-datastore-web:{version}"
 
 === The AllTenantsResolver interface
 
-If you are using discriminator-based multi-tenancy then you may need to implement the link:../api/org/grails/datastore/mapping/multitenancy/AllTenantsResolver.html[AllTenantsResolver] interface in your `TenantResolver` implementation if you want to at any point iterate over all available tenants.
+If you are using discriminator-based multi-tenancy then you may need to implement the link:{gormapi}/org/grails/datastore/mapping/multitenancy/AllTenantsResolver.html[AllTenantsResolver] interface in your `TenantResolver` implementation if you want to at any point iterate over all available tenants.
 
 Typically with discriminator-based multi-tenancy the tenants are identified by some other domain class property. So for example an implementation would look like:
 
@@ -57,10 +57,9 @@ Iterable<Serializable> resolveTenantIds() {
 
 The above example uses the distinct names of each `Company` domain class to resolve all of the tenant identifiers.
 
-
 === Implementing Web Tenant Resolvers
 
-If you wish to implement your own tenant resolver for Grails or Spring Boot then it is possible do so using the `RequestContextHolder` class without needing to inject any dependencies. For example the `SubDomainTenantResolver` implementation is as follows:
+If you wish to implement your own tenant resolver for Grace or Spring Boot then it is possible do so using the `RequestContextHolder` class without needing to inject any dependencies. For example the `SubDomainTenantResolver` implementation is as follows:
 
 [source,groovy]
 ----

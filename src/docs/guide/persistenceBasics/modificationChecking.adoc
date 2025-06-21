@@ -1,11 +1,10 @@
-Once you have loaded and possibly modified a persistent domain class instance, it isn't straightforward to retrieve the original values. If you try to reload the instance using link:../api/org/grails/datastore/gorm/GormEntity.html#get(java.io.Serializable)[get(id)] Hibernate will return the current modified instance from its Session cache.
+Once you have loaded and possibly modified a persistent domain class instance, it isn't straightforward to retrieve the original values. If you try to reload the instance using link:{gormapi}/org/grails/datastore/gorm/GormEntity.html#get(java.io.Serializable)[get(id)] Hibernate will return the current modified instance from its Session cache.
 
 Reloading using another query would trigger a flush which could cause problems if your data isn't ready to be flushed yet. So GORM provides some methods to retrieve the original values that Hibernate caches when it loads the instance (which it uses for dirty checking).
 
-
 === isDirty
 
-You can use the link:../api/org/grails/datastore/gorm/GormEntity.html#isDirty(java.lang.String)[isDirty()] method to check if any field has been modified:
+You can use the link:{gormapi}/org/grails/datastore/gorm/GormEntity.html#isDirty(java.lang.String)[isDirty()] method to check if any field has been modified:
 
 [source,groovy]
 ----
@@ -68,8 +67,7 @@ class Book {
 
 === getDirtyPropertyNames
 
-
-You can use the link:../api/org/grails/datastore/gorm/GormEntity.html#getDirtyPropertyNames()[getDirtyPropertyNames()] method to retrieve the names of modified fields; this may be empty but will not be null:
+You can use the link:{gormapi}/org/grails/datastore/gorm/GormEntity.html#getDirtyPropertyNames()[getDirtyPropertyNames()] method to retrieve the names of modified fields; this may be empty but will not be null:
 
 [source,groovy]
 ----
@@ -85,7 +83,7 @@ for (fieldName in modifiedFieldNames) {
 
 === getPersistentValue
 
-You can use the link:../api/org/grails/datastore/gorm/GormEntity.html#getPersistentValue(java.lang.String)[getPersistentValue(fieldName)] method to retrieve the value of a modified field:
+You can use the link:{gormapi}/org/grails/datastore/gorm/GormEntity.html#getPersistentValue(java.lang.String)[getPersistentValue(fieldName)] method to retrieve the value of a modified field:
 
 [source,groovy]
 ----

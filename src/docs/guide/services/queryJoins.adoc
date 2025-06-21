@@ -107,7 +107,6 @@ Sometimes you want to expose a more limited set of a data to the calling class. 
 
 For example:
 
-
 [source,groovy]
 ----
 class Author {

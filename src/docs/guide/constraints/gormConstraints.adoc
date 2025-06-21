@@ -40,19 +40,17 @@ static constraints = {
 
 This constraint would provide both the application-based validation we want and it would also cause the schema to be generated as shown above.  Below is a description of the other constraints that influence schema generation.
 
-
 === Constraints Affecting String Properties
 
 * `inList`
 * `maxSize`
 * `size`
 
-If either the `maxSize` or the `size` constraint is defined, Grails sets the maximum column length based on the constraint value.
+If either the `maxSize` or the `size` constraint is defined, Grace sets the maximum column length based on the constraint value.
 
 In general, it's not advisable to use both constraints on the same domain class property.  However, if both the `maxSize` constraint and the `size` constraint are defined, then GORM sets the column length to the minimum of the `maxSize` constraint and the upper bound of the size constraint.  (GORM uses the minimum of the two, because any length that exceeds that minimum will result in a validation error.)
 
 If the `inList` constraint is defined (and the `maxSize` and the `size` constraints are not defined), then GORM sets the maximum column length based on the length of the longest string in the list of valid values.  For example, given a list including values "Java", "Groovy", and "C++", GORM would set the column length to 6 (i.e., the number of characters in the string "Groovy").
-
 
 === Constraints Affecting Numeric Properties
 

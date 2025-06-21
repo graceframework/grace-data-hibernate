@@ -1,6 +1,6 @@
 ==== Setting up caching
 
-https://www.hibernate.org/[Hibernate] features a second-level cache with a customizable cache provider. This needs to be configured in the `app/conf/application.yml` file as follows:
+https://www.hibernate.org/orm/[Hibernate ORM] features a second-level cache with a customizable cache provider. This needs to be configured in the `app/conf/application.yml` file as follows:
 
 [source,groovy]
 ----
@@ -14,8 +14,7 @@ hibernate:
 
 You can customize any of these settings, for example to use a distributed caching mechanism.
 
-NOTE: For further reading on caching and in particular Hibernate's second-level cache, refer to the https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#caching[Hibernate documentation] on the subject.
-
+NOTE: For further reading on caching and in particular Hibernate's second-level cache, refer to the link:{hibernateuserguide}/html_single/Hibernate_User_Guide.html#caching[Hibernate documentation] on the subject.
 
 ==== Caching instances
 
@@ -44,7 +43,6 @@ class Person {
     }
 }
 ----
-
 
 ==== Caching associations
 
@@ -83,7 +81,6 @@ cache: 'read-write' // or 'read-only' or 'transactional'
 
 to further configure the cache usage.
 
-
 ==== Caching Queries
 
 In order for the results of queries to be cached, you must enable caching in your mapping: 
@@ -120,7 +117,6 @@ def people = Person.withCriteria {
     cache true
 }
 ----
-
 
 ==== Cache usages
 

@@ -1,9 +1,8 @@
-The link:../api/org/grails/datastore/gorm/GormEntity.html#where(groovy.lang.Closure)[where()] method builds on the support for <<detachedCriteria,Detached Criteria>> by providing an enhanced, compile-time checked query DSL for common queries. The `where` method is more flexible than dynamic finders, less verbose than criteria and provides a powerful mechanism to compose queries.
-
+The link:{gormapi}/org/grails/datastore/gorm/GormEntity.html#where(groovy.lang.Closure)[where()] method builds on the support for <<detachedCriteria,Detached Criteria>> by providing an enhanced, compile-time checked query DSL for common queries. The `where` method is more flexible than dynamic finders, less verbose than criteria and provides a powerful mechanism to compose queries.
 
 === Basic Querying
 
-The link:../api/org/grails/datastore/gorm/GormEntity.html#where(groovy.lang.Closure)[where()] method accepts a closure that looks very similar to Groovy's regular collection methods. The closure should define the logical criteria in regular Groovy syntax, for example:
+The link:{gormapi}/org/grails/datastore/gorm/GormEntity.html#where(groovy.lang.Closure)[where()] method accepts a closure that looks very similar to Groovy's regular collection methods. The closure should define the logical criteria in regular Groovy syntax, for example:
 
 [source,groovy]
 ----
@@ -13,7 +12,7 @@ def query = Person.where {
 Person bart = query.find()
 ----
 
-The returned object is a link:../api/grails/gorm/DetachedCriteria.html[DetachedCriteria] instance, which means it is not associated with any particular database connection or session. This means you can use the `where` method to define common queries at the class level:
+The returned object is a link:{gormapi}/grails/gorm/DetachedCriteria.html[DetachedCriteria] instance, which means it is not associated with any particular database connection or session. This means you can use the `where` method to define common queries at the class level:
 
 [source,groovy]
 ----
@@ -138,7 +137,6 @@ def query = Person.where(callable)
 
 As you can see the closure definition is cast (using the Groovy `as` keyword) to a <<detachedCriteria,DetachedCriteria>> instance targeted at the `Person` class.
 
-
 === Conjunction, Disjunction and Negation
 
 As mentioned previously you can combine regular Groovy logical operators (`||` and `&&`) to form conjunctions and disjunctions:
@@ -158,7 +156,6 @@ def query = Person.where {
     firstName == "Fred" && !(lastName == 'Simpson')
 }
 ----
-
 
 === Property Comparison Queries
 
@@ -184,7 +181,6 @@ Operator,Criteria Method,Description
 *>=*,geProperty,Greater than or equal to
 *<=*,leProperty,Less than or equal to
 |===
-
 
 === Querying Associations
 

@@ -1,6 +1,6 @@
 As described in the section on <<cascades,cascading updates>>, the primary mechanism to control the way updates and deletes cascade from one association to another is the static <<ref-domain-classes-belongsTo,belongsTo>> property.
 
-However, the ORM DSL gives you complete access to Hibernate's https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#associations[transitive persistence] capabilities using the `cascade` attribute.
+However, the ORM DSL gives you complete access to Hibernate's link:{hibernateuserguide}/html_single/Hibernate_User_Guide.html#associations[transitive persistence] capabilities using the `cascade` attribute.
 
 Valid settings for the cascade attribute include:
 
@@ -12,7 +12,6 @@ Valid settings for the cascade attribute include:
 * `evict` - cascades evictions (equivalent to `discard()` in GORM) to associations if set
 * `all` - cascade _all_ operations to associations
 * `all-delete-orphan` - Applies only to one-to-many associations and indicates that when a child is removed from an association then it should be automatically deleted. Children are also deleted when the parent is.
-
 
 To specify the cascade attribute simply define one or more (comma-separated) of the aforementioned settings as its value:
 

@@ -1,10 +1,11 @@
-To unit test with https://junit.org/junit4[JUnit] it is largely similar to Spock, just following different idioms.
+To unit test with https://junit.org/[JUnit] it is largely similar to Spock, just following different idioms.
 
-So instead of `setupSpec` use `@BeforeClass`:
+So instead of `setupSpec` use `@BeforeAll`:
 
 [source,groovy]
 ----
 import org.junit.*
+import org.junit.jupiter.api.*
 import grails.gorm.transactions.*
 import org.grails.orm.hibernate.HibernateDatastore
 import org.springframework.transaction.PlatformTransactionManager
@@ -15,17 +16,17 @@ class ExampleTest  {
 
     PlatformTransactionManager transactionManager
 
-    @BeforeClass
+    @BeforeAll
     void setupGorm() {
        hibernateDatastore = new HibernateDatastore(Person)
     }
 
-    @AfterClass
+    @AfterAll
     void shutdownGorm() {
        hibernateDatastore.close()
     }
 
-    @Before
+    @BeforeEach
     void setup() {
         transactionManager = hibernateDatastore.getTransactionManager()
     }

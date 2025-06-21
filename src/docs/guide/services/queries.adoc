@@ -124,7 +124,6 @@ NOTE: In this case the names of the properties to query are inferred from the me
 
 If you have a more complex query then you may want to consider using the `@Where` annotation:
 
-
 [source,groovy]
 ----
     @Where({ title ==~ pattern && releaseDate > fromDate })
@@ -136,4 +135,3 @@ With the `@Where` annotation the method name can be anything you want and query 
 The query will be type checked against the parameters and compilation will fail if you misspell a parameter or property name.
 
 The syntax is the same as what is passed to GORM's static `where` method, see the section on <<whereQueries,Where Queries>> for more information.
-

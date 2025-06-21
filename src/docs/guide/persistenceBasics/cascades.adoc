@@ -46,7 +46,6 @@ The above examples are called transitive persistence and are controlled via the 
 
 For example, consider the following domain model:
 
-
 [source,groovy]
 ----
 class Location {
@@ -120,7 +119,6 @@ The above example will configure the cascade policy to cascade saves and updates
 
 === Bidirectional one-to-many with belongsTo
 
-
 [source,groovy]
 ----
 class A { static hasMany = [bees: B] }
@@ -135,9 +133,7 @@ In the case of a bidirectional one-to-many where the many side defines a `belong
 
 What this means is that whenever an instance of `A` is saved or updated. So will any instances of `B`. And, critically, whenever any instance of `A` is *deleted* so will all the associated instances of `B`!
 
-
 === Unidirectional One-to-Many
-
 
 [source,groovy]
 ----
@@ -157,7 +153,6 @@ Only when you define `belongsTo` in `B` or alter the cascading strategy of `A` w
 
 === Bidirectional One-to-Many, no belongsTo
 
-
 [source,groovy]
 ----
 class A { static hasMany = [bees: B] }
@@ -172,7 +167,6 @@ In the case of a bidirectional one-to-many where the many side does not define a
 
 So exactly like the previous case of a undirectional One-to-Many, without `belongsTo` definition no delete operations will be cascaded, but crucially saves and updates will by default. If you do not want saves and updates to cacade then *you must* alter the cascade policy of `A`:
 
-
 [source,groovy]
 ----
 class A {
@@ -184,7 +178,6 @@ class A {
 ----
 
 === Unidirectional Many-to-One with belongsTo
-
 
 [source,groovy]
 ----
@@ -199,7 +192,6 @@ class B { static belongsTo = [a: A] }
 In the case of a unidirectional many-to-one association that defines a `belongsTo` then the cascade strategy is set to "ALL" for the owning side of the relationship (A->B) and "NONE" from the side that defines the `belongsTo` (B->A)
 
 You may be wondering why this association is a many-to-one and not a one-to-one. The reason is because it is possible to have multiple instances of `B` associated to the same instance of `A`. If you wish to define this association as a true one-to-one association a `unique` constraint is required:
-
 
 [source,groovy]
 ----

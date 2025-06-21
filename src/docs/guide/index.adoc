@@ -36,7 +36,7 @@ include::gettingStarted/hibernateVersions.adoc[]
 include::gettingStarted/springBoot.adoc[]
 
 [[outsideGrails]]
-=== Using GORM for Hibernate Outside Grails
+=== Using GORM for Hibernate Outside Grace
 
 include::gettingStarted/outsideGrails.adoc[]
 

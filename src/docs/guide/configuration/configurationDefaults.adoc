@@ -17,7 +17,7 @@ grails.gorm.default.mapping = {
 
 As you can see you can assign a closure that is equivalent to the `mapping` block used to <<ormdsl, customize how a domain class maps to a database table>>.
 
-NOTE: Because the setting is Groovy configuration it must go into a Groovy-aware configuration format. This can be `app/conf/application.groovy` in Grails, or `src/main/resources/application.groovy` in Spring Boot.
+NOTE: Because the setting is Groovy configuration it must go into a Groovy-aware configuration format. This can be `app/conf/application.groovy` in Grace, or `src/main/resources/application.groovy` in Spring Boot.
 
 === Altering the Default Constraints
 

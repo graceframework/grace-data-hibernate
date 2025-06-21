@@ -28,7 +28,7 @@ class Person {
 The example above will map to a table that looks like the following:
 
 *bunch_o_nicknames Table*
-[source,java]
+[source,console]
 ----
 ---------------------------------------------
 | person_id         |     nickname          |

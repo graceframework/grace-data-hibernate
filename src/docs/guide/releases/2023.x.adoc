@@ -1,0 +1,485 @@
+=== 2023.3.0
+
+link:{github}/releases/tag/v2023.3.0[release notes]
+
+⭐️ New Features
+
+* Setup github docs workflows
+* Use 'grace-doc' Gradle plugin to generate documentation
+
+🛠 Improvements
+
+* Don't use deprecated gradle/actions/wrapper-validation in the release workflow
+* Update github workflows - Upgrade to setup-gradle@v4
+* Move docs to src/docs - Update the ToC and header levels of documentation
+* Prohibit executing integration test cases in examples Because webdriver-binaries-gradle-plugin does not support Gradle 8.6+ link:{github}/issues/110[#110] link:{github}/issues/86[#86]
+* Migrate examples to Grace link:{github}/issues/86[#86]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.3.0-RC2 link:{github}/issues/107[#107]
+* Upgrade to Grace 2023.3.0-RC1 link:{github}/issues/104[#104]
+* Upgrade to Grace Asset Pipeline Plugin 6.3.0-RC1 link:{github}/issues/108[#108]
+* Upgrade to Grace Asset Pipeline Plugin 6.3.0 link:{github}/issues/111[#111]
+* Upgrade to Grace Data 2023.3.0 link:{github}/issues/105[#105]
+* Upgrade to Grace Views 6.3.0-RC1 link:{github}/issues/109[#109]
+* Upgrade to Grace Views 6.3.0 link:{github}/issues/112[#112]
+* Upgrade to Gradle 8.14 link:{github}/issues/106[#106]
+
+=== 2023.3.0-RC1
+
+link:{github}/releases/tag/v2023.3.0-RC1[release notes]
+
+🛠 Improvements
+
+* Update README Update badge versions of Grace, Groovy and Spring Boot
+* Streamline Gradle build scripts: using the Spring Dependency Management Plugin to manage dependencies and versions link:{github}/issues/103[#103]
+* Remove the unnecessary workaround for removing the generated extra dependencyManagement of POM link:{github}/issues/98[#98]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.3.0-M2 link:{github}/issues/92[#92]
+* Upgrade to Grace Data 2023.3.0-RC1 link:{github}/issues/93[#93]
+* Upgrade to Gradle 8.13 link:{github}/issues/102[#102]
+* Upgrade to Groovy 4.0.26 link:{github}/issues/94[#94]
+* Upgrade to Jansi 2.4.1 link:{github}/issues/100[#100]
+* Upgrade to Java Parser 3.26.4 link:{github}/issues/99[#99]
+* Upgrade to SLF4J 2.0.17 link:{github}/issues/101[#101]
+* Upgrade to Spring Boot 3.3.10 link:{github}/issues/95[#95]
+* Upgrade to Spring Framework 6.1.18 link:{github}/issues/96[#96]
+* Upgrade to Tomcat 10.1.39 link:{github}/issues/97[#97]
+
+⚙️ Tasks
+
+* Release v2023.3.0-RC1
+
+=== 2023.3.0-M1
+
+link:{github}/releases/tag/v2023.3.0-M1[release notes]
+
+🛠 Improvements
+
+* Update README
+* Rename duplicated 'assemble' task to 'assembleDocs' link:{github}/issues/91[#91]
+* Update asciidoctor gradle plugin, make documentation generation task work link:{github}/issues/91[#91]
+* Migrate examples to Grace link:{github}/issues/86[#86]
+* Add jakarta.el dependency to run tests
+* Update github workflows Switch to 2023.3.x branch
+
+🐞 Bug Fixes
+
+* Fixes 'assembleDocs' task errors link:{github}/issues/91[#91]
+* Fixed failed tests * TwoUnidirectionalHasManySpec * MultipleDataSourceConnectionsSpec
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.3.0-M1 link:{github}/issues/83[#83]
+* Upgrade to Grace Asset Pipeline Plugin 6.3.0-M1 link:{github}/issues/87[#87]
+* Upgrade to Grace Data 2023.3.0-M1 link:{github}/issues/85[#85]
+* Upgrade to Grace Fields Plugin 6.3.0-M1 link:{github}/issues/89[#89]
+* Upgrade to Grace Scaffolding Plugin 6.3.0-M1 link:{github}/issues/88[#88]
+* Upgrade to Grace Views 6.3.0-M1 link:{github}/issues/90[#90]
+* Upgrade to Spring Boot 3.3.7 link:{github}/issues/84[#84]
+
+⚙️ Tasks
+
+* Release v2023.3.0-M1
+* Set version to 2023.3.0-SNAPSHOT
+
+=== 2023.2.0
+
+link:{github}/releases/tag/v2023.2.0[release notes]
+
+🛠 Improvements
+
+* Remove hibernate-core-jakarta from the build classpath link:{github}/issues/78[#78]
+* Rerun tests related GROOVY-5106 link:{github}/issues/77[#77]
+* Configure test task link:{github}/issues/76[#76]
+* Remove runtimeOnly dependencies `jakarta.el-api` and `jakarta.xml.bind-api` link:{github}/issues/74[#74]
+* Update README
+* Add GitHub issue template link:{github}/issues/73[#73]
+
+🐞 Bug Fixes
+
+* Update build scripts to avoid deprecation warnings with Gradle 8 link:{github}/issues/72[#72]
+* Resolve JUnit version conflicts link:{github}/issues/75[#75]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.2.0-RC1 link:{github}/issues/70[#70]
+* Upgrade to Grace Asset Pipeline Plugin 6.2.0 link:{github}/issues/79[#79]
+* Upgrade to Grace Data 2023.2.0 link:{github}/issues/71[#71]
+* Upgrade to Grace Fields Plugin 6.2.0 link:{github}/issues/81[#81]
+* Upgrade to Grace Scaffolding Plugin 6.2.0 link:{github}/issues/80[#80]
+
+⚙️ Tasks
+
+* Release v2023.2.0
+
+=== 2023.2.0-RC1
+
+link:{github}/releases/tag/v2023.2.0-RC1[release notes]
+
+⭐️ New Features
+
+* Supports for Multiple Data Sources link:{github}/issues/64[#64]
+
+🛠 Improvements
+
+* Remove unused submodule `boot-plugin` link:{github}/issues/69[#69]
+* Improvements for `HibernateDatastoreConnectionSourcesRegistrar` link:{github}/issues/63[#63]
+* Remove unused testVerbose.gradle link:{github}/issues/62[#62]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.2.0-M2 link:{github}/issues/56[#56]
+* Upgrade to Grace 2023.2.0-M3 link:{github}/issues/60[#60]
+* Upgrade to Grace Asset Pipeline Plugin 6.2.0-RC1 link:{github}/issues/66[#66]
+* Upgrade to Grace Fields Plugin 6.2.0-RC1 link:{github}/issues/68[#68]
+* Upgrade to Grace Scaffolding Plugin 6.2.0-RC1 link:{github}/issues/67[#67]
+* Upgrade to Grace Data 2023.2.0-RC1 link:{github}/issues/57[#57]
+* Upgrade to Gradle 8.12 link:{github}/issues/61[#61]
+* Upgrade to Tomcat 10.1.34 link:{github}/issues/59[#59]
+* Upgrade to Spring Framework 6.1.16 link:{github}/issues/58[#58]
+
+⚙️ Tasks
+
+* Release v2023.2.0-RC1
+
+=== 2023.2.0-M1
+
+link:{github}/releases/tag/v2023.2.0-M1[release notes]
+
+🛠 Improvements
+
+* Set order to `HibernateGormAutoConfiguration` and add bean `transactionManager` link:{github}/issues/52[#52]
+* Update README Update badge of Grace to current version
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.2.0-M1 link:{github}/issues/41[#41]
+* Upgrade to Grace Asset Pipeline Plugin 6.2.0-M2 link:{github}/issues/53[#53]
+* Upgrade to Grace Data 2023.2.0-M1 link:{github}/issues/49[#49]
+* Upgrade to Grace Fields Plugin 6.2.0-M1 link:{github}/issues/55[#55]
+* Upgrade to Grace Scaffolding Plugin 6.2.0-M1 link:{github}/issues/54[#54]
+* Upgrade to Hibernate Validator 8.0.2.Final link:{github}/issues/50[#50]
+* Upgrade to H2 2.2.224 link:{github}/issues/48[#48]
+* Upgrade to JUnit Jupiter 5.10.5 link:{github}/issues/44[#44]
+* Upgrade to JUnit Platform 1.10.5 link:{github}/issues/45[#45]
+* Upgrade to SLF4J 2.0.16 link:{github}/issues/46[#46]
+* Upgrade to SnakeYAML 2.2 link:{github}/issues/47[#47]
+* Upgrade to Spring Boot 3.2.12 link:{github}/issues/43[#43]
+* Upgrade to Spring Framework 6.1.15 link:{github}/issues/42[#42]
+
+⚙️ Tasks
+
+* Next development version: 2023.2.0-SNAPSHOT
+* Release v2023.2.0-M1
+
+=== 2023.1.1
+
+link:{github}/releases/tag/v2023.1.1[release notes]
+
+🛠 Improvements
+
+* Set order to `HibernateGormAutoConfiguration` and add bean `transactionManager` link:{github}/issues/51[#51]
+* Update README Update badge of Grace to current version
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.1.0 link:{github}/issues/40[#40]
+* Upgrade to Grace Data 2023.1.1 link:{github}/issues/65[#65]
+
+⚙️ Tasks
+
+* Release v2023.1.1
+* Next development version: 2023.1.1-SNAPSHOT
+
+=== 2023.1.0
+
+link:{github}/releases/tag/v2023.1.0[release notes]
+
+⭐️ New Features
+
+* Support using `@GrailsComponentScan` to customize GORM `@Entity` scanning locations link:{github}/issues/36[#36]
+
+🛠 Improvements
+
+* Update Badges
+
+🐞 Bug Fixes
+
+* Change `proxyHandler` bean type from `ProxyHandlerAdapter` to `ProxyHandler` link:{github}/issues/35[#35]
+* Correct configuration property name `hibernate.cache.use_second_level_cache` link:{github}/issues/33[#33]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.1.0-RC1 link:{github}/issues/30[#30]
+* Upgrade to Grace Asset Pipeline Plugin 6.1.0 link:{github}/issues/37[#37]
+* Upgrade to Grace Data 2023.1.0 link:{github}/issues/32[#32]
+* Upgrade to Grace Fields Plugin 6.1.0 link:{github}/issues/39[#39]
+* Upgrade to Grace Scaffolding Plugin 6.1.0 link:{github}/issues/38[#38]
+* Upgrade to Groovy 4.0.24 link:{github}/issues/31[#31]
+* Upgrade to Tomcat 10.1.33 link:{github}/issues/34[#34]
+
+⚙️ Tasks
+
+* Release v2023.1.0
+
+=== 2023.1.0-RC1
+
+link:{github}/releases/tag/v2023.1.0-RC1[release notes]
+
+🛠 Improvements
+
+* Use `classesDirectory` property instead of deprecated `outputDir` link:{github}/issues/29[#29]
+* Use `gradlePluginPortal()` link:{github}/issues/27[#27]
+* Rename `hibernate5Version` to `hibernateCoreVersion` link:{github}/issues/23[#23]
+* Update additional Spring Boot configuration metadata file link:{github}/issues/22[#22]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.1.0-M3 link:{github}/issues/20[#20]
+* Upgrade to Grace Asset Pipeline Plugin 6.1.0-RC1 link:{github}/issues/24[#24]
+* Upgrade to Grace Data 2023.1.0-RC1 link:{github}/issues/21[#21]
+* Upgrade to Grace Fields Plugin 6.1.0-RC1 link:{github}/issues/26[#26]
+* Upgrade to Grace Scaffolding Plugin 6.1.0-RC1 link:{github}/issues/25[#25]
+* Upgrade to Gradle Nexus Publish Plugin 2.0.0 link:{github}/issues/28[#28]
+
+⚙️ Tasks
+
+* Release v2023.1.0-RC1
+
+=== 2023.1.0-M3
+
+link:{github}/releases/tag/v2023.1.0-M3[release notes]
+
+🛠 Improvements
+
+* Remove `@AutoConfigureOrder` on `HibernateGormAutoConfiguration` link:{github}/issues/14[#14]
+* Provide additional Spring Boot configuration metadata file link:{github}/issues/13[#13]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.1.0-M2 link:{github}/issues/12[#12]
+* Upgrade to Grace Asset Pipeline Plugin 6.1.0-M3 link:{github}/issues/17[#17]
+* Upgrade to Grace Data 2023.1.0-M3 link:{github}/issues/15[#15]
+* Upgrade to Grace Fields Plugin 6.1.0-M3 link:{github}/issues/19[#19]
+* Upgrade to Grace Scaffolding Plugin 6.1.0-M3 link:{github}/issues/18[#18]
+* Upgrade to Tomcat 10.1.31 link:{github}/issues/16[#16]
+
+⚙️ Tasks
+
+* Release v2023.1.0-M3
+
+=== 2023.1.0-M2
+
+link:{github}/releases/tag/v2023.1.0-M2[release notes]
+
+⭐️ New Features
+
+* Auto-Configure Hibernate Plugin link:{github}/issues/5[#5]
+
+🛠 Improvements
+
+* Update tests: setup `HibernateDatastore` with config link:{github}/issues/7[#7]
+* Update tests: setup `HibernateDatastore` with config link:{github}/issues/7[#7]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2023.1.0-M1 link:{github}/issues/4[#4]
+* Upgrade to Grace Data 2023.1.0-M2 link:{github}/issues/6[#6]
+* Upgrade to Grace Asset Pipeline Plugin 6.1.0-M2 link:{github}/issues/9[#9]
+* Upgrade to Grace Fields Plugin 6.1.0-M2 link:{github}/issues/11[#11]
+* Upgrade to Grace Scaffolding Plugin 6.1.0-M2 link:{github}/issues/10[#10]
+* Upgrade to Tomcat 10.1.30 link:{github}/issues/8[#8]
+
+⚙️ Tasks
+
+* Release v2023.1.0-M2
+
+=== 2023.1.0-M1
+
+link:{github}/releases/tag/v2023.1.0-M1[release notes]
+
+⭐️ New Features
+
+* Support Groovy 5 link:{github}/issues/1[#1]
+
+🛠 Improvements
+
+* Remove asciidoctor gradle plugin Dependency `grolifant-0.10.jar` not found
+* Remove publishing `DatastoreInitializedEvent` in `HibernateDatastore` link:{github}/issues/2[#2]
+* Start building against Grace Data 2023.1.0 snapshots
+* Update README
+* Update README
+
+🚀 Dependency Upgrades
+
+* Upgrade to Groovy 4.0.23
+* Upgrade to Grace 2023.0.2
+* Upgrade to Grace 2023.0.1
+* Upgrade to GORM 2023.1.0-M1
+* Upgrade to Hibernate Validator 8.0.1.Final
+* Upgrade to Jakarta XML Bind 4.0.2
+* Upgrade to JavaParser 3.26.2
+* Upgrade to Spring Boot 3.1.12
+* Upgrade to SLF4J 2.0.13
+* Upgrade to Webdriver Binaries Gradle Plugin 3.2
+
+⚙️ Tasks
+
+* Release v2023.1.0-M1
+* Update github workflows
+* Next development version: 2023.1.0-SNAPSHOT
+
+=== 2023.0.1
+
+link:{github}/releases/tag/v2023.0.1[release notes]
+
+* Release v2023.0.1
+* Upgrade to Grace Fields Plugin 6.0.1
+* Upgrade to Grace Scaffolding 6.0.1
+* Upgrade to Geb 7.0
+* Upgrade to Grace Asset Pipeline Plugin 6.0.1
+* Upgrade to GORM 2023.0.1
+* Update build scripts
+* Upgrade to Grace 2023.0.0
+* Next development version: 2023.0.1-SNAPSHOT
+
+=== 2023.0.0
+
+link:{github}/releases/tag/v2023.0.0[release notes]
+
+* Release v2023.0.0
+* Upgrade to Grace Fields Plugin 6.0.0
+* Upgrade to Grace Scaffolding 6.0.0
+* Upgrade to Grace Scaffolding 6.0.0-RC1
+* Upgrade to Grace Fields Plugin 6.0.0-RC1
+* Upgrade to Grace Asset Pipeline Plugin 6.0.0
+* Upgrade to Tomcat 10.1.28
+* Upgrade to Spring Framework 6.0.23
+* Upgrade to GORM 2023.0.0
+* Upgrade to Grace 2023.0.0-RC2
+
+=== 2023.0.0-RC1
+
+link:{github}/releases/tag/v2023.0.0-RC1[release notes]
+
+* Release v2023.0.0-RC1
+* Upgrade to Grace Data 2023.0.0-RC1
+* Upgrade to Gradle Wrapper 7.6.4
+* Rename to Grace `app` root
+* Upgrade to Grace Asset Pipeline Plugin 6.0.0-M4
+* Upgrade to Tomcat 10.1.25
+* Upgrade to Spring Framework 6.0.22
+* Upgrade to Groovy 4.0.22
+* Upgrade to Grace 2023.0.0-M7
+
+=== 2023.0.0-M5
+
+link:{github}/releases/tag/v2023.0.0-M5[release notes]
+
+* Release v2023.0.0-M5
+* Upgrade to Grace GORM 2023.0.0-M5
+* Update build scripts
+* Update plugin meta info
+* Update README
+* Update README
+* BREAKING CHANGES
+* Upgrade to SnakeYaml 2.0
+* Upgrade to SLF4J 2.0.9
+* Upgrade to Tomcat 10.1.16
+* Upgrade to Spring Framework 6.0.14
+* Upgrade to Spring Boot 3.0.13
+* Upgrade to Groovy 4.0.21
+* Upgrade to Groovy 4.0.12
+* Upgrade to Grace 2023.0.0-M6
+
+=== 2023.0.0-M4
+
+link:{github}/releases/tag/v2023.0.0-M4[release notes]
+
+* Release v2023.0.0-M4
+* Upgrade to Grace GORM 2023.0.0-M4
+* Upgrade to Grace 2023.0.0-M5
+* Fixed build error
+* Grace: update github workflows
+* remove direct dependency `com.sun.xml.bind:jaxb-impl`, use `hibernate-core-jakarta` its own dependencies
+* Grace: update github workflows
+* Use `junitJupiterPlatformVersion`
+* Downgrade to Grace 2023.0.0-M3
+* Upgrade to Grace 2023.0.0-M4
+* Grace: update github workflows
+* Grace: migrate to grace
+* Update dependencies grails-plugin
+* Add Dependency: Jakarta Transaction API 2.0.1
+* Update dependencies for example projects
+* Upgrade to JUnit Jupiter 5.9.3 and JUnit Platform 1.9.3
+* Upgrade to SLF4J 2.0.7
+* Add Dependency: Jakarta Persistence API 3.1.0
+* Upgrade to Spring Framework 6.0.9
+* Upgrade to Spring Boot 3.0.7
+* Upgrade to GORM 2023.0.0-M4
+
+=== 2023.0.0-M3
+
+link:{github}/releases/tag/v2023.0.0-M3[release notes]
+
+* Release v2023.0.0-M3
+* Cleanup gradle properties
+* Upgrade to GORM 2023.0.0-M3
+* Grace: update github workflows
+* Grace: migrate to grace
+* Upgrade to GORM 2023.0.0-M3
+* Use `GormMappingConfigurationStrategy` in `HibernateMappingContext`
+* Replace argument with empty array
+* Remove explicit type arguments
+* Deprecated `HibernateVersionSupport`
+* Migrate to `HibernateFlushMode`
+* Correct log in `HibernatePersistenceContextInterceptor`
+
+=== 2023.0.0-M2
+
+link:{github}/releases/tag/v2023.0.0-M2[release notes]
+
+* Release v2023.0.0-M2
+* Excluding the old groovy 3 dependencies
+* Upgrade to Grace 2023.0.0-M2
+* Grace: update github workflows
+* Grace: migrate to grace
+* Release 2023.0.0-M2
+* Ignore spock tests related inheritance in GORM
+* Upgrade to Groovy 4.0.11
+* Upgrade to GORM 2023.0.0-M2
+
+=== 2023.0.0-M1
+
+link:{github}/releases/tag/v2023.0.0-M1[release notes]
+
+* Release v2023.0.0-M1
+* Upgrade to Grace GORM 2023.0.0-M1
+* Grace: update readme
+* Grace: update github workflows
+* Grace: update gradle build scripts
+* Grace: rename all sub-projects
+* Migrate to Jakarta in all Examples
+* Migrate to Jakarta: using jakarta.el jakarta.xml.bind jakarta.servlet dependencies
+* Migrate to Jakarta: using jakarta.* namespace in Spock tests
+* Adding dependency: jakarta.annotation-api
+* Upgrade to Hibernate Validator 7.0.5.Final
+* Upgrade to GORM 2023.0.0-M1
+* Upgrade to Tomcat 10.1.8
+* Upgrade to Spring Boot 3.0.6
+* Add missing `jakartaValidationVersion`
+* Jakarta: migrate to jakarta.* namespace
+* Upgrade to Tomcat 10.1.1
+* Upgrade to Spring Framework 6.0.2 and Spring Boot 3.0.0
+* Build target to JDK 17
+* Ignore test `SimpleJpaEntitySpec`, because GORM does not support JPA now
+* Cleanup build.gradle
+* Upgrade EHcache to 2.10.6
+* Relocate HibernateSpec to `src/test/groovy`
+* Update Dependencies and Examples
+* Boot Plugin: Migrate `spring-boot-cli` to `grails-shell`
+* Next development version: 2023.0.0-SNAPSHOT

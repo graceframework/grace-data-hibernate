@@ -16,6 +16,14 @@ class Address {
 
 The resulting mapping would looking like this:
 
-image::5.2.2-composition.jpg[]
+*Person Table*
+[source,console]
+----
+-----------------------------------------------------------------------------------------------------
+|   id  |  home_address_number  |  home_address_code  |  work_address_number  |  work_address_code  |
+-----------------------------------------------------------------------------------------------------
+|   1   |         47            |        343432       |          67           |       43545         |
+-----------------------------------------------------------------------------------------------------
+----
 
 NOTE: If you define the `Address` class in a separate Groovy file in the `app/domain` directory you will also get an `address` table. If you don't want this to happen use Groovy's ability to define multiple classes per file and include the `Address` class below the `Person` class in the `app/domain/Person.groovy` file. Another option is to define the `Address` class in `src/main/groovy/Address.groovy` and annotate it with `grails.gorm.annotation.Entity`

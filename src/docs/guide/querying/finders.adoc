@@ -101,9 +101,7 @@ def books = Book.findAllByTitleLikeOrReleaseDateGreaterThan(
 
 You can combine as many criteria as you like, but they must all be combined with `And` or all `Or`. If you need to combine `And` and `Or` or if the number of criteria creates a very long method name, just convert the query to a <<criteria,Criteria>> or <<hql,HQL>> query.
 
-
 === Querying Associations
-
 
 Associations can also be used within queries:
 
@@ -116,11 +114,9 @@ def books = author ? Book.findAllByAuthor(author) : []
 
 In this case if the `Author` instance is not null we use it in a query to obtain all the `Book` instances for the given `Author`.
 
-
 === Pagination and Sorting
 
-
-The same pagination and sorting parameters available on the link:../api/org/grails/datastore/gorm/GormEntity.html#list()[list()] method can also be used with dynamic finders by supplying a map as the final parameter:
+The same pagination and sorting parameters available on the link:{gormapi}/org/grails/datastore/gorm/GormEntity.html#list()[list()] method can also be used with dynamic finders by supplying a map as the final parameter:
 
 [source,groovy]
 ----
