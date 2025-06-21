@@ -1,15 +1,16 @@
-==== Dependency Upgrades
+=== Dependency Upgrades
 
-GORM 2023.3 supports Apache Groovy 4 and Java 17 Hibernate 5.6.x and Spring 6.1.x.
+GORM 2023.3 supports Apache Groovy 4 and Java 17, Hibernate 5.6.x and Spring 6.1.x.
 
 Each of these underlying components may have changes that require altering your application. These changes are beyond the scope of this documentation.
 
-==== Default Autowire By Type inside GORM Data Services
+=== Default Autowire By Type inside GORM Data Services
 
 A GORM Service (or a bean) inside GORM DataService will default to autowire by-type, For example:
 
 _./app/services/example/BookService.groovy_
-```
+[source,groovy]
+----
 package example
 
 import grails.gorm.services.Service
@@ -25,6 +26,48 @@ abstract class BookService {
         assert testRepo != null
     }
 }
-```
+----
 
 Please note that with autowire by-type as the default, when multiple beans for same type are found the application with throw Exception. Use the Spring `@Qualifier` annotation for https://docs.spring.io/spring-framework/reference/6.1/core/beans/annotation-config/autowired-qualifiers.html[Fine-tuning Annotation Based Autowiring with Qualifiers].
+
+=== JPA-annotated Entites are not supported
+
+Support for using JPA-annotated entites written in Groovy has been added since GORM 6.1, but this feature has been removed since GORM 2023.0.
+
+We want to keep GORM focusing on Groovy DSL, this allow developers to use JPA entities written in Java in the `app/domain`, so we can use Spring Data JPA or Micronaut Data JPA.
+
+=== Initial support for Groovy 5
+
+Groovy 5.0 is the next major version, it's currently in beta, but you can try it in the Grace applications.
+
+=== Auto-Configure Hibernate Plugin
+
+GORM 2023.1.0 introduced `HibernateGormAutoConfiguration` as a Spring Boot's https://docs.spring.io/spring-boot/3.3/reference/features/developing-auto-configuration.html[Auto-configuration], and the Hibernate plugin has also provides https://docs.spring.io/spring-boot/3.3/specification/configuration-metadata/index.html[Configuration Metadata].
+
+Most importantly, you can now easily use GORM for Hibernate in your Spring Boot application.
+
+[source,groovy,subs="attributes"]
+----
+dependencies {
+    implementation 'org.apache.groovy:groovy'
+    implementation 'org.graceframework.plugins:hibernate:{version}'
+    runtimeOnly 'com.h2database:h2'
+}
+----
+
+=== Support `@GrailsComponentScan`
+
+GORM 2023.1.0 use `@GrailsComponentScan` to customize GORM `@Entity` scanning locations, just like Spring's link:{springjavadoc}/org/springframework/context/annotation/ComponentScan.html[`@ComponentScan`] does.
+
+_./app/init/example/Application.groovy_
+[source,groovy]
+----
+package example
+
+import grails.boot.annotation.GrailsComponentScan
+
+@GrailsComponentScan(basePackages=['com.appone', 'com.apptwo'])
+class Application {
+
+}
+----
