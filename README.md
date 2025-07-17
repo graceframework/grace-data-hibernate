@@ -4,18 +4,18 @@
 [![Grace Document](https://img.shields.io/badge/Grace_Document-latest-blue?style=flat&logo=asciidoctor&logoColor=E40046&labelColor=ffffff&color=f49b06)](https://graceframework.org/grace-data-hibernate/latest/)
 [![Grace on X](https://img.shields.io/twitter/follow/graceframework?style=social)](https://x.com/graceframework)
 
-[![Groovy Version](https://img.shields.io/badge/Groovy-4.0.26-blue?style=flat&color=4298b8)](https://groovy-lang.org/releasenotes/groovy-4.0.html)
-[![Grace Version](https://img.shields.io/badge/Grace-2023.3.0-blue?style=flat&color=f49b06)](https://github.com/graceframework/grace-framework/releases/tag/v2023.3.0-RC2)
-[![Spring Boot Version](https://img.shields.io/badge/Spring_Boot-3.3.11-blue?style=flat&color=6db33f)](https://github.com/spring-projects/spring-boot/releases/tag/v3.3.11)
+[![Groovy Version](https://img.shields.io/badge/Groovy-4.0.27-blue?style=flat&color=4298b8)](https://groovy-lang.org/releasenotes/groovy-4.0.html)
+[![Grace Version](https://img.shields.io/badge/Grace-2023.3.0-blue?style=flat&color=f49b06)](https://github.com/graceframework/grace-framework/releases/tag/v2023.3.0)
+[![Spring Boot Version](https://img.shields.io/badge/Spring_Boot-3.3.13-blue?style=flat&color=6db33f)](https://github.com/spring-projects/spring-boot/releases/tag/v3.3.13)
 
 # Grace Data for Hibernate
 
 This project implements [GORM](https://github.com/graceframework/grace-data) for the [Hibernate ORM](https://hibernate.org/orm/).
 
 > [!IMPORTANT]
-> Currently, this plugin has been migrate to Jakarta Namespace, and support Hibernate 5.6.However, support for Hibernate 6 is in development. 
-> From version 2023.0.0-M5, this plugin has been renamed from the original hibernate5 to hibernate.
+> Currently, this plugin has been migrate to Jakarta Namespace, and support Hibernate 5.6. Grace Framework and Grace Data 2024.0 will upgrade to Hibernate 6.x. 
 
+From version 2023.0.0-M5, this plugin has been renamed from the original `hibernate5` to `hibernate`.
 
 ```gradle
 dependencies {
