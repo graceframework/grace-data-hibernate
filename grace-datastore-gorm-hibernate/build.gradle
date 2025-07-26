@@ -9,6 +9,7 @@ dependencies {
     api "org.apache.groovy:groovy"
     api "org.graceframework:grace-datastore-gorm"
     api "org.springframework:spring-orm"
+    implementation "org.javassist:javassist:$javassistVersion"
     api("org.hibernate:hibernate-core-jakarta:$hibernateCoreVersion") {
         exclude group:'org.dom4j', module:'dom4j'
         exclude group:'jakarta.activation', module:'jakarta.activation-api'
