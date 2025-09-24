@@ -1,7 +1,7 @@
 package grails.gorm.hibernate.mapping
 
 import grails.gorm.tests.GormDatastoreSpec
-import grails.persistence.Entity
+import grails.gorm.annotation.Entity
 import org.grails.orm.hibernate.GormSpec
 import org.grails.orm.hibernate.cfg.HibernateMappingBuilder
 import org.hibernate.boot.Metadata

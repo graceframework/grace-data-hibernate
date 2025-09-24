@@ -2,7 +2,7 @@ package another
 
 import org.grails.core.artefact.DomainClassArtefactHandler
 
-import grails.persistence.Entity
+import grails.gorm.annotation.Entity
 
 @Entity
 class Item {

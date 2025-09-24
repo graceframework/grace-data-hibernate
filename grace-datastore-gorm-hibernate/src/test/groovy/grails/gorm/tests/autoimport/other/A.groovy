@@ -1,6 +1,6 @@
 package grails.gorm.tests.autoimport.other
 
-import grails.persistence.Entity
+import grails.gorm.annotation.Entity
 
 @Entity
 class A {
