@@ -43,7 +43,7 @@ dependencies {
 
     testRuntimeOnly "org.slf4j:slf4j-simple"
     testRuntimeOnly "org.slf4j:jcl-over-slf4j"
-    testRuntimeOnly "org.glassfish:jakarta.el:$jakartaElVersion"
+    testRuntimeOnly "org.glassfish.expressly:expressly:$jakartaElImplVersion"
     // The groovydoc task needs the Hibernate 4.x jars in the classpath
     documentation("org.hibernate:hibernate-core-jakarta:${hibernateCoreVersion}")
 }
