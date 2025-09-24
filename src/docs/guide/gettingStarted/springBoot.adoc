@@ -57,7 +57,7 @@ Finally create your GORM entities and ensure they are annotated with `grails.per
 
 [source,groovy]
 ----
-import grails.persistence.*
+import grails.gorm.annotation.Entity
 
 @Entity
 class Person {
@@ -92,7 +92,7 @@ In addition, if you wish to return a GORM instance from a Spring `@Controller`, 
 
 [source,groovy]
 ----
-import grails.persistence.*
+import grails.gorm.annotation.Entity
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @Entity
