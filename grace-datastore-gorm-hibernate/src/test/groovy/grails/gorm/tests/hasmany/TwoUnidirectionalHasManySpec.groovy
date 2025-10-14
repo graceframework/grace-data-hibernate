@@ -16,7 +16,6 @@
 package grails.gorm.tests.hasmany
 
 import grails.gorm.annotation.Entity
-import grails.gorm.annotation.JpaEntity
 import grails.gorm.hibernate.mapping.MappingBuilder
 import grails.gorm.transactions.Rollback
 import org.grails.orm.hibernate.HibernateDatastore
@@ -64,51 +63,8 @@ class TwoUnidirectionalHasManySpec extends Specification {
 
     }
 
-    @Rollback
-    @Issue('https://github.com/grails/grails-core/issues/10811')
-    @Ignore
-    void "test two JPA undirectional one to many references"() {
-
-        when:
-        def jpa = new EcmMaskJpa(name: "test")
-        jpa.createdUsers.add(new User2(name: "Fred"))
-        jpa.updatedUsers.add(new User2(name: "Bob"))
-
-        jpa.save(flush:true).discard()
-
-        EcmMaskJpa mask = EcmMaskJpa.first()
-
-        then:
-        mask != null
-        mask.createUsers.size() == 1
-        mask.updateUsers.size() == 1
-
-    }
-
 }
 
-@JpaEntity
-class EcmMaskJpa {
-    @Id
-    @GeneratedValue
-    Long id
-
-    String name
-
-    @OneToMany(cascade = CascadeType.ALL)
-    Set<User2> createdUsers = []
-
-    @OneToMany(cascade = CascadeType.ALL)
-    Set<User2> updatedUsers = []
-}
-
-@JpaEntity
-class User2 {
-    @Id
-    @GeneratedValue
-    Long id
-    String name
-}
 
 @Entity
 class EcmMask {
