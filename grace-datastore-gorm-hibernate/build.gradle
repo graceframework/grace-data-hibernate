@@ -31,7 +31,8 @@ dependencies {
     testImplementation "org.apache.groovy:groovy-test-junit5"
     testImplementation "org.apache.groovy:groovy-sql"
     testImplementation "org.apache.groovy:groovy-json"
-    testImplementation "org.graceframework:grace-datastore-gorm-tck:$gormVersion", {
+    testImplementation "org.graceframework:grace-core"
+    testImplementation "org.graceframework:grace-datastore-gorm-tck", {
         exclude group: "org.spockframework"
     }
     testImplementation "com.h2database:h2"

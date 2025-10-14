@@ -1,6 +1,17 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+            name = 'Maven Central Portal Snapshots'
+            url = 'https://central.sonatype.com/repository/maven-snapshots/'
+
+            content {
+                includeGroupAndSubgroups 'org.graceframework'
+            }
+            mavenContent {
+                snapshotsOnly()
+            }
+        }
     }
     dependencies {
         classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
@@ -31,8 +42,8 @@ dependencies {
     implementation "org.graceframework:grace-plugin-rest"
     implementation "org.graceframework:grace-plugin-services"
     implementation "org.graceframework:grace-plugin-url-mappings"
-    implementation "org.graceframework.plugins:cache"
-    implementation "org.graceframework.plugins:events"
+    // implementation "org.graceframework.plugins:cache"
+    implementation "org.graceframework:grace-plugin-events"
     implementation "org.graceframework.plugins:views-json"
     implementation project(":hibernate")
     runtimeOnly 'com.h2database:h2'

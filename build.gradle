@@ -37,7 +37,7 @@ ext."signing.password" = System.getenv("SIGNING_PASSPHRASE") ?: project.hasPrope
 ext."signing.secretKeyRingFile" = project.hasProperty("signing.secretKeyRingFile") ? project.getProperty('signing.secretKeyRingFile') : null
 
 // Build with the current version of GORM
-ext['grace-gorm.version'] = project.gormVersion
+ext['grace-data.version'] = project.gormVersion
 
 logger.lifecycle "GORM VERSION = ${project.gormVersion}"
 
@@ -317,7 +317,7 @@ tasks.withType(Groovydoc) {
     classpath += configurations.documentation
 }
 
-docs {
+publishGuide {
     dependsOn groovydoc
     sourceDir = project.file('src/docs')
 }
