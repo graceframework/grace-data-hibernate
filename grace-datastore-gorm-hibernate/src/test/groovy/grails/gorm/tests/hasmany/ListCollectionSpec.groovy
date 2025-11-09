@@ -1,32 +1,52 @@
+/*
+ * Copyright 2016-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.gorm.tests.hasmany
 
-import grails.gorm.annotation.Entity
-import grails.gorm.transactions.Rollback
-import org.grails.datastore.mapping.collection.PersistentCollection
-import org.grails.datastore.mapping.proxy.ProxyHandler
-import org.grails.orm.hibernate.HibernateDatastore
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
+import grails.gorm.annotation.Entity
+import grails.gorm.transactions.Rollback
+
+import org.grails.datastore.mapping.proxy.ProxyHandler
+import org.grails.orm.hibernate.HibernateDatastore
+
 class ListCollectionSpec extends Specification {
 
-    @Shared Map config = [
-            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+    @Shared
+    Map config = [
+            'dataSource.url'     : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
             'dataSource.dbCreate': 'create-drop',
-            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+            'dataSource.dialect' : 'org.hibernate.dialect.H2Dialect'
     ]
-    @Shared @AutoCleanup HibernateDatastore datastore = new HibernateDatastore(config, getClass().getPackage())
+
+    @Shared
+    @AutoCleanup
+    HibernateDatastore datastore = new HibernateDatastore(config, getClass().getPackage())
 
     @Rollback
-    void "test legs are not loaded eagerly"() {
+    void 'test legs are not loaded eagerly'() {
         given:
-        new Animal(name: "Chloe")
-            .addToLegs(new Leg())
-            .addToLegs(new Leg())
-            .addToLegs(new Leg())
-            .addToLegs(new Leg())
-            .save(flush: true, failOnError: true)
+        new Animal(name: 'Chloe')
+                .addToLegs(new Leg())
+                .addToLegs(new Leg())
+                .addToLegs(new Leg())
+                .addToLegs(new Leg())
+                .save(flush: true, failOnError: true)
         datastore.currentSession.flush()
         datastore.currentSession.clear()
         ProxyHandler ph = datastore.mappingContext.proxyHandler
@@ -38,14 +58,17 @@ class ListCollectionSpec extends Specification {
         then:
         ph.isProxy(animal.legs) && !ph.isInitialized(animal.legs)
     }
+
 }
 
 @Entity
 class Animal {
+
     String name
 
     List legs
     static hasMany = [legs: Leg]
+
 }
 
 @Entity

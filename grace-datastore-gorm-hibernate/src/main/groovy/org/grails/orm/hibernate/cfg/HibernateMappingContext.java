@@ -1,11 +1,11 @@
 /*
- * Copyright 2015-2023 original authors
+ * Copyright 2015-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -76,11 +76,13 @@ public class HibernateMappingContext extends AbstractMappingContext {
             this.mappingFactory.setDefaultConstraints(settings.getDefault().getConstraints());
         }
         this.mappingFactory.setContextObject(contextObject);
-        this.syntaxStrategy = new GormMappingConfigurationStrategy(mappingFactory) {
+        this.syntaxStrategy = new GormMappingConfigurationStrategy(this.mappingFactory) {
+
             @Override
             protected boolean supportsCustomType(Class<?> propertyType) {
                 return !Errors.class.isAssignableFrom(propertyType);
             }
+
         };
         this.proxyFactory = new HibernateProxyHandler();
         addPersistentEntities(persistentClasses);
@@ -105,12 +107,12 @@ public class HibernateMappingContext extends AbstractMappingContext {
 
     @Override
     public MappingConfigurationStrategy getMappingSyntaxStrategy() {
-        return syntaxStrategy;
+        return this.syntaxStrategy;
     }
 
     @Override
     public MappingFactory getMappingFactory() {
-        return mappingFactory;
+        return this.mappingFactory;
     }
 
     @Override
@@ -148,7 +150,9 @@ public class HibernateMappingContext extends AbstractMappingContext {
             return false;
         }
 
-        if (clazz.isEnum()) return false;
+        if (clazz.isEnum()) {
+            return false;
+        }
 
         Annotation[] allAnnotations = clazz.getAnnotations();
         for (Annotation annotation : allAnnotations) {
@@ -207,6 +211,7 @@ public class HibernateMappingContext extends AbstractMappingContext {
         public HibernateEmbeddedPersistentEntity(Class type, MappingContext ctx) {
             super(type, ctx);
             this.classMapping = new ClassMapping<Mapping>() {
+
                 Mapping mappedForm = (Mapping) context.getMappingFactory().createMappedForm(HibernateEmbeddedPersistentEntity.this);
 
                 @Override
@@ -216,19 +221,20 @@ public class HibernateMappingContext extends AbstractMappingContext {
 
                 @Override
                 public Mapping getMappedForm() {
-                    return mappedForm;
+                    return this.mappedForm;
                 }
 
                 @Override
                 public IdentityMapping getIdentifier() {
                     return null;
                 }
+
             };
         }
 
         @Override
         public ClassMapping getMapping() {
-            return classMapping;
+            return this.classMapping;
         }
 
     }
@@ -261,7 +267,8 @@ public class HibernateMappingContext extends AbstractMappingContext {
                             resolvedGenerator = ValueGenerator.CUSTOM;
                         }
                         else {
-                            throw new DatastoreConfigurationException("Invalid id generation strategy for entity [" + classMapping.getEntity().getName() + "]: " + generatorName);
+                            throw new DatastoreConfigurationException("Invalid id generation strategy for entity [" +
+                                    classMapping.getEntity().getName() + "]: " + generatorName);
                         }
                     }
                     generator = resolvedGenerator;
@@ -274,6 +281,7 @@ public class HibernateMappingContext extends AbstractMappingContext {
                 generator = ValueGenerator.AUTO;
             }
             return new IdentityMapping() {
+
                 @Override
                 public String[] getIdentifierName() {
                     if (identity instanceof Identity) {
@@ -305,6 +313,7 @@ public class HibernateMappingContext extends AbstractMappingContext {
                 public Property getMappedForm() {
                     return (Property) identity;
                 }
+
             };
         }
 

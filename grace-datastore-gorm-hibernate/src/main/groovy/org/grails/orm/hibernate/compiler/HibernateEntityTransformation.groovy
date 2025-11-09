@@ -1,11 +1,11 @@
 /*
- * Copyright 2003-2023 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -79,26 +79,26 @@ import static org.codehaus.groovy.ast.tools.GeneralUtils.varX
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 class HibernateEntityTransformation implements ASTTransformation, CompilationUnitAware {
 
-    private static final ClassNode MY_TYPE = new ClassNode(grails.gorm.hibernate.annotation.ManagedEntity.class);
-    private static final Object APPLIED_MARKER = new Object();
+    private static final ClassNode MY_TYPE = new ClassNode(grails.gorm.hibernate.annotation.ManagedEntity)
+    private static final Object APPLIED_MARKER = new Object()
 
 //    final boolean available = ClassUtils.isPresent("org.hibernate.SessionFactory") && Boolean.valueOf(System.getProperty("hibernate.enhance", "true"))
     CompilationUnit compilationUnit
 
     @Override
     void visit(ASTNode[] astNodes, SourceUnit sourceUnit) {
-        AnnotatedNode parent = (AnnotatedNode) astNodes[1];
-        AnnotationNode node = (AnnotationNode) astNodes[0];
+        AnnotatedNode parent = (AnnotatedNode) astNodes[1]
+        AnnotationNode node = (AnnotationNode) astNodes[0]
 
         if (!(astNodes[0] instanceof AnnotationNode) || !(astNodes[1] instanceof AnnotatedNode)) {
-            throw new RuntimeException("Internal error: wrong types: ${node.getClass()} / ${parent.getClass()}");
+            throw new RuntimeException("Internal error: wrong types: ${node.getClass()} / ${parent.getClass()}")
         }
 
         if (!MY_TYPE.equals(node.getClassNode()) || !(parent instanceof ClassNode)) {
-            return;
+            return
         }
 
-        ClassNode cNode = (ClassNode) parent;
+        ClassNode cNode = (ClassNode) parent
 
         visit(cNode, sourceUnit)
     }
@@ -136,23 +136,26 @@ class HibernateEntityTransformation implements ASTTransformation, CompilationUni
 
         def staticCompilationVisitor = new StaticCompilationVisitor(sourceUnit, classNode)
 
-        AnnotationNode transientAnnotationNode = new AnnotationNode(ClassHelper.make(Transient.class))
-        FieldNode entityEntryHolderField = classNode.addField(entryHolderFieldName, Modifier.PRIVATE | Modifier.TRANSIENT, entityEntryClassNode, null)
-        entityEntryHolderField
-                .addAnnotation(transientAnnotationNode)
+        AnnotationNode transientAnnotationNode = new AnnotationNode(ClassHelper.make(Transient))
+        FieldNode entityEntryHolderField = classNode.addField(entryHolderFieldName,
+                Modifier.PRIVATE | Modifier.TRANSIENT, entityEntryClassNode, null)
 
-        FieldNode previousManagedEntityField = classNode.addField(previousManagedEntityFieldName, Modifier.PRIVATE | Modifier.TRANSIENT, managedEntityClassNode, null)
-        previousManagedEntityField
-                .addAnnotation(transientAnnotationNode)
+        entityEntryHolderField.addAnnotation(transientAnnotationNode)
 
-        FieldNode nextManagedEntityField = classNode.addField(nextManagedEntityFieldName, Modifier.PRIVATE | Modifier.TRANSIENT, managedEntityClassNode, null)
-        nextManagedEntityField
-                .addAnnotation(transientAnnotationNode)
+        FieldNode previousManagedEntityField = classNode.addField(previousManagedEntityFieldName,
+                Modifier.PRIVATE | Modifier.TRANSIENT, managedEntityClassNode, null)
 
-        FieldNode interceptorField = classNode.addField(interceptorFieldName, Modifier.PRIVATE | Modifier.TRANSIENT, persistentAttributeInterceptorClassNode, null)
-        interceptorField
-                .addAnnotation(transientAnnotationNode)
+        previousManagedEntityField.addAnnotation(transientAnnotationNode)
 
+        FieldNode nextManagedEntityField = classNode.addField(nextManagedEntityFieldName,
+                Modifier.PRIVATE | Modifier.TRANSIENT, managedEntityClassNode, null)
+
+        nextManagedEntityField.addAnnotation(transientAnnotationNode)
+
+        FieldNode interceptorField = classNode.addField(interceptorFieldName,
+                Modifier.PRIVATE | Modifier.TRANSIENT, persistentAttributeInterceptorClassNode, null)
+
+        interceptorField.addAnnotation(transientAnnotationNode)
 
         // add method: PersistentAttributeInterceptor $$_hibernate_getInterceptor()
         def getInterceptorMethod = new MethodNode(
@@ -167,7 +170,7 @@ class HibernateEntityTransformation implements ASTTransformation, CompilationUni
         staticCompilationVisitor.visitMethod(getInterceptorMethod)
 
         // add method: void $$_hibernate_setInterceptor(PersistentAttributeInterceptor interceptor)
-        def p1 = param(persistentAttributeInterceptorClassNode, "interceptor")
+        def p1 = param(persistentAttributeInterceptorClassNode, 'interceptor')
         def setInterceptorMethod = new MethodNode(
                 '$$_hibernate_setInterceptor',
                 Modifier.PUBLIC,
@@ -186,11 +189,10 @@ class HibernateEntityTransformation implements ASTTransformation, CompilationUni
                 ClassHelper.OBJECT_TYPE,
                 AstUtils.ZERO_PARAMETERS,
                 null,
-                returnS(varX("this"))
+                returnS(varX('this'))
         )
         classNode.addMethod(getEntityInstanceMethod)
         staticCompilationVisitor.visitMethod(getEntityInstanceMethod)
-
 
         // add method: EntityEntry $$_hibernate_getEntityEntry()
         def getEntityEntryMethod = new MethodNode(
@@ -205,7 +207,7 @@ class HibernateEntityTransformation implements ASTTransformation, CompilationUni
         staticCompilationVisitor.visitMethod(getEntityEntryMethod)
 
         // add method: void $$_hibernate_setEntityEntry(EntityEntry entityEntry)
-        def entityEntryParam = param(entityEntryClassNode, "entityEntry")
+        def entityEntryParam = param(entityEntryClassNode, 'entityEntry')
         def setEntityEntryMethod = new MethodNode(
                 '$$_hibernate_setEntityEntry',
                 Modifier.PUBLIC,
@@ -242,7 +244,7 @@ class HibernateEntityTransformation implements ASTTransformation, CompilationUni
         staticCompilationVisitor.visitMethod(getNextManagedEntityMethod)
 
         // add method: void $$_hibernate_setPreviousManagedEntity(ManagedEntity previous)
-        def previousParam = param(managedEntityClassNode, "previous")
+        def previousParam = param(managedEntityClassNode, 'previous')
         def setPreviousManagedEntityMethod = new MethodNode(
                 '$$_hibernate_setPreviousManagedEntity',
                 Modifier.PUBLIC,
@@ -255,7 +257,7 @@ class HibernateEntityTransformation implements ASTTransformation, CompilationUni
         staticCompilationVisitor.visitMethod(setPreviousManagedEntityMethod)
 
         // add method: void $$_hibernate_setNextManagedEntity(ManagedEntity next)
-        def nextParam = param(managedEntityClassNode, "next")
+        def nextParam = param(managedEntityClassNode, 'next')
         def setNextManagedEntityMethod = new MethodNode(
                 '$$_hibernate_setNextManagedEntity',
                 Modifier.PUBLIC,
@@ -286,8 +288,9 @@ class HibernateEntityTransformation implements ASTTransformation, CompilationUni
 
                             def returnType = methodNode.getReturnType()
                             final boolean isPrimitive = ClassHelper.isPrimitiveType(returnType)
-                            String readMethodName = isPrimitive ? "read${NameUtils.capitalize(returnType.getName())}" : "readObject"
-                            def readObjectCall = callX(i, readMethodName, args(varX("this"), constX(propertyName), rs.getExpression()))
+                            String readMethodName = isPrimitive ? "read${NameUtils.capitalize(returnType.getName())}" : 'readObject'
+                            def readObjectCall =
+                                    callX(i, readMethodName, args(varX('this'), constX(propertyName), rs.getExpression()))
                             def ternaryExpr = ternaryX(
                                     equalsNullX(varX(interceptorField)),
                                     rs.getExpression(),
@@ -295,8 +298,8 @@ class HibernateEntityTransformation implements ASTTransformation, CompilationUni
                             )
                             staticCompilationVisitor.visitTernaryExpression ternaryExpr
                             rs.setExpression(ternaryExpr)
-
                         }
+
                     }
                     codeVisitor.visitMethod(methodNode)
                 }
@@ -307,23 +310,25 @@ class HibernateEntityTransformation implements ASTTransformation, CompilationUni
                         Parameter parameter = methodNode.getParameters()[0]
                         ClassNode parameterType = parameter.type
                         final boolean isPrimitive = ClassHelper.isPrimitiveType(parameterType)
-                        String writeMethodName = isPrimitive ? "write${NameUtils.capitalize(parameterType.getName())}" : "writeObject"
+                        String writeMethodName = isPrimitive ? "write${NameUtils.capitalize(parameterType.getName())}" : 'writeObject'
                         String propertyName = NameUtils.getPropertyNameForGetterOrSetter(methodNode.getName())
                         def interceptorFieldExpr = fieldX(interceptorField)
                         def ifStatement = ifS(neX(interceptorFieldExpr, constX(null)),
                                 assignS(
                                         varX(parameter),
-                                        callX(interceptorFieldExpr, writeMethodName, args(varX("this"), constX(propertyName), propX(varX("this"), propertyName), varX(parameter)))
+                                        callX(interceptorFieldExpr, writeMethodName,
+                                                args(varX('this'), constX(propertyName),
+                                                        propX(varX('this'), propertyName), varX(parameter)))
                                 )
                         )
                         staticCompilationVisitor.visitIfElse((IfStatement) ifStatement)
                         bs.getStatements().add(0, ifStatement)
                     }
                 }
-
             }
         }
 
         classNode.putNodeMetaData(AstUtils.TRANSFORM_APPLIED_MARKER, APPLIED_MARKER)
     }
+
 }

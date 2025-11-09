@@ -1,11 +1,11 @@
 /*
- * Copyright 2003-2023 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -76,7 +76,8 @@ import org.grails.orm.hibernate.AbstractHibernateDatastore;
  * @author Graeme Rocher
  * @since 3.0.7
  */
-public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSupport implements org.grails.datastore.mapping.query.api.BuildableCriteria, org.grails.datastore.mapping.query.api.ProjectionList {
+public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSupport
+        implements BuildableCriteria, org.grails.datastore.mapping.query.api.ProjectionList {
 
     public static final String AND = "and"; // builder
 
@@ -84,7 +85,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     public static final String IS_NOT_NULL = "isNotNull"; // builder
 
-    public static final String NOT = "not";// builder
+    public static final String NOT = "not"; // builder
 
     public static final String OR = "or"; // builder
 
@@ -94,39 +95,39 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     public static final String IS_NOT_EMPTY = "isNotEmpty"; //builder
 
-    public static final String RLIKE = "rlike";//method
+    public static final String RLIKE = "rlike"; //method
 
-    public static final String BETWEEN = "between";//method
+    public static final String BETWEEN = "between"; //method
 
-    public static final String EQUALS = "eq";//method
+    public static final String EQUALS = "eq"; //method
 
-    public static final String EQUALS_PROPERTY = "eqProperty";//method
+    public static final String EQUALS_PROPERTY = "eqProperty"; //method
 
-    public static final String GREATER_THAN = "gt";//method
+    public static final String GREATER_THAN = "gt"; //method
 
-    public static final String GREATER_THAN_PROPERTY = "gtProperty";//method
+    public static final String GREATER_THAN_PROPERTY = "gtProperty"; //method
 
-    public static final String GREATER_THAN_OR_EQUAL = "ge";//method
+    public static final String GREATER_THAN_OR_EQUAL = "ge"; //method
 
-    public static final String GREATER_THAN_OR_EQUAL_PROPERTY = "geProperty";//method
+    public static final String GREATER_THAN_OR_EQUAL_PROPERTY = "geProperty"; //method
 
-    public static final String ILIKE = "ilike";//method
+    public static final String ILIKE = "ilike"; //method
 
-    public static final String IN = "in";//method
+    public static final String IN = "in"; //method
 
     public static final String LESS_THAN = "lt"; //method
 
-    public static final String LESS_THAN_PROPERTY = "ltProperty";//method
+    public static final String LESS_THAN_PROPERTY = "ltProperty"; //method
 
-    public static final String LESS_THAN_OR_EQUAL = "le";//method
+    public static final String LESS_THAN_OR_EQUAL = "le"; //method
 
-    public static final String LESS_THAN_OR_EQUAL_PROPERTY = "leProperty";//method
+    public static final String LESS_THAN_OR_EQUAL_PROPERTY = "leProperty"; //method
 
-    public static final String LIKE = "like";//method
+    public static final String LIKE = "like"; //method
 
-    public static final String NOT_EQUAL = "ne";//method
+    public static final String NOT_EQUAL = "ne"; //method
 
-    public static final String NOT_EQUAL_PROPERTY = "neProperty";//method
+    public static final String NOT_EQUAL_PROPERTY = "neProperty"; //method
 
     public static final String SIZE_EQUALS = "sizeEq"; //method
 
@@ -151,7 +152,6 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
     protected static final String SET_RESULT_TRANSFORMER_CALL = "setResultTransformer";
 
     protected static final String PROJECTIONS = "projections";
-
 
     protected SessionFactory sessionFactory;
 
@@ -214,7 +214,8 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     public void setDatastore(AbstractHibernateDatastore datastore) {
         this.datastore = datastore;
-        if (MultiTenant.class.isAssignableFrom(targetClass) && datastore.getMultiTenancyMode() == MultiTenancySettings.MultiTenancyMode.DISCRIMINATOR) {
+        if (MultiTenant.class.isAssignableFrom(this.targetClass) &&
+                datastore.getMultiTenancyMode() == MultiTenancySettings.MultiTenancyMode.DISCRIMINATOR) {
             datastore.enableMultiTenancyFilter();
         }
     }
@@ -225,16 +226,19 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     /**
      * A projection that selects a property name
+     *
      * @param propertyName The name of the property
      */
+    @Override
     public org.grails.datastore.mapping.query.api.ProjectionList property(String propertyName) {
         return property(propertyName, null);
     }
 
     /**
      * A projection that selects a property name
+     *
      * @param propertyName The name of the property
-     * @param alias The alias to use
+     * @param alias        The alias to use
      */
     public org.grails.datastore.mapping.query.api.ProjectionList property(String propertyName, String alias) {
         final PropertyProjection propertyProjection = Projections.property(calculatePropertyName(propertyName));
@@ -246,23 +250,23 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * Adds a projection to the projectList for the given alias
      *
      * @param propertyProjection The projection
-     * @param alias The alias
+     * @param alias              The alias
      */
     protected void addProjectionToList(Projection propertyProjection, String alias) {
         if (alias != null) {
-            projectionList.add(propertyProjection, alias);
+            this.projectionList.add(propertyProjection, alias);
         }
         else {
-            projectionList.add(propertyProjection);
+            this.projectionList.add(propertyProjection);
         }
     }
 
     /**
      * Adds a sql projection to the criteria
      *
-     * @param sql SQL projecting a single value
+     * @param sql         SQL projecting a single value
      * @param columnAlias column alias for the projected value
-     * @param type the type of the projected value
+     * @param type        the type of the projected value
      */
     protected void sqlProjection(String sql, String columnAlias, Type type) {
         sqlProjection(sql, Collections.singletonList(columnAlias), Collections.singletonList(type));
@@ -271,28 +275,29 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
     /**
      * Adds a sql projection to the criteria
      *
-     * @param sql SQL projecting
+     * @param sql           SQL projecting
      * @param columnAliases List of column aliases for the projected values
-     * @param types List of types for the projected values
+     * @param types         List of types for the projected values
      */
     protected void sqlProjection(String sql, List<String> columnAliases, List<Type> types) {
-        projectionList.add(Projections.sqlProjection(sql, columnAliases.toArray(new String[0]), types.toArray(new Type[0])));
+        this.projectionList.add(Projections.sqlProjection(sql, columnAliases.toArray(new String[0]), types.toArray(new Type[0])));
     }
 
     /**
      * Adds a sql projection to the criteria
      *
-     * @param sql SQL projecting
-     * @param groupBy group by clause
+     * @param sql           SQL projecting
+     * @param groupBy       group by clause
      * @param columnAliases List of column aliases for the projected values
-     * @param types List of types for the projected values
+     * @param types         List of types for the projected values
      */
     protected void sqlGroupProjection(String sql, String groupBy, List<String> columnAliases, List<Type> types) {
-        projectionList.add(Projections.sqlGroupProjection(sql, groupBy, columnAliases.toArray(new String[0]), types.toArray(new Type[0])));
+        this.projectionList.add(Projections.sqlGroupProjection(sql, groupBy, columnAliases.toArray(new String[0]), types.toArray(new Type[0])));
     }
 
     /**
      * A projection that selects a distince property name
+     *
      * @param propertyName The property name
      */
     public org.grails.datastore.mapping.query.api.ProjectionList distinct(String propertyName) {
@@ -302,8 +307,9 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     /**
      * A projection that selects a distince property name
+     *
      * @param propertyName The property name
-     * @param alias The alias to use
+     * @param alias        The alias to use
      */
     public org.grails.datastore.mapping.query.api.ProjectionList distinct(String propertyName, String alias) {
         final Projection proj = Projections.distinct(Projections.property(calculatePropertyName(propertyName)));
@@ -325,7 +331,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * A distinct projection that takes a list
      *
      * @param propertyNames The list of distince property names
-     * @param alias The alias to use
+     * @param alias         The alias to use
      */
     @SuppressWarnings("rawtypes")
     public org.grails.datastore.mapping.query.api.ProjectionList distinct(Collection propertyNames, String alias) {
@@ -343,6 +349,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      *
      * @param propertyName The name of the property
      */
+    @Override
     public org.grails.datastore.mapping.query.api.ProjectionList avg(String propertyName) {
         return avg(propertyName, null);
     }
@@ -351,7 +358,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * Adds a projection that allows the criteria to return the property average value
      *
      * @param propertyName The name of the property
-     * @param alias The alias to use
+     * @param alias        The alias to use
      */
     public org.grails.datastore.mapping.query.api.ProjectionList avg(String propertyName, String alias) {
         final AggregateProjection aggregateProjection = Projections.avg(calculatePropertyName(propertyName));
@@ -364,17 +371,17 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      *
      * @param associationPath The path of the association
      */
+    @Override
     public BuildableCriteria join(String associationPath) {
-        criteria.setFetchMode(calculatePropertyName(associationPath), FetchMode.JOIN);
+        this.criteria.setFetchMode(calculatePropertyName(associationPath), FetchMode.JOIN);
         return this;
     }
 
     @Override
     public BuildableCriteria join(String property, JoinType joinType) {
-        criteria.setFetchMode(calculatePropertyName(property), FetchMode.JOIN);
+        this.criteria.setFetchMode(calculatePropertyName(property), FetchMode.JOIN);
         return this;
     }
-
 
     /**
      * Whether a pessimistic lock should be obtained.
@@ -386,18 +393,18 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
         if (shouldLock) {
             if (lastAlias != null) {
-                criteria.setLockMode(lastAlias, LockMode.PESSIMISTIC_WRITE);
+                this.criteria.setLockMode(lastAlias, LockMode.PESSIMISTIC_WRITE);
             }
             else {
-                criteria.setLockMode(LockMode.PESSIMISTIC_WRITE);
+                this.criteria.setLockMode(LockMode.PESSIMISTIC_WRITE);
             }
         }
         else {
             if (lastAlias != null) {
-                criteria.setLockMode(lastAlias, LockMode.NONE);
+                this.criteria.setLockMode(lastAlias, LockMode.NONE);
             }
             else {
-                criteria.setLockMode(LockMode.NONE);
+                this.criteria.setLockMode(LockMode.NONE);
             }
         }
     }
@@ -407,26 +414,31 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      *
      * @param associationPath The path of the association
      */
+    @Override
     public BuildableCriteria select(String associationPath) {
-        criteria.setFetchMode(calculatePropertyName(associationPath), FetchMode.SELECT);
+        this.criteria.setFetchMode(calculatePropertyName(associationPath), FetchMode.SELECT);
         return this;
     }
 
     /**
      * Whether to use the query cache
+     *
      * @param shouldCache True if the query should be cached
      */
+    @Override
     public BuildableCriteria cache(boolean shouldCache) {
-        criteria.setCacheable(shouldCache);
+        this.criteria.setCacheable(shouldCache);
         return this;
     }
 
     /**
      * Whether to check for changes on the objects loaded
+     *
      * @param readOnly True to disable dirty checking
      */
+    @Override
     public BuildableCriteria readOnly(boolean readOnly) {
-        criteria.setReadOnly(readOnly);
+        this.criteria.setReadOnly(readOnly);
         return this;
     }
 
@@ -446,14 +458,15 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
     }
 
     private String getLastAlias() {
-        if (aliasStack.size() > 0) {
-            return aliasStack.get(aliasStack.size() - 1).toString();
+        if (this.aliasStack.size() > 0) {
+            return this.aliasStack.get(this.aliasStack.size() - 1).toString();
         }
         return null;
     }
 
+    @Override
     public Class<?> getTargetClass() {
-        return targetClass;
+        return this.targetClass;
     }
 
     /**
@@ -472,7 +485,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
         }
         else if (propertyValue instanceof Closure) {
             propertyValue = convertToHibernateCriteria(
-                    new grails.gorm.DetachedCriteria(targetClass).build((Closure<?>) propertyValue));
+                    new grails.gorm.DetachedCriteria(this.targetClass).build((Closure<?>) propertyValue));
         }
         return propertyValue;
     }
@@ -492,19 +505,21 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * Adds a projection that allows the criteria to return the property count
      *
      * @param propertyName The name of the property
-     * @param alias The alias to use
+     * @param alias        The alias to use
      */
     public void count(String propertyName, String alias) {
         final CountProjection proj = Projections.count(calculatePropertyName(propertyName));
         addProjectionToList(proj, alias);
     }
 
+    @Override
     public org.grails.datastore.mapping.query.api.ProjectionList id() {
         final IdentifierProjection proj = Projections.id();
         addProjectionToList(proj, null);
         return this;
     }
 
+    @Override
     public org.grails.datastore.mapping.query.api.ProjectionList count() {
         return rowCount();
     }
@@ -514,6 +529,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      *
      * @param propertyName The name of the property
      */
+    @Override
     public org.grails.datastore.mapping.query.api.ProjectionList countDistinct(String propertyName) {
         return countDistinct(propertyName, null);
     }
@@ -523,13 +539,15 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      *
      * @param propertyName The name of the property
      */
+    @Override
     public org.grails.datastore.mapping.query.api.ProjectionList groupProperty(String propertyName) {
         groupProperty(propertyName, null);
         return this;
     }
 
+    @Override
     public org.grails.datastore.mapping.query.api.ProjectionList distinct() {
-        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        this.criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return this;
     }
 
@@ -537,7 +555,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * Adds a projection that allows the criteria to return the distinct property count
      *
      * @param propertyName The name of the property
-     * @param alias The alias to use
+     * @param alias        The alias to use
      */
     public org.grails.datastore.mapping.query.api.ProjectionList countDistinct(String propertyName, String alias) {
         final CountProjection proj = Projections.countDistinct(calculatePropertyName(propertyName));
@@ -550,7 +568,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * Adds a projection that allows the criteria's result to be grouped by a property
      *
      * @param propertyName The name of the property
-     * @param alias The alias to use
+     * @param alias        The alias to use
      */
     public org.grails.datastore.mapping.query.api.ProjectionList groupProperty(String propertyName, String alias) {
         final PropertyProjection proj = Projections.groupProperty(calculatePropertyName(propertyName));
@@ -563,6 +581,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      *
      * @param propertyName The name of the property
      */
+    @Override
     public org.grails.datastore.mapping.query.api.ProjectionList max(String propertyName) {
         return max(propertyName, null);
     }
@@ -571,7 +590,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * Adds a projection that allows the criteria to retrieve a  maximum property value
      *
      * @param propertyName The name of the property
-     * @param alias The alias to use
+     * @param alias        The alias to use
      */
     public org.grails.datastore.mapping.query.api.ProjectionList max(String propertyName, String alias) {
         final AggregateProjection proj = Projections.max(calculatePropertyName(propertyName));
@@ -584,6 +603,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      *
      * @param propertyName The name of the property
      */
+    @Override
     public org.grails.datastore.mapping.query.api.ProjectionList min(String propertyName) {
         return min(propertyName, null);
     }
@@ -601,8 +621,8 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     /**
      * Adds a projection that allows the criteria to return the row count
-     *
      */
+    @Override
     public org.grails.datastore.mapping.query.api.ProjectionList rowCount() {
         return rowCount(null);
     }
@@ -623,6 +643,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      *
      * @param propertyName The name of the property
      */
+    @Override
     public org.grails.datastore.mapping.query.api.ProjectionList sum(String propertyName) {
         return sum(propertyName, null);
     }
@@ -631,7 +652,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * Adds a projection that allows the criteria to retrieve the sum of the results of a property
      *
      * @param propertyName The name of the property
-     * @param alias The alias to use
+     * @param alias        The alias to use
      */
     public org.grails.datastore.mapping.query.api.ProjectionList sum(String propertyName, String alias) {
         final AggregateProjection proj = Projections.sum(calculatePropertyName(propertyName));
@@ -643,49 +664,50 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * Sets the fetch mode of an associated path
      *
      * @param associationPath The name of the associated path
-     * @param fetchMode The fetch mode to set
+     * @param fetchMode       The fetch mode to set
      */
     public void fetchMode(String associationPath, FetchMode fetchMode) {
-        if (criteria != null) {
-            criteria.setFetchMode(associationPath, fetchMode);
+        if (this.criteria != null) {
+            this.criteria.setFetchMode(associationPath, fetchMode);
         }
     }
 
     /**
      * Sets the resultTransformer.
+     *
      * @param transformer The result transformer to use.
      */
     public void resultTransformer(ResultTransformer transformer) {
-        if (criteria == null) {
+        if (this.criteria == null) {
             throwRuntimeException(new IllegalArgumentException("Call to [resultTransformer] not supported here"));
         }
-        resultTransformer = transformer;
+        this.resultTransformer = transformer;
     }
 
     /**
      * Join an association, assigning an alias to the joined association.
-     *
+     * <p>
      * Functionally equivalent to createAlias(String, String, int) using
      * CriteriaSpecificationINNER_JOIN for the joinType.
      *
      * @param associationPath A dot-seperated property path
-     * @param alias The alias to assign to the joined association (for later reference).
-     *
+     * @param alias           The alias to assign to the joined association (for later reference).
      * @return this (for method chaining)
      * #see {@link #createAlias(String, String, int)}
      * @throws HibernateException Indicates a problem creating the sub criteria
      */
     public Criteria createAlias(String associationPath, String alias) {
-        return criteria.createAlias(associationPath, alias);
+        return this.criteria.createAlias(associationPath, alias);
     }
-
 
     /**
      * Creates a Criterion that compares to class properties for equality
-     * @param propertyName The first property name
+     *
+     * @param propertyName      The first property name
      * @param otherPropertyName The second property name
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria eqProperty(String propertyName, String otherPropertyName) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [eqProperty] with propertyName [" +
@@ -700,10 +722,12 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     /**
      * Creates a Criterion that compares to class properties for !equality
-     * @param propertyName The first property name
+     *
+     * @param propertyName      The first property name
      * @param otherPropertyName The second property name
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria neProperty(String propertyName, String otherPropertyName) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [neProperty] with propertyName [" +
@@ -718,10 +742,12 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     /**
      * Creates a Criterion that tests if the first property is greater than the second property
-     * @param propertyName The first property name
+     *
+     * @param propertyName      The first property name
      * @param otherPropertyName The second property name
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria gtProperty(String propertyName, String otherPropertyName) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [gtProperty] with propertyName [" +
@@ -736,10 +762,12 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     /**
      * Creates a Criterion that tests if the first property is greater than or equal to the second property
-     * @param propertyName The first property name
+     *
+     * @param propertyName      The first property name
      * @param otherPropertyName The second property name
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria geProperty(String propertyName, String otherPropertyName) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [geProperty] with propertyName [" +
@@ -754,10 +782,12 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     /**
      * Creates a Criterion that tests if the first property is less than the second property
-     * @param propertyName The first property name
+     *
+     * @param propertyName      The first property name
      * @param otherPropertyName The second property name
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria ltProperty(String propertyName, String otherPropertyName) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [ltProperty] with propertyName [" +
@@ -772,10 +802,12 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     /**
      * Creates a Criterion that tests if the first property is less than or equal to the second property
-     * @param propertyName The first property name
+     *
+     * @param propertyName      The first property name
      * @param otherPropertyName The second property name
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria leProperty(String propertyName, String otherPropertyName) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [leProperty] with propertyName [" +
@@ -794,7 +826,6 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
         return this;
     }
 
-
     /**
      * Creates a subquery criterion that ensures the given property is equal to all the given returned values
      *
@@ -802,11 +833,11 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * @param propertyValue The property value
      * @return A Criterion instance
      */
+    @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public org.grails.datastore.mapping.query.api.Criteria eqAll(String propertyName, Closure<?> propertyValue) {
-        return eqAll(propertyName, new grails.gorm.DetachedCriteria(targetClass).build(propertyValue));
+        return eqAll(propertyName, new grails.gorm.DetachedCriteria(this.targetClass).build(propertyValue));
     }
-
 
     /**
      * Creates a subquery criterion that ensures the given property is greater than all the given returned values
@@ -815,9 +846,10 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * @param propertyValue The property value
      * @return A Criterion instance
      */
+    @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public org.grails.datastore.mapping.query.api.Criteria gtAll(String propertyName, Closure<?> propertyValue) {
-        return gtAll(propertyName, new grails.gorm.DetachedCriteria(targetClass).build(propertyValue));
+        return gtAll(propertyName, new grails.gorm.DetachedCriteria(this.targetClass).build(propertyValue));
     }
 
     /**
@@ -827,9 +859,10 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * @param propertyValue The property value
      * @return A Criterion instance
      */
+    @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public org.grails.datastore.mapping.query.api.Criteria ltAll(String propertyName, Closure<?> propertyValue) {
-        return ltAll(propertyName, new grails.gorm.DetachedCriteria(targetClass).build(propertyValue));
+        return ltAll(propertyName, new grails.gorm.DetachedCriteria(this.targetClass).build(propertyValue));
     }
 
     /**
@@ -839,9 +872,10 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * @param propertyValue The property value
      * @return A Criterion instance
      */
+    @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public org.grails.datastore.mapping.query.api.Criteria geAll(String propertyName, Closure<?> propertyValue) {
-        return geAll(propertyName, new grails.gorm.DetachedCriteria(targetClass).build(propertyValue));
+        return geAll(propertyName, new grails.gorm.DetachedCriteria(this.targetClass).build(propertyValue));
     }
 
     /**
@@ -851,9 +885,10 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * @param propertyValue The property value
      * @return A Criterion instance
      */
+    @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public org.grails.datastore.mapping.query.api.Criteria leAll(String propertyName, Closure<?> propertyValue) {
-        return leAll(propertyName, new grails.gorm.DetachedCriteria(targetClass).build(propertyValue));
+        return leAll(propertyName, new grails.gorm.DetachedCriteria(this.targetClass).build(propertyValue));
     }
 
     /**
@@ -863,6 +898,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * @param propertyValue The property value
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria eqAll(String propertyName,
             @SuppressWarnings("rawtypes") QueryableCriteria propertyValue) {
         addToCriteria(Property.forName(propertyName).eqAll(convertToHibernateCriteria(propertyValue)));
@@ -876,6 +912,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * @param propertyValue The property value
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria gtAll(String propertyName,
             @SuppressWarnings("rawtypes") QueryableCriteria propertyValue) {
         addToCriteria(Property.forName(propertyName).gtAll(convertToHibernateCriteria(propertyValue)));
@@ -890,7 +927,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     @Override
     public org.grails.datastore.mapping.query.api.Criteria gtSome(String propertyName, Closure<?> propertyValue) {
-        return gtSome(propertyName, new grails.gorm.DetachedCriteria(targetClass).build(propertyValue));
+        return gtSome(propertyName, new grails.gorm.DetachedCriteria(this.targetClass).build(propertyValue));
     }
 
     @Override
@@ -901,7 +938,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     @Override
     public org.grails.datastore.mapping.query.api.Criteria geSome(String propertyName, Closure<?> propertyValue) {
-        return geSome(propertyName, new grails.gorm.DetachedCriteria(targetClass).build(propertyValue));
+        return geSome(propertyName, new grails.gorm.DetachedCriteria(this.targetClass).build(propertyValue));
     }
 
     @Override
@@ -912,7 +949,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     @Override
     public org.grails.datastore.mapping.query.api.Criteria ltSome(String propertyName, Closure<?> propertyValue) {
-        return ltSome(propertyName, new grails.gorm.DetachedCriteria(targetClass).build(propertyValue));
+        return ltSome(propertyName, new grails.gorm.DetachedCriteria(this.targetClass).build(propertyValue));
     }
 
     @Override
@@ -923,7 +960,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     @Override
     public org.grails.datastore.mapping.query.api.Criteria leSome(String propertyName, Closure<?> propertyValue) {
-        return leSome(propertyName, new grails.gorm.DetachedCriteria(targetClass).build(propertyValue));
+        return leSome(propertyName, new grails.gorm.DetachedCriteria(this.targetClass).build(propertyValue));
     }
 
     @Override
@@ -939,12 +976,12 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     @Override
     public org.grails.datastore.mapping.query.api.Criteria in(String propertyName, Closure<?> subquery) {
-        return inList(propertyName, new grails.gorm.DetachedCriteria(targetClass).build(subquery));
+        return inList(propertyName, new grails.gorm.DetachedCriteria(this.targetClass).build(subquery));
     }
 
     @Override
     public org.grails.datastore.mapping.query.api.Criteria inList(String propertyName, Closure<?> subquery) {
-        return inList(propertyName, new grails.gorm.DetachedCriteria(targetClass).build(subquery));
+        return inList(propertyName, new grails.gorm.DetachedCriteria(this.targetClass).build(subquery));
     }
 
     @Override
@@ -955,7 +992,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     @Override
     public org.grails.datastore.mapping.query.api.Criteria notIn(String propertyName, Closure<?> subquery) {
-        return notIn(propertyName, new grails.gorm.DetachedCriteria(targetClass).build(subquery));
+        return notIn(propertyName, new grails.gorm.DetachedCriteria(this.targetClass).build(subquery));
     }
 
     /**
@@ -965,6 +1002,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * @param propertyValue The property value
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria ltAll(String propertyName,
             @SuppressWarnings("rawtypes") QueryableCriteria propertyValue) {
         addToCriteria(Property.forName(propertyName).ltAll(convertToHibernateCriteria(propertyValue)));
@@ -979,6 +1017,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * @param propertyValue The property value
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria geAll(String propertyName,
             @SuppressWarnings("rawtypes") QueryableCriteria propertyValue) {
         addToCriteria(Property.forName(propertyName).geAll(convertToHibernateCriteria(propertyValue)));
@@ -993,6 +1032,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * @param propertyValue The property value
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria leAll(String propertyName,
             @SuppressWarnings("rawtypes") QueryableCriteria propertyValue) {
         addToCriteria(Property.forName(propertyName).leAll(convertToHibernateCriteria(propertyValue)));
@@ -1002,10 +1042,12 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     /**
      * Creates a "greater than" Criterion based on the specified property name and value
-     * @param propertyName The property name
+     *
+     * @param propertyName  The property name
      * @param propertyValue The property value
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria gt(String propertyName, Object propertyValue) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [gt] with propertyName [" +
@@ -1026,16 +1068,19 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
         return this;
     }
 
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria lte(String s, Object o) {
         return le(s, o);
     }
 
     /**
      * Creates a "greater than or equal to" Criterion based on the specified property name and value
-     * @param propertyName The property name
+     *
+     * @param propertyName  The property name
      * @param propertyValue The property value
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria ge(String propertyName, Object propertyValue) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [ge] with propertyName [" +
@@ -1058,10 +1103,12 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     /**
      * Creates a "less than" Criterion based on the specified property name and value
-     * @param propertyName The property name
+     *
+     * @param propertyName  The property name
      * @param propertyValue The property value
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria lt(String propertyName, Object propertyValue) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [lt] with propertyName [" +
@@ -1083,10 +1130,12 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     /**
      * Creates a "less than or equal to" Criterion based on the specified property name and value
-     * @param propertyName The property name
+     *
+     * @param propertyName  The property name
      * @param propertyValue The property value
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria le(String propertyName, Object propertyValue) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [le] with propertyName [" +
@@ -1106,6 +1155,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
         return this;
     }
 
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria idEquals(Object o) {
         return idEq(o);
     }
@@ -1122,24 +1172,28 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
         return this;
     }
 
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria isEmpty(String property) {
         String propertyName = calculatePropertyName(property);
         addToCriteria(Restrictions.isEmpty(propertyName));
         return this;
     }
 
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria isNotEmpty(String property) {
         String propertyName = calculatePropertyName(property);
         addToCriteria(Restrictions.isNotEmpty(propertyName));
         return this;
     }
 
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria isNull(String property) {
         String propertyName = calculatePropertyName(property);
         addToCriteria(Restrictions.isNull(propertyName));
         return this;
     }
 
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria isNotNull(String property) {
         String propertyName = calculatePropertyName(property);
         addToCriteria(Restrictions.isNotNull(propertyName));
@@ -1162,14 +1216,15 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
     }
 
     protected org.grails.datastore.mapping.query.api.Criteria executeLogicalExpression(Closure callable, String logicalOperator) {
-        logicalExpressionStack.add(new LogicalExpression(logicalOperator));
+        this.logicalExpressionStack.add(new LogicalExpression(logicalOperator));
         try {
             invokeClosureNode(callable);
         }
         finally {
-            LogicalExpression logicalExpression = logicalExpressionStack.remove(logicalExpressionStack.size() - 1);
-            if (logicalExpression != null)
+            LogicalExpression logicalExpression = this.logicalExpressionStack.remove(this.logicalExpressionStack.size() - 1);
+            if (logicalExpression != null) {
                 addToCriteria(logicalExpression.toCriterion());
+            }
         }
 
         return this;
@@ -1177,15 +1232,17 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     /**
      * Creates an "equals" Criterion based on the specified property name and value. Case-sensitive.
-     * @param propertyName The property name
-     * @param propertyValue The property value
      *
+     * @param propertyName  The property name
+     * @param propertyValue The property value
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria eq(String propertyName, Object propertyValue) {
         return eq(propertyName, propertyValue, Collections.emptyMap());
     }
 
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria idEq(Object o) {
         return eq("id", o);
     }
@@ -1193,7 +1250,8 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
     /**
      * Groovy moves the map to the first parameter if using the idiomatic form, e.g.
      * <code>eq 'firstName', 'Fred', ignoreCase: true</code>.
-     * @param params optional map with customization parameters; currently only 'ignoreCase' is supported.
+     *
+     * @param params        optional map with customization parameters; currently only 'ignoreCase' is supported.
      * @param propertyName
      * @param propertyValue
      * @return A Criterion instance
@@ -1207,10 +1265,10 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * Creates an "equals" Criterion based on the specified property name and value.
      * Supports case-insensitive search if the <code>params</code> map contains <code>true</code>
      * under the 'ignoreCase' key.
-     * @param propertyName The property name
-     * @param propertyValue The property value
-     * @param params optional map with customization parameters; currently only 'ignoreCase' is supported.
      *
+     * @param propertyName  The property name
+     * @param propertyValue The property value
+     * @param params        optional map with customization parameters; currently only 'ignoreCase' is supported.
      * @return A Criterion instance
      */
     @SuppressWarnings("rawtypes")
@@ -1257,7 +1315,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * Applies a sql restriction to the results to allow something like:
      *
      * @param sqlRestriction the sql restriction
-     * @param values jdbc parameters
+     * @param values         jdbc parameters
      * @return a Criteria instance
      */
     public org.grails.datastore.mapping.query.api.Criteria sqlRestriction(String sqlRestriction, List<?> values) {
@@ -1271,7 +1329,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
         final Object[] valuesArray = new Object[numberOfParameters];
 
         if (numberOfParameters > 0) {
-            final TypeHelper typeHelper = sessionFactory.getTypeHelper();
+            final TypeHelper typeHelper = this.sessionFactory.getTypeHelper();
             for (int i = 0; i < typesArray.length; i++) {
                 final Object value = values.get(i);
                 typesArray[i] = typeHelper.basic(value.getClass());
@@ -1284,11 +1342,12 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     /**
      * Creates a Criterion with from the specified property name and "like" expression
-     * @param propertyName The property name
-     * @param propertyValue The like value
      *
+     * @param propertyName  The property name
+     * @param propertyValue The like value
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria like(String propertyName, Object propertyValue) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [like] with propertyName [" +
@@ -1303,20 +1362,22 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     /**
      * Creates a Criterion with from the specified property name and "rlike" (a regular expression version of "like") expression
-     * @param propertyName The property name
-     * @param propertyValue The ilike value
      *
+     * @param propertyName  The property name
+     * @param propertyValue The ilike value
      * @return A Criterion instance
      */
+    @Override
     public abstract org.grails.datastore.mapping.query.api.Criteria rlike(String propertyName, Object propertyValue);
 
     /**
      * Creates a Criterion with from the specified property name and "ilike" (a case sensitive version of "like") expression
-     * @param propertyName The property name
-     * @param propertyValue The ilike value
      *
+     * @param propertyName  The property name
+     * @param propertyValue The ilike value
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria ilike(String propertyName, Object propertyValue) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [ilike] with propertyName [" +
@@ -1331,11 +1392,12 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     /**
      * Applys a "in" contrain on the specified property
-     * @param propertyName The property name
-     * @param values A collection of values
      *
+     * @param propertyName The property name
+     * @param values       A collection of values
      * @return A Criterion instance
      */
+    @Override
     @SuppressWarnings("rawtypes")
     public org.grails.datastore.mapping.query.api.Criteria in(String propertyName, Collection values) {
         if (!validateSimpleExpression()) {
@@ -1367,6 +1429,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
     /**
      * Delegates to in as in is a Groovy keyword
      */
+    @Override
     @SuppressWarnings("rawtypes")
     public org.grails.datastore.mapping.query.api.Criteria inList(String propertyName, Collection values) {
         return in(propertyName, values);
@@ -1375,17 +1438,19 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
     /**
      * Delegates to in as in is a Groovy keyword
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria inList(String propertyName, Object[] values) {
         return in(propertyName, values);
     }
 
     /**
      * Applys a "in" contrain on the specified property
-     * @param propertyName The property name
-     * @param values A collection of values
      *
+     * @param propertyName The property name
+     * @param values       A collection of values
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria in(String propertyName, Object[] values) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [in] with propertyName [" +
@@ -1401,10 +1466,11 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * Orders by the specified property name (defaults to ascending)
      *
      * @param propertyName The property name to order by
-     * @return A Order instance
+     * @return An Order instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria order(String propertyName) {
-        if (criteria == null) {
+        if (this.criteria == null) {
             throwRuntimeException(new IllegalArgumentException("Call to [order] with propertyName [" +
                     propertyName + "]not allowed here."));
         }
@@ -1430,8 +1496,8 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
         if (criteria == null) {
             throwRuntimeException(new IllegalArgumentException("Call to [order] not allowed here."));
         }
-        if (paginationEnabledList) {
-            orderEntries.add(o);
+        if (this.paginationEnabledList) {
+            this.orderEntries.add(o);
         }
         else {
             criteria.addOrder(o);
@@ -1450,7 +1516,6 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
     private void addOrderInternal(Criteria criteria, Query.Order o, String property) {
         final int i = property.indexOf('.');
         if (i == -1) {
-
             Order order = convertOrder(o, property);
             addOrderInternal(criteria, order);
         }
@@ -1458,7 +1523,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
             String sortHead = property.substring(0, i);
             String sortTail = property.substring(i + 1);
             createAliasIfNeccessary(sortHead, sortHead, org.hibernate.sql.JoinType.INNER_JOIN.getJoinTypeValue());
-            final Criteria sub = aliasInstanceStack.get(aliasInstanceStack.size() - 1);
+            final Criteria sub = this.aliasInstanceStack.get(this.aliasInstanceStack.size() - 1);
             addOrderInternal(sub, o, sortTail);
         }
     }
@@ -1483,12 +1548,12 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * Orders by the specified property name and direction
      *
      * @param propertyName The property name to order by
-     * @param direction Either "asc" for ascending or "desc" for descending
-     *
-     * @return A Order instance
+     * @param direction    Either "asc" for ascending or "desc" for descending
+     * @return An Order instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria order(String propertyName, String direction) {
-        if (criteria == null) {
+        if (this.criteria == null) {
             throwRuntimeException(new IllegalArgumentException("Call to [order] with propertyName [" +
                     propertyName + "]not allowed here."));
         }
@@ -1500,11 +1565,11 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
         else {
             o = Order.asc(propertyName);
         }
-        if (paginationEnabledList) {
-            orderEntries.add(o);
+        if (this.paginationEnabledList) {
+            this.orderEntries.add(o);
         }
         else {
-            criteria.addOrder(o);
+            this.criteria.addOrder(o);
         }
         return this;
     }
@@ -1513,10 +1578,10 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * Creates a Criterion that contrains a collection property by size
      *
      * @param propertyName The property name
-     * @param size The size to constrain by
-     *
+     * @param size         The size to constrain by
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria sizeEq(String propertyName, int size) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [sizeEq] with propertyName [" +
@@ -1532,10 +1597,10 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * Creates a Criterion that contrains a collection property to be greater than the given size
      *
      * @param propertyName The property name
-     * @param size The size to constrain by
-     *
+     * @param size         The size to constrain by
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria sizeGt(String propertyName, int size) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [sizeGt] with propertyName [" +
@@ -1551,10 +1616,10 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * Creates a Criterion that contrains a collection property to be greater than or equal to the given size
      *
      * @param propertyName The property name
-     * @param size The size to constrain by
-     *
+     * @param size         The size to constrain by
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria sizeGe(String propertyName, int size) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [sizeGe] with propertyName [" +
@@ -1570,10 +1635,10 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * Creates a Criterion that contrains a collection property to be less than or equal to the given size
      *
      * @param propertyName The property name
-     * @param size The size to constrain by
-     *
+     * @param size         The size to constrain by
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria sizeLe(String propertyName, int size) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [sizeLe] with propertyName [" +
@@ -1589,10 +1654,10 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * Creates a Criterion that contrains a collection property to be less than to the given size
      *
      * @param propertyName The property name
-     * @param size The size to constrain by
-     *
+     * @param size         The size to constrain by
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria sizeLt(String propertyName, int size) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [sizeLt] with propertyName [" +
@@ -1608,10 +1673,10 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * Creates a Criterion that contrains a collection property to be not equal to the given size
      *
      * @param propertyName The property name
-     * @param size The size to constrain by
-     *
+     * @param size         The size to constrain by
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria sizeNe(String propertyName, int size) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [sizeNe] with propertyName [" +
@@ -1625,10 +1690,12 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     /**
      * Creates a "not equal" Criterion based on the specified property name and value
-     * @param propertyName The property name
+     *
+     * @param propertyName  The property name
      * @param propertyValue The property value
      * @return The criterion object
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria ne(String propertyName, Object propertyValue) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [ne] with propertyName [" +
@@ -1647,11 +1714,13 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     /**
      * Creates a "between" Criterion based on the property name and specified lo and hi values
+     *
      * @param propertyName The property name
-     * @param lo The low value
-     * @param hi The high value
+     * @param lo           The low value
+     * @param hi           The high value
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria between(String propertyName, Object lo, Object hi) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [between] with propertyName [" +
@@ -1663,12 +1732,13 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
         return this;
     }
 
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria gte(String s, Object o) {
         return ge(s, o);
     }
 
     protected boolean validateSimpleExpression() {
-        return criteria != null;
+        return this.criteria != null;
     }
 
     @Override
@@ -1701,80 +1771,80 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
     public Object invokeMethod(String name, Object obj) {
         Object[] args = obj.getClass().isArray() ? (Object[]) obj : new Object[] { obj };
 
-        if (paginationEnabledList && SET_RESULT_TRANSFORMER_CALL.equals(name) && args.length == 1 &&
+        if (this.paginationEnabledList && SET_RESULT_TRANSFORMER_CALL.equals(name) && args.length == 1 &&
                 args[0] instanceof ResultTransformer) {
-            resultTransformer = (ResultTransformer) args[0];
+            this.resultTransformer = (ResultTransformer) args[0];
             return null;
         }
 
         if (isCriteriaConstructionMethod(name, args)) {
-            if (criteria != null) {
+            if (this.criteria != null) {
                 throwRuntimeException(new IllegalArgumentException("call to [" + name + "] not supported here"));
             }
 
             if (name.equals(GET_CALL)) {
-                uniqueResult = true;
+                this.uniqueResult = true;
             }
             else if (name.equals(SCROLL_CALL)) {
-                scroll = true;
+                this.scroll = true;
             }
             else if (name.equals(COUNT_CALL)) {
-                count = true;
+                this.count = true;
             }
             else if (name.equals(LIST_DISTINCT_CALL)) {
-                resultTransformer = CriteriaSpecification.DISTINCT_ROOT_ENTITY;
+                this.resultTransformer = CriteriaSpecification.DISTINCT_ROOT_ENTITY;
             }
 
             createCriteriaInstance();
 
             // Check for pagination params
             if (name.equals(LIST_CALL) && args.length == 2) {
-                paginationEnabledList = true;
-                orderEntries = new ArrayList<>();
+                this.paginationEnabledList = true;
+                this.orderEntries = new ArrayList<>();
                 invokeClosureNode(args[1]);
             }
             else {
                 invokeClosureNode(args[0]);
             }
 
-            if (resultTransformer != null) {
-                criteria.setResultTransformer(resultTransformer);
+            if (this.resultTransformer != null) {
+                this.criteria.setResultTransformer(this.resultTransformer);
             }
             Object result;
-            if (!uniqueResult) {
-                if (scroll) {
-                    result = criteria.scroll();
+            if (!this.uniqueResult) {
+                if (this.scroll) {
+                    result = this.criteria.scroll();
                 }
-                else if (count) {
-                    criteria.setProjection(Projections.rowCount());
-                    result = criteria.uniqueResult();
+                else if (this.count) {
+                    this.criteria.setProjection(Projections.rowCount());
+                    result = this.criteria.uniqueResult();
                 }
-                else if (paginationEnabledList) {
+                else if (this.paginationEnabledList) {
                     // Calculate how many results there are in total. This has been
                     // moved to before the 'list()' invocation to avoid any "ORDER
                     // BY" clause added by 'populateArgumentsForCriteria()', otherwise
                     // an exception is thrown for non-string sort fields (GRAILS-2690).
-                    criteria.setFirstResult(0);
-                    criteria.setMaxResults(Integer.MAX_VALUE);
+                    this.criteria.setFirstResult(0);
+                    this.criteria.setMaxResults(Integer.MAX_VALUE);
 
                     // Restore the previous projection, add settings for the pagination parameters,
                     // and then execute the query.
-                    boolean isProjection = (projectionList != null && projectionList.getLength() > 0);
-                    criteria.setProjection(isProjection ? projectionList : null);
+                    boolean isProjection = (this.projectionList != null && this.projectionList.getLength() > 0);
+                    this.criteria.setProjection(isProjection ? this.projectionList : null);
 
-                    for (Order orderEntry : orderEntries) {
-                        criteria.addOrder(orderEntry);
+                    for (Order orderEntry : this.orderEntries) {
+                        this.criteria.addOrder(orderEntry);
                     }
-                    if (resultTransformer == null) {
+                    if (this.resultTransformer == null) {
                         // GRAILS-9644 - Use projection transformer
-                        criteria.setResultTransformer(isProjection ?
+                        this.criteria.setResultTransformer(isProjection ?
                                 CriteriaSpecification.PROJECTION :
                                 CriteriaSpecification.ROOT_ENTITY
                         );
                     }
-                    else if (paginationEnabledList) {
+                    else if (this.paginationEnabledList) {
                         // relevant to GRAILS-5692
-                        criteria.setResultTransformer(resultTransformer);
+                        this.criteria.setResultTransformer(this.resultTransformer);
                     }
                     // GRAILS-7324 look if we already have association to sort by
                     Map argMap = (Map) args[0];
@@ -1790,8 +1860,8 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
                                 HibernateQueryConstants.ORDER_DESC : HibernateQueryConstants.ORDER_ASC;
                         int lastPropertyPos = sort.lastIndexOf('.');
                         String associationForOrdering = lastPropertyPos >= 0 ? sort.substring(0, lastPropertyPos) : null;
-                        if (associationForOrdering != null && aliasMap.containsKey(associationForOrdering)) {
-                            addOrder(criteria, aliasMap.get(associationForOrdering) + "." + sort.substring(lastPropertyPos + 1),
+                        if (associationForOrdering != null && this.aliasMap.containsKey(associationForOrdering)) {
+                            addOrder(this.criteria, this.aliasMap.get(associationForOrdering) + "." + sort.substring(lastPropertyPos + 1),
                                     order, ignoreCase);
                             // remove sort from arguments map to exclude from default processing.
                             @SuppressWarnings("unchecked") Map argMap2 = new HashMap(argMap);
@@ -1802,32 +1872,34 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
                     result = createPagedResultList(argMap);
                 }
                 else {
-                    result = criteria.list();
+                    result = this.criteria.list();
                 }
             }
             else {
                 result = executeUniqueResultWithProxyUnwrap();
             }
-            if (!participate) {
+            if (!this.participate) {
                 closeSession();
             }
             return result;
         }
 
-        if (criteria == null) createCriteriaInstance();
+        if (this.criteria == null) {
+            createCriteriaInstance();
+        }
 
         MetaMethod metaMethod = getMetaClass().getMetaMethod(name, args);
         if (metaMethod != null) {
             return metaMethod.invoke(this, args);
         }
 
-        metaMethod = criteriaMetaClass.getMetaMethod(name, args);
+        metaMethod = this.criteriaMetaClass.getMetaMethod(name, args);
         if (metaMethod != null) {
-            return metaMethod.invoke(criteria, args);
+            return metaMethod.invoke(this.criteria, args);
         }
-        metaMethod = criteriaMetaClass.getMetaMethod(NameUtils.getSetterName(name), args);
+        metaMethod = this.criteriaMetaClass.getMetaMethod(NameUtils.getSetterName(name), args);
         if (metaMethod != null) {
-            return metaMethod.invoke(criteria, args);
+            return metaMethod.invoke(this.criteria, args);
         }
 
         if (isAssociationQueryMethod(args) || isAssociationQueryWithJoinSpecificationMethod(args)) {
@@ -1836,83 +1908,83 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
             int joinType = hasMoreThanOneArg ? (Integer) args[0] : org.hibernate.sql.JoinType.INNER_JOIN.getJoinTypeValue();
 
             if (name.equals(AND) || name.equals(OR) || name.equals(NOT)) {
-                if (criteria == null) {
+                if (this.criteria == null) {
                     throwRuntimeException(new IllegalArgumentException("call to [" + name + "] not supported here"));
                 }
 
-                logicalExpressionStack.add(new LogicalExpression(name));
+                this.logicalExpressionStack.add(new LogicalExpression(name));
                 invokeClosureNode(callable);
 
-                LogicalExpression logicalExpression = logicalExpressionStack.remove(logicalExpressionStack.size() - 1);
+                LogicalExpression logicalExpression = this.logicalExpressionStack.remove(this.logicalExpressionStack.size() - 1);
                 addToCriteria(logicalExpression.toCriterion());
 
                 return name;
             }
 
             if (name.equals(PROJECTIONS) && args.length == 1 && (args[0] instanceof Closure)) {
-                if (criteria == null) {
+                if (this.criteria == null) {
                     throwRuntimeException(new IllegalArgumentException("call to [" + name + "] not supported here"));
                 }
 
-                projectionList = Projections.projectionList();
+                this.projectionList = Projections.projectionList();
                 invokeClosureNode(callable);
 
-                if (projectionList != null && projectionList.getLength() > 0) {
-                    criteria.setProjection(projectionList);
+                if (this.projectionList != null && this.projectionList.getLength() > 0) {
+                    this.criteria.setProjection(this.projectionList);
                 }
 
                 return name;
             }
 
-            final PropertyDescriptor pd = BeanUtils.getPropertyDescriptor(targetClass, name);
+            final PropertyDescriptor pd = BeanUtils.getPropertyDescriptor(this.targetClass, name);
             if (pd != null && pd.getReadMethod() != null) {
-                final Metamodel metamodel = sessionFactory.getMetamodel();
-                final EntityType<?> entityType = metamodel.entity(targetClass);
+                final Metamodel metamodel = this.sessionFactory.getMetamodel();
+                final EntityType<?> entityType = metamodel.entity(this.targetClass);
                 final Attribute<?, ?> attribute = entityType.getAttribute(name);
 
                 if (attribute.isAssociation()) {
-                    Class oldTargetClass = targetClass;
-                    targetClass = getClassForAssociationType(attribute);
-                    if (targetClass.equals(oldTargetClass) && !hasMoreThanOneArg) {
+                    Class oldTargetClass = this.targetClass;
+                    this.targetClass = getClassForAssociationType(attribute);
+                    if (this.targetClass.equals(oldTargetClass) && !hasMoreThanOneArg) {
                         joinType = org.hibernate.sql.JoinType.LEFT_OUTER_JOIN.getJoinTypeValue(); // default to left join if joining on the same table
                     }
-                    associationStack.add(name);
+                    this.associationStack.add(name);
                     final String associationPath = getAssociationPath();
                     createAliasIfNeccessary(name, associationPath, joinType);
                     // the criteria within an association node are grouped with an implicit AND
-                    logicalExpressionStack.add(new LogicalExpression(AND));
+                    this.logicalExpressionStack.add(new LogicalExpression(AND));
                     invokeClosureNode(callable);
-                    aliasStack.remove(aliasStack.size() - 1);
-                    if (!aliasInstanceStack.isEmpty()) {
-                        aliasInstanceStack.remove(aliasInstanceStack.size() - 1);
+                    this.aliasStack.remove(this.aliasStack.size() - 1);
+                    if (!this.aliasInstanceStack.isEmpty()) {
+                        this.aliasInstanceStack.remove(this.aliasInstanceStack.size() - 1);
                     }
-                    LogicalExpression logicalExpression = logicalExpressionStack.remove(logicalExpressionStack.size() - 1);
+                    LogicalExpression logicalExpression = this.logicalExpressionStack.remove(this.logicalExpressionStack.size() - 1);
                     if (!logicalExpression.args.isEmpty()) {
                         addToCriteria(logicalExpression.toCriterion());
                     }
-                    associationStack.remove(associationStack.size() - 1);
-                    targetClass = oldTargetClass;
+                    this.associationStack.remove(this.associationStack.size() - 1);
+                    this.targetClass = oldTargetClass;
 
                     return name;
                 }
                 if (attribute.getPersistentAttributeType() == Attribute.PersistentAttributeType.EMBEDDED) {
-                    associationStack.add(name);
-                    logicalExpressionStack.add(new LogicalExpression(AND));
-                    Class oldTargetClass = targetClass;
-                    targetClass = pd.getPropertyType();
+                    this.associationStack.add(name);
+                    this.logicalExpressionStack.add(new LogicalExpression(AND));
+                    Class oldTargetClass = this.targetClass;
+                    this.targetClass = pd.getPropertyType();
                     invokeClosureNode(callable);
-                    targetClass = oldTargetClass;
-                    LogicalExpression logicalExpression = logicalExpressionStack.remove(logicalExpressionStack.size() - 1);
+                    this.targetClass = oldTargetClass;
+                    LogicalExpression logicalExpression = this.logicalExpressionStack.remove(this.logicalExpressionStack.size() - 1);
                     if (!logicalExpression.args.isEmpty()) {
                         addToCriteria(logicalExpression.toCriterion());
                     }
-                    associationStack.remove(associationStack.size() - 1);
+                    this.associationStack.remove(this.associationStack.size() - 1);
                     return name;
                 }
             }
         }
         else if (args.length == 1 && args[0] != null) {
-            if (criteria == null) {
+            if (this.criteria == null) {
                 throwRuntimeException(new IllegalArgumentException("call to [" + name + "] not supported here"));
             }
 
@@ -1966,26 +2038,27 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
         return args.length == 2 && (args[0] instanceof Number) && (args[1] instanceof Closure);
     }
 
-
     private void createAliasIfNeccessary(String associationName, String associationPath, int joinType) {
         String newAlias;
-        if (aliasMap.containsKey(associationPath)) {
-            newAlias = aliasMap.get(associationPath);
+        if (this.aliasMap.containsKey(associationPath)) {
+            newAlias = this.aliasMap.get(associationPath);
         }
         else {
-            aliasCount++;
-            newAlias = associationName + ALIAS + aliasCount;
-            aliasMap.put(associationPath, newAlias);
-            aliasInstanceStack.add(createAlias(associationPath, newAlias, joinType));
+            this.aliasCount++;
+            newAlias = associationName + ALIAS + this.aliasCount;
+            this.aliasMap.put(associationPath, newAlias);
+            this.aliasInstanceStack.add(createAlias(associationPath, newAlias, joinType));
         }
-        aliasStack.add(newAlias);
+        this.aliasStack.add(newAlias);
     }
 
     private String getAssociationPath() {
         StringBuilder fullPath = new StringBuilder();
-        for (Object anAssociationStack : associationStack) {
+        for (Object anAssociationStack : this.associationStack) {
             String propertyName = (String) anAssociationStack;
-            if (fullPath.length() > 0) fullPath.append(".");
+            if (fullPath.length() > 0) {
+                fullPath.append(".");
+            }
             fullPath.append(propertyName);
         }
         return fullPath.toString();
@@ -2006,14 +2079,12 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
         createCriteriaInstance();
         criteriaClosure.setDelegate(this);
         criteriaClosure.call();
-        return criteria;
+        return this.criteria;
     }
-
 
     protected abstract void createCriteriaInstance();
 
     protected abstract void cacheCriteriaMapping();
-
 
     private void invokeClosureNode(Object args) {
         Closure<?> callable = (Closure<?>) args;
@@ -2022,22 +2093,20 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
         callable.call();
     }
 
-
     /**
      * adds and returns the given criterion to the currently active criteria set.
      * this might be either the root criteria or a currently open
      * LogicalExpression.
      */
     protected Criterion addToCriteria(Criterion c) {
-        if (!logicalExpressionStack.isEmpty()) {
-            logicalExpressionStack.get(logicalExpressionStack.size() - 1).args.add(c);
+        if (!this.logicalExpressionStack.isEmpty()) {
+            this.logicalExpressionStack.get(this.logicalExpressionStack.size() - 1).args.add(c);
         }
         else {
-            criteria.add(c);
+            this.criteria.add(c);
         }
         return c;
     }
-
 
     /**
      * Add order directly to criteria.
@@ -2053,14 +2122,16 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     /**
      * Returns the criteria instance
+     *
      * @return The criteria instance
      */
     public Criteria getInstance() {
-        return criteria;
+        return this.criteria;
     }
 
     /**
      * Set whether a unique result should be returned
+     *
      * @param uniqueResult True if a unique result should be returned
      */
     public void setUniqueResult(boolean uniqueResult) {
@@ -2075,9 +2146,8 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * CriteriaSpecificationFULL_JOIN, or CriteriaSpecificationLEFT_JOIN.
      *
      * @param associationPath A dot-seperated property path
-     * @param alias The alias to assign to the joined association (for later reference).
-     * @param joinType The type of join to use.
-     *
+     * @param alias           The alias to assign to the joined association (for later reference).
+     * @param joinType        The type of join to use.
      * @return this (for method chaining)
      * @throws org.hibernate.HibernateException Indicates a problem creating the sub criteria
      */
@@ -2085,6 +2155,35 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     protected abstract Class getClassForAssociationType(Attribute<?, ?> type);
 
+    /**
+     * Throws a runtime exception where necessary to ensure the session gets closed
+     */
+    protected void throwRuntimeException(RuntimeException t) {
+        closeSessionFollowingException();
+        throw t;
+    }
+
+    private void closeSessionFollowingException() {
+        closeSession();
+        this.criteria = null;
+    }
+
+    /**
+     * Closes the session if it is copen
+     */
+    protected void closeSession() {
+        if (this.hibernateSession != null && this.hibernateSession.isOpen() && !this.participate) {
+            this.hibernateSession.close();
+        }
+    }
+
+    public int getDefaultFlushMode() {
+        return this.defaultFlushMode;
+    }
+
+    public void setDefaultFlushMode(int defaultFlushMode) {
+        this.defaultFlushMode = defaultFlushMode;
+    }
 
     /**
      * instances of this class are pushed onto the logicalExpressionStack
@@ -2101,30 +2200,30 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
         }
 
         public Criterion toCriterion() {
-            if (name.equals(NOT)) {
-                switch (args.size()) {
+            if (this.name.equals(NOT)) {
+                switch (this.args.size()) {
                     case 0:
                         throwRuntimeException(new IllegalArgumentException("Logical expression [not] must contain at least 1 expression"));
                         return null;
 
                     case 1:
-                        return Restrictions.not(args.get(0));
+                        return Restrictions.not(this.args.get(0));
 
                     default:
                         // treat multiple sub-criteria as an implicit "OR"
-                        return Restrictions.not(buildJunction(Restrictions.disjunction(), args));
+                        return Restrictions.not(buildJunction(Restrictions.disjunction(), this.args));
                 }
             }
 
-            if (name.equals(AND)) {
-                return buildJunction(Restrictions.conjunction(), args);
+            if (this.name.equals(AND)) {
+                return buildJunction(Restrictions.conjunction(), this.args);
             }
 
-            if (name.equals(OR)) {
-                return buildJunction(Restrictions.disjunction(), args);
+            if (this.name.equals(OR)) {
+                return buildJunction(Restrictions.disjunction(), this.args);
             }
 
-            throwRuntimeException(new IllegalStateException("Logical expression [" + name + "] not handled!"));
+            throwRuntimeException(new IllegalStateException("Logical expression [" + this.name + "] not handled!"));
             return null;
         }
 
@@ -2137,36 +2236,6 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
             return junction;
         }
 
-    }
-
-    /**
-     * Throws a runtime exception where necessary to ensure the session gets closed
-     */
-    protected void throwRuntimeException(RuntimeException t) {
-        closeSessionFollowingException();
-        throw t;
-    }
-
-    private void closeSessionFollowingException() {
-        closeSession();
-        criteria = null;
-    }
-
-    /**
-     * Closes the session if it is copen
-     */
-    protected void closeSession() {
-        if (hibernateSession != null && hibernateSession.isOpen() && !participate) {
-            hibernateSession.close();
-        }
-    }
-
-    public int getDefaultFlushMode() {
-        return defaultFlushMode;
-    }
-
-    public void setDefaultFlushMode(int defaultFlushMode) {
-        this.defaultFlushMode = defaultFlushMode;
     }
 
 }

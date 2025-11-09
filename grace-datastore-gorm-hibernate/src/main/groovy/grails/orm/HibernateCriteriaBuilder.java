@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -212,6 +212,7 @@ public class HibernateCriteriaBuilder extends AbstractHibernateCriteriaBuilder {
      * @param propertyValue The ilike value
      * @return A Criterion instance
      */
+    @Override
     public org.grails.datastore.mapping.query.api.Criteria rlike(String propertyName, Object propertyValue) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [rlike] with propertyName [" +
@@ -226,19 +227,17 @@ public class HibernateCriteriaBuilder extends AbstractHibernateCriteriaBuilder {
 
     @Override
     protected void createCriteriaInstance() {
-        {
-            if (TransactionSynchronizationManager.hasResource(sessionFactory)) {
-                participate = true;
-                hibernateSession = ((SessionHolder) TransactionSynchronizationManager.getResource(sessionFactory)).getSession();
-            }
-            else {
-                hibernateSession = sessionFactory.openSession();
-            }
-
-            criteria = hibernateSession.createCriteria(targetClass);
-            cacheCriteriaMapping();
-            criteriaMetaClass = GroovySystem.getMetaClassRegistry().getMetaClass(criteria.getClass());
+        if (TransactionSynchronizationManager.hasResource(sessionFactory)) {
+            participate = true;
+            hibernateSession = ((SessionHolder) TransactionSynchronizationManager.getResource(sessionFactory)).getSession();
         }
+        else {
+            hibernateSession = sessionFactory.openSession();
+        }
+
+        criteria = hibernateSession.createCriteria(targetClass);
+        cacheCriteriaMapping();
+        criteriaMetaClass = GroovySystem.getMetaClassRegistry().getMetaClass(criteria.getClass());
     }
 
     @Override
@@ -246,12 +245,14 @@ public class HibernateCriteriaBuilder extends AbstractHibernateCriteriaBuilder {
         return getHibernateDetachedCriteria(new HibernateQuery(criteria, queryableCriteria.getPersistentEntity()), queryableCriteria);
     }
 
-    public static org.hibernate.criterion.DetachedCriteria getHibernateDetachedCriteria(AbstractHibernateQuery query, QueryableCriteria<?> queryableCriteria) {
+    public static org.hibernate.criterion.DetachedCriteria getHibernateDetachedCriteria(
+            AbstractHibernateQuery query, QueryableCriteria<?> queryableCriteria) {
         String alias = queryableCriteria.getAlias();
         return getHibernateDetachedCriteria(query, queryableCriteria, alias);
     }
 
-    public static org.hibernate.criterion.DetachedCriteria getHibernateDetachedCriteria(AbstractHibernateQuery query, QueryableCriteria<?> queryableCriteria, String alias) {
+    public static org.hibernate.criterion.DetachedCriteria getHibernateDetachedCriteria(
+            AbstractHibernateQuery query, QueryableCriteria<?> queryableCriteria, String alias) {
         PersistentEntity persistentEntity = queryableCriteria.getPersistentEntity();
         Class targetClass = persistentEntity.getJavaClass();
         org.hibernate.criterion.DetachedCriteria detachedCriteria;
@@ -266,7 +267,8 @@ public class HibernateCriteriaBuilder extends AbstractHibernateCriteriaBuilder {
         return detachedCriteria;
     }
 
-    private static void populateHibernateDetachedCriteria(AbstractHibernateQuery query, org.hibernate.criterion.DetachedCriteria detachedCriteria, QueryableCriteria<?> queryableCriteria) {
+    private static void populateHibernateDetachedCriteria(AbstractHibernateQuery query,
+            org.hibernate.criterion.DetachedCriteria detachedCriteria, QueryableCriteria<?> queryableCriteria) {
         List<org.grails.datastore.mapping.query.Query.Criterion> criteriaList = queryableCriteria.getCriteria();
         for (org.grails.datastore.mapping.query.Query.Criterion criterion : criteriaList) {
             Criterion hibernateCriterion = HibernateQuery.HIBERNATE_CRITERION_ADAPTER.toHibernateCriterion(query, criterion, null);

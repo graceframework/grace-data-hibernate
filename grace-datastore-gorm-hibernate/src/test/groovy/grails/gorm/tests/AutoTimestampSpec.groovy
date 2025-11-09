@@ -1,18 +1,34 @@
+/*
+ * Copyright 2016-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.gorm.tests
 
 import grails.gorm.annotation.Entity
 
 class AutoTimestampSpec extends GormDatastoreSpec {
+
     @Override
     List getDomainClasses() {
         [DateCreatedTestA, DateCreatedTestB]
     }
 
-    void "autoTimestamp should prevent custom changes to dateCreated and lastUpdated if turned on"() {
-        when: "testing insert ignores custom dateCreated and lastUpdated"
+    void 'autoTimestamp should prevent custom changes to dateCreated and lastUpdated if turned on'() {
+        when: 'testing insert ignores custom dateCreated and lastUpdated'
         def before = new Date() - 5
         def a = new DateCreatedTestA(name: 'David Estes', lastUpdated: before, dateCreated: before)
-        a.save(flush:true)
+        a.save(flush: true)
         a.refresh()
         def lastUpdated = a.lastUpdated
         def dateCreated = a.dateCreated
@@ -21,11 +37,11 @@ class AutoTimestampSpec extends GormDatastoreSpec {
         lastUpdated > before
         dateCreated > before
 
-        when: "testing update ignores custom dateCreated and lastUpdated"
-        a.name = "David R. Estes"
+        when: 'testing update ignores custom dateCreated and lastUpdated'
+        a.name = 'David R. Estes'
         a.lastUpdated = before - 5
         a.dateCreated = before - 5
-        a.save(flush:true)
+        a.save(flush: true)
         a.refresh()
 
         then:
@@ -33,13 +49,13 @@ class AutoTimestampSpec extends GormDatastoreSpec {
         a.dateCreated == dateCreated
     }
 
-    void "dateCreated and lastUpdated should not be modified by GORM if turned off"() {
-        when: "insert allows custom dateCreated and lastUpdated"
+    void 'dateCreated and lastUpdated should not be modified by GORM if turned off'() {
+        when: 'insert allows custom dateCreated and lastUpdated'
         def now = new Date()
         def before = now - 5
 
         def a = new DateCreatedTestB(name: 'David Estes', lastUpdated: before, dateCreated: before)
-        a.save(flush:true)
+        a.save(flush: true)
         a.refresh()
 
         def lastUpdated = a.lastUpdated
@@ -49,21 +65,23 @@ class AutoTimestampSpec extends GormDatastoreSpec {
         lastUpdated == before
         dateCreated == before
 
-        when: "update allows custom dateCreated and lastUpdated"
-        a.name = "David R. Estes"
+        when: 'update allows custom dateCreated and lastUpdated'
+        a.name = 'David R. Estes'
         a.lastUpdated = now
         a.dateCreated = now
-        a.save(flush:true)
+        a.save(flush: true)
         a.refresh()
 
         then:
         a.lastUpdated == now
         a.dateCreated == now
     }
+
 }
 
 @Entity
 class DateCreatedTestA {
+
     String name
     Date dateCreated
     Date lastUpdated
@@ -71,10 +89,12 @@ class DateCreatedTestA {
     static mapping = {
         autoTimestamp true
     }
+
 }
 
 @Entity
 class DateCreatedTestB {
+
     String name
     Date dateCreated
     Date lastUpdated
@@ -82,4 +102,5 @@ class DateCreatedTestB {
     static mapping = {
         autoTimestamp false
     }
+
 }

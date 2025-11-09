@@ -1,11 +1,11 @@
 /*
- * Copyright 2003-2023 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -99,7 +99,6 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
         hibernateDatastore.withSession(callable)
     }
 
-
     @Override
     D get(Serializable id) {
         if (id == null) {
@@ -135,7 +134,6 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
                     hibernateTemplate.get(persistentEntity.javaClass, id)
             )
         }
-
     }
 
     @Override
@@ -163,7 +161,6 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
             HibernateHqlQuery hibernateHqlQuery = new HibernateHqlQuery(
                     hibernateSession, persistentEntity, criteria)
             return proxyHandler.unwrap(hibernateHqlQuery.singleResult())
-
         })
     }
 
@@ -197,13 +194,13 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
             CriteriaQuery criteriaQuery = criteriaBuilder.createQuery(persistentEntity.javaClass)
             criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(persistentEntity.javaClass)))
             Query criteria = session.createQuery(criteriaQuery)
-            HibernateHqlQuery hibernateHqlQuery = new HibernateHqlQuery(
-                    hibernateSession, persistentEntity, criteria) {
+            HibernateHqlQuery hibernateHqlQuery = new HibernateHqlQuery(hibernateSession, persistentEntity, criteria) {
 
                 @Override
                 protected void flushBeforeQuery() {
                     // no-op
                 }
+
             }
             hibernateTemplate.applySettings(criteria)
             def result = hibernateHqlQuery.singleResult()
@@ -220,6 +217,7 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
      * @param result The result
      */
     protected abstract void firePostQueryEvent(Session session, Criteria criteria, Object result)
+
     /**
      * Fire a pre query event
      *
@@ -284,7 +282,7 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
             query = buildNamedParameterQueryFromGString((GString) query, queryNamedArgs)
         }
 
-        String queryString = query.toString()
+        String queryString = query
         query = normalizeMultiLineQueryString(queryString)
 
         def template = hibernateTemplate
@@ -305,10 +303,13 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
     @Override
     D find(CharSequence query, Collection params, Map args) {
         if (query instanceof GString) {
-            throw new GrailsQueryException("Unsafe query [$query]. GORM cannot automatically escape a GString value when combined with ordinal parameters, so this query is potentially vulnerable to HQL injection attacks. Please embed the parameters within the GString so they can be safely escaped.")
+            throw new GrailsQueryException("Unsafe query [$query]. " +
+                    'GORM cannot automatically escape a GString value when combined with ordinal parameters, ' +
+                    'so this query is potentially vulnerable to HQL injection attacks. ' +
+                    'Please embed the parameters within the GString so they can be safely escaped.')
         }
 
-        String queryString = query.toString()
+        String queryString = query
         queryString = normalizeMultiLineQueryString(queryString)
 
         args = new HashMap(args)
@@ -338,7 +339,7 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
             query = buildNamedParameterQueryFromGString((GString) query, params)
         }
 
-        String queryString = query.toString()
+        String queryString = query
         queryString = normalizeMultiLineQueryString(queryString)
 
         def template = hibernateTemplate
@@ -358,8 +359,8 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
     // required for Hibernate 5.2 compatibility
     <D> D findWithSql(CharSequence sql, Map args = Collections.emptyMap()) {
         IHibernateTemplate template = hibernateTemplate
-        return (D) template.execute { Session session ->
 
+        return (D) template.execute { Session session ->
             List params = []
             if (sql instanceof GString) {
                 sql = buildOrdinalParameterQueryFromGString((GString) sql, params)
@@ -403,7 +404,6 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
     List<D> findAllWithSql(CharSequence sql, Map args = Collections.emptyMap()) {
         IHibernateTemplate template = hibernateTemplate
         return (List<D>) template.execute { Session session ->
-
             List params = []
             if (sql instanceof GString) {
                 sql = buildOrdinalParameterQueryFromGString((GString) sql, params)
@@ -488,7 +488,6 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
         }
     }
 
-
     @Override
     List<D> findAll(CharSequence query, Map params) {
         if (query instanceof GString) {
@@ -528,10 +527,13 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
     @Override
     List<D> findAll(CharSequence query, Collection params, Map args) {
         if (query instanceof GString) {
-            throw new GrailsQueryException("Unsafe query [$query]. GORM cannot automatically escape a GString value when combined with ordinal parameters, so this query is potentially vulnerable to HQL injection attacks. Please embed the parameters within the GString so they can be safely escaped.")
+            throw new GrailsQueryException("Unsafe query [$query]. " +
+                    'GORM cannot automatically escape a GString value when combined with ordinal parameters, ' +
+                    'so this query is potentially vulnerable to HQL injection attacks. ' +
+                    'Please embed the parameters within the GString so they can be safely escaped.')
         }
 
-        String queryString = query.toString()
+        String queryString = query
         queryString = normalizeMultiLineQueryString(queryString)
 
         args = new HashMap(args)
@@ -593,7 +595,9 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
 
     @Override
     List<D> findAllWhere(Map queryMap, Map args) {
-        if (!queryMap) return null
+        if (!queryMap) {
+            return null
+        }
         (List<D>) hibernateTemplate.execute { Session session ->
             Map<String, Object> processedQueryMap = [:]
             queryMap.each { key, value -> processedQueryMap[key.toString()] = value }
@@ -614,7 +618,6 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
             return results
         }
     }
-
 
     @Override
     List executeQuery(CharSequence query, Map params, Map args) {
@@ -641,7 +644,10 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
     @Override
     List executeQuery(CharSequence query, Collection params, Map args) {
         if (query instanceof GString) {
-            throw new GrailsQueryException("Unsafe query [$query]. GORM cannot automatically escape a GString value when combined with ordinal parameters, so this query is potentially vulnerable to HQL injection attacks. Please embed the parameters within the GString so they can be safely escaped.")
+            throw new GrailsQueryException("Unsafe query [$query]. " +
+                    'GORM cannot automatically escape a GString value when combined with ordinal parameters, ' +
+                    'so this query is potentially vulnerable to HQL injection attacks. ' +
+                    'Please embed the parameters within the GString so they can be safely escaped.')
         }
 
         def template = hibernateTemplate
@@ -666,7 +672,9 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
 
     @Override
     D findWhere(Map queryMap, Map args) {
-        if (!queryMap) return null
+        if (!queryMap) {
+            return null
+        }
         (D) hibernateTemplate.execute { Session session ->
             Map<String, Object> processedQueryMap = [:]
             queryMap.each { key, value -> processedQueryMap[key.toString()] = value }
@@ -691,7 +699,6 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
         getAllInternal(ids)
     }
 
-
     List<D> getAll(Long... ids) {
         getAllInternal(ids as List)
     }
@@ -703,7 +710,9 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
 
     @CompileDynamic
     private List getAllInternal(List ids) {
-        if (!ids) return []
+        if (!ids) {
+            return []
+        }
 
         (List) hibernateTemplate.execute { Session session ->
             def identityType = persistentEntity.identity.type
@@ -811,7 +820,7 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
                     try {
                         return (Serializable) conversionService.convert(id, identityType)
                     }
-                    catch (Throwable e) {
+                    catch (Throwable ignore) {
                         // unconvertable id, return null
                         return null
                     }
@@ -826,14 +835,13 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
     }
 
     protected void populateQueryWithNamedArguments(Query q, Map queryNamedArgs) {
-
         if (queryNamedArgs) {
             for (Map.Entry entry in queryNamedArgs.entrySet()) {
                 def key = entry.key
                 if (!(key instanceof CharSequence)) {
                     throw new GrailsQueryException("Named parameter's name must be String: $queryNamedArgs")
                 }
-                String stringKey = key.toString()
+                String stringKey = key
                 def value = entry.value
 
                 if (value == null) {
@@ -842,10 +850,10 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
                 else if (value instanceof CharSequence) {
                     q.setParameter stringKey, value.toString()
                 }
-                else if (List.class.isAssignableFrom(value.getClass())) {
+                else if (List.isAssignableFrom(value.getClass())) {
                     q.setParameterList stringKey, (List) value
                 }
-                else if (Set.class.isAssignableFrom(value.getClass())) {
+                else if (Set.isAssignableFrom(value.getClass())) {
                     q.setParameterList stringKey, (Set) value
                 }
                 else if (value.getClass().isArray()) {
@@ -861,7 +869,7 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
     protected Integer intValue(Map args, String key) {
         def value = args.get(key)
         if (value) {
-            return conversionService.convert(value, Integer.class)
+            return conversionService.convert(value, Integer)
         }
         return null
     }
@@ -872,7 +880,6 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
         Integer offset = intValue(args, DynamicFinder.ARGUMENT_OFFSET)
         args.remove(DynamicFinder.ARGUMENT_OFFSET)
 
-        //
         if (max != null) {
             q.maxResults = max
         }
@@ -884,11 +891,11 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
             q.cacheable = ClassUtils.getBooleanFromMap(DynamicFinder.ARGUMENT_CACHE, args)
         }
         if (args.containsKey(DynamicFinder.ARGUMENT_FETCH_SIZE)) {
-            Integer fetchSizeParam = conversionService.convert(args.remove(DynamicFinder.ARGUMENT_FETCH_SIZE), Integer.class)
+            Integer fetchSizeParam = conversionService.convert(args.remove(DynamicFinder.ARGUMENT_FETCH_SIZE), Integer)
             q.setFetchSize(fetchSizeParam.intValue())
         }
         if (args.containsKey(DynamicFinder.ARGUMENT_TIMEOUT)) {
-            Integer timeoutParam = conversionService.convert(args.remove(DynamicFinder.ARGUMENT_TIMEOUT), Integer.class)
+            Integer timeoutParam = conversionService.convert(args.remove(DynamicFinder.ARGUMENT_TIMEOUT), Integer)
             q.setTimeout(timeoutParam.intValue())
         }
         if (args.containsKey(DynamicFinder.ARGUMENT_READ_ONLY)) {
@@ -902,8 +909,9 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
     }
 
     private String normalizeMultiLineQueryString(String query) {
-        if (query.indexOf('\n') != -1)
+        if (query.indexOf('\n') != -1) {
             return query.trim().replace('\n', ' ')
+        }
         return query
     }
 

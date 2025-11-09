@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2023 the original author or authors.
+ * Copyright 2018-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,7 +47,7 @@ public class PagedResultList extends grails.gorm.PagedResultList {
             Root queryRoot,
             CriteriaBuilder criteriaBuilder) {
         super(hibernateHqlQuery);
-        hibernateTemplate = template;
+        this.hibernateTemplate = template;
         this.criteriaQuery = criteriaQuery;
         this.queryRoot = queryRoot;
         this.criteriaBuilder = criteriaBuilder;
@@ -62,13 +62,17 @@ public class PagedResultList extends grails.gorm.PagedResultList {
     @Override
     public int getTotalCount() {
         if (totalCount == Integer.MIN_VALUE) {
-            totalCount = hibernateTemplate.execute(new GrailsHibernateTemplate.HibernateCallback<Integer>() {
+            totalCount = this.hibernateTemplate.execute(new GrailsHibernateTemplate.HibernateCallback<Integer>() {
+
+                @Override
                 public Integer doInHibernate(Session session) throws HibernateException, SQLException {
-                    final CriteriaQuery finalQuery = criteriaQuery.select(criteriaBuilder.count(queryRoot)).distinct(true);
+                    final CriteriaQuery finalQuery = PagedResultList.this.criteriaQuery.select(
+                            PagedResultList.this.criteriaBuilder.count(PagedResultList.this.queryRoot)).distinct(true);
                     final Query query = session.createQuery(finalQuery);
-                    hibernateTemplate.applySettings(query);
+                    PagedResultList.this.hibernateTemplate.applySettings(query);
                     return ((Number) query.uniqueResult()).intValue();
                 }
+
             });
         }
         return totalCount;

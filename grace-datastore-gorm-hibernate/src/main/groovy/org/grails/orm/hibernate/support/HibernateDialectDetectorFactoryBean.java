@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -73,11 +73,11 @@ public class HibernateDialectDetectorFactoryBean implements FactoryBean<String>,
     }
 
     public void setVendorNameDialectMappings(Properties mappings) {
-        vendorNameDialectMappings = mappings;
+        this.vendorNameDialectMappings = mappings;
     }
 
     public String getObject() {
-        return hibernateDialectClassName;
+        return this.hibernateDialectClassName;
     }
 
     public Class<String> getObjectType() {
@@ -89,20 +89,21 @@ public class HibernateDialectDetectorFactoryBean implements FactoryBean<String>,
     }
 
     public void afterPropertiesSet() throws MetaDataAccessException {
-        Assert.notNull(dataSource, "Data source is not set!");
-        Assert.notNull(vendorNameDialectMappings, "Vendor name/dialect mappings are not set!");
+        Assert.notNull(this.dataSource, "Data source is not set!");
+        Assert.notNull(this.vendorNameDialectMappings, "Vendor name/dialect mappings are not set!");
 
         Connection connection = null;
 
-        String dbName = (String) JdbcUtils.extractDatabaseMetaData(dataSource, "getDatabaseProductName");
+        String dbName = (String) JdbcUtils.extractDatabaseMetaData(this.dataSource, "getDatabaseProductName");
 
         try {
-            connection = DataSourceUtils.getConnection(dataSource);
+            connection = DataSourceUtils.getConnection(this.dataSource);
 
             try {
                 final DialectFactory dialectFactory = createDialectFactory();
                 final Connection finalConnection = connection;
                 DialectResolutionInfoSource infoSource = new DialectResolutionInfoSource() {
+
                     @Override
                     public DialectResolutionInfo getDialectResolutionInfo() {
                         try {
@@ -113,21 +114,22 @@ public class HibernateDialectDetectorFactoryBean implements FactoryBean<String>,
                                     "Could not determine Hibernate dialect", e);
                         }
                     }
+
                 };
-                hibernateDialect = dialectFactory.buildDialect(hibernateProperties, infoSource);
-                hibernateDialectClassName = hibernateDialect.getClass().getName();
+                this.hibernateDialect = dialectFactory.buildDialect(this.hibernateProperties, infoSource);
+                this.hibernateDialectClassName = this.hibernateDialect.getClass().getName();
             }
             catch (HibernateException e) {
-                hibernateDialectClassName = vendorNameDialectMappings.getProperty(dbName);
+                this.hibernateDialectClassName = this.vendorNameDialectMappings.getProperty(dbName);
             }
 
-            if (!StringUtils.hasText(hibernateDialectClassName)) {
+            if (!StringUtils.hasText(this.hibernateDialectClassName)) {
                 throw new CouldNotDetermineHibernateDialectException(
                         "Could not determine Hibernate dialect for database name [" + dbName + "]!");
             }
         }
         finally {
-            DataSourceUtils.releaseConnection(connection, dataSource);
+            DataSourceUtils.releaseConnection(connection, this.dataSource);
         }
     }
 
@@ -169,6 +171,7 @@ public class HibernateDialectDetectorFactoryBean implements FactoryBean<String>,
             public ServiceRegistry getParentServiceRegistry() {
                 return null;
             }
+
         });
         return factory;
     }

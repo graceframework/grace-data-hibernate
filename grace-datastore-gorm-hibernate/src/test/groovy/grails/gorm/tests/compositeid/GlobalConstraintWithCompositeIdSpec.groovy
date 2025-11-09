@@ -1,11 +1,20 @@
+/*
+ * Copyright 2017-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.gorm.tests.compositeid
 
-import grails.gorm.annotation.Entity
-import grails.gorm.transactions.Rollback
-import org.grails.datastore.mapping.core.DatastoreUtils
-import org.grails.datastore.mapping.model.PersistentEntity
-import org.grails.orm.hibernate.HibernateDatastore
-import org.grails.orm.hibernate.cfg.PropertyConfig
 import org.hibernate.dialect.H2Dialect
 import org.springframework.transaction.PlatformTransactionManager
 import spock.lang.AutoCleanup
@@ -13,32 +22,45 @@ import spock.lang.Issue
 import spock.lang.Shared
 import spock.lang.Specification
 
+import grails.gorm.annotation.Entity
+import grails.gorm.transactions.Rollback
+
+import org.grails.datastore.mapping.core.DatastoreUtils
+import org.grails.datastore.mapping.model.PersistentEntity
+import org.grails.orm.hibernate.HibernateDatastore
+import org.grails.orm.hibernate.cfg.PropertyConfig
+
 /**
  * Created by graemerocher on 17/02/2017.
  */
 class GlobalConstraintWithCompositeIdSpec extends Specification {
 
-    @Shared Map config = [
-            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
-            'dataSource.dbCreate': 'update',
-            'dataSource.dialect': H2Dialect.name,
-            'dataSource.formatSql': 'true',
-            'hibernate.flush.mode': 'COMMIT',
-            'grails.gorm.default.constraints':{
+    @Shared
+    Map config = [
+            'dataSource.url'                 : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
+            'dataSource.dbCreate'            : 'update',
+            'dataSource.dialect'             : H2Dialect.name,
+            'dataSource.formatSql'           : 'true',
+            'hibernate.flush.mode'           : 'COMMIT',
+            'grails.gorm.default.constraints': {
                 '*'(nullable: true)
             }
     ]
 
-    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(DatastoreUtils.createPropertyResolver(config),ParentB, ChildB, DomainB)
-    @Shared PlatformTransactionManager transactionManager = hibernateDatastore.transactionManager
+    @Shared
+    @AutoCleanup
+    HibernateDatastore hibernateDatastore = new HibernateDatastore(DatastoreUtils.createPropertyResolver(config), ParentB, ChildB, DomainB)
+
+    @Shared
+    PlatformTransactionManager transactionManager = hibernateDatastore.transactionManager
 
     @Rollback
     @Issue('https://github.com/grails/grails-core/issues/10457')
-    void "test global constraints with composite id"() {
+    void 'test global constraints with composite id'() {
         when:
-        ParentB parent = new ParentB(code:"AAA", desc: "BBB")
-                                    .addToChilds(name:"Child A")
-                                    .save(flush:true)
+        ParentB parent = new ParentB(code: 'AAA', desc: 'BBB')
+                .addToChilds(name: 'Child A')
+                .save(flush: true)
 
         then:
         ParentB.count == 1
@@ -47,7 +69,7 @@ class GlobalConstraintWithCompositeIdSpec extends Specification {
 
     @Rollback
     @Issue('https://github.com/grails/grails-data-mapping/issues/877')
-    void "test global constraints with unique constraint"() {
+    void 'test global constraints with unique constraint'() {
         given:
         PersistentEntity entity = hibernateDatastore.mappingContext.getPersistentEntity(DomainB.name)
         PropertyConfig nameProp = entity.getPropertyByName('name').mapping.mappedForm
@@ -58,10 +80,9 @@ class GlobalConstraintWithCompositeIdSpec extends Specification {
         !nameProp.uniquenessGroup.isEmpty()
         nameProp.uniquenessGroup.contains('domainB')
         someOtherConfig.uniquenessGroup.isEmpty()
-
     }
-}
 
+}
 
 @Entity
 class ParentB implements Serializable {
@@ -80,10 +101,12 @@ class ParentB implements Serializable {
         code column: 'COD'
         desc column: 'DSC'
     }
+
 }
 
 @Entity
 class ChildB implements Serializable {
+
     String name
 
     static belongsTo = [parent: ParentB]
@@ -101,6 +124,7 @@ class ChildB implements Serializable {
             }
         }
     }
+
 }
 
 @Entity
@@ -113,7 +137,8 @@ class DomainB {
     static belongsTo = [domainB: DomainB]
 
     static constraints = {
-        name nullable: false, blank: false, unique: "domainB"
+        name nullable: false, blank: false, unique: 'domainB'
         someOther nullable: false, blank: false, unique: true
     }
+
 }

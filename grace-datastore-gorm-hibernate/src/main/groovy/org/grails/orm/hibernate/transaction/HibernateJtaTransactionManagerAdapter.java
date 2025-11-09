@@ -1,11 +1,11 @@
 /*
- * Copyright 2003-2023 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,14 +15,14 @@
  */
 package org.grails.orm.hibernate.transaction;
 
+import javax.transaction.xa.XAResource;
+
 import jakarta.transaction.RollbackException;
 import jakarta.transaction.Status;
 import jakarta.transaction.Synchronization;
 import jakarta.transaction.SystemException;
 import jakarta.transaction.Transaction;
 import jakarta.transaction.TransactionManager;
-
-import javax.transaction.xa.XAResource;
 
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -35,13 +35,13 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 /**
  * Adapter for adding transaction controlling hooks for supporting
  * Hibernate's org.hibernate.engine.transaction.Isolater class's interaction with transactions
- *
+ * <p>
  * This is required when there is no real JTA transaction manager in use and Spring's
  * {@link TransactionAwareDataSourceProxy} is used.
- *
+ * <p>
  * Without this solution, using Hibernate's TableGenerator identity strategies will fail to support transactions.
  * The id generator will commit the current transaction and break transactional behaviour.
- *
+ * <p>
  * The javadoc of Hibernate's {@code TableHiLoGenerator} states this. However this isn't mentioned in the javadocs of other TableGenerators.
  *
  * @author Lari Hotari
@@ -59,34 +59,34 @@ public class HibernateJtaTransactionManagerAdapter implements TransactionManager
     @Override
     public void begin() {
         TransactionDefinition definition = new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-        currentTransactionHolder.set(springTransactionManager.getTransaction(definition));
+        this.currentTransactionHolder.set(this.springTransactionManager.getTransaction(definition));
     }
 
     @Override
     public void commit() throws
             SecurityException, IllegalStateException {
-        springTransactionManager.commit(getAndRemoveStatus());
+        this.springTransactionManager.commit(getAndRemoveStatus());
     }
 
     @Override
     public void rollback() throws IllegalStateException, SecurityException {
-        springTransactionManager.rollback(getAndRemoveStatus());
+        this.springTransactionManager.rollback(getAndRemoveStatus());
     }
 
     @Override
     public void setRollbackOnly() throws IllegalStateException {
-        currentTransactionHolder.get().setRollbackOnly();
+        this.currentTransactionHolder.get().setRollbackOnly();
     }
 
     protected TransactionStatus getAndRemoveStatus() {
-        TransactionStatus status = currentTransactionHolder.get();
-        currentTransactionHolder.remove();
+        TransactionStatus status = this.currentTransactionHolder.get();
+        this.currentTransactionHolder.remove();
         return status;
     }
 
     @Override
     public int getStatus() {
-        TransactionStatus status = currentTransactionHolder.get();
+        TransactionStatus status = this.currentTransactionHolder.get();
         return convertToJtaStatus(status);
     }
 
@@ -109,20 +109,21 @@ public class HibernateJtaTransactionManagerAdapter implements TransactionManager
 
     @Override
     public Transaction getTransaction() {
-        return new TransactionAdapter(springTransactionManager, currentTransactionHolder);
+        return new TransactionAdapter(this.springTransactionManager, this.currentTransactionHolder);
     }
 
     @Override
     public void resume(Transaction tobj) throws IllegalStateException {
         TransactionAdapter transaction = (TransactionAdapter) tobj;
         // commit the PROPAGATION_NOT_SUPPORTED transaction returned in suspend
-        springTransactionManager.commit(transaction.transactionStatus);
+        this.springTransactionManager.commit(transaction.transactionStatus);
     }
 
     @Override
     public Transaction suspend() {
-        currentTransactionHolder.set(springTransactionManager.getTransaction(new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_NOT_SUPPORTED)));
-        return new TransactionAdapter(springTransactionManager, currentTransactionHolder);
+        this.currentTransactionHolder.set(this.springTransactionManager.getTransaction(
+                new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_NOT_SUPPORTED)));
+        return new TransactionAdapter(this.springTransactionManager, this.currentTransactionHolder);
     }
 
     @Override
@@ -147,8 +148,8 @@ public class HibernateJtaTransactionManagerAdapter implements TransactionManager
         @Override
         public void commit() throws
                 SecurityException, IllegalStateException {
-            springTransactionManager.commit(transactionStatus);
-            currentTransactionHolder.remove();
+            this.springTransactionManager.commit(this.transactionStatus);
+            this.currentTransactionHolder.remove();
         }
 
         @Override
@@ -164,7 +165,7 @@ public class HibernateJtaTransactionManagerAdapter implements TransactionManager
 
         @Override
         public int getStatus() throws SystemException {
-            return convertToJtaStatus(transactionStatus);
+            return convertToJtaStatus(this.transactionStatus);
         }
 
         @Override
@@ -210,13 +211,13 @@ public class HibernateJtaTransactionManagerAdapter implements TransactionManager
 
         @Override
         public void rollback() throws IllegalStateException, SystemException {
-            springTransactionManager.rollback(transactionStatus);
-            currentTransactionHolder.remove();
+            this.springTransactionManager.rollback(this.transactionStatus);
+            this.currentTransactionHolder.remove();
         }
 
         @Override
         public void setRollbackOnly() throws IllegalStateException, SystemException {
-            transactionStatus.setRollbackOnly();
+            this.transactionStatus.setRollbackOnly();
         }
 
         @Override
@@ -246,7 +247,7 @@ public class HibernateJtaTransactionManagerAdapter implements TransactionManager
 
         @Override
         public int hashCode() {
-            return transactionStatus != null ? transactionStatus.hashCode() : System.identityHashCode(this);
+            return this.transactionStatus != null ? this.transactionStatus.hashCode() : System.identityHashCode(this);
         }
 
     }

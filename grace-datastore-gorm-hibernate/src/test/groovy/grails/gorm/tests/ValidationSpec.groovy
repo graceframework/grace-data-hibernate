@@ -1,3 +1,18 @@
+/*
+ * Copyright 2016-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.gorm.tests
 
 import org.springframework.transaction.support.TransactionSynchronizationManager
@@ -13,14 +28,13 @@ class ValidationSpec extends GormDatastoreSpec {
                 ClassWithOverloadedBeforeValidate]
     }
 
-
-    void "Test validate() method"() {
+    void 'Test validate() method'() {
         // test assumes name cannot be blank
         given:
         def t
 
         when:
-        t = new TestEntity(name:"")
+        t = new TestEntity(name: '')
         boolean validationResult = t.validate()
         def errors = t.errors
 
@@ -37,33 +51,31 @@ class ValidationSpec extends GormDatastoreSpec {
         !t.hasErrors()
     }
 
-
-    void "Test that validate is called on save()"() {
-
+    void 'Test that validate is called on save()'() {
         given:
         def t
 
         when:
-        t = new TestEntity(name:"")
+        t = new TestEntity(name: '')
 
         then:
         t.save() == null
         t.hasErrors() == true
-        0 == TestEntity.count()
+        TestEntity.count() == 0
 
         when:
         t.clearErrors()
-        t.name = "Bob"
+        t.name = 'Bob'
         t.age = 45
-        t.child = new ChildEntity(name:"Fred")
+        t.child = new ChildEntity(name: 'Fred')
         t = t.save()
 
         then:
         t != null
-        1 == TestEntity.count()
+        TestEntity.count() == 1
     }
 
-    void "Test beforeValidate gets called on save()"() {
+    void 'Test beforeValidate gets called on save()'() {
         given:
         def entityWithNoArgBeforeValidateMethod
         def entityWithListArgBeforeValidateMethod
@@ -78,13 +90,13 @@ class ValidationSpec extends GormDatastoreSpec {
         entityWithOverloadedBeforeValidateMethod.save()
 
         then:
-        1 == entityWithNoArgBeforeValidateMethod.noArgCounter
-        1 == entityWithListArgBeforeValidateMethod.listArgCounter
-        1 == entityWithOverloadedBeforeValidateMethod.noArgCounter
-        0 == entityWithOverloadedBeforeValidateMethod.listArgCounter
+        entityWithNoArgBeforeValidateMethod.noArgCounter == 1
+        entityWithListArgBeforeValidateMethod.listArgCounter == 1
+        entityWithOverloadedBeforeValidateMethod.noArgCounter == 1
+        entityWithOverloadedBeforeValidateMethod.listArgCounter == 0
     }
 
-    void "Test beforeValidate gets called on validate()"() {
+    void 'Test beforeValidate gets called on validate()'() {
         given:
         def entityWithNoArgBeforeValidateMethod
         def entityWithListArgBeforeValidateMethod
@@ -99,13 +111,13 @@ class ValidationSpec extends GormDatastoreSpec {
         entityWithOverloadedBeforeValidateMethod.validate()
 
         then:
-        1 == entityWithNoArgBeforeValidateMethod.noArgCounter
-        1 == entityWithListArgBeforeValidateMethod.listArgCounter
-        1 == entityWithOverloadedBeforeValidateMethod.noArgCounter
-        0 == entityWithOverloadedBeforeValidateMethod.listArgCounter
+        entityWithNoArgBeforeValidateMethod.noArgCounter == 1
+        entityWithListArgBeforeValidateMethod.listArgCounter == 1
+        entityWithOverloadedBeforeValidateMethod.noArgCounter == 1
+        entityWithOverloadedBeforeValidateMethod.listArgCounter == 0
     }
 
-    void "Test beforeValidate gets called on validate() and passing a list of field names to validate"() {
+    void 'Test beforeValidate gets called on validate() and passing a list of field names to validate'() {
         given:
         def entityWithNoArgBeforeValidateMethod
         def entityWithListArgBeforeValidateMethod
@@ -120,15 +132,14 @@ class ValidationSpec extends GormDatastoreSpec {
         entityWithOverloadedBeforeValidateMethod.validate(['name'])
 
         then:
-        1 == entityWithNoArgBeforeValidateMethod.noArgCounter
-        1 == entityWithListArgBeforeValidateMethod.listArgCounter
-        0 == entityWithOverloadedBeforeValidateMethod.noArgCounter
-        1 == entityWithOverloadedBeforeValidateMethod.listArgCounter
-        ['name'] == entityWithOverloadedBeforeValidateMethod.propertiesPassedToBeforeValidate
+        entityWithNoArgBeforeValidateMethod.noArgCounter == 1
+        entityWithListArgBeforeValidateMethod.listArgCounter == 1
+        entityWithOverloadedBeforeValidateMethod.noArgCounter == 0
+        entityWithOverloadedBeforeValidateMethod.listArgCounter == 1
+        entityWithOverloadedBeforeValidateMethod.propertiesPassedToBeforeValidate == ['name']
     }
 
-    void "Test that validate works without a bound Session"() {
-
+    void 'Test that validate works without a bound Session'() {
         given:
         def t
 
@@ -139,7 +150,7 @@ class ValidationSpec extends GormDatastoreSpec {
             resource = TransactionSynchronizationManager.unbindResource(session.datastore.sessionFactory)
         }
 
-        t = new TestEntity(name:"")
+        t = new TestEntity(name: '')
 
         then:
         TransactionSynchronizationManager.getResource(session.datastore.sessionFactory) == null
@@ -150,18 +161,19 @@ class ValidationSpec extends GormDatastoreSpec {
         TransactionSynchronizationManager.bindResource(session.datastore.sessionFactory, resource)
 
         then:
-        1 == t.errors.allErrors.size()
-        0 == TestEntity.count()
+        t.errors.allErrors.size() == 1
+        TestEntity.count() == 0
 
         when:
         t.clearErrors()
-        t.name = "Bob"
+        t.name = 'Bob'
         t.age = 45
-        t.child = new ChildEntity(name:"Fred")
+        t.child = new ChildEntity(name: 'Fred')
         t = t.save(flush: true)
 
         then:
         t != null
-        1 == TestEntity.count()
+        TestEntity.count() == 1
     }
+
 }

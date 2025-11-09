@@ -1,11 +1,28 @@
+/*
+ * Copyright 2016-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.gorm.tests.inheritance
 
-import org.grails.orm.hibernate.GormSpec
 import spock.lang.Issue
+
+import org.grails.orm.hibernate.GormSpec
 
 @Issue('https://github.com/grails/gorm-hibernate5/issues/151')
 class TablePerConcreteClassImportedSpec extends GormSpec {
-    void "test that subclasses are added to the imports on the metamodel"() {
+
+    void 'test that subclasses are added to the imports on the metamodel'() {
         expect:
         sessionFactory.getMetamodel().getImportedClassName('Vehicle')
         sessionFactory.getMetamodel().getImportedClassName('Spaceship')
@@ -15,4 +32,5 @@ class TablePerConcreteClassImportedSpec extends GormSpec {
     List getDomainClasses() {
         [Vehicle, Spaceship]
     }
+
 }

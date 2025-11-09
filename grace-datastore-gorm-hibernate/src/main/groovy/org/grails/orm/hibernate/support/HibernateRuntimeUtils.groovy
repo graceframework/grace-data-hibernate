@@ -1,3 +1,18 @@
+/*
+ * Copyright 2010-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.orm.hibernate.support
 
 import groovy.transform.CompileStatic
@@ -26,16 +41,17 @@ import org.grails.orm.hibernate.proxy.HibernateProxyHandler
 @CompileStatic
 class HibernateRuntimeUtils {
 
-    private static ProxyHandler proxyHandler = new HibernateProxyHandler();
+    private static final ProxyHandler PROXY_HANDLER = new HibernateProxyHandler()
 
-    private static final String DYNAMIC_FILTER_ENABLER = "dynamicFilterEnabler";
+    private static final String DYNAMIC_FILTER_ENABLER = 'dynamicFilterEnabler'
 
-    @SuppressWarnings("rawtypes")
-    public static void enableDynamicFilterEnablerIfPresent(SessionFactory sessionFactory, Session session) {
+    @SuppressWarnings('rawtypes')
+    static void enableDynamicFilterEnablerIfPresent(SessionFactory sessionFactory, Session session) {
         if (sessionFactory != null && session != null) {
-            final Set definedFilterNames = sessionFactory.getDefinedFilterNames();
-            if (definedFilterNames != null && definedFilterNames.contains(DYNAMIC_FILTER_ENABLER))
-                session.enableFilter(DYNAMIC_FILTER_ENABLER); // work around for HHH-2624
+            final Set definedFilterNames = sessionFactory.getDefinedFilterNames()
+            if (definedFilterNames != null && definedFilterNames.contains(DYNAMIC_FILTER_ENABLER)) {
+                session.enableFilter(DYNAMIC_FILTER_ENABLER) // work around for HHH-2624
+            }
         }
     }
 
@@ -47,8 +63,7 @@ class HibernateRuntimeUtils {
      * @param target object to initialize
      * @return the new Errors object
      */
-    public static Errors setupErrorsProperty(Object target) {
-
+    static Errors setupErrorsProperty(Object target) {
         boolean isGormValidateable = target instanceof GormValidateable
 
         MetaClass mc = isGormValidateable ? null : GroovySystem.metaClassRegistry.getMetaClass(target.getClass())
@@ -72,12 +87,12 @@ class HibernateRuntimeUtils {
             ((GormValidateable) target).setErrors(errors)
         }
         else {
-            mc.setProperty(target, GormProperties.ERRORS, errors);
+            mc.setProperty(target, GormProperties.ERRORS, errors)
         }
-        return errors;
+        return errors
     }
 
-    public static void autoAssociateBidirectionalOneToOnes(PersistentEntity entity, Object target) {
+    static void autoAssociateBidirectionalOneToOnes(PersistentEntity entity, Object target) {
         def mappingContext = entity.mappingContext
         for (Association association : entity.associations) {
             if (!(association instanceof OneToOne) || !association.bidirectional || !association.owningSide) {
@@ -85,7 +100,7 @@ class HibernateRuntimeUtils {
             }
 
             def propertyName = association.name
-            if (!proxyHandler.isInitialized(target, propertyName)) {
+            if (!PROXY_HANDLER.isInitialized(target, propertyName)) {
                 continue
             }
 
@@ -95,7 +110,6 @@ class HibernateRuntimeUtils {
                 continue
             }
 
-
             def entityReflector = mappingContext.getEntityReflector(entity)
             Object inverseObject = entityReflector.getProperty(target, propertyName)
             if (inverseObject == null) {
@@ -103,7 +117,7 @@ class HibernateRuntimeUtils {
             }
 
             def otherSidePropertyName = otherSide.getName()
-            if (!proxyHandler.isInitialized(inverseObject, otherSidePropertyName)) {
+            if (!PROXY_HANDLER.isInitialized(inverseObject, otherSidePropertyName)) {
                 continue
             }
 
@@ -150,8 +164,7 @@ class HibernateRuntimeUtils {
                     value = conversionService.convert(value, targetType)
                 }
             }
-            catch (e) {
-                // ignore
+            catch (ignore) {
             }
         }
         return value

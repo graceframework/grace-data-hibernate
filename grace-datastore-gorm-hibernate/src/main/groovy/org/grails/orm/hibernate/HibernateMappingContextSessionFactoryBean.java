@@ -1,3 +1,18 @@
+/*
+ * Copyright 2016-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.orm.hibernate;
 
 import java.io.File;
@@ -39,7 +54,8 @@ import org.grails.orm.hibernate.cfg.HibernateMappingContext;
 import org.grails.orm.hibernate.cfg.HibernateMappingContextConfiguration;
 
 /**
- * Configures a SessionFactory using a {@link org.grails.orm.hibernate.cfg.HibernateMappingContext} and a {@link org.grails.orm.hibernate.cfg.HibernateMappingContextConfiguration}
+ * Configures a SessionFactory using a {@link org.grails.orm.hibernate.cfg.HibernateMappingContext}
+ * and a {@link org.grails.orm.hibernate.cfg.HibernateMappingContextConfiguration}
  *
  * @author Graeme Rocher
  * @since 5.0
@@ -104,7 +120,6 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
 
     protected ClassLoader classLoader;
 
-
     @Override
     public void setBeanClassLoader(ClassLoader classLoader) {
         this.classLoader = classLoader;
@@ -114,7 +129,7 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
         Thread thread = Thread.currentThread();
         ClassLoader cl = thread.getContextClassLoader();
         try {
-            thread.setContextClassLoader(classLoader);
+            thread.setContextClassLoader(this.classLoader);
             buildSessionFactory();
         }
         finally {
@@ -123,7 +138,7 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
     }
 
     public PlatformTransactionManager getTransactionManager() {
-        return transactionManager;
+        return this.transactionManager;
     }
 
     public void setTransactionManager(PlatformTransactionManager transactionManager) {
@@ -153,7 +168,7 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
     }
 
     public DataSource getDataSource() {
-        return dataSource;
+        return this.dataSource;
     }
 
     /**
@@ -164,7 +179,7 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
      * @see org.hibernate.cfg.Configuration#configure(java.net.URL)
      */
     public void setConfigLocation(Resource configLocation) {
-        configLocations = new Resource[] { configLocation };
+        this.configLocations = new Resource[] { configLocation };
     }
 
     /**
@@ -179,7 +194,7 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
     }
 
     public Resource[] getConfigLocations() {
-        return configLocations;
+        return this.configLocations;
     }
 
     /**
@@ -197,7 +212,7 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
     }
 
     public String[] getMappingResources() {
-        return mappingResources;
+        return this.mappingResources;
     }
 
     /**
@@ -214,7 +229,7 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
     }
 
     public Resource[] getMappingLocations() {
-        return mappingLocations;
+        return this.mappingLocations;
     }
 
     /**
@@ -231,7 +246,7 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
     }
 
     public Resource[] getCacheableMappingLocations() {
-        return cacheableMappingLocations;
+        return this.cacheableMappingLocations;
     }
 
     /**
@@ -246,7 +261,7 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
     }
 
     public Resource[] getMappingJarLocations() {
-        return mappingJarLocations;
+        return this.mappingJarLocations;
     }
 
     /**
@@ -261,7 +276,7 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
     }
 
     public Resource[] getMappingDirectoryLocations() {
-        return mappingDirectoryLocations;
+        return this.mappingDirectoryLocations;
     }
 
     /**
@@ -275,7 +290,7 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
     }
 
     public Interceptor getEntityInterceptor() {
-        return entityInterceptor;
+        return this.entityInterceptor;
     }
 
     /**
@@ -287,7 +302,7 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
     }
 
     public NamingStrategy getNamingStrategy() {
-        return namingStrategy;
+        return this.namingStrategy;
     }
 
     /**
@@ -306,10 +321,10 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
      * configuration through property paths that specify individual keys.
      */
     public Properties getHibernateProperties() {
-        if (hibernateProperties == null) {
-            hibernateProperties = new Properties();
+        if (this.hibernateProperties == null) {
+            this.hibernateProperties = new Properties();
         }
-        return hibernateProperties;
+        return this.hibernateProperties;
     }
 
     /**
@@ -321,7 +336,7 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
     }
 
     public Class<?>[] getAnnotatedClasses() {
-        return annotatedClasses;
+        return this.annotatedClasses;
     }
 
     /**
@@ -334,7 +349,7 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
     }
 
     public String[] getAnnotatedPackages() {
-        return annotatedPackages;
+        return this.annotatedPackages;
     }
 
     /**
@@ -347,11 +362,12 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
     }
 
     public String[] getPackagesToScan() {
-        return packagesToScan;
+        return this.packagesToScan;
     }
 
+    @Override
     public void setResourceLoader(ResourceLoader resourceLoader) {
-        resourcePatternResolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
+        this.resourcePatternResolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
     }
 
     /**
@@ -362,7 +378,7 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
     }
 
     public boolean isProxyIfReloadEnabled() {
-        return proxyIfReloadEnabled;
+        return this.proxyIfReloadEnabled;
     }
 
     /**
@@ -375,35 +391,35 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
     }
 
     public Class<?> getCurrentSessionContextClass() {
-        return currentSessionContextClass;
+        return this.currentSessionContextClass;
     }
 
     public Class<? extends HibernateMappingContextConfiguration> getConfigClass() {
-        return configClass;
+        return this.configClass;
     }
 
     public void setHibernateEventListeners(final HibernateEventListeners listeners) {
-        hibernateEventListeners = listeners;
+        this.hibernateEventListeners = listeners;
     }
 
     public HibernateEventListeners getHibernateEventListeners() {
-        return hibernateEventListeners;
+        return this.hibernateEventListeners;
     }
 
     public void setSessionFactoryBeanName(String name) {
-        sessionFactoryBeanName = name;
+        this.sessionFactoryBeanName = name;
     }
 
     public String getSessionFactoryBeanName() {
-        return sessionFactoryBeanName;
+        return this.sessionFactoryBeanName;
     }
 
     public void setDataSourceName(String name) {
-        dataSourceName = name;
+        this.dataSourceName = name;
     }
 
     public String getDataSourceName() {
-        return dataSourceName;
+        return this.dataSourceName;
     }
 
     /**
@@ -420,101 +436,98 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
     }
 
     public Map<String, Object> getEventListeners() {
-        return eventListeners;
+        return this.eventListeners;
     }
 
     protected void buildSessionFactory() throws Exception {
+        this.configuration = newConfiguration();
 
-        configuration = newConfiguration();
-
-        if (hibernateMappingContext == null) {
-
+        if (this.hibernateMappingContext == null) {
             throw new IllegalArgumentException("HibernateMappingContext is required.");
         }
 
-        configuration.setHibernateMappingContext(hibernateMappingContext);
+        this.configuration.setHibernateMappingContext(this.hibernateMappingContext);
 
-        if (configLocations != null) {
-            for (Resource resource : configLocations) {
+        if (this.configLocations != null) {
+            for (Resource resource : this.configLocations) {
                 // Load Hibernate configuration from given location.
-                configuration.configure(resource.getURL());
+                this.configuration.configure(resource.getURL());
             }
         }
 
-        if (mappingResources != null) {
+        if (this.mappingResources != null) {
             // Register given Hibernate mapping definitions, contained in resource files.
-            for (String mapping : mappingResources) {
-                Resource mr = new ClassPathResource(mapping.trim(), resourcePatternResolver.getClassLoader());
-                configuration.addInputStream(mr.getInputStream());
+            for (String mapping : this.mappingResources) {
+                Resource mr = new ClassPathResource(mapping.trim(), this.resourcePatternResolver.getClassLoader());
+                this.configuration.addInputStream(mr.getInputStream());
             }
         }
 
-        if (mappingLocations != null) {
+        if (this.mappingLocations != null) {
             // Register given Hibernate mapping definitions, contained in resource files.
-            for (Resource resource : mappingLocations) {
-                configuration.addInputStream(resource.getInputStream());
+            for (Resource resource : this.mappingLocations) {
+                this.configuration.addInputStream(resource.getInputStream());
             }
         }
 
-        if (cacheableMappingLocations != null) {
+        if (this.cacheableMappingLocations != null) {
             // Register given cacheable Hibernate mapping definitions, read from the file system.
-            for (Resource resource : cacheableMappingLocations) {
-                configuration.addCacheableFile(resource.getFile());
+            for (Resource resource : this.cacheableMappingLocations) {
+                this.configuration.addCacheableFile(resource.getFile());
             }
         }
 
-        if (mappingJarLocations != null) {
+        if (this.mappingJarLocations != null) {
             // Register given Hibernate mapping definitions, contained in jar files.
-            for (Resource resource : mappingJarLocations) {
-                configuration.addJar(resource.getFile());
+            for (Resource resource : this.mappingJarLocations) {
+                this.configuration.addJar(resource.getFile());
             }
         }
 
-        if (mappingDirectoryLocations != null) {
+        if (this.mappingDirectoryLocations != null) {
             // Register all Hibernate mapping definitions in the given directories.
-            for (Resource resource : mappingDirectoryLocations) {
+            for (Resource resource : this.mappingDirectoryLocations) {
                 File file = resource.getFile();
                 if (!file.isDirectory()) {
                     throw new IllegalArgumentException("Mapping directory location [" + resource + "] does not denote a directory");
                 }
-                configuration.addDirectory(file);
+                this.configuration.addDirectory(file);
             }
         }
 
-        if (entityInterceptor != null) {
-            configuration.setInterceptor(entityInterceptor);
+        if (this.entityInterceptor != null) {
+            this.configuration.setInterceptor(this.entityInterceptor);
         }
 
-        if (namingStrategy != null) {
+        if (this.namingStrategy != null) {
 //            configuration.setNamingStrategy(namingStrategy);
         }
 
-        if (hibernateProperties != null) {
-            configuration.addProperties(hibernateProperties);
+        if (this.hibernateProperties != null) {
+            this.configuration.addProperties(this.hibernateProperties);
         }
 
-        if (annotatedClasses != null) {
-            configuration.addAnnotatedClasses(annotatedClasses);
+        if (this.annotatedClasses != null) {
+            this.configuration.addAnnotatedClasses(this.annotatedClasses);
         }
 
-
-        if (annotatedPackages != null) {
-            configuration.addPackages(annotatedPackages);
+        if (this.annotatedPackages != null) {
+            this.configuration.addPackages(this.annotatedPackages);
         }
 
-        if (packagesToScan != null) {
-            configuration.scanPackages(packagesToScan);
+        if (this.packagesToScan != null) {
+            this.configuration.scanPackages(this.packagesToScan);
         }
 
-        if (eventListeners != null) {
-            configuration.setEventListeners(eventListeners);
+        if (this.eventListeners != null) {
+            this.configuration.setEventListeners(this.eventListeners);
         }
 
-        sessionFactory = doBuildSessionFactory();
+        this.sessionFactory = doBuildSessionFactory();
     }
 
     protected SessionFactory doBuildSessionFactory() {
-        return configuration.buildSessionFactory();
+        return this.configuration.buildSessionFactory();
     }
 
     /**
@@ -523,25 +536,29 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
      * @throws IllegalStateException if the Configuration object has not been initialized yet
      */
     public final Configuration getConfiguration() {
-        Assert.state(configuration != null, "Configuration not initialized yet");
-        return configuration;
+        Assert.state(this.configuration != null, "Configuration not initialized yet");
+        return this.configuration;
     }
 
+    @Override
     public SessionFactory getObject() {
-        return sessionFactory;
+        return this.sessionFactory;
     }
 
+    @Override
     public Class<?> getObjectType() {
-        return sessionFactory == null ? SessionFactory.class : sessionFactory.getClass();
+        return this.sessionFactory == null ? SessionFactory.class : this.sessionFactory.getClass();
     }
 
+    @Override
     public boolean isSingleton() {
         return true;
     }
 
+    @Override
     public void destroy() {
         try {
-            sessionFactory.close();
+            this.sessionFactory.close();
         }
         catch (HibernateException e) {
             if (e.getCause() instanceof NameNotFoundException) {
@@ -554,20 +571,21 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
     }
 
     protected HibernateMappingContextConfiguration newConfiguration() throws Exception {
-        if (configClass == null) {
-            configClass = HibernateMappingContextConfiguration.class;
+        if (this.configClass == null) {
+            this.configClass = HibernateMappingContextConfiguration.class;
         }
-        HibernateMappingContextConfiguration config = BeanUtils.instantiateClass(configClass);
-        config.setDataSourceName(dataSourceName);
-        config.setApplicationContext(applicationContext);
-        config.setSessionFactoryBeanName(sessionFactoryBeanName);
-        config.setHibernateEventListeners(hibernateEventListeners);
-        if (currentSessionContextClass != null) {
-            config.setProperty(Environment.CURRENT_SESSION_CONTEXT_CLASS, currentSessionContextClass.getName());
+        HibernateMappingContextConfiguration config = BeanUtils.instantiateClass(this.configClass);
+        config.setDataSourceName(this.dataSourceName);
+        config.setApplicationContext(this.applicationContext);
+        config.setSessionFactoryBeanName(this.sessionFactoryBeanName);
+        config.setHibernateEventListeners(this.hibernateEventListeners);
+        if (this.currentSessionContextClass != null) {
+            config.setProperty(Environment.CURRENT_SESSION_CONTEXT_CLASS, this.currentSessionContextClass.getName());
         }
         return config;
     }
 
+    @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }

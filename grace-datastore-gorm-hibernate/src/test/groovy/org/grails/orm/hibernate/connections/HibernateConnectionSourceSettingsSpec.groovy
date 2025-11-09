@@ -1,28 +1,43 @@
+/*
+ * Copyright 2016-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.orm.hibernate.connections
 
-import org.grails.datastore.mapping.core.DatastoreUtils
 import org.hibernate.dialect.Oracle8iDialect
-import org.springframework.core.io.FileSystemResource
 import org.springframework.core.io.UrlResource
 import spock.lang.Specification
+
+import org.grails.datastore.mapping.core.DatastoreUtils
 
 /**
  * Created by graemerocher on 05/07/16.
  */
 class HibernateConnectionSourceSettingsSpec extends Specification {
 
-    void "test hibernate connection source settings"() {
-        when:"The configuration is built"
+    void 'test hibernate connection source settings'() {
+        when: 'The configuration is built'
         Map config = [
-                'dataSource.dbCreate': 'update',
-                'dataSource.dialect': Oracle8iDialect.name,
-                'dataSource.formatSql': 'true',
-                'hibernate.flush.mode': 'commit',
-                'hibernate.cache.queries': 'true',
-                'hibernate.hbm2ddl.auto': 'create',
-                'hibernate.cache':['region.factory_class':'org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory'],
-                'hibernate.configLocations':'file:hibernate.cfg.xml',
-                'org.hibernate.foo':'bar'
+                'dataSource.dbCreate'      : 'update',
+                'dataSource.dialect'       : Oracle8iDialect.name,
+                'dataSource.formatSql'     : 'true',
+                'hibernate.flush.mode'     : 'commit',
+                'hibernate.cache.queries'  : 'true',
+                'hibernate.hbm2ddl.auto'   : 'create',
+                'hibernate.cache'          : ['region.factory_class': 'org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory'],
+                'hibernate.configLocations': 'file:hibernate.cfg.xml',
+                'org.hibernate.foo'        : 'bar'
         ]
         HibernateConnectionSourceSettingsBuilder builder = new HibernateConnectionSourceSettingsBuilder(DatastoreUtils.createPropertyResolver(config))
         HibernateConnectionSourceSettings settings = builder.build()
@@ -37,19 +52,19 @@ class HibernateConnectionSourceSettingsSpec extends Specification {
         expectedHibernateProperties.put('hibernate.hbm2ddl.auto', 'create')
         expectedHibernateProperties.put('hibernate.cache.queries', 'true')
         expectedHibernateProperties.put('hibernate.flush.mode', 'commit')
-        expectedHibernateProperties.put('hibernate.naming_strategy','org.hibernate.cfg.ImprovedNamingStrategy')
+        expectedHibernateProperties.put('hibernate.naming_strategy', 'org.hibernate.cfg.ImprovedNamingStrategy')
         expectedHibernateProperties.put('hibernate.entity_dirtiness_strategy', 'org.grails.orm.hibernate.dirty.GrailsEntityDirtinessStrategy')
-        expectedHibernateProperties.put('hibernate.configLocations','file:hibernate.cfg.xml')
-        expectedHibernateProperties.put('hibernate.use_query_cache','true')
-        expectedHibernateProperties.put("hibernate.connection.handling_mode", "DELAYED_ACQUISITION_AND_HOLD")
-        expectedHibernateProperties.put('hibernate.cache.region.factory_class','org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory')
-        expectedHibernateProperties.put('org.hibernate.foo','bar')
+        expectedHibernateProperties.put('hibernate.configLocations', 'file:hibernate.cfg.xml')
+        expectedHibernateProperties.put('hibernate.use_query_cache', 'true')
+        expectedHibernateProperties.put('hibernate.connection.handling_mode', 'DELAYED_ACQUISITION_AND_HOLD')
+        expectedHibernateProperties.put('hibernate.cache.region.factory_class', 'org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory')
+        expectedHibernateProperties.put('org.hibernate.foo', 'bar')
 
         def expectedCombinedProperties = new Properties()
         expectedCombinedProperties.putAll(expectedDataSourceProperties)
         expectedCombinedProperties.putAll(expectedHibernateProperties)
 
-        then:"The results are correct"
+        then: 'The results are correct'
         settings.dataSource.dbCreate == 'update'
         settings.dataSource.dialect == Oracle8iDialect
         settings.dataSource.formatSql
@@ -63,4 +78,5 @@ class HibernateConnectionSourceSettingsSpec extends Specification {
         settings.hibernate.getConfigLocations()[0] instanceof UrlResource
         settings.hibernate.toProperties() == expectedHibernateProperties
     }
+
 }

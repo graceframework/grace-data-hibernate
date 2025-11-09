@@ -1,11 +1,11 @@
 /*
- * Copyright 2011-2023 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,8 +23,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import jakarta.annotation.PreDestroy;
 import javax.sql.DataSource;
+import jakarta.annotation.PreDestroy;
 
 import groovy.lang.Closure;
 import org.hibernate.Session;
@@ -72,7 +72,9 @@ import org.grails.orm.hibernate.event.listener.AbstractHibernateEventListener;
  * @author Graeme Rocher
  * @since 2.0
  */
-public abstract class AbstractHibernateDatastore extends AbstractDatastore implements ApplicationContextAware, Settings, SchemaMultiTenantCapableDatastore<SessionFactory, HibernateConnectionSourceSettings>, TransactionCapableDatastore, Closeable, MessageSourceAware, MultipleConnectionSourceCapableDatastore {
+public abstract class AbstractHibernateDatastore extends AbstractDatastore
+        implements ApplicationContextAware, Settings, SchemaMultiTenantCapableDatastore<SessionFactory, HibernateConnectionSourceSettings>,
+        TransactionCapableDatastore, Closeable, MessageSourceAware, MultipleConnectionSourceCapableDatastore {
 
     public static final String CONFIG_PROPERTY_CACHE_QUERIES = "grails.hibernate.cache.queries";
 
@@ -112,7 +114,8 @@ public abstract class AbstractHibernateDatastore extends AbstractDatastore imple
 
     private boolean destroyed;
 
-    protected AbstractHibernateDatastore(ConnectionSources<SessionFactory, HibernateConnectionSourceSettings> connectionSources, HibernateMappingContext mappingContext) {
+    protected AbstractHibernateDatastore(ConnectionSources<SessionFactory, HibernateConnectionSourceSettings> connectionSources,
+            HibernateMappingContext mappingContext) {
         super(mappingContext, connectionSources.getBaseConfiguration(), null);
         this.connectionSources = connectionSources;
         final HibernateConnectionSource defaultConnectionSource = (HibernateConnectionSource) connectionSources.getDefaultConnectionSource();
@@ -142,7 +145,8 @@ public abstract class AbstractHibernateDatastore extends AbstractDatastore imple
         }
     }
 
-    protected AbstractHibernateDatastore(MappingContext mappingContext, SessionFactory sessionFactory, PropertyResolver config, ApplicationContext applicationContext, String dataSourceName) {
+    protected AbstractHibernateDatastore(MappingContext mappingContext, SessionFactory sessionFactory, PropertyResolver config,
+            ApplicationContext applicationContext, String dataSourceName) {
         super(mappingContext, config, (ConfigurableApplicationContext) applicationContext);
         this.connectionSources = new SingletonConnectionSources<>(new HibernateConnectionSource(dataSourceName, sessionFactory, null, null), config);
         this.sessionFactory = sessionFactory;
@@ -152,21 +156,21 @@ public abstract class AbstractHibernateDatastore extends AbstractDatastore imple
             setApplicationContext(applicationContext);
         }
 
-        osivReadOnly = config.getProperty(CONFIG_PROPERTY_OSIV_READONLY, Boolean.class, false);
-        passReadOnlyToHibernate = config.getProperty(CONFIG_PROPERTY_PASS_READONLY_TO_HIBERNATE, Boolean.class, false);
-        isCacheQueries = config.getProperty(CONFIG_PROPERTY_CACHE_QUERIES, Boolean.class, false);
+        this.osivReadOnly = config.getProperty(CONFIG_PROPERTY_OSIV_READONLY, Boolean.class, false);
+        this.passReadOnlyToHibernate = config.getProperty(CONFIG_PROPERTY_PASS_READONLY_TO_HIBERNATE, Boolean.class, false);
+        this.isCacheQueries = config.getProperty(CONFIG_PROPERTY_CACHE_QUERIES, Boolean.class, false);
 
         if (config.getProperty(SETTING_AUTO_FLUSH, Boolean.class, false)) {
             this.defaultFlushModeName = FlushMode.AUTO.name();
-            defaultFlushMode = FlushMode.AUTO.level;
+            this.defaultFlushMode = FlushMode.AUTO.level;
         }
         else {
             FlushMode flushMode = config.getProperty(SETTING_FLUSH_MODE, FlushMode.class, FlushMode.COMMIT);
             this.defaultFlushModeName = flushMode.name();
-            defaultFlushMode = flushMode.level;
+            this.defaultFlushMode = flushMode.level;
         }
-        failOnError = config.getProperty(SETTING_FAIL_ON_ERROR, Boolean.class, false);
-        markDirty = config.getProperty(SETTING_MARK_DIRTY, Boolean.class, false);
+        this.failOnError = config.getProperty(SETTING_FAIL_ON_ERROR, Boolean.class, false);
+        this.markDirty = config.getProperty(SETTING_MARK_DIRTY, Boolean.class, false);
         this.tenantResolver = new FixedTenantResolver();
         this.multiTenantMode = MultiTenancySettings.MultiTenancyMode.NONE;
         this.schemaHandler = new DefaultSchemaHandler();
@@ -179,23 +183,23 @@ public abstract class AbstractHibernateDatastore extends AbstractDatastore imple
     @Override
     public void setMessageSource(MessageSource messageSource) {
         ValidatorRegistry validatorRegistry = createValidatorRegistry(messageSource);
-        this.mappingContext.setValidatorRegistry(
-                validatorRegistry
-        );
+        mappingContext.setValidatorRegistry(validatorRegistry);
     }
 
     protected ValidatorRegistry createValidatorRegistry(MessageSource messageSource) {
-        return ValidatorRegistries.createValidatorRegistry(mappingContext, getConnectionSources().getDefaultConnectionSource().getSettings(), messageSource);
+        return ValidatorRegistries.createValidatorRegistry(mappingContext,
+                getConnectionSources().getDefaultConnectionSource().getSettings(), messageSource);
     }
 
     @Override
     public MultiTenancySettings.MultiTenancyMode getMultiTenancyMode() {
-        return this.multiTenantMode == MultiTenancySettings.MultiTenancyMode.SCHEMA ? MultiTenancySettings.MultiTenancyMode.DATABASE : this.multiTenantMode;
+        return this.multiTenantMode ==
+                MultiTenancySettings.MultiTenancyMode.SCHEMA ? MultiTenancySettings.MultiTenancyMode.DATABASE : this.multiTenantMode;
     }
 
     @Override
     public Datastore getDatastoreForTenantId(Serializable tenantId) {
-        if (multiTenantMode == MultiTenancySettings.MultiTenancyMode.DATABASE) {
+        if (this.multiTenantMode == MultiTenancySettings.MultiTenancyMode.DATABASE) {
             return getDatastoreForConnection(tenantId.toString());
         }
         else {
@@ -219,11 +223,12 @@ public abstract class AbstractHibernateDatastore extends AbstractDatastore imple
      * @param connectionName The name of the connection
      * @return The child data store
      */
+    @Override
     public abstract AbstractHibernateDatastore getDatastoreForConnection(String connectionName);
 
     public Iterable<Serializable> resolveTenantIds() {
         if (this.tenantResolver instanceof AllTenantsResolver) {
-            return ((AllTenantsResolver) tenantResolver).resolveTenantIds();
+            return ((AllTenantsResolver) this.tenantResolver).resolveTenantIds();
         }
         else if (this.multiTenantMode == MultiTenancySettings.MultiTenancyMode.DATABASE) {
             List<Serializable> tenantIds = new ArrayList<>();
@@ -244,44 +249,44 @@ public abstract class AbstractHibernateDatastore extends AbstractDatastore imple
     }
 
     public boolean isAutoFlush() {
-        return defaultFlushMode == FlushMode.AUTO.level;
+        return this.defaultFlushMode == FlushMode.AUTO.level;
     }
 
     /**
      * @return Obtains the default flush mode level
      */
     public int getDefaultFlushMode() {
-        return defaultFlushMode;
+        return this.defaultFlushMode;
     }
 
     /**
      * @return The name of the default value flush
      */
     public String getDefaultFlushModeName() {
-        return defaultFlushModeName;
+        return this.defaultFlushModeName;
     }
 
     public boolean isFailOnError() {
-        return failOnError;
+        return this.failOnError;
     }
 
     public boolean isOsivReadOnly() {
-        return osivReadOnly;
+        return this.osivReadOnly;
     }
 
     public boolean isPassReadOnlyToHibernate() {
-        return passReadOnlyToHibernate;
+        return this.passReadOnlyToHibernate;
     }
 
     public boolean isCacheQueries() {
-        return isCacheQueries;
+        return this.isCacheQueries;
     }
 
     /**
      * @return The Hibernate {@link SessionFactory} being used by this datastore instance
      */
     public SessionFactory getSessionFactory() {
-        return sessionFactory;
+        return this.sessionFactory;
     }
 
     /**
@@ -293,14 +298,14 @@ public abstract class AbstractHibernateDatastore extends AbstractDatastore imple
 
     // for testing
     public AbstractHibernateEventListener getEventTriggeringInterceptor() {
-        return eventTriggeringInterceptor;
+        return this.eventTriggeringInterceptor;
     }
 
     /**
      * @return The event listener that populates lastUpdated and dateCreated
      */
     public AutoTimestampEventListener getAutoTimestampEventListener() {
-        return autoTimestampEventListener;
+        return this.autoTimestampEventListener;
     }
 
     /**
@@ -314,7 +319,7 @@ public abstract class AbstractHibernateDatastore extends AbstractDatastore imple
      * Execute the given operation with the given flush mode
      *
      * @param flushMode
-     * @param callable The callable
+     * @param callable  The callable
      */
     public abstract void withFlushMode(FlushMode flushMode, Callable<Boolean> callable);
 
@@ -336,7 +341,7 @@ public abstract class AbstractHibernateDatastore extends AbstractDatastore imple
         }
 
         public int getLevel() {
-            return level;
+            return this.level;
         }
     }
 
@@ -346,12 +351,12 @@ public abstract class AbstractHibernateDatastore extends AbstractDatastore imple
             super.destroy();
             AbstractHibernateGormInstanceApi.resetInsertActive();
             try {
-                connectionSources.close();
+                this.connectionSources.close();
             }
             catch (IOException e) {
                 LOG.error("There was an error shutting down GORM for an entity: " + e.getMessage(), e);
             }
-            destroyed = true;
+            this.destroyed = true;
         }
     }
 
@@ -375,7 +380,7 @@ public abstract class AbstractHibernateDatastore extends AbstractDatastore imple
     public abstract IHibernateTemplate getHibernateTemplate(int flushMode);
 
     public IHibernateTemplate getHibernateTemplate() {
-        return getHibernateTemplate(defaultFlushMode);
+        return getHibernateTemplate(this.defaultFlushMode);
     }
 
     /**
@@ -406,7 +411,6 @@ public abstract class AbstractHibernateDatastore extends AbstractDatastore imple
             return withNewSession(callable);
         }
     }
-
 
     /**
      * Enable the tenant id filter for the given datastore and entity

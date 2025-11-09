@@ -1,11 +1,11 @@
 /*
- * Copyright 2013-2023 the original author or authors.
+ * Copyright 2013-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -60,8 +60,8 @@ class HibernateGormStaticApi<D> extends AbstractHibernateGormStaticApi<D> {
     protected ConversionService conversionService
     protected Class identityType
     protected ClassLoader classLoader
-    private HibernateGormInstanceApi<D> instanceApi
-    private int defaultFlushMode
+    private final HibernateGormInstanceApi<D> instanceApi
+    private final int defaultFlushMode
 
     HibernateGormStaticApi(Class<D> persistentClass, HibernateDatastore datastore, List<FinderMethod> finders,
                            ClassLoader classLoader, PlatformTransactionManager transactionManager) {
@@ -134,7 +134,6 @@ class HibernateGormStaticApi<D> extends AbstractHibernateGormStaticApi<D> {
         return GormEnhancer.findStaticApi(persistentClass, name)
     }
 
-
     @Override
     GrailsCriteria createCriteria() {
         def builder = new HibernateCriteriaBuilder(persistentClass, sessionFactory)
@@ -150,7 +149,6 @@ class HibernateGormStaticApi<D> extends AbstractHibernateGormStaticApi<D> {
 
     @Override
     Integer executeUpdate(CharSequence query, Map params, Map args) {
-
         if (query instanceof GString) {
             params = new LinkedHashMap(params)
             query = buildNamedParameterQueryFromGString((GString) query, params)
@@ -179,7 +177,10 @@ class HibernateGormStaticApi<D> extends AbstractHibernateGormStaticApi<D> {
     @Override
     Integer executeUpdate(CharSequence query, Collection params, Map args) {
         if (query instanceof GString) {
-            throw new GrailsQueryException("Unsafe query [$query]. GORM cannot automatically escape a GString value when combined with ordinal parameters, so this query is potentially vulnerable to HQL injection attacks. Please embed the parameters within the GString so they can be safely escaped.");
+            throw new GrailsQueryException("Unsafe query [$query]. " +
+                    'GORM cannot automatically escape a GString value when combined with ordinal parameters, ' +
+                    'so this query is potentially vulnerable to HQL injection attacks. ' +
+                    'Please embed the parameters within the GString so they can be safely escaped.')
         }
 
         def template = hibernateTemplate
@@ -192,7 +193,6 @@ class HibernateGormStaticApi<D> extends AbstractHibernateGormStaticApi<D> {
             if (sessionHolder && sessionHolder.hasTimeout()) {
                 q.timeout = sessionHolder.timeToLiveInSeconds
             }
-
 
             params.eachWithIndex { val, int i ->
                 if (val instanceof CharSequence) {
@@ -226,16 +226,19 @@ class HibernateGormStaticApi<D> extends AbstractHibernateGormStaticApi<D> {
     @Override
     protected void firePostQueryEvent(Session session, Criteria criteria, Object result) {
         if (result instanceof List) {
-            datastore.applicationEventPublisher.publishEvent(new PostQueryEvent(datastore, new HibernateQuery(criteria, persistentEntity), (List) result))
+            datastore.applicationEventPublisher.publishEvent(new PostQueryEvent(datastore,
+                    new HibernateQuery(criteria, persistentEntity), (List) result))
         }
         else {
-            datastore.applicationEventPublisher.publishEvent(new PostQueryEvent(datastore, new HibernateQuery(criteria, persistentEntity), Collections.singletonList(result)))
+            datastore.applicationEventPublisher.publishEvent(new PostQueryEvent(datastore,
+                    new HibernateQuery(criteria, persistentEntity), Collections.singletonList(result)))
         }
     }
 
     @Override
     protected void firePreQueryEvent(Session session, Criteria criteria) {
-        datastore.applicationEventPublisher.publishEvent(new PreQueryEvent(datastore, new HibernateQuery(criteria, persistentEntity)))
+        datastore.applicationEventPublisher.publishEvent(new PreQueryEvent(datastore,
+                new HibernateQuery(criteria, persistentEntity)))
     }
 
     @Override
@@ -251,7 +254,6 @@ class HibernateGormStaticApi<D> extends AbstractHibernateGormStaticApi<D> {
                 break
             default:
                 hibernateSession.setFlushMode(FlushModeType.COMMIT)
-
         }
         HibernateHqlQuery query = new HibernateHqlQuery(hibernateSession, persistentEntity, q)
         return query

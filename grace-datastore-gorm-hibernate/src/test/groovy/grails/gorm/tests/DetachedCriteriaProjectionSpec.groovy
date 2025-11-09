@@ -1,29 +1,52 @@
+/*
+ * Copyright 2016-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.gorm.tests
 
-import grails.gorm.DetachedCriteria
-import grails.gorm.annotation.Entity
-import grails.gorm.transactions.Rollback
-import grails.gorm.transactions.Transactional
-import org.grails.datastore.mapping.query.Query
-import org.grails.orm.hibernate.HibernateDatastore
 import org.springframework.transaction.PlatformTransactionManager
 import spock.lang.AutoCleanup
 import spock.lang.Issue
 import spock.lang.Shared
 import spock.lang.Specification
 
+import grails.gorm.DetachedCriteria
+import grails.gorm.annotation.Entity
+import grails.gorm.transactions.Rollback
+import grails.gorm.transactions.Transactional
+
+import org.grails.datastore.mapping.query.Query
+import org.grails.orm.hibernate.HibernateDatastore
+
 /**
  * Created by graemerocher on 24/10/16.
  */
 class DetachedCriteriaProjectionSpec extends Specification {
 
-    @Shared Map config = [
-            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+    @Shared
+    Map config = [
+            'dataSource.url'     : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
             'dataSource.dbCreate': 'create-drop',
-            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+            'dataSource.dialect' : 'org.hibernate.dialect.H2Dialect'
     ]
-    @Shared @AutoCleanup HibernateDatastore datastore = new HibernateDatastore(config, Entity1, Entity2, DetachedEntity)
-    @Shared PlatformTransactionManager transactionManager = datastore.getTransactionManager()
+
+    @Shared
+    @AutoCleanup
+    HibernateDatastore datastore = new HibernateDatastore(config, Entity1, Entity2, DetachedEntity)
+
+    @Shared
+    PlatformTransactionManager transactionManager = datastore.getTransactionManager()
 
     @Transactional
     def setup() {
@@ -52,7 +75,6 @@ class DetachedCriteriaProjectionSpec extends Specification {
         }
         then:
         results.size() == 1
-
     }
 
     @Rollback
@@ -85,21 +107,31 @@ class DetachedCriteriaProjectionSpec extends Specification {
         then:
         results.size() == 1
     }
+
 }
 
 @Entity
-public class Entity1 {
+class Entity1 {
+
     Long id
     String field1
-    static hasMany = [children : Entity2]
+    static hasMany = [children: Entity2]
+
 }
+
 @Entity
 class Entity2 {
+
     static belongsTo = { parent: Entity1 }
+
     String field
+
 }
+
 @Entity
 class DetachedEntity {
+
     Long entityId
     String field
+
 }

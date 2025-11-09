@@ -1,29 +1,31 @@
 /*
- * Copyright 2017 original authors
- * 
+ * Copyright 2017-2025 the original author or authors.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. 
+ * limitations under the License.
  */
 package grails.gorm.tests.txs
 
-import grails.gorm.annotation.Entity
-import grails.gorm.transactions.ReadOnly
-import grails.gorm.transactions.Transactional
-import org.grails.orm.hibernate.HibernateDatastore
 import org.springframework.transaction.annotation.Propagation
 import spock.lang.AutoCleanup
 import spock.lang.Issue
 import spock.lang.Shared
 import spock.lang.Specification
+
+import grails.gorm.annotation.Entity
+import grails.gorm.transactions.ReadOnly
+import grails.gorm.transactions.Transactional
+
+import org.grails.orm.hibernate.HibernateDatastore
 
 /**
  * @author Graeme Rocher
@@ -31,15 +33,19 @@ import spock.lang.Specification
  */
 class TransactionPropagationSpec extends Specification {
 
-    @Shared Map config = [
-            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+    @Shared
+    Map config = [
+            'dataSource.url'     : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
             'dataSource.dbCreate': 'create-drop',
-            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+            'dataSource.dialect' : 'org.hibernate.dialect.H2Dialect'
     ]
-    @AutoCleanup @Shared HibernateDatastore hibernateDatastore = new HibernateDatastore(config, Book)
+
+    @AutoCleanup
+    @Shared
+    HibernateDatastore hibernateDatastore = new HibernateDatastore(config, Book)
 
     @Issue('https://github.com/grails/grails-core/issues/10801')
-    void "test transaction propagation settings"() {
+    void 'test transaction propagation settings'() {
         when:
         TransactionalService service = new TransactionalService()
         service.start()
@@ -82,6 +88,7 @@ class TransactionalService {
     }
 
 }
+
 @Entity
 class Book {
 
@@ -89,4 +96,5 @@ class Book {
 
     static constraints = {
     }
+
 }

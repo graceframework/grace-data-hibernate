@@ -1,56 +1,77 @@
+/*
+ * Copyright 2017-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.gorm.tests.dirtychecking
 
-import grails.gorm.annotation.Entity
-import grails.gorm.dirty.checking.DirtyCheck
-import grails.gorm.transactions.Rollback
-import org.grails.orm.hibernate.HibernateDatastore
 import spock.lang.AutoCleanup
 import spock.lang.Issue
 import spock.lang.Shared
 import spock.lang.Specification
+
+import grails.gorm.annotation.Entity
+import grails.gorm.dirty.checking.DirtyCheck
+import grails.gorm.transactions.Rollback
+
+import org.grails.orm.hibernate.HibernateDatastore
 
 /**
  * Created by graemerocher on 03/05/2017.
  */
 class HibernateDirtyCheckingSpec extends Specification {
 
-    @Shared Map config = [
-            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+    @Shared
+    Map config = [
+            'dataSource.url'     : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
             'dataSource.dbCreate': 'create-drop',
-            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+            'dataSource.dialect' : 'org.hibernate.dialect.H2Dialect'
     ]
-    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(config, Person)
+
+    @Shared
+    @AutoCleanup
+    HibernateDatastore hibernateDatastore = new HibernateDatastore(config, Person)
 
     @Rollback
     @Issue('https://github.com/grails/grails-core/issues/10613')
-    void    "Test that presence of beforeInsert doesn't impact dirty properties"() {
+    void "Test that presence of beforeInsert doesn't impact dirty properties"() {
         given: 'a new person'
-        def person = new Person(name: 'John', occupation: 'Grails developer').save(flush:true)
+        def person = new Person(name: 'John', occupation: 'Grails developer').save(flush: true)
 
         when: 'the name is changed'
         person.name = 'Dave'
 
         then: 'the name field is dirty'
-        person.getPersistentValue('name') == "John"
+        person.getPersistentValue('name') == 'John'
         person.dirtyPropertyNames.contains 'name'
         person.dirtyPropertyNames == ['name']
         person.isDirty('name')
         !person.isDirty('occupation')
 
         when:
-        person.save(flush:true)
+        person.save(flush: true)
 
         then:
-        person.getPersistentValue('name') == "Dave"
+        person.getPersistentValue('name') == 'Dave'
         person.dirtyPropertyNames == []
         !person.isDirty('name')
         !person.isDirty()
 
         when:
-        person.occupation = "Civil Engineer"
+        person.occupation = 'Civil Engineer'
 
         then:
-        person.getPersistentValue('occupation') == "Grails developer"
+        person.getPersistentValue('occupation') == 'Grails developer'
         person.dirtyPropertyNames.contains 'occupation'
         person.dirtyPropertyNames == ['occupation']
         person.isDirty('occupation')
@@ -58,19 +79,20 @@ class HibernateDirtyCheckingSpec extends Specification {
     }
 
     @Rollback
-    void "test dirty checking on embedded"() {
+    void 'test dirty checking on embedded'() {
         given: 'a new person'
-        Person person = new Person(name: 'John', occupation: 'Grails developer', address: new Address(street: "Old Town", zip: "1234")).save(flush:true)
+        Person person = new Person(name: 'John', occupation: 'Grails developer',
+                address: new Address(street: 'Old Town', zip: '1234')).save(flush: true)
 
         when: 'the name is changed'
-        person.address.street = "New Town"
+        person.address.street = 'New Town'
 
         then:
         person.address.hasChanged()
-        person.address.hasChanged("street")
+        person.address.hasChanged('street')
 
         when:
-        person.save(flush:true)
+        person.save(flush: true)
 
         then:
         !person.address.hasChanged()
@@ -81,11 +103,11 @@ class HibernateDirtyCheckingSpec extends Specification {
         person = Person.first()
 
         then:
-        person.address.street == "New Town"
+        person.address.street == 'New Town'
     }
 
     @Rollback
-    void "test dirty checking on boolean true -> false"() {
+    void 'test dirty checking on boolean true -> false'() {
         given: 'a new person'
         new Person(name: 'John', occupation: 'Grails developer', employed: true).save(flush: true)
         hibernateDatastore.sessionFactory.currentSession.clear()
@@ -100,7 +122,7 @@ class HibernateDirtyCheckingSpec extends Specification {
         person.isDirty('employed')
 
         when:
-        person.save(flush:true)
+        person.save(flush: true)
         hibernateDatastore.sessionFactory.currentSession.clear()
         person = Person.first()
 
@@ -109,7 +131,7 @@ class HibernateDirtyCheckingSpec extends Specification {
     }
 
     @Rollback
-    void "test dirty checking on boolean false -> true"() {
+    void 'test dirty checking on boolean false -> true'() {
         given: 'a new person'
         new Person(name: 'John', occupation: 'Grails developer', employed: false).save(flush: true)
         hibernateDatastore.sessionFactory.currentSession.clear()
@@ -124,7 +146,7 @@ class HibernateDirtyCheckingSpec extends Specification {
         person.isDirty('employed')
 
         when:
-        person.save(flush:true)
+        person.save(flush: true)
         hibernateDatastore.sessionFactory.currentSession.clear()
         person = Person.first()
 
@@ -133,7 +155,6 @@ class HibernateDirtyCheckingSpec extends Specification {
     }
 
 }
-
 
 @Entity
 class Person {
@@ -146,16 +167,19 @@ class Person {
     static embedded = ['address']
 
     static constraints = {
-        address nullable:true
+        address nullable: true
     }
 
     def beforeInsert() {
         // Do nothing
     }
+
 }
 
 @DirtyCheck
 class Address {
+
     String street
     String zip
+
 }

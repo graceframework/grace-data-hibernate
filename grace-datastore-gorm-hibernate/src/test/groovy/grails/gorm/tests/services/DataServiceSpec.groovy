@@ -1,6 +1,27 @@
+/*
+ * Copyright 2017-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.gorm.tests.services
 
+import groovy.json.JsonOutput
+import org.springframework.context.support.StaticMessageSource
+import spock.lang.AutoCleanup
 import spock.lang.Ignore
+import spock.lang.Issue
+import spock.lang.Shared
+import spock.lang.Specification
 
 import grails.gorm.annotation.Entity
 import grails.gorm.services.Join
@@ -10,15 +31,10 @@ import grails.gorm.services.Where
 import grails.gorm.transactions.Rollback
 import grails.gorm.validation.PersistentEntityValidator
 import grails.validation.ValidationException
-import groovy.json.JsonOutput
+
 import org.grails.datastore.gorm.validation.constraints.eval.DefaultConstraintEvaluator
 import org.grails.datastore.gorm.validation.constraints.registry.DefaultConstraintRegistry
 import org.grails.orm.hibernate.HibernateDatastore
-import org.springframework.context.support.StaticMessageSource
-import spock.lang.AutoCleanup
-import spock.lang.Issue
-import spock.lang.Shared
-import spock.lang.Specification
 
 /**
  * Created by graemerocher on 07/04/2017.
@@ -26,57 +42,59 @@ import spock.lang.Specification
 @Rollback
 class DataServiceSpec extends Specification {
 
-    @Shared Map config = [
-            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+    @Shared
+    Map config = [
+            'dataSource.url'     : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
             'dataSource.dbCreate': 'create-drop',
-            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+            'dataSource.dialect' : 'org.hibernate.dialect.H2Dialect'
     ]
-    @Shared @AutoCleanup HibernateDatastore datastore = new HibernateDatastore(config, Product, Attribute)
 
+    @Shared
+    @AutoCleanup
+    HibernateDatastore datastore = new HibernateDatastore(config, Product, Attribute)
 
-    void "test inter service interaction"() {
+    void 'test inter service interaction'() {
         given:
-        Product p1 = new Product(name: "Apple", type:"Fruit").save(flush:true)
-        Product p2 = new Product(name: "Orange", type:"Fruit").save(flush:true)
+        Product p1 = new Product(name: 'Apple', type: 'Fruit').save(flush: true)
+        Product p2 = new Product(name: 'Orange', type: 'Fruit').save(flush: true)
         AnotherProductService productService = datastore.getService(AnotherProductService)
 
         expect:
-        productService.findProductInfo("Apple", "Fruit").name == "Apple"
-
+        productService.findProductInfo('Apple', 'Fruit').name == 'Apple'
     }
 
-    void "test list products"() {
+    void 'test list products'() {
         given:
-        Product p1 = new Product(name: "Apple", type:"Fruit").save(flush:true)
-        Product p2 = new Product(name: "Orange", type:"Fruit").save(flush:true)
+        Product p1 = new Product(name: 'Apple', type: 'Fruit').save(flush: true)
+        Product p2 = new Product(name: 'Orange', type: 'Fruit').save(flush: true)
         ProductService productService = datastore.getService(ProductService)
 
         expect:
-        productService.listWithArgs(max:1).size() == 1
+        productService.listWithArgs(max: 1).size() == 1
         productService.listProducts().size() == 2
         productService.listMoreProducts().length == 2
         productService.findEvenMoreProducts().iterator().hasNext()
-        productService.findByName("Apple").iterator().hasNext()
-        productService.findProducts("Apple", "Fruit").iterator().hasNext()
-        !productService.findProducts("Apple", "Devices").iterator().hasNext()
-        !productService.findByName("Banana").iterator().hasNext()
-        productService.findProducts("Apple").iterator().hasNext()
-        !productService.findProducts("Banana").iterator().hasNext()
-        productService.getByName("Apple") != null
-        productService.getByName("Apple").name == "Apple"
-        productService.getByName("Banana") == null
+        productService.findByName('Apple').iterator().hasNext()
+        productService.findProducts('Apple', 'Fruit').iterator().hasNext()
+        !productService.findProducts('Apple', 'Devices').iterator().hasNext()
+        !productService.findByName('Banana').iterator().hasNext()
+        productService.findProducts('Apple').iterator().hasNext()
+        !productService.findProducts('Banana').iterator().hasNext()
+        productService.getByName('Apple') != null
+        productService.getByName('Apple').name == 'Apple'
+        productService.getByName('Banana') == null
         p1.name == productService.get(p1.id)?.name
         productService.get(100) == null
-        productService.find("Apple", "Fruit") != null
-        productService.find("Orange", "Fruit").name == "Orange"
-        productService.find("Apple", "Fruit", [max:2]) != null
-        productService.find("Apple", "Device") == null
+        productService.find('Apple', 'Fruit') != null
+        productService.find('Orange', 'Fruit').name == 'Orange'
+        productService.find('Apple', 'Fruit', [max: 2]) != null
+        productService.find('Apple', 'Device') == null
     }
 
-    void "test delete by id implementation"() {
+    void 'test delete by id implementation'() {
         given:
-        Product p1 = new Product(name: "Apple", type:"Fruit").save(flush:true)
-        Product p2 = new Product(name: "Orange", type:"Fruit").save(flush:true)
+        Product p1 = new Product(name: 'Apple', type: 'Fruit').save(flush: true)
+        Product p2 = new Product(name: 'Orange', type: 'Fruit').save(flush: true)
         ProductService productService = datastore.getService(ProductService)
 
         when:
@@ -91,13 +109,12 @@ class DataServiceSpec extends Specification {
         then:
         deleted != null
         productService.get(found.id) == null
-
     }
 
-    void "test delete by parameter query implementation"() {
+    void 'test delete by parameter query implementation'() {
         given:
-        Product p1 = new Product(name: "Apple", type:"Fruit").save(flush:true)
-        Product p2 = new Product(name: "Orange", type:"Fruit").save(flush:true)
+        Product p1 = new Product(name: 'Apple', type: 'Fruit').save(flush: true)
+        Product p2 = new Product(name: 'Orange', type: 'Fruit').save(flush: true)
         ProductService productService = datastore.getService(ProductService)
 
         when:
@@ -107,19 +124,18 @@ class DataServiceSpec extends Specification {
         found != null
 
         when:
-        Product deleted = productService.delete("Apple")
+        Product deleted = productService.delete('Apple')
         datastore.sessionFactory.currentSession.flush()
 
         then:
         deleted != null
         productService.getByName(deleted.name) == null
-
     }
 
-    void "test delete all implementation"() {
+    void 'test delete all implementation'() {
         given:
-        Product p1 = new Product(name: "Apple", type:"Fruit").save(flush:true)
-        Product p2 = new Product(name: "Orange", type:"Fruit").save(flush:true)
+        Product p1 = new Product(name: 'Apple', type: 'Fruit').save(flush: true)
+        Product p2 = new Product(name: 'Orange', type: 'Fruit').save(flush: true)
         ProductService productService = datastore.getService(ProductService)
 
         when:
@@ -130,18 +146,17 @@ class DataServiceSpec extends Specification {
 
         when:
         datastore.sessionFactory.currentSession.clear()
-        Number deleted = productService.deleteProducts("Apple")
+        Number deleted = productService.deleteProducts('Apple')
 
         then:
         deleted == 1
         productService.get(p1.id) == null
-
     }
 
-    void "test delete with void return type"() {
+    void 'test delete with void return type'() {
         given:
-        Product p1 = new Product(name: "Apple", type:"Fruit").save(flush:true)
-        Product p2 = new Product(name: "Orange", type:"Fruit").save(flush:true)
+        Product p1 = new Product(name: 'Apple', type: 'Fruit').save(flush: true)
+        Product p2 = new Product(name: 'Orange', type: 'Fruit').save(flush: true)
         ProductService productService = datastore.getService(ProductService)
 
         when:
@@ -158,42 +173,45 @@ class DataServiceSpec extends Specification {
         productService.get(p1.id) == null
     }
 
-    void "test save entity"() {
+    void 'test save entity'() {
         given:
         ProductService productService = datastore.getService(ProductService)
 
         when:
-        productService.saveProduct("Pineapple", "Fruit")
+        productService.saveProduct('Pineapple', 'Fruit')
 
         then:
-        productService.find("Pineapple", "Fruit") != null
+        productService.find('Pineapple', 'Fruit') != null
     }
 
-    void "test save invalid entity"() {
+    void 'test save invalid entity'() {
         given:
         def mappingContext = datastore.mappingContext
         def entity = mappingContext.getPersistentEntity(Product.name)
         def messageSource = new StaticMessageSource()
-        def evaluator = new DefaultConstraintEvaluator(new DefaultConstraintRegistry(messageSource), mappingContext, Collections.emptyMap())
+        def evaluator = new DefaultConstraintEvaluator(
+                new DefaultConstraintRegistry(messageSource), mappingContext, Collections.emptyMap())
+
         mappingContext.addEntityValidator(
                 entity,
                 new PersistentEntityValidator(entity, messageSource, evaluator)
         )
+
         ProductService productService = datastore.getService(ProductService)
 
         when:
-        productService.saveProduct("", "Fruit")
+        productService.saveProduct('', 'Fruit')
 
         then:
         thrown(ValidationException)
     }
 
-    void "test abstract class service impl"() {
+    void 'test abstract class service impl'() {
         given:
-        AnotherProductService productService = (AnotherProductService)datastore.getService(AnotherProductInterface)
+        AnotherProductService productService = (AnotherProductService) datastore.getService(AnotherProductInterface)
 
         when:
-        Product p = productService.saveProduct("Apple", "Fruit")
+        Product p = productService.saveProduct('Apple', 'Fruit')
 
         then:
         datastore.getService(AnotherProductService) != null
@@ -205,29 +223,27 @@ class DataServiceSpec extends Specification {
 
         then:
         productService.get(p.id) == null
-        productService.getByName("blah").name == "BLAH"
-
+        productService.getByName('blah').name == 'BLAH'
     }
 
-    void "test update one method"() {
+    void 'test update one method'() {
         given:
         ProductService productService = datastore.getService(ProductService)
 
         when:
-        productService.saveProduct("Tomato", "Vegetable")
+        productService.saveProduct('Tomato', 'Vegetable')
 
         then:
-        productService.find("Tomato", "Vegetable") != null
+        productService.find('Tomato', 'Vegetable') != null
 
         when:
-        Product product = productService.find("Tomato", "Vegetable")
-        productService.updateProduct(product.id, "Fruit")
+        Product product = productService.find('Tomato', 'Vegetable')
+        productService.updateProduct(product.id, 'Fruit')
         datastore.currentSession.flush()
 
         then:
-        productService.find("Tomato", "Vegetable") == null
-        productService.find("Tomato", "Fruit") != null
-
+        productService.find('Tomato', 'Vegetable') == null
+        productService.find('Tomato', 'Fruit') != null
     }
 
     void 'test property projection'() {
@@ -235,10 +251,10 @@ class DataServiceSpec extends Specification {
         ProductService productService = datastore.getService(ProductService)
 
         when:
-        Product p = productService.saveProduct("Tomato", "Vegetable")
+        Product p = productService.saveProduct('Tomato', 'Vegetable')
 
         then:
-        productService.findProductType(p.id) == "Vegetable"
+        productService.findProductType(p.id) == 'Vegetable'
     }
 
     void 'test property projection return all types'() {
@@ -246,195 +262,201 @@ class DataServiceSpec extends Specification {
         ProductService productService = datastore.getService(ProductService)
 
         when:
-        productService.saveProduct("Carrot", "Vegetable")
-        productService.saveProduct("Pumpkin", "Vegetable")
-        productService.saveProduct("Tomato", "Fruit")
+        productService.saveProduct('Carrot', 'Vegetable')
+        productService.saveProduct('Pumpkin', 'Vegetable')
+        productService.saveProduct('Tomato', 'Fruit')
 
         then:
-        productService.listProductName("Vegetable").size() == 2
-        productService.countProducts("Vegetable") == 2
-        productService.countPrimProducts("Vegetable") == 2
-        productService.countByType("Vegetable") == 2
+        productService.listProductName('Vegetable').size() == 2
+        productService.countProducts('Vegetable') == 2
+        productService.countPrimProducts('Vegetable') == 2
+        productService.countByType('Vegetable') == 2
     }
 
-    void "test @where annotation"() {
+    void 'test @where annotation'() {
         given:
         ProductService productService = datastore.getService(ProductService)
 
         when:
-        productService.saveProduct("Carrot", "Vegetable")
-        productService.saveProduct("Pumpkin", "Vegetable")
-        productService.saveProduct("Tomato", "Fruit")
+        productService.saveProduct('Carrot', 'Vegetable')
+        productService.saveProduct('Pumpkin', 'Vegetable')
+        productService.saveProduct('Tomato', 'Fruit')
 
-        Product p = productService.searchByType("Veg%")
+        Product p = productService.searchByType('Veg%')
 
         then:
         p != null
         p.name == 'Carrot'
-        productService.searchByType("Stuf%") == null
-        productService.searchProducts("Veg%").size() == 2
-        productService.howManyProducts("Veg%") == 2
-
+        productService.searchByType('Stuf%') == null
+        productService.searchProducts('Veg%').size() == 2
+        productService.howManyProducts('Veg%') == 2
     }
 
-    void "test @query annotation"() {
+    void 'test @query annotation'() {
         given:
         ProductService productService = datastore.getService(ProductService)
 
-        productService.saveProduct("Carrot", "Vegetable")
-        productService.saveProduct("Pumpkin", "Vegetable")
-        productService.saveProduct("Tomato", "Fruit")
-
+        productService.saveProduct('Carrot', 'Vegetable')
+        productService.saveProduct('Pumpkin', 'Vegetable')
+        productService.saveProduct('Tomato', 'Fruit')
 
         when:
-        Product product = productService.searchWithQuery("Carr%")
+        Product product = productService.searchWithQuery('Carr%')
 
         then:
         product != null
-        product.name == "Carrot"
-        productService.searchProductType("Carr%") == "Vegetable"
+        product.name == 'Carrot'
+        productService.searchProductType('Carr%') == 'Vegetable'
 
         when:
-        List<Product> results = productService.searchAllWithQuery("Veg%")
+        List<Product> results = productService.searchAllWithQuery('Veg%')
 
         then:
         results.size() == 2
 
         when:
-        List<String> names = productService.searchProductNames("Ve%")
+        List<String> names = productService.searchProductNames('Ve%')
 
         then:
         names.size() == 2
-        names == ["Carrot", "Pumpkin"]
-
+        names == ['Carrot', 'Pumpkin']
     }
 
-    @Ignore // Unknown java.lang.StackOverflowError
-    void "test interface projection"() {
+    @Ignore
+    // Unknown java.lang.StackOverflowError
+    void 'test interface projection'() {
         given:
         ProductService productService = datastore.getService(ProductService)
 
         when:
-        productService.saveProduct("Carrot", "Vegetable")
-        productService.saveProduct("Pumpkin", "Vegetable")
-        productService.saveProduct("Tomato", "Fruit")
+        productService.saveProduct('Carrot', 'Vegetable')
+        productService.saveProduct('Pumpkin', 'Vegetable')
+        productService.saveProduct('Tomato', 'Fruit')
 
-        ProductInfo info = productService.findProductInfo("Pumpkin", "Vegetable")
-        List<ProductInfo> infos = productService.findProductInfos( "Vegetable")
+        ProductInfo info = productService.findProductInfo('Pumpkin', 'Vegetable')
+        List<ProductInfo> infos = productService.findProductInfos('Vegetable')
         def result = JsonOutput.toJson(info)
         then:
         infos.size() == 2
-        infos.first().name == "Carrot"
+        infos.first().name == 'Carrot'
         result == '{"name":"Pumpkin"}'
         info != null
-        info.name == "Pumpkin"
-        productService.searchProductInfoByName("Pump%") != null
-        productService.findByTypeLike("Veg%") != null
-        productService.findByTypeLike("Jun%")  == null
-        productService.findAllByTypeLike( "Vege%").size() == 2
+        info.name == 'Pumpkin'
+        productService.searchProductInfoByName('Pump%') != null
+        productService.findByTypeLike('Veg%') != null
+        productService.findByTypeLike('Jun%') == null
+        productService.findAllByTypeLike('Vege%').size() == 2
 
         when:
-        info = productService.searchProductInfo("Pum%")
+        info = productService.searchProductInfo('Pum%')
 
         then:
-        info.name == "Pumpkin"
+        info.name == 'Pumpkin'
 
         when:
         datastore.sessionFactory.currentSession.clear()
-        productService.deleteSomeProducts("Vegetable")
-
+        productService.deleteSomeProducts('Vegetable')
 
         then:
-        productService.findByTypeLike("Vege%") == null
-
-
+        productService.findByTypeLike('Vege%') == null
     }
 
-    void "test join query on attributes with @Query"() {
+    void 'test join query on attributes with @Query'() {
         given:
         ProductService productService = datastore.getService(ProductService)
-        new Product(name: "Apple", type: "Fruit")
-                .addToAttributes(name: "round")
-                .save(flush:true)
-        new Product(name: "Banana", type: "Fruit")
-                .addToAttributes(name: "curved")
-                .save(flush:true)
+        new Product(name: 'Apple', type: 'Fruit')
+                .addToAttributes(name: 'round')
+                .save(flush: true)
+        new Product(name: 'Banana', type: 'Fruit')
+                .addToAttributes(name: 'curved')
+                .save(flush: true)
 
         when:
-        List<Product> products = productService.findProductsWithAttributes("round")
+        List<Product> products = productService.findProductsWithAttributes('round')
 
         then:
         products.size() == 1
-        products[0].name == "Apple"
+        products[0].name == 'Apple'
     }
 
     @Issue('https://github.com/grails/grails-data-mapping/issues/960')
     void "test findBy dynamic finder with @Join doesn't return proxies"() {
         given:
         ProductService productService = datastore.getService(ProductService)
-        new Product(name: "Apple", type: "Fruit")
-                .addToAttributes(name: "round")
-                .save(flush:true)
+        new Product(name: 'Apple', type: 'Fruit')
+                .addToAttributes(name: 'round')
+                .save(flush: true)
 
-        new Product(name: "Banana", type: "Fruit")
-                .addToAttributes(name: "curved")
-                .save(flush:true)
+        new Product(name: 'Banana', type: 'Fruit')
+                .addToAttributes(name: 'curved')
+                .save(flush: true)
 
         datastore.currentSession.clear()
 
         when:
-        Product product = productService.findByName("Apple").first()
+        Product product = productService.findByName('Apple').first()
 
         then:
         product.attributes.isInitialized()
     }
+
 }
 
 interface ProductInfo {
+
     String getName()
+
 }
 
 @Entity
 class Product {
+
     String name
     String type
 
-    static hasMany = [attributes:Attribute]
+    static hasMany = [attributes: Attribute]
 
     static constraints = {
-        name blank:false
+        name blank: false
     }
+
 }
 
 @Entity
 class Attribute {
+
     String name
+
 }
 
 interface AnotherProductInterface {
+
     Product saveProduct(String name, String type)
 
     Number delete(Serializable id)
+
 }
 
 @Service(Product)
-abstract class AnotherProductService implements AnotherProductInterface{
+abstract class AnotherProductService implements AnotherProductInterface {
 
     ProductService originalProductService
 
     abstract Product get(Serializable id)
 
     Product getByName(String name) {
-        return new Product(name:name.toUpperCase())
+        return new Product(name: name.toUpperCase())
     }
 
     ProductInfo findProductInfo(String name, String type) {
         getOriginalProductService().findProductInfo(name, type) // ?
     }
+
 }
 
 @Service(Product)
 interface ProductService {
+
     List<ProductInfo> findProductInfos(String type)
 
     List<ProductInfo> findAllByTypeLike(String type)
@@ -493,6 +515,7 @@ interface ProductService {
 
     @Where({ type == type })
     Number deleteSomeProducts(String type)
+
     Product delete(String name)
 
     Number remove(Serializable id)
@@ -522,4 +545,5 @@ interface ProductService {
 
     @Join('attributes')
     Iterable<Product> findByName(String n)
+
 }

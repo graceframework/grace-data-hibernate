@@ -1,11 +1,11 @@
 /*
- * Copyright 2003-2007 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -77,7 +77,7 @@ import org.grails.orm.hibernate.AbstractHibernateGormValidationApi;
  * @author Graeme Rocher
  * @since 1.3.5
  */
-@SuppressWarnings({ "rawtypes", "unchecked", "serial" })
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class ClosureEventListener implements SaveOrUpdateEventListener,
         PreLoadEventListener,
         PostLoadEventListener,
@@ -130,8 +130,8 @@ public class ClosureEventListener implements SaveOrUpdateEventListener,
         Class domainClazz = persistentEntity.getJavaClass();
         this.domainMetaClass = GroovySystem.getMetaClassRegistry().getMetaClass(domainClazz);
         this.isMultiTenant = ClassUtils.isMultiTenant(domainClazz);
-        saveOrUpdateCaller = buildCaller(AbstractPersistenceEvent.ONLOAD_SAVE, domainClazz);
-        beforeInsertCaller = buildCaller(AbstractPersistenceEvent.BEFORE_INSERT_EVENT, domainClazz);
+        this.saveOrUpdateCaller = buildCaller(AbstractPersistenceEvent.ONLOAD_SAVE, domainClazz);
+        this.beforeInsertCaller = buildCaller(AbstractPersistenceEvent.BEFORE_INSERT_EVENT, domainClazz);
         EventTriggerCaller preLoadEventCaller = buildCaller(AbstractPersistenceEvent.ONLOAD_EVENT, domainClazz);
         if (preLoadEventCaller == null) {
             this.preLoadEventCaller = buildCaller(AbstractPersistenceEvent.BEFORE_LOAD_EVENT, domainClazz);
@@ -140,81 +140,90 @@ public class ClosureEventListener implements SaveOrUpdateEventListener,
             this.preLoadEventCaller = preLoadEventCaller;
         }
 
-        postLoadEventListener = buildCaller(AbstractPersistenceEvent.AFTER_LOAD_EVENT, domainClazz);
-        postInsertEventListener = buildCaller(AbstractPersistenceEvent.AFTER_INSERT_EVENT, domainClazz);
-        postUpdateEventListener = buildCaller(AbstractPersistenceEvent.AFTER_UPDATE_EVENT, domainClazz);
-        postDeleteEventListener = buildCaller(AbstractPersistenceEvent.AFTER_DELETE_EVENT, domainClazz);
-        preDeleteEventListener = buildCaller(AbstractPersistenceEvent.BEFORE_DELETE_EVENT, domainClazz);
-        preUpdateEventListener = buildCaller(AbstractPersistenceEvent.BEFORE_UPDATE_EVENT, domainClazz);
+        this.postLoadEventListener = buildCaller(AbstractPersistenceEvent.AFTER_LOAD_EVENT, domainClazz);
+        this.postInsertEventListener = buildCaller(AbstractPersistenceEvent.AFTER_INSERT_EVENT, domainClazz);
+        this.postUpdateEventListener = buildCaller(AbstractPersistenceEvent.AFTER_UPDATE_EVENT, domainClazz);
+        this.postDeleteEventListener = buildCaller(AbstractPersistenceEvent.AFTER_DELETE_EVENT, domainClazz);
+        this.preDeleteEventListener = buildCaller(AbstractPersistenceEvent.BEFORE_DELETE_EVENT, domainClazz);
+        this.preUpdateEventListener = buildCaller(AbstractPersistenceEvent.BEFORE_UPDATE_EVENT, domainClazz);
 
-        beforeValidateEventListener = new BeforeValidateEventTriggerCaller(domainClazz, domainMetaClass);
+        this.beforeValidateEventListener = new BeforeValidateEventTriggerCaller(domainClazz, this.domainMetaClass);
 
         if (failOnErrorPackages.size() > 0) {
-            failOnErrorEnabled = ClassUtils.isClassBelowPackage(domainClazz, failOnErrorPackages);
+            this.failOnErrorEnabled = ClassUtils.isClassBelowPackage(domainClazz, failOnErrorPackages);
         }
         else {
-            failOnErrorEnabled = failOnError;
+            this.failOnErrorEnabled = failOnError;
         }
 
-        validateParams = new HashMap();
-        validateParams.put(AbstractHibernateGormValidationApi.ARGUMENT_DEEP_VALIDATE, Boolean.FALSE);
+        this.validateParams = new HashMap();
+        this.validateParams.put(AbstractHibernateGormValidationApi.ARGUMENT_DEEP_VALIDATE, Boolean.FALSE);
 
         try {
-            actionQueueUpdatesField = ReflectionUtils.findField(ActionQueue.class, "updates");
-            actionQueueUpdatesField.setAccessible(true);
-            entityUpdateActionStateField = ReflectionUtils.findField(EntityUpdateAction.class, "state");
-            entityUpdateActionStateField.setAccessible(true);
+            this.actionQueueUpdatesField = ReflectionUtils.findField(ActionQueue.class, "updates");
+            this.actionQueueUpdatesField.setAccessible(true);
+            this.entityUpdateActionStateField = ReflectionUtils.findField(EntityUpdateAction.class, "state");
+            this.entityUpdateActionStateField.setAccessible(true);
         }
         catch (Exception e) {
             // ignore
         }
     }
 
-
+    @Override
     public void onSaveOrUpdate(SaveOrUpdateEvent event) throws HibernateException {
         // no-op, merely a hook for plugins to override
     }
 
+    @Override
     public void onPreLoad(final PreLoadEvent event) {
-        if (preLoadEventCaller == null) {
+        if (this.preLoadEventCaller == null) {
             return;
         }
 
         doWithManualSession(event, new Closure(this) {
+
             @Override
             public Object call() {
-                preLoadEventCaller.call(event.getEntity());
+                ClosureEventListener.this.preLoadEventCaller.call(event.getEntity());
                 return null;
             }
+
         });
     }
 
+    @Override
     public void onPostLoad(final PostLoadEvent event) {
-        if (postLoadEventListener == null) {
+        if (this.postLoadEventListener == null) {
             return;
         }
 
         doWithManualSession(event, new Closure(this) {
+
             @Override
             public Object call() {
-                postLoadEventListener.call(event.getEntity());
+                ClosureEventListener.this.postLoadEventListener.call(event.getEntity());
                 return null;
             }
+
         });
     }
 
+    @Override
     public void onPostInsert(PostInsertEvent event) {
         final Object entity = event.getEntity();
-        if (postInsertEventListener == null) {
+        if (this.postInsertEventListener == null) {
             return;
         }
 
         doWithManualSession(event, new Closure(this) {
+
             @Override
             public Object call() {
-                postInsertEventListener.call(entity);
+                ClosureEventListener.this.postInsertEventListener.call(entity);
                 return null;
             }
+
         });
     }
 
@@ -230,72 +239,82 @@ public class ClosureEventListener implements SaveOrUpdateEventListener,
 
     public void onPostUpdate(PostUpdateEvent event) {
         final Object entity = event.getEntity();
-        if (postUpdateEventListener == null) {
+        if (this.postUpdateEventListener == null) {
             return;
         }
 
         doWithManualSession(event, new Closure(this) {
             @Override
             public Object call() {
-                postUpdateEventListener.call(entity);
+                ClosureEventListener.this.postUpdateEventListener.call(entity);
                 return null;
             }
         });
     }
 
+    @Override
     public void onPostDelete(PostDeleteEvent event) {
         final Object entity = event.getEntity();
-        if (postDeleteEventListener == null) {
+        if (this.postDeleteEventListener == null) {
             return;
         }
 
         doWithManualSession(event, new Closure(this) {
+
             @Override
             public Object call() {
-                postDeleteEventListener.call(entity);
+                ClosureEventListener.this.postDeleteEventListener.call(entity);
                 return null;
             }
+
         });
     }
 
+    @Override
     public boolean onPreDelete(final PreDeleteEvent event) {
-        if (preDeleteEventListener == null) {
+        if (this.preDeleteEventListener == null) {
             return false;
         }
 
         return doWithManualSession(event, new Closure<Boolean>(this) {
+
             @Override
             public Boolean call() {
-                return preDeleteEventListener.call(event.getEntity());
+                return ClosureEventListener.this.preDeleteEventListener.call(event.getEntity());
             }
+
         });
     }
 
+    @Override
     public boolean onPreUpdate(final PreUpdateEvent event) {
         return doWithManualSession(event, new Closure<Boolean>(this) {
+
             @Override
             public Boolean call() {
                 Object entity = event.getEntity();
                 boolean evict = false;
-                if (preUpdateEventListener != null) {
-                    evict = preUpdateEventListener.call(entity);
+                if (ClosureEventListener.this.preUpdateEventListener != null) {
+                    evict = ClosureEventListener.this.preUpdateEventListener.call(entity);
                     if (!evict) {
                         synchronizePersisterState(event, event.getState());
                     }
                 }
                 return evict || doValidate(entity);
             }
+
         });
     }
 
     public boolean onPreInsert(final PreInsertEvent event) {
         return doWithManualSession(event, new Closure<Boolean>(this) {
+
             @Override
             public Boolean call() {
                 Object entity = event.getEntity();
                 boolean synchronizeState = false;
-                if (beforeInsertCaller != null) {
-                    if (beforeInsertCaller.call(entity)) {
+                if (ClosureEventListener.this.beforeInsertCaller != null) {
+                    if (ClosureEventListener.this.beforeInsertCaller.call(entity)) {
                         return true;
                     }
                     synchronizeState = true;
@@ -310,16 +329,15 @@ public class ClosureEventListener implements SaveOrUpdateEventListener,
     }
 
     public void onValidate(ValidationEvent event) {
-        beforeValidateEventListener.call(event.getEntityObject(), event.getValidatedFields());
+        this.beforeValidateEventListener.call(event.getEntityObject(), event.getValidatedFields());
     }
 
     protected boolean doValidate(Object entity) {
         boolean evict = false;
         GormValidateable validateable = (GormValidateable) entity;
-        if (!validateable.shouldSkipValidation()
-                && !validateable.validate(validateParams)) {
+        if (!validateable.shouldSkipValidation() && !validateable.validate(this.validateParams)) {
             evict = true;
-            if (failOnErrorEnabled) {
+            if (this.failOnErrorEnabled) {
                 Errors errors = validateable.getErrors();
                 throw ValidationException.newInstance("Validation error whilst flushing entity [" + entity.getClass().getName()
                         + "]", errors);
@@ -329,7 +347,7 @@ public class ClosureEventListener implements SaveOrUpdateEventListener,
     }
 
     private EventTriggerCaller buildCaller(String eventName, Class<?> domainClazz) {
-        return EventTriggerCaller.buildCaller(eventName, domainClazz, domainMetaClass, null);
+        return EventTriggerCaller.buildCaller(eventName, domainClazz, this.domainMetaClass, null);
     }
 
     private void synchronizePersisterState(AbstractPreDatabaseOperationEvent event, Object[] state) {
@@ -337,17 +355,20 @@ public class ClosureEventListener implements SaveOrUpdateEventListener,
         synchronizePersisterState(event, state, persister, persister.getPropertyNames());
     }
 
-    private void synchronizePersisterState(AbstractPreDatabaseOperationEvent event, Object[] state, EntityPersister persister, String[] propertyNames) {
+    private void synchronizePersisterState(AbstractPreDatabaseOperationEvent event, Object[] state,
+            EntityPersister persister, String[] propertyNames) {
         Object entity = event.getEntity();
-        EntityReflector reflector = persistentEntity.getReflector();
+        EntityReflector reflector = this.persistentEntity.getReflector();
         HashMap<Integer, Object> changedState = new HashMap<>();
         EntityMetamodel entityMetamodel = persister.getEntityMetamodel();
         for (int i = 0; i < propertyNames.length; i++) {
             String p = propertyNames[i];
             Integer index = entityMetamodel.getPropertyIndexOrNull(p);
-            if (index == null) continue;
+            if (index == null) {
+                continue;
+            }
 
-            PersistentProperty property = persistentEntity.getPropertyByName(p);
+            PersistentProperty property = this.persistentEntity.getPropertyByName(p);
             if (property == null) {
                 continue;
             }
@@ -369,13 +390,14 @@ public class ClosureEventListener implements SaveOrUpdateEventListener,
 
     private void synchronizeEntityUpdateActionState(AbstractPreDatabaseOperationEvent event, Object entity,
             HashMap<Integer, Object> changedState) {
-        if (actionQueueUpdatesField != null && event instanceof PreInsertEvent && changedState.size() > 0) {
+        if (this.actionQueueUpdatesField != null && event instanceof PreInsertEvent && changedState.size() > 0) {
             try {
-                ExecutableList<EntityUpdateAction> updates = (ExecutableList<EntityUpdateAction>) actionQueueUpdatesField.get(event.getSession().getActionQueue());
+                ExecutableList<EntityUpdateAction> updates =
+                        (ExecutableList<EntityUpdateAction>) this.actionQueueUpdatesField.get(event.getSession().getActionQueue());
                 if (updates != null) {
                     for (EntityUpdateAction updateAction : updates) {
                         if (updateAction.getInstance() == entity) {
-                            Object[] updateState = (Object[]) entityUpdateActionStateField.get(updateAction);
+                            Object[] updateState = (Object[]) this.entityUpdateActionStateField.get(updateAction);
                             if (updateState != null) {
                                 for (Map.Entry<Integer, Object> entry : changedState.entrySet()) {
                                     updateState[entry.getKey()] = entry.getValue();

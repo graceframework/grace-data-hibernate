@@ -1,11 +1,11 @@
 /*
- * Copyright 2003-2025 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,7 +56,8 @@ import org.grails.orm.hibernate.support.ClosureEventTriggeringInterceptor;
  * @author Graeme Rocher
  * @since 6.0
  */
-public class HibernateConnectionSourceFactory extends AbstractHibernateConnectionSourceFactory implements ApplicationContextAware, MessageSourceAware {
+public class HibernateConnectionSourceFactory extends AbstractHibernateConnectionSourceFactory
+        implements ApplicationContextAware, MessageSourceAware {
 
     static {
         // use Slf4j logging by default
@@ -82,7 +83,7 @@ public class HibernateConnectionSourceFactory extends AbstractHibernateConnectio
     }
 
     public Class[] getPersistentClasses() {
-        return persistentClasses;
+        return this.persistentClasses;
     }
 
     @Autowired(required = false)
@@ -101,21 +102,23 @@ public class HibernateConnectionSourceFactory extends AbstractHibernateConnectio
     }
 
     public HibernateMappingContext getMappingContext() {
-        return mappingContext;
+        return this.mappingContext;
     }
 
     @Override
-    public ConnectionSource<SessionFactory, HibernateConnectionSourceSettings> create(String name, ConnectionSource<DataSource, DataSourceSettings> dataSourceConnectionSource, HibernateConnectionSourceSettings settings) {
+    public ConnectionSource<SessionFactory, HibernateConnectionSourceSettings> create(String name,
+            ConnectionSource<DataSource, DataSourceSettings> dataSourceConnectionSource, HibernateConnectionSourceSettings settings) {
         HibernateMappingContextConfiguration configuration = buildConfiguration(name, dataSourceConnectionSource, settings);
         SessionFactory sessionFactory = configuration.buildSessionFactory();
         return new HibernateConnectionSource(name, sessionFactory, dataSourceConnectionSource, settings);
     }
 
-    public HibernateMappingContextConfiguration buildConfiguration(String name, ConnectionSource<DataSource, DataSourceSettings> dataSourceConnectionSource, HibernateConnectionSourceSettings settings) {
+    public HibernateMappingContextConfiguration buildConfiguration(String name,
+            ConnectionSource<DataSource, DataSourceSettings> dataSourceConnectionSource, HibernateConnectionSourceSettings settings) {
         boolean isDefault = ConnectionSource.DEFAULT.equals(name);
 
-        if (mappingContext == null) {
-            mappingContext = new HibernateMappingContext(settings, applicationContext, persistentClasses);
+        if (this.mappingContext == null) {
+            this.mappingContext = new HibernateMappingContext(settings, this.applicationContext, this.persistentClasses);
         }
 
         HibernateConnectionSourceSettings.HibernateSettings hibernateSettings = settings.getHibernate();
@@ -136,13 +139,14 @@ public class HibernateConnectionSourceFactory extends AbstractHibernateConnectio
 
         configuration.addAnnotatedClasses(this.persistentClasses);
 
-        if (JavaxValidatorRegistry.isAvailable() && messageSource != null) {
-            ValidatorRegistry registry = new JavaxValidatorRegistry(mappingContext, dataSourceConnectionSource.getSettings(), messageSource);
-            mappingContext.setValidatorRegistry(registry);
+        if (JavaxValidatorRegistry.isAvailable() && this.messageSource != null) {
+            ValidatorRegistry registry =
+                    new JavaxValidatorRegistry(this.mappingContext, dataSourceConnectionSource.getSettings(), this.messageSource);
+            this.mappingContext.setValidatorRegistry(registry);
             configuration.getProperties().put("jakarta.persistence.validation.factory", registry);
         }
 
-        if (applicationContext != null && applicationContext.containsBean(dataSourceConnectionSource.getName())) {
+        if (this.applicationContext != null && this.applicationContext.containsBean(dataSourceConnectionSource.getName())) {
             configuration.setApplicationContext(this.applicationContext);
         }
         else {
@@ -224,7 +228,7 @@ public class HibernateConnectionSourceFactory extends AbstractHibernateConnectio
         }
 
         if (this.metadataContributor != null) {
-            configuration.setMetadataContributor(metadataContributor);
+            configuration.setMetadataContributor(this.metadataContributor);
         }
 
         Class[] annotatedClasses = hibernateSettings.getAnnotatedClasses();
@@ -242,7 +246,8 @@ public class HibernateConnectionSourceFactory extends AbstractHibernateConnectio
             configuration.scanPackages(packagesToScan);
         }
 
-        Class<? extends AbstractClosureEventTriggeringInterceptor> closureEventTriggeringInterceptorClass = hibernateSettings.getClosureEventTriggeringInterceptorClass();
+        Class<? extends AbstractClosureEventTriggeringInterceptor> closureEventTriggeringInterceptorClass =
+                hibernateSettings.getClosureEventTriggeringInterceptorClass();
 
         AbstractClosureEventTriggeringInterceptor eventTriggeringInterceptor;
 
@@ -268,7 +273,7 @@ public class HibernateConnectionSourceFactory extends AbstractHibernateConnectio
         configuration.setEventListeners(hibernateSettings.toHibernateEventListeners(eventTriggeringInterceptor));
         HibernateEventListeners hibernateEventListeners = hibernateSettings.getHibernateEventListeners();
         configuration.setHibernateEventListeners(this.hibernateEventListeners != null ? this.hibernateEventListeners : hibernateEventListeners);
-        configuration.setHibernateMappingContext(mappingContext);
+        configuration.setHibernateMappingContext(this.mappingContext);
         configuration.setDataSourceName(name);
         configuration.setSessionFactoryBeanName(isDefault ? "sessionFactory" : "sessionFactory_" + name);
         Properties hibernateProperties = settings.toProperties();

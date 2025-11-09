@@ -1,9 +1,20 @@
+/*
+ * Copyright 2016-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.orm.hibernate
 
-import grails.gorm.annotation.Entity
-import grails.gorm.transactions.Rollback
-import org.grails.datastore.mapping.core.DatastoreUtils
-import org.grails.orm.hibernate.cfg.Settings
 import org.springframework.core.env.PropertyResolver
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.transaction.PlatformTransactionManager
@@ -12,56 +23,70 @@ import spock.lang.Issue
 import spock.lang.Shared
 import spock.lang.Specification
 
+import grails.gorm.annotation.Entity
+import grails.gorm.transactions.Rollback
+
+import org.grails.datastore.mapping.core.DatastoreUtils
+
 /**
  * Created by graemerocher on 13/09/2016.
  */
 class DefaultConstraintsSpec extends Specification {
 
-    @Shared PropertyResolver configuration = DatastoreUtils.createPropertyResolver(
-            'dataSource.dbCreate' :'create',
+    @Shared
+    PropertyResolver configuration = DatastoreUtils.createPropertyResolver(
+            'dataSource.dbCreate': 'create',
             'dataSource.url': 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
-        'grails.gorm.default.constraints':{
-            '*'(nullable: true)
-        }
+            'grails.gorm.default.constraints': {
+                '*'(nullable: true)
+            }
     )
-    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(configuration,Book)
-    @Shared PlatformTransactionManager transactionManager = hibernateDatastore.getTransactionManager()
+
+    @Shared
+    @AutoCleanup
+    HibernateDatastore hibernateDatastore = new HibernateDatastore(configuration, Book)
+
+    @Shared
+    PlatformTransactionManager transactionManager = hibernateDatastore.getTransactionManager()
 
     @Rollback
     @Issue('https://github.com/grails/grails-data-mapping/issues/746')
-    void "Test that when constraints are nullable true by default, they can be altered to nullable false"() {
-        when:"An object is validated"
+    void 'Test that when constraints are nullable true by default, they can be altered to nullable false'() {
+        when: 'An object is validated'
         Book book = new Book()
         book.validate()
 
-        then:"It has errors"
+        then: 'It has errors'
         book.hasErrors()
-        book.errors.getFieldError("title")
+        book.errors.getFieldError('title')
 
-        when:"The title is set"
-        book.title = "The Stand"
+        when: 'The title is set'
+        book.title = 'The Stand'
         book.clearErrors()
         book.validate()
 
-        then:"It validates"
+        then: 'It validates'
         !book.hasErrors()
 
-        when:"Validation is bypassed"
+        when: 'Validation is bypassed'
         book.title = null
-        book.save(validate:false)
+        book.save(validate: false)
 
-        then:"A constraint violation exception is thrown"
+        then: 'A constraint violation exception is thrown'
         Book.count() == 0
         thrown DataIntegrityViolationException
     }
+
 }
 
 @Entity
 class Book {
+
     String title
     String author
 
     static constraints = {
-        title nullable:false
+        title nullable: false
     }
+
 }

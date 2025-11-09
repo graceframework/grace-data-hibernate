@@ -1,11 +1,11 @@
 /*
- * Copyright 2003-2023 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -46,7 +46,7 @@ class PropertyConfig extends Property {
     // Whether the first column is created from cloning this instance
     boolean firstColumnIsColumnCopy = false
 
-    boolean explicitSaveUpdateCascade;
+    boolean explicitSaveUpdateCascade
 
     /**
      * The Hibernate type or user type of the property. This can be
@@ -65,7 +65,6 @@ class PropertyConfig extends Property {
      */
     String sort
 
-
     /**
      * The default sort order
      */
@@ -75,7 +74,6 @@ class PropertyConfig extends Property {
      * The batch size used for lazy loading
      */
     Integer batchSize
-
 
     /**
      * Whether to ignore ObjectNotFoundException
@@ -163,6 +161,7 @@ class PropertyConfig extends Property {
         }
         return this
     }
+
     /**
      * The cache configuration
      */
@@ -222,6 +221,7 @@ class PropertyConfig extends Property {
             columns[0].unique = unique
         }
     }
+
     /**
      * The join table configuration
      */
@@ -290,7 +290,6 @@ class PropertyConfig extends Property {
         return configureExisting(property, config)
     }
 
-
     /**
      * Configures a new PropertyConfig instance
      *
@@ -327,6 +326,7 @@ class PropertyConfig extends Property {
 
         return property
     }
+
     /**
      * Configures an existing PropertyConfig instance
      *
@@ -347,13 +347,18 @@ class PropertyConfig extends Property {
      */
     String getColumn() {
         checkHasSingleColumn()
-        if (columns.isEmpty()) return null
+        if (columns.isEmpty()) {
+            return null
+        }
         return columns[0].name
     }
 
+    @Override
     String getEnumType() {
         checkHasSingleColumn()
-        if (columns.isEmpty()) return "default"
+        if (columns.isEmpty()) {
+            return 'default'
+        }
         return columns[0].enumType
     }
 
@@ -364,7 +369,9 @@ class PropertyConfig extends Property {
      */
     String getSqlType() {
         checkHasSingleColumn()
-        if (columns.isEmpty()) return null
+        if (columns.isEmpty()) {
+            return null
+        }
         return columns[0].sqlType
     }
 
@@ -375,7 +382,9 @@ class PropertyConfig extends Property {
      */
     String getIndexName() {
         checkHasSingleColumn()
-        if (columns.isEmpty()) return null
+        if (columns.isEmpty()) {
+            return null
+        }
         return columns[0].index?.toString()
     }
 
@@ -385,12 +394,15 @@ class PropertyConfig extends Property {
      * @throws RuntimeException if this property maps to more than one
      * column.
      */
+    @Override
     boolean isUnique() {
         if (columns.size() > 1) {
             return super.isUnique()
         }
         else {
-            if (columns.isEmpty()) return super.isUnique()
+            if (columns.isEmpty()) {
+                return super.isUnique()
+            }
             return columns[0].unique
         }
     }
@@ -402,7 +414,9 @@ class PropertyConfig extends Property {
      */
     int getLength() {
         checkHasSingleColumn()
-        if (columns.isEmpty()) return -1
+        if (columns.isEmpty()) {
+            return -1
+        }
         return columns[0].length
     }
 
@@ -413,7 +427,9 @@ class PropertyConfig extends Property {
      */
     int getPrecision() {
         checkHasSingleColumn()
-        if (columns.isEmpty()) return -1
+        if (columns.isEmpty()) {
+            return -1
+        }
         return columns[0].precision
     }
 
@@ -422,6 +438,7 @@ class PropertyConfig extends Property {
      * @throws RuntimeException if this property maps to more than one
      * column.
      */
+    @Override
     int getScale() {
         checkHasSingleColumn()
         if (columns.isEmpty()) {
@@ -441,13 +458,14 @@ class PropertyConfig extends Property {
         }
     }
 
+    @Override
     String toString() {
         "property[type:$type, lazy:$lazy, columns:$columns, insertable:${insertable}, updateable:${updatable}]"
     }
 
     protected void checkHasSingleColumn() {
         if (columns?.size() > 1) {
-            throw new RuntimeException("Cannot treat multi-column property as a single-column property")
+            throw new RuntimeException('Cannot treat multi-column property as a single-column property')
         }
     }
 
@@ -470,4 +488,5 @@ class PropertyConfig extends Property {
         }
         return pc
     }
+
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2011 SpringSource.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -54,9 +54,7 @@ import org.grails.orm.hibernate.support.SoftKey;
  */
 public class HibernateEventListener extends AbstractHibernateEventListener {
 
-    protected transient ConcurrentMap<SoftKey<Class<?>>, ClosureEventListener> eventListeners =
-            new ConcurrentHashMap<>();
-
+    protected transient ConcurrentMap<SoftKey<Class<?>>, ClosureEventListener> eventListeners = new ConcurrentHashMap<>();
 
     public HibernateEventListener(AbstractHibernateDatastore datastore) {
         super(datastore);
@@ -189,11 +187,13 @@ public class HibernateEventListener extends AbstractHibernateEventListener {
     }
 
     protected ClosureEventListener findEventListener(Object entity, SessionFactoryImplementor factory) {
-        if (entity == null) return null;
+        if (entity == null) {
+            return null;
+        }
         Class<?> clazz = Hibernate.getClass(entity);
 
         SoftKey<Class<?>> key = new SoftKey<>(clazz);
-        ClosureEventListener eventListener = eventListeners.get(key);
+        ClosureEventListener eventListener = this.eventListeners.get(key);
         if (eventListener != null) {
             return eventListener;
         }
@@ -201,15 +201,16 @@ public class HibernateEventListener extends AbstractHibernateEventListener {
         Boolean shouldTrigger = cachedShouldTrigger.get(key);
         if (shouldTrigger == null || shouldTrigger) {
             synchronized (cachedShouldTrigger) {
-                eventListener = eventListeners.get(key);
+                eventListener = this.eventListeners.get(key);
                 if (eventListener == null) {
                     AbstractHibernateDatastore datastore = getDatastore();
-                    boolean isValidSessionFactory = MultiTenant.class.isAssignableFrom(clazz) || factory == null || datastore.getSessionFactory().equals(factory);
+                    boolean isValidSessionFactory = MultiTenant.class.isAssignableFrom(clazz) || factory == null ||
+                            datastore.getSessionFactory().equals(factory);
                     PersistentEntity persistentEntity = datastore.getMappingContext().getPersistentEntity(clazz.getName());
                     shouldTrigger = (persistentEntity != null && isValidSessionFactory);
                     if (shouldTrigger) {
                         eventListener = new ClosureEventListener(persistentEntity, failOnError, failOnErrorPackages);
-                        ClosureEventListener previous = eventListeners.putIfAbsent(key, eventListener);
+                        ClosureEventListener previous = this.eventListeners.putIfAbsent(key, eventListener);
                         if (previous != null) {
                             eventListener = previous;
                         }
@@ -225,6 +226,7 @@ public class HibernateEventListener extends AbstractHibernateEventListener {
      * {@inheritDoc}
      * @see org.springframework.context.event.SmartApplicationListener#supportsEventType(java.lang.Class)
      */
+    @Override
     public boolean supportsEventType(Class<? extends ApplicationEvent> eventType) {
         return AbstractPersistenceEvent.class.isAssignableFrom(eventType);
     }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2003-2007 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -139,7 +139,6 @@ class Mapping extends Entity<PropertyConfig> {
      */
     String comment
 
-
     boolean isTablePerConcreteClass() {
         return tablePerConcreteClass
     }
@@ -153,6 +152,7 @@ class Mapping extends Entity<PropertyConfig> {
     Map<String, PropertyConfig> getPropertyConfigs() {
         return columns
     }
+
     /**
      * Define the table name
      * @param name The table name
@@ -184,6 +184,7 @@ class Mapping extends Entity<PropertyConfig> {
         Table.configureExisting(table, tableConfig)
         return this
     }
+
     /**
      * Define the identity config
      * @param identityConfig The id config
@@ -196,6 +197,7 @@ class Mapping extends Entity<PropertyConfig> {
         }
         return this
     }
+
     /**
      * Define the identity config
      * @param identityConfig The id config
@@ -258,7 +260,6 @@ class Mapping extends Entity<PropertyConfig> {
         this.cache.enabled = true
         return this
     }
-
 
     /**
      * Configures sorting
@@ -326,7 +327,7 @@ class Mapping extends Entity<PropertyConfig> {
                 discriminator = new DiscriminatorConfig()
             }
 
-            String value = args.remove('value')?.toString()
+            String value = args.remove('value')
             discriminator.value = value
             if (args.column instanceof String) {
                 discriminator.column = new ColumnConfig(name: args.column.toString())
@@ -398,7 +399,6 @@ class Mapping extends Entity<PropertyConfig> {
         return this
     }
 
-
     /**
      * Configure a property
      * @param name The name of the property
@@ -452,6 +452,7 @@ class Mapping extends Entity<PropertyConfig> {
     Entity version(@DelegatesTo(PropertyConfig) Closure versionConfig) {
         return super.version(versionConfig)
     }
+
     /**
      * Configure a new property
      * @param name The name of the property
@@ -538,7 +539,6 @@ class Mapping extends Entity<PropertyConfig> {
                             property,
                             ((Closure) args[-1])
                     )
-
                 }
                 PropertyConfig.configureExisting(property, namedArgs)
             }
@@ -584,4 +584,5 @@ class Mapping extends Entity<PropertyConfig> {
         }
         cloned
     }
+
 }

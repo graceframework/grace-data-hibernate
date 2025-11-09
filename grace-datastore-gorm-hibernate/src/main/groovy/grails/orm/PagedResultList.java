@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2005 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -35,7 +35,7 @@ import org.grails.orm.hibernate.query.HibernateQuery;
  * @since 1.0
  * @deprecated Use {@link org.grails.orm.hibernate.query.PagedResultList} instead.
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
+@SuppressWarnings({ "rawtypes" })
 @Deprecated
 public class PagedResultList extends grails.gorm.PagedResultList {
 
@@ -46,15 +46,15 @@ public class PagedResultList extends grails.gorm.PagedResultList {
     public PagedResultList(GrailsHibernateTemplate template, Criteria crit) {
         super(null);
         resultList = crit.list();
-        criteria = crit;
-        hibernateTemplate = template;
+        this.criteria = crit;
+        this.hibernateTemplate = template;
     }
 
     public PagedResultList(GrailsHibernateTemplate template, HibernateQuery query) {
         super(null);
         resultList = query.listForCriteria();
-        criteria = query.getHibernateCriteria();
-        hibernateTemplate = template;
+        this.criteria = query.getHibernateCriteria();
+        this.hibernateTemplate = template;
     }
 
     @Override
@@ -65,11 +65,13 @@ public class PagedResultList extends grails.gorm.PagedResultList {
     @Override
     public int getTotalCount() {
         if (totalCount == Integer.MIN_VALUE) {
-            totalCount = hibernateTemplate.execute(new GrailsHibernateTemplate.HibernateCallback<Integer>() {
+            totalCount = this.hibernateTemplate.execute(new GrailsHibernateTemplate.HibernateCallback<Integer>() {
+
+                @Override
                 public Integer doInHibernate(Session session) throws HibernateException, SQLException {
-                    CriteriaImpl impl = (CriteriaImpl) criteria;
+                    CriteriaImpl impl = (CriteriaImpl) PagedResultList.this.criteria;
                     Criteria totalCriteria = session.createCriteria(impl.getEntityOrClassName());
-                    hibernateTemplate.applySettings(totalCriteria);
+                    PagedResultList.this.hibernateTemplate.applySettings(totalCriteria);
 
                     Iterator iterator = impl.iterateExpressionEntries();
                     while (iterator.hasNext()) {
@@ -85,6 +87,7 @@ public class PagedResultList extends grails.gorm.PagedResultList {
                     totalCriteria.setProjection(Projections.rowCount());
                     return ((Number) totalCriteria.uniqueResult()).intValue();
                 }
+
             });
         }
         return totalCount;

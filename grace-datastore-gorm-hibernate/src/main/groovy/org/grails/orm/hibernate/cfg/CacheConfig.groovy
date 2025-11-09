@@ -1,11 +1,11 @@
 /*
- * Copyright 2003-2007 the original author or authors.
+ * Copyright 2018-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -39,7 +39,7 @@ class CacheConfig implements Cloneable {
     /**
      * The cache usage
      */
-    String usage = "read-write"
+    String usage = 'read-write'
 
     /**
      * Whether caching is enabled
@@ -49,7 +49,7 @@ class CacheConfig implements Cloneable {
     /**
      * What to include in caching
      */
-    String include = "all"
+    String include = 'all'
 
     /**
      * Configures a new CacheConfig instance

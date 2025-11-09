@@ -1,11 +1,11 @@
 /*
- * Copyright 2004-2008 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,7 +42,6 @@ import org.slf4j.LoggerFactory;
  *
  * @author Siegfried Puchbauer
  * @author Graeme Rocher
- *
  * @since 1.1
  */
 public class IdentityEnumType implements UserType, ParameterizedType, Serializable {
@@ -67,7 +66,8 @@ public class IdentityEnumType implements UserType, ParameterizedType, Serializab
 
     protected int[] sqlTypes;
 
-    public static BidiEnumMap getBidiEnumMap(Class<? extends Enum<?>> cls) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    public static BidiEnumMap getBidiEnumMap(Class<? extends Enum<?>> cls)
+            throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         BidiEnumMap m = ENUM_MAPPINGS.get(cls);
         if (m == null) {
             synchronized (ENUM_MAPPINGS) {
@@ -83,84 +83,95 @@ public class IdentityEnumType implements UserType, ParameterizedType, Serializab
         return m;
     }
 
-
+    @Override
     @SuppressWarnings("unchecked")
     public void setParameterValues(Properties properties) {
         try {
-            enumClass = (Class<? extends Enum<?>>) Thread.currentThread().getContextClassLoader().loadClass(
+            this.enumClass = (Class<? extends Enum<?>>) Thread.currentThread().getContextClassLoader().loadClass(
                     (String) properties.get(PARAM_ENUM_CLASS));
             if (LOG.isDebugEnabled()) {
-                LOG.debug(String.format("Building ID-mapping for Enum Class %s", enumClass.getName()));
+                LOG.debug(String.format("Building ID-mapping for Enum Class %s", this.enumClass.getName()));
             }
-            bidiMap = getBidiEnumMap(enumClass);
-            type = (AbstractStandardBasicType<?>) typeConfiguration.getBasicTypeRegistry().getRegisteredType(bidiMap.keyType.getName());
+            this.bidiMap = getBidiEnumMap(this.enumClass);
+            this.type = (AbstractStandardBasicType<?>) typeConfiguration.getBasicTypeRegistry().getRegisteredType(this.bidiMap.keyType.getName());
             if (LOG.isDebugEnabled()) {
-                LOG.debug(String.format("Mapped Basic Type is %s", type));
+                LOG.debug(String.format("Mapped Basic Type is %s", this.type));
             }
-            sqlTypes = type.sqlTypes(null);
+            this.sqlTypes = this.type.sqlTypes(null);
         }
         catch (Exception e) {
             throw new MappingException("Error mapping Enum Class using IdentifierEnumType", e);
         }
     }
 
+    @Override
     public int[] sqlTypes() {
-        return sqlTypes;
+        return this.sqlTypes;
     }
 
+    @Override
     public Class<?> returnedClass() {
-        return enumClass;
+        return this.enumClass;
     }
 
+    @Override
     public boolean equals(Object o1, Object o2) throws HibernateException {
         return o1 == o2;
     }
 
+    @Override
     public int hashCode(Object o) throws HibernateException {
         return o.hashCode();
     }
 
     @Override
-    public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner) throws HibernateException, SQLException {
-        Object id = type.nullSafeGet(rs, names[0], session);
+    public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session,
+            Object owner) throws HibernateException, SQLException {
+        Object id = this.type.nullSafeGet(rs, names[0], session);
         if ((!rs.wasNull()) && id != null) {
-            return bidiMap.getEnumValue(id);
+            return this.bidiMap.getEnumValue(id);
         }
         return null;
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session) throws HibernateException, SQLException {
+    public void nullSafeSet(PreparedStatement st, Object value, int index,
+            SharedSessionContractImplementor session) throws HibernateException, SQLException {
         if (value == null) {
-            st.setNull(index, sqlTypes[0]);
+            st.setNull(index, this.sqlTypes[0]);
         }
         else {
-            type.nullSafeSet(st, bidiMap.getKey(value), index, session);
+            this.type.nullSafeSet(st, this.bidiMap.getKey(value), index, session);
         }
     }
 
+    @Override
     public Object deepCopy(Object o) throws HibernateException {
         return o;
     }
 
+    @Override
     public boolean isMutable() {
         return false;
     }
 
+    @Override
     public Serializable disassemble(Object o) throws HibernateException {
         return (Serializable) o;
     }
 
+    @Override
     public Object assemble(Serializable cached, Object owner) throws HibernateException {
         return cached;
     }
 
+    @Override
     public Object replace(Object orig, Object target, Object owner) throws HibernateException {
         return orig;
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    private static class BidiEnumMap implements Serializable {
+    private static final class BidiEnumMap implements Serializable {
 
         private static final long serialVersionUID = 3325751131102095834L;
 
@@ -180,7 +191,7 @@ public class IdentityEnumType implements UserType, ParameterizedType, Serializab
 
             Method idAccessor = enumClass.getMethod(ENUM_ID_ACCESSOR);
 
-            keyType = idAccessor.getReturnType();
+            this.keyType = idAccessor.getReturnType();
 
             Method valuesAccessor = enumClass.getMethod("values");
             Object[] values = (Object[]) valuesAccessor.invoke(enumClass);
@@ -199,11 +210,11 @@ public class IdentityEnumType implements UserType, ParameterizedType, Serializab
         }
 
         public Object getEnumValue(Object id) {
-            return keytoEnum.get(id);
+            return this.keytoEnum.get(id);
         }
 
         public Object getKey(Object enumValue) {
-            return enumToKey.get(enumValue);
+            return this.enumToKey.get(enumValue);
         }
 
     }

@@ -1,3 +1,18 @@
+/*
+ * Copyright 2016-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.grails.orm.hibernate.connections;
 
 import java.io.Serializable;
@@ -24,7 +39,8 @@ import org.grails.orm.hibernate.cfg.Settings;
  * @author Graeme Rocher
  * @since 6.0
  */
-public abstract class AbstractHibernateConnectionSourceFactory extends AbstractConnectionSourceFactory<SessionFactory, HibernateConnectionSourceSettings> {
+public abstract class AbstractHibernateConnectionSourceFactory
+        extends AbstractConnectionSourceFactory<SessionFactory, HibernateConnectionSourceSettings> {
 
     protected DataSourceConnectionSourceFactory dataSourceConnectionSourceFactory = new CachedDataSourceConnectionSourceFactory();
 
@@ -37,12 +53,13 @@ public abstract class AbstractHibernateConnectionSourceFactory extends AbstractC
         this.dataSourceConnectionSourceFactory = dataSourceConnectionSourceFactory;
     }
 
+    @Override
     public ConnectionSource<SessionFactory, HibernateConnectionSourceSettings> create(String name, HibernateConnectionSourceSettings settings) {
         DataSourceSettings dataSourceSettings = settings.getDataSource();
-        ConnectionSource<DataSource, DataSourceSettings> dataSourceConnectionSource = dataSourceConnectionSourceFactory.create(name, dataSourceSettings);
+        ConnectionSource<DataSource, DataSourceSettings> dataSourceConnectionSource =
+                this.dataSourceConnectionSourceFactory.create(name, dataSourceSettings);
         return create(name, dataSourceConnectionSource, settings);
     }
-
 
     @Override
     public Serializable getConnectionSourcesConfigurationKey() {
@@ -50,7 +67,8 @@ public abstract class AbstractHibernateConnectionSourceFactory extends AbstractC
     }
 
     @Override
-    public <F extends ConnectionSourceSettings> HibernateConnectionSourceSettings buildRuntimeSettings(String name, PropertyResolver configuration, F fallbackSettings) {
+    public <F extends ConnectionSourceSettings> HibernateConnectionSourceSettings buildRuntimeSettings(
+            String name, PropertyResolver configuration, F fallbackSettings) {
         return buildSettingsWithPrefix(configuration, fallbackSettings, "");
     }
 
@@ -62,9 +80,12 @@ public abstract class AbstractHibernateConnectionSourceFactory extends AbstractC
      * @param settings The settings
      * @return The ConnectionSource
      */
-    public abstract ConnectionSource<SessionFactory, HibernateConnectionSourceSettings> create(String name, ConnectionSource<DataSource, DataSourceSettings> dataSourceConnectionSource, HibernateConnectionSourceSettings settings);
+    public abstract ConnectionSource<SessionFactory, HibernateConnectionSourceSettings> create(
+            String name, ConnectionSource<DataSource, DataSourceSettings> dataSourceConnectionSource, HibernateConnectionSourceSettings settings);
 
-    protected <F extends ConnectionSourceSettings> HibernateConnectionSourceSettings buildSettings(String name, PropertyResolver configuration, F fallbackSettings, boolean isDefaultDataSource) {
+    @Override
+    protected <F extends ConnectionSourceSettings> HibernateConnectionSourceSettings buildSettings(
+            String name, PropertyResolver configuration, F fallbackSettings, boolean isDefaultDataSource) {
         HibernateConnectionSourceSettingsBuilder builder;
         HibernateConnectionSourceSettings settings;
         if (isDefaultDataSource) {
@@ -73,7 +94,6 @@ public abstract class AbstractHibernateConnectionSourceFactory extends AbstractC
             Map config = configuration.getProperty(qualified, Map.class, Collections.emptyMap());
             settings = builder.build();
             if (!config.isEmpty()) {
-
                 DataSourceSettings dsfallbackSettings = null;
                 if (fallbackSettings instanceof HibernateConnectionSourceSettings) {
                     dsfallbackSettings = ((HibernateConnectionSourceSettings) fallbackSettings).getDataSource();
@@ -93,7 +113,8 @@ public abstract class AbstractHibernateConnectionSourceFactory extends AbstractC
         return settings;
     }
 
-    private <F extends ConnectionSourceSettings> HibernateConnectionSourceSettings buildSettingsWithPrefix(PropertyResolver configuration, F fallbackSettings, String prefix) {
+    private <F extends ConnectionSourceSettings> HibernateConnectionSourceSettings buildSettingsWithPrefix(
+            PropertyResolver configuration, F fallbackSettings, String prefix) {
         HibernateConnectionSourceSettingsBuilder builder;
         HibernateConnectionSourceSettings settings;
         builder = new HibernateConnectionSourceSettingsBuilder(configuration, prefix, fallbackSettings);

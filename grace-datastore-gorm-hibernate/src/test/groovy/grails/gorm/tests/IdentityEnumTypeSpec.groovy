@@ -1,33 +1,57 @@
+/*
+ * Copyright 2016-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.gorm.tests
 
-import grails.gorm.annotation.Entity
-import grails.gorm.transactions.Rollback
-import org.grails.orm.hibernate.HibernateDatastore
+import java.sql.ResultSet
+
+import javax.sql.DataSource
+
 import org.springframework.transaction.PlatformTransactionManager
 import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Specification
 
-import javax.sql.DataSource
-import java.sql.ResultSet
+import grails.gorm.annotation.Entity
+import grails.gorm.transactions.Rollback
+
+import org.grails.orm.hibernate.HibernateDatastore
 
 /**
  * Created by graemerocher on 16/11/16.
  */
 class IdentityEnumTypeSpec extends Specification {
 
-    @Shared Map config = [
-            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+    @Shared
+    Map config = [
+            'dataSource.url'     : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
             'dataSource.dbCreate': 'create-drop',
-            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+            'dataSource.dialect' : 'org.hibernate.dialect.H2Dialect'
     ]
-    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(config, EnumEntityDomain, FooWithEnum)
-    @Shared PlatformTransactionManager transactionManager = hibernateDatastore.getTransactionManager()
+
+    @Shared
+    @AutoCleanup
+    HibernateDatastore hibernateDatastore = new HibernateDatastore(config, EnumEntityDomain, FooWithEnum)
+
+    @Shared
+    PlatformTransactionManager transactionManager = hibernateDatastore.getTransactionManager()
 
     @Rollback
-    void "test identity enum type"() {
+    void 'test identity enum type'() {
         when:
-        new EnumEntityDomain(status: EnumEntityDomain.Status.FOO).save(flush:true)
+        new EnumEntityDomain(status: EnumEntityDomain.Status.FOO).save(flush: true)
         DataSource ds = hibernateDatastore.connectionSources.defaultConnectionSource.dataSource
         ResultSet resultSet = ds.getConnection().prepareStatement('select status from enum_entity_domain').executeQuery()
 
@@ -38,9 +62,9 @@ class IdentityEnumTypeSpec extends Specification {
     }
 
     @Rollback
-    void "test identity enum type 2"() {
+    void 'test identity enum type 2'() {
         when:
-        new FooWithEnum(name: "blah", mySuperValue: XEnum.X__TWO).save(flush:true)
+        new FooWithEnum(name: 'blah', mySuperValue: XEnum.X__TWO).save(flush: true)
         DataSource ds = hibernateDatastore.connectionSources.defaultConnectionSource.dataSource
         ResultSet resultSet = ds.getConnection().prepareStatement('select my_super_value from foo_with_enum').executeQuery()
 
@@ -49,39 +73,48 @@ class IdentityEnumTypeSpec extends Specification {
         resultSet.getInt(1) == 100
         FooWithEnum.first().mySuperValue == XEnum.X__TWO
     }
+
 }
 
 @Entity
 class EnumEntityDomain {
+
     Status status
 
     static mapping = {
-        status(enumType: "identity")
+        status(enumType: 'identity')
     }
 
     enum Status {
-        FOO("F"), BAR("B")
+
+        FOO('F'), BAR('B')
         String id
+
         Status(String id) { this.id = id }
+
     }
+
 }
 
 @Entity
 class FooWithEnum {
+
     long id
     String name
     XEnum mySuperValue
 
     static mapping = {
         version false
-        mySuperValue enumType:"identity"
+        mySuperValue enumType: 'identity'
     }
+
 }
 
 enum XEnum {
-    X__ONE (000, "x.one"),
-    X__TWO (100, "x.two"),
-    X__THREE (200, "x.three")
+
+    X__ONE(000, 'x.one'),
+    X__TWO(100, 'x.two'),
+    X__THREE(200, 'x.three')
 
     final int id
     final String name
@@ -94,4 +127,5 @@ enum XEnum {
     String toString() {
         name
     }
+
 }

@@ -1,34 +1,53 @@
+/*
+ * Copyright 2017-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.gorm.tests.validation
 
-import spock.lang.Ignore
-
-import grails.gorm.annotation.Entity
-import grails.gorm.transactions.Rollback
-import org.grails.orm.hibernate.HibernateDatastore
 import spock.lang.AutoCleanup
 import spock.lang.Issue
 import spock.lang.Shared
 import spock.lang.Specification
+
+import grails.gorm.annotation.Entity
+import grails.gorm.transactions.Rollback
+
+import org.grails.orm.hibernate.HibernateDatastore
 
 /**
  * Created by graemerocher on 04/05/2017.
  */
 class CascadeValidationSpec extends Specification {
 
-    @Shared Map config = [
-            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+    @Shared
+    Map config = [
+            'dataSource.url'     : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
             'dataSource.dbCreate': 'create-drop',
-            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+            'dataSource.dialect' : 'org.hibernate.dialect.H2Dialect'
     ]
-    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(config, Business, Person, Employee)
+
+    @Shared
+    @AutoCleanup
+    HibernateDatastore hibernateDatastore = new HibernateDatastore(config, Business, Person, Employee)
 
     @Rollback
     @Issue('https://github.com/grails/grails-data-mapping/issues/926')
-    void "validation cascades correctly"() {
-        given: "an invalid business"
+    void 'validation cascades correctly'() {
+        given: 'an invalid business'
         Business b = new Business(name: null)
 
-        and: "a valid employee that belongs to the business"
+        and: 'a valid employee that belongs to the business'
         Person p = new Employee(business: b)
         b.addToPeople(p)
 
@@ -39,7 +58,9 @@ class CascadeValidationSpec extends Specification {
         b.errors.hasFieldErrors('name')
         b.hasErrors()
     }
+
 }
+
 @Entity
 class Business {
 
@@ -50,10 +71,12 @@ class Business {
     ]
 
 }
+
 @Entity
 abstract class Person {
 
 }
+
 @Entity
 class Employee extends Person {
 

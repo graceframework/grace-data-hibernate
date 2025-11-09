@@ -1,10 +1,11 @@
-/* Copyright 2004-2005 Graeme Rocher
+/*
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -92,7 +93,8 @@ public class GrailsHibernateUtil extends HibernateRuntimeUtils {
 
     private static HibernateProxyHandler proxyHandler = new HibernateProxyHandler();
 
-    public static void populateArgumentsForCriteria(AbstractHibernateDatastore datastore, Class<?> targetClass, Criteria c, Map argMap, ConversionService conversionService) {
+    public static void populateArgumentsForCriteria(AbstractHibernateDatastore datastore, Class<?> targetClass,
+            Criteria c, Map argMap, ConversionService conversionService) {
         populateArgumentsForCriteria(datastore, targetClass, c, argMap, conversionService, true);
     }
 
@@ -105,7 +107,8 @@ public class GrailsHibernateUtil extends HibernateRuntimeUtils {
      * @param argMap The arguments map
      */
     @SuppressWarnings("rawtypes")
-    public static void populateArgumentsForCriteria(AbstractHibernateDatastore datastore, Class<?> targetClass, Criteria c, Map argMap, ConversionService conversionService, boolean useDefaultMapping) {
+    public static void populateArgumentsForCriteria(AbstractHibernateDatastore datastore, Class<?> targetClass,
+            Criteria c, Map argMap, ConversionService conversionService, boolean useDefaultMapping) {
         Integer maxParam = null;
         Integer offsetParam = null;
         if (argMap.containsKey(ARGUMENT_MAX)) {
@@ -228,7 +231,8 @@ public class GrailsHibernateUtil extends HibernateRuntimeUtils {
     /**
      * Add order to criteria, creating necessary subCriteria if nested sort property (ie. sort:'nested.property').
      */
-    private static void addOrderPossiblyNested(AbstractHibernateDatastore datastore, Criteria c, Class<?> targetClass, String sort, String order, boolean ignoreCase) {
+    private static void addOrderPossiblyNested(AbstractHibernateDatastore datastore,
+            Criteria c, Class<?> targetClass, String sort, String order, boolean ignoreCase) {
         int firstDotPos = sort.indexOf(".");
         if (firstDotPos == -1) {
             addOrder(c, sort, order, ignoreCase);
@@ -266,7 +270,8 @@ public class GrailsHibernateUtil extends HibernateRuntimeUtils {
      * Get hold of the GrailsDomainClassProperty represented by the targetClass' propertyName,
      * assuming targetClass corresponds to a GrailsDomainClass.
      */
-    private static PersistentProperty getGrailsDomainClassProperty(AbstractHibernateDatastore datastore, Class<?> targetClass, String propertyName) {
+    private static PersistentProperty getGrailsDomainClassProperty(AbstractHibernateDatastore datastore,
+            Class<?> targetClass, String propertyName) {
         PersistentEntity grailsClass = datastore != null ? datastore.getMappingContext().getPersistentEntity(targetClass.getName()) : null;
         if (grailsClass == null) {
             throw new IllegalArgumentException("Unexpected: class is not a domain class:" + targetClass.getName());

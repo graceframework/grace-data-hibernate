@@ -1,11 +1,11 @@
 /*
- * Copyright 2011-2023 the original author or authors.
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -110,7 +110,7 @@ public abstract class AbstractHibernateQuery extends Query {
 
     protected LinkedList<Association> associationStack = new LinkedList<>();
 
-    protected LinkedList aliasInstanceStack = new LinkedList();
+    protected final LinkedList aliasInstanceStack = new LinkedList();
 
     private boolean hasJoins = false;
 
@@ -144,17 +144,21 @@ public abstract class AbstractHibernateQuery extends Query {
 
     protected void initializeJoinStatus() {
         Boolean cachedStatus = JOIN_STATUS_CACHE.get(entity.getName());
-        if (cachedStatus != null) hasJoins = cachedStatus;
+        if (cachedStatus != null) {
+            this.hasJoins = cachedStatus;
+        }
         else {
             for (Association a : entity.getAssociations()) {
-                if (a.getFetchStrategy() == FetchType.EAGER) hasJoins = true;
+                if (a.getFetchStrategy() == FetchType.EAGER) {
+                    this.hasJoins = true;
+                }
             }
         }
     }
 
     protected AbstractHibernateQuery(Criteria subCriteria, AbstractHibernateSession session, PersistentEntity associatedEntity, String newAlias) {
         this(subCriteria, session, associatedEntity);
-        alias = newAlias;
+        this.alias = newAlias;
     }
 
     @Override
@@ -214,56 +218,53 @@ public abstract class AbstractHibernateQuery extends Query {
                     associationName = getCurrentAlias() + '.' + associationName;
                 }
                 for (Criterion c : criteria) {
-                    final org.hibernate.criterion.Criterion hibernateCriterion = getHibernateCriterionAdapter().toHibernateCriterion(this, c, associationName);
+                    final org.hibernate.criterion.Criterion hibernateCriterion =
+                            getHibernateCriterionAdapter().toHibernateCriterion(this, c, associationName);
                     if (hibernateCriterion != null) {
                         addToCriteria(hibernateCriterion);
                     }
                 }
             }
             else {
-
                 CriteriaAndAlias criteriaAndAlias = getCriteriaAndAlias(associationCriteria);
 
                 if (criteriaAndAlias.criteria != null) {
-                    aliasInstanceStack.add(criteriaAndAlias.criteria);
+                    this.aliasInstanceStack.add(criteriaAndAlias.criteria);
                 }
                 else if (criteriaAndAlias.detachedCriteria != null) {
-                    aliasInstanceStack.add(criteriaAndAlias.detachedCriteria);
+                    this.aliasInstanceStack.add(criteriaAndAlias.detachedCriteria);
                 }
-                aliasStack.add(criteriaAndAlias.alias);
-                associationStack.add(association);
-                entityStack.add(association.getAssociatedEntity());
+                this.aliasStack.add(criteriaAndAlias.alias);
+                this.associationStack.add(association);
+                this.entityStack.add(association.getAssociatedEntity());
 
                 try {
-                    @SuppressWarnings("unchecked")
                     List<Criterion> associationCriteriaList = criteria;
                     for (Criterion c : associationCriteriaList) {
                         add(c);
                     }
                 }
                 finally {
-                    aliasInstanceStack.removeLast();
-                    aliasStack.removeLast();
-                    entityStack.removeLast();
-                    associationStack.removeLast();
+                    this.aliasInstanceStack.removeLast();
+                    this.aliasStack.removeLast();
+                    this.entityStack.removeLast();
+                    this.associationStack.removeLast();
                 }
             }
-
         }
         else {
-
-            final org.hibernate.criterion.Criterion hibernateCriterion = getHibernateCriterionAdapter().toHibernateCriterion(this, criterion, getCurrentAlias());
+            final org.hibernate.criterion.Criterion hibernateCriterion =
+                    getHibernateCriterionAdapter().toHibernateCriterion(this, criterion, getCurrentAlias());
             if (hibernateCriterion != null) {
                 addToCriteria(hibernateCriterion);
             }
         }
     }
 
-
     @Override
     public PersistentEntity getEntity() {
-        if (!entityStack.isEmpty()) {
-            return entityStack.getLast();
+        if (!this.entityStack.isEmpty()) {
+            return this.entityStack.getLast();
         }
         return super.getEntity();
     }
@@ -273,9 +274,8 @@ public abstract class AbstractHibernateQuery extends Query {
             return propertyName;
         }
         else {
-
             StringBuilder fullPath = new StringBuilder();
-            for (Association association : associationStack) {
+            for (Association association : this.associationStack) {
                 fullPath.append(association.getName());
                 fullPath.append('.');
             }
@@ -285,15 +285,15 @@ public abstract class AbstractHibernateQuery extends Query {
     }
 
     protected String getCurrentAlias() {
-        if (alias != null) {
-            return alias;
+        if (this.alias != null) {
+            return this.alias;
         }
 
-        if (aliasStack.isEmpty()) {
+        if (this.aliasStack.isEmpty()) {
             return null;
         }
 
-        return aliasStack.getLast();
+        return this.aliasStack.getLast();
     }
 
     @SuppressWarnings("unchecked")
@@ -319,9 +319,11 @@ public abstract class AbstractHibernateQuery extends Query {
         Criterion datastoreCriterion = criterion.getPropertyCriterion();
         PersistentProperty pp = entity.getPropertyByName(property);
 
-        if (pp == null) throw new InvalidDataAccessResourceUsageException(
-                "Cannot execute function defined in query [" + criterion.getFunctionName() +
-                        "] on non-existent property [" + property + "] of [" + entity.getJavaClass() + "]");
+        if (pp == null) {
+            throw new InvalidDataAccessResourceUsageException(
+                    "Cannot execute function defined in query [" + criterion.getFunctionName() +
+                            "] on non-existent property [" + property + "] of [" + entity.getJavaClass() + "]");
+        }
 
         String functionName = criterion.getFunctionName();
 
@@ -333,14 +335,15 @@ public abstract class AbstractHibernateQuery extends Query {
             if (basic != null && datastoreCriterion instanceof PropertyCriterion) {
 
                 PropertyCriterion pc = (PropertyCriterion) datastoreCriterion;
-                final org.hibernate.criterion.Criterion hibernateCriterion = getHibernateCriterionAdapter().toHibernateCriterion(this, datastoreCriterion, alias);
+                final org.hibernate.criterion.Criterion hibernateCriterion =
+                        getHibernateCriterionAdapter().toHibernateCriterion(this, datastoreCriterion, this.alias);
                 if (hibernateCriterion instanceof SimpleExpression) {
                     SimpleExpression expr = (SimpleExpression) hibernateCriterion;
                     Object op = ReflectionUtils.getField(opField, expr);
                     PropertyMapping mapping = getEntityPersister(entity.getJavaClass().getName(), sessionFactory);
                     String[] columns;
-                    if (alias != null) {
-                        columns = mapping.toColumns(alias, property);
+                    if (this.alias != null) {
+                        columns = mapping.toColumns(this.alias, property);
                     }
                     else {
                         columns = mapping.toColumns(property);
@@ -355,11 +358,13 @@ public abstract class AbstractHibernateQuery extends Query {
                     }
                 }
                 else {
-                    throw new InvalidDataAccessResourceUsageException("Unsupported function [" + functionName + "] defined in query for property [" + property + "] with type [" + pp.getType() + "]");
+                    throw new InvalidDataAccessResourceUsageException("Unsupported function [" + functionName +
+                            "] defined in query for property [" + property + "] with type [" + pp.getType() + "]");
                 }
             }
             else {
-                throw new InvalidDataAccessResourceUsageException("Unsupported function [" + functionName + "] defined in query for property [" + property + "] with type [" + pp.getType() + "]");
+                throw new InvalidDataAccessResourceUsageException("Unsupported function [" + functionName +
+                        "] defined in query for property [" + property + "] with type [" + pp.getType() + "]");
             }
         }
         else {
@@ -380,14 +385,14 @@ public abstract class AbstractHibernateQuery extends Query {
     public Junction disjunction() {
         final org.hibernate.criterion.Disjunction disjunction = Restrictions.disjunction();
         addToCriteria(disjunction);
-        return new HibernateJunction(disjunction, alias);
+        return new HibernateJunction(disjunction, this.alias);
     }
 
     @Override
     public Junction negation() {
         final org.hibernate.criterion.Disjunction disjunction = Restrictions.disjunction();
         addToCriteria(Restrictions.not(disjunction));
-        return new HibernateJunction(disjunction, alias);
+        return new HibernateJunction(disjunction, this.alias);
     }
 
     @Override
@@ -411,14 +416,16 @@ public abstract class AbstractHibernateQuery extends Query {
     @Override
     public Query and(Criterion a, Criterion b) {
         AbstractHibernateCriterionAdapter adapter = getHibernateCriterionAdapter();
-        addToCriteria(Restrictions.and(adapter.toHibernateCriterion(this, a, alias), adapter.toHibernateCriterion(this, a, alias)));
+        addToCriteria(Restrictions.and(adapter.toHibernateCriterion(this, a, this.alias),
+                adapter.toHibernateCriterion(this, a, this.alias)));
         return this;
     }
 
     @Override
     public Query or(Criterion a, Criterion b) {
         AbstractHibernateCriterionAdapter adapter = getHibernateCriterionAdapter();
-        addToCriteria(Restrictions.or(adapter.toHibernateCriterion(this, a, alias), adapter.toHibernateCriterion(this, b, alias)));
+        addToCriteria(Restrictions.or(adapter.toHibernateCriterion(this, a, this.alias),
+                adapter.toHibernateCriterion(this, b, this.alias)));
         return this;
     }
 
@@ -497,13 +504,16 @@ public abstract class AbstractHibernateQuery extends Query {
 
             Association association = (Association) property;
             if (subCriteria.criteria != null) {
-                return new HibernateAssociationQuery(subCriteria.criteria, (AbstractHibernateSession) getSession(), association.getAssociatedEntity(), association, alias);
+                return new HibernateAssociationQuery(subCriteria.criteria, (AbstractHibernateSession) getSession(),
+                        association.getAssociatedEntity(), association, alias);
             }
             else if (subCriteria.detachedCriteria != null) {
-                return new HibernateAssociationQuery(subCriteria.detachedCriteria, (AbstractHibernateSession) getSession(), association.getAssociatedEntity(), association, alias);
+                return new HibernateAssociationQuery(subCriteria.detachedCriteria, (AbstractHibernateSession) getSession(),
+                        association.getAssociatedEntity(), association, alias);
             }
         }
-        throw new InvalidDataAccessApiUsageException("Cannot query association [" + calculatePropertyName(associationName) + "] of entity [" + entity + "]. Property is not an association!");
+        throw new InvalidDataAccessApiUsageException("Cannot query association [" + calculatePropertyName(associationName) +
+                "] of entity [" + entity + "]. Property is not an association!");
     }
 
     protected CriteriaAndAlias getCriteriaAndAlias(DetachedAssociationCriteria associationCriteria) {
@@ -519,38 +529,36 @@ public abstract class AbstractHibernateQuery extends Query {
     protected CriteriaAndAlias getOrCreateAlias(String associationName, String alias) {
         CriteriaAndAlias subCriteria = null;
         String associationPath = getAssociationPath(associationName);
-        Criteria parentCriteria = criteria;
+        Criteria parentCriteria = this.criteria;
         if (alias == null) {
             alias = generateAlias(associationName);
         }
         else {
-            CriteriaAndAlias criteriaAndAlias = createdAssociationPaths.get(alias);
+            CriteriaAndAlias criteriaAndAlias = this.createdAssociationPaths.get(alias);
             if (criteriaAndAlias != null) {
                 parentCriteria = criteriaAndAlias.criteria;
                 if (parentCriteria != null) {
-
                     alias = associationName + '_' + alias;
                     associationPath = criteriaAndAlias.associationPath + '.' + associationPath;
                 }
             }
         }
-        if (createdAssociationPaths.containsKey(associationName)) {
-            subCriteria = createdAssociationPaths.get(associationName);
+        if (this.createdAssociationPaths.containsKey(associationName)) {
+            subCriteria = this.createdAssociationPaths.get(associationName);
         }
         else {
-            JoinType joinType = joinTypes.get(associationName);
+            JoinType joinType = this.joinTypes.get(associationName);
             if (parentCriteria != null) {
                 Criteria sc = parentCriteria.createAlias(associationPath, alias, resolveJoinType(joinType));
                 subCriteria = new CriteriaAndAlias(sc, alias, associationPath);
             }
-            else if (detachedCriteria != null) {
-                DetachedCriteria sc = detachedCriteria.createAlias(associationPath, alias, resolveJoinType(joinType));
+            else if (this.detachedCriteria != null) {
+                DetachedCriteria sc = this.detachedCriteria.createAlias(associationPath, alias, resolveJoinType(joinType));
                 subCriteria = new CriteriaAndAlias(sc, alias, associationPath);
             }
             if (subCriteria != null) {
-
-                createdAssociationPaths.put(associationPath, subCriteria);
-                createdAssociationPaths.put(alias, subCriteria);
+                this.createdAssociationPaths.put(associationPath, subCriteria);
+                this.createdAssociationPaths.put(alias, subCriteria);
             }
         }
         return subCriteria;
@@ -572,30 +580,33 @@ public abstract class AbstractHibernateQuery extends Query {
 
     @Override
     public ProjectionList projections() {
-        if (hibernateProjectionList == null) {
-            hibernateProjectionList = new HibernateProjectionList();
+        if (this.hibernateProjectionList == null) {
+            this.hibernateProjectionList = new HibernateProjectionList();
         }
-        return hibernateProjectionList;
+        return this.hibernateProjectionList;
     }
 
     @Override
     public Query max(int max) {
-        if (criteria != null)
-            criteria.setMaxResults(max);
+        if (this.criteria != null) {
+            this.criteria.setMaxResults(max);
+        }
         return this;
     }
 
     @Override
     public Query maxResults(int max) {
-        if (criteria != null)
-            criteria.setMaxResults(max);
+        if (this.criteria != null) {
+            this.criteria.setMaxResults(max);
+        }
         return this;
     }
 
     @Override
     public Query offset(int offset) {
-        if (criteria != null)
-            criteria.setFirstResult(offset);
+        if (this.criteria != null) {
+            this.criteria.setFirstResult(offset);
+        }
         return this;
     }
 
@@ -607,15 +618,15 @@ public abstract class AbstractHibernateQuery extends Query {
 
     @Override
     public Query cache(boolean cache) {
-        criteria.setCacheable(cache);
+        this.criteria.setCacheable(cache);
 
         return super.cache(cache);
     }
 
     @Override
     public Query lock(boolean lock) {
-        criteria.setCacheable(false);
-        criteria.setLockMode(LockMode.PESSIMISTIC_WRITE);
+        this.criteria.setCacheable(false);
+        this.criteria.setLockMode(LockMode.PESSIMISTIC_WRITE);
         return super.lock(lock);
     }
 
@@ -627,12 +638,11 @@ public abstract class AbstractHibernateQuery extends Query {
 
         int i = property.indexOf('.');
         if (i > -1) {
-
             String sortHead = property.substring(0, i);
             String sortTail = property.substring(i + 1);
 
-            if (createdAssociationPaths.containsKey(sortHead)) {
-                CriteriaAndAlias criteriaAndAlias = createdAssociationPaths.get(sortHead);
+            if (this.createdAssociationPaths.containsKey(sortHead)) {
+                CriteriaAndAlias criteriaAndAlias = this.createdAssociationPaths.get(sortHead);
                 Criteria criteria = criteriaAndAlias.criteria;
                 org.hibernate.criterion.Order hibernateOrder = order.getDirection() == Order.Direction.ASC ?
                         org.hibernate.criterion.Order.asc(property) :
@@ -641,7 +651,6 @@ public abstract class AbstractHibernateQuery extends Query {
                 criteria.addOrder(order.isIgnoreCase() ? hibernateOrder.ignoreCase() : hibernateOrder);
             }
             else {
-
                 PersistentProperty persistentProperty = entity.getPropertyByName(sortHead);
 
                 if (persistentProperty instanceof Association) {
@@ -650,18 +659,17 @@ public abstract class AbstractHibernateQuery extends Query {
                         addSimpleOrder(order, property);
                     }
                     else {
-                        if (criteria != null) {
-                            Criteria subCriteria = criteria.createCriteria(sortHead);
+                        if (this.criteria != null) {
+                            Criteria subCriteria = this.criteria.createCriteria(sortHead);
                             addOrderToCriteria(subCriteria, sortTail, order);
                         }
-                        else if (detachedCriteria != null) {
-                            DetachedCriteria subDetachedCriteria = detachedCriteria.createCriteria(sortHead);
+                        else if (this.detachedCriteria != null) {
+                            DetachedCriteria subDetachedCriteria = this.detachedCriteria.createCriteria(sortHead);
                             addOrderToDetachedCriteria(subDetachedCriteria, sortTail, order);
                         }
                     }
                 }
             }
-
         }
         else {
             addSimpleOrder(order, property);
@@ -671,12 +679,12 @@ public abstract class AbstractHibernateQuery extends Query {
     }
 
     private void addSimpleOrder(Order order, String property) {
-        Criteria c = criteria;
+        Criteria c = this.criteria;
         if (c != null) {
             addOrderToCriteria(c, property, order);
         }
         else {
-            DetachedCriteria dc = detachedCriteria;
+            DetachedCriteria dc = this.detachedCriteria;
             addOrderToDetachedCriteria(dc, property, order);
         }
     }
@@ -687,7 +695,6 @@ public abstract class AbstractHibernateQuery extends Query {
                     org.hibernate.criterion.Order.asc(calculatePropertyName(property)) :
                     org.hibernate.criterion.Order.desc(calculatePropertyName(property));
             dc.addOrder(order.isIgnoreCase() ? hibernateOrder.ignoreCase() : hibernateOrder);
-
         }
     }
 
@@ -702,38 +709,44 @@ public abstract class AbstractHibernateQuery extends Query {
     @Override
     public Query join(String property) {
         this.hasJoins = true;
-        if (criteria != null)
-            criteria.setFetchMode(property, FetchMode.JOIN);
-        else if (detachedCriteria != null)
-            detachedCriteria.setFetchMode(property, FetchMode.JOIN);
+        if (this.criteria != null) {
+            this.criteria.setFetchMode(property, FetchMode.JOIN);
+        }
+        else if (this.detachedCriteria != null) {
+            this.detachedCriteria.setFetchMode(property, FetchMode.JOIN);
+        }
         return this;
     }
 
     @Override
     public Query select(String property) {
         this.hasJoins = true;
-        if (criteria != null)
-            criteria.setFetchMode(property, FetchMode.SELECT);
-        else if (detachedCriteria != null)
-            detachedCriteria.setFetchMode(property, FetchMode.SELECT);
+        if (this.criteria != null) {
+            this.criteria.setFetchMode(property, FetchMode.SELECT);
+        }
+        else if (this.detachedCriteria != null) {
+            this.detachedCriteria.setFetchMode(property, FetchMode.SELECT);
+        }
         return this;
     }
 
     @Override
     public List list() {
-        if (criteria == null) throw new IllegalStateException("Cannot execute query using a detached criteria instance");
+        if (this.criteria == null) {
+            throw new IllegalStateException("Cannot execute query using a detached criteria instance");
+        }
 
         int projectionLength = 0;
-        if (hibernateProjectionList != null) {
-            org.hibernate.criterion.ProjectionList projectionList = hibernateProjectionList.getHibernateProjectionList();
+        if (this.hibernateProjectionList != null) {
+            org.hibernate.criterion.ProjectionList projectionList = this.hibernateProjectionList.getHibernateProjectionList();
             projectionLength = projectionList.getLength();
             if (projectionLength > 0) {
-                criteria.setProjection(projectionList);
+                this.criteria.setProjection(projectionList);
             }
         }
 
         if (projectionLength < 2) {
-            criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+            this.criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         }
 
         applyDefaultSortOrderAndCaching();
@@ -749,7 +762,7 @@ public abstract class AbstractHibernateQuery extends Query {
             publisher.publishEvent(new PreQueryEvent(datastore, this));
         }
 
-        List results = criteria.list();
+        List results = this.criteria.list();
         if (publisher != null) {
             publisher.publishEvent(new PostQueryEvent(datastore, this, results));
         }
@@ -759,17 +772,18 @@ public abstract class AbstractHibernateQuery extends Query {
     protected void applyDefaultSortOrderAndCaching() {
         if (this.orderBy.isEmpty() && entity != null) {
             // don't apply default sorting, if projections present
-            if (hibernateProjectionList != null && !hibernateProjectionList.isEmpty()) return;
+            if (this.hibernateProjectionList != null && !this.hibernateProjectionList.isEmpty()) {
+                return;
+            }
 
             Mapping mapping = AbstractGrailsDomainBinder.getMapping(entity.getJavaClass());
             if (mapping != null) {
                 if (queryCache == null && mapping.getCache() != null && mapping.getCache().isEnabled()) {
-                    criteria.setCacheable(true);
+                    this.criteria.setCacheable(true);
                 }
 
                 Map sortMap = mapping.getSort().getNamesAndDirections();
                 DynamicFinder.applySortForMap(this, sortMap, true);
-
             }
         }
     }
@@ -778,16 +792,20 @@ public abstract class AbstractHibernateQuery extends Query {
         for (Map.Entry<String, FetchType> entry : fetchStrategies.entrySet()) {
             switch (entry.getValue()) {
                 case EAGER:
-                    if (criteria != null)
-                        criteria.setFetchMode(entry.getKey(), FetchMode.JOIN);
-                    else if (detachedCriteria != null)
-                        detachedCriteria.setFetchMode(entry.getKey(), FetchMode.JOIN);
+                    if (this.criteria != null) {
+                        this.criteria.setFetchMode(entry.getKey(), FetchMode.JOIN);
+                    }
+                    else if (this.detachedCriteria != null) {
+                        this.detachedCriteria.setFetchMode(entry.getKey(), FetchMode.JOIN);
+                    }
                     break;
                 case LAZY:
-                    if (criteria != null)
-                        criteria.setFetchMode(entry.getKey(), FetchMode.SELECT);
-                    else if (detachedCriteria != null)
-                        detachedCriteria.setFetchMode(entry.getKey(), FetchMode.SELECT);
+                    if (this.criteria != null) {
+                        this.criteria.setFetchMode(entry.getKey(), FetchMode.SELECT);
+                    }
+                    else if (this.detachedCriteria != null) {
+                        this.detachedCriteria.setFetchMode(entry.getKey(), FetchMode.SELECT);
+                    }
                     break;
             }
         }
@@ -800,12 +818,14 @@ public abstract class AbstractHibernateQuery extends Query {
 
     @Override
     public Object singleResult() {
-        if (criteria == null) throw new IllegalStateException("Cannot execute query using a detached criteria instance");
-
-        if (hibernateProjectionList != null) {
-            criteria.setProjection(hibernateProjectionList.getHibernateProjectionList());
+        if (this.criteria == null) {
+            throw new IllegalStateException("Cannot execute query using a detached criteria instance");
         }
-        criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+        if (this.hibernateProjectionList != null) {
+            this.criteria.setProjection(this.hibernateProjectionList.getHibernateProjectionList());
+        }
+        this.criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         applyDefaultSortOrderAndCaching();
         applyFetchStrategies();
 
@@ -816,9 +836,9 @@ public abstract class AbstractHibernateQuery extends Query {
         }
 
         Object result;
-        if (hasJoins) {
+        if (this.hasJoins) {
             try {
-                result = proxyHandler.unwrap(criteria.uniqueResult()); ;
+                result = this.proxyHandler.unwrap(this.criteria.uniqueResult());
             }
             catch (NonUniqueResultException e) {
                 result = singleResultViaListCall();
@@ -834,17 +854,16 @@ public abstract class AbstractHibernateQuery extends Query {
     }
 
     private Object singleResultViaListCall() {
-        criteria.setMaxResults(1);
-        if (hibernateProjectionList != null && hibernateProjectionList.isRowCount()) {
-            criteria.setFirstResult(0);
+        this.criteria.setMaxResults(1);
+        if (this.hibernateProjectionList != null && this.hibernateProjectionList.isRowCount()) {
+            this.criteria.setFirstResult(0);
         }
-        List results = criteria.list();
+        List results = this.criteria.list();
         if (results.size() > 0) {
-            return proxyHandler.unwrap(results.get(0));
+            return this.proxyHandler.unwrap(results.get(0));
         }
         return null;
     }
-
 
     @Override
     protected List executeQuery(PersistentEntity entity, Junction criteria) {
@@ -871,19 +890,20 @@ public abstract class AbstractHibernateQuery extends Query {
             return;
         }
 
-        if (aliasInstanceStack.isEmpty()) {
-            if (criteria != null) {
-                criteria.add(criterion);
+        if (this.aliasInstanceStack.isEmpty()) {
+            if (this.criteria != null) {
+                this.criteria.add(criterion);
 
             }
-            else if (detachedCriteria != null) {
-                detachedCriteria.add(criterion);
+            else if (this.detachedCriteria != null) {
+                this.detachedCriteria.add(criterion);
             }
         }
         else {
-            Object criteriaObject = aliasInstanceStack.getLast();
-            if (criteriaObject instanceof Criteria)
+            Object criteriaObject = this.aliasInstanceStack.getLast();
+            if (criteriaObject instanceof Criteria) {
                 ((Criteria) criteriaObject).add(criterion);
+            }
             else if (criteriaObject instanceof DetachedCriteria) {
                 ((DetachedCriteria) criteriaObject).add(criterion);
             }
@@ -891,14 +911,14 @@ public abstract class AbstractHibernateQuery extends Query {
     }
 
     protected String calculatePropertyName(String property) {
-        if (alias == null) {
+        if (this.alias == null) {
             return property;
         }
-        return alias + '.' + property;
+        return this.alias + '.' + property;
     }
 
     protected String generateAlias(String associationName) {
-        return calculatePropertyName(associationName) + calculatePropertyName(ALIAS) + aliasCount++;
+        return calculatePropertyName(associationName) + calculatePropertyName(ALIAS) + this.aliasCount++;
     }
 
     protected abstract void setDetachedCriteriaValue(QueryableCriteria value, PropertyCriterion pc);
@@ -918,7 +938,7 @@ public abstract class AbstractHibernateQuery extends Query {
         protected String alias;
 
         public HibernateJunction(org.hibernate.criterion.Junction junction, String alias) {
-            hibernateJunction = junction;
+            this.hibernateJunction = junction;
             this.alias = alias;
         }
 
@@ -928,14 +948,14 @@ public abstract class AbstractHibernateQuery extends Query {
                 if (c instanceof FunctionCallingCriterion) {
                     org.hibernate.criterion.Criterion sqlRestriction = getRestrictionForFunctionCall((FunctionCallingCriterion) c, entity);
                     if (sqlRestriction != null) {
-                        hibernateJunction.add(sqlRestriction);
+                        this.hibernateJunction.add(sqlRestriction);
                     }
                 }
                 else {
                     AbstractHibernateCriterionAdapter adapter = getHibernateCriterionAdapter();
-                    org.hibernate.criterion.Criterion criterion = adapter.toHibernateCriterion(AbstractHibernateQuery.this, c, alias);
+                    org.hibernate.criterion.Criterion criterion = adapter.toHibernateCriterion(AbstractHibernateQuery.this, c, this.alias);
                     if (criterion != null) {
-                        hibernateJunction.add(criterion);
+                        this.hibernateJunction.add(criterion);
                     }
                 }
             }
@@ -951,93 +971,94 @@ public abstract class AbstractHibernateQuery extends Query {
         private boolean rowCount = false;
 
         public boolean isRowCount() {
-            return rowCount;
+            return this.rowCount;
         }
 
         public org.hibernate.criterion.ProjectionList getHibernateProjectionList() {
-            return projectionList;
+            return this.projectionList;
         }
 
         @Override
         public boolean isEmpty() {
-            return projectionList.getLength() == 0;
+            return this.projectionList.getLength() == 0;
         }
-
 
         @Override
         public ProjectionList add(Projection p) {
-            projectionList.add(new HibernateProjectionAdapter(p).toHibernateProjection());
+            this.projectionList.add(new HibernateProjectionAdapter(p).toHibernateProjection());
             return this;
         }
 
         @Override
         public org.grails.datastore.mapping.query.api.ProjectionList countDistinct(String property) {
-            projectionList.add(Projections.countDistinct(calculatePropertyName(property)));
+            this.projectionList.add(Projections.countDistinct(calculatePropertyName(property)));
             return this;
         }
 
         @Override
         public org.grails.datastore.mapping.query.api.ProjectionList distinct(String property) {
-            projectionList.add(Projections.distinct(Projections.property(calculatePropertyName(property))));
+            this.projectionList.add(Projections.distinct(Projections.property(calculatePropertyName(property))));
             return this;
         }
 
         @Override
         public org.grails.datastore.mapping.query.api.ProjectionList rowCount() {
-            projectionList.add(Projections.rowCount());
+            this.projectionList.add(Projections.rowCount());
             this.rowCount = true;
             return this;
         }
 
         @Override
         public ProjectionList id() {
-            projectionList.add(Projections.id());
+            this.projectionList.add(Projections.id());
             return this;
         }
 
         @Override
         public ProjectionList count() {
-            projectionList.add(Projections.rowCount());
+            this.projectionList.add(Projections.rowCount());
             this.rowCount = true;
             return this;
         }
 
         @Override
         public ProjectionList property(String name) {
-            projectionList.add(Projections.property(calculatePropertyName(name)));
+            this.projectionList.add(Projections.property(calculatePropertyName(name)));
             return this;
         }
 
         @Override
         public ProjectionList sum(String name) {
-            projectionList.add(Projections.sum(calculatePropertyName(name)));
+            this.projectionList.add(Projections.sum(calculatePropertyName(name)));
             return this;
         }
 
         @Override
         public ProjectionList min(String name) {
-            projectionList.add(Projections.min(calculatePropertyName(name)));
+            this.projectionList.add(Projections.min(calculatePropertyName(name)));
             return this;
         }
 
         @Override
         public ProjectionList max(String name) {
-            projectionList.add(Projections.max(calculatePropertyName(name)));
+            this.projectionList.add(Projections.max(calculatePropertyName(name)));
             return this;
         }
 
         @Override
         public ProjectionList avg(String name) {
-            projectionList.add(Projections.avg(calculatePropertyName(name)));
+            this.projectionList.add(Projections.avg(calculatePropertyName(name)));
             return this;
         }
 
         @Override
         public ProjectionList distinct() {
-            if (criteria != null)
-                criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-            else if (detachedCriteria != null)
-                detachedCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+            if (AbstractHibernateQuery.this.criteria != null) {
+                AbstractHibernateQuery.this.criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+            }
+            else if (AbstractHibernateQuery.this.detachedCriteria != null) {
+                AbstractHibernateQuery.this.detachedCriteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+            }
             return this;
         }
 
@@ -1053,16 +1074,18 @@ public abstract class AbstractHibernateQuery extends Query {
 
         protected DetachedCriteria detachedAssocationCriteria;
 
-        public HibernateAssociationQuery(Criteria criteria, AbstractHibernateSession session, PersistentEntity associatedEntity, Association association, String alias) {
+        public HibernateAssociationQuery(Criteria criteria, AbstractHibernateSession session, PersistentEntity associatedEntity,
+                Association association, String alias) {
             super(session, associatedEntity, association);
             this.alias = alias;
-            assocationCriteria = criteria;
+            this.assocationCriteria = criteria;
         }
 
-        public HibernateAssociationQuery(DetachedCriteria criteria, AbstractHibernateSession session, PersistentEntity associatedEntity, Association association, String alias) {
+        public HibernateAssociationQuery(DetachedCriteria criteria, AbstractHibernateSession session, PersistentEntity associatedEntity,
+                Association association, String alias) {
             super(session, associatedEntity, association);
             this.alias = alias;
-            detachedAssocationCriteria = criteria;
+            this.detachedAssocationCriteria = criteria;
         }
 
         @Override
@@ -1071,9 +1094,9 @@ public abstract class AbstractHibernateQuery extends Query {
             Order.Direction direction = order.getDirection();
             switch (direction) {
                 case ASC:
-                    assocationCriteria.addOrder(org.hibernate.criterion.Order.asc(order.getProperty()));
+                    this.assocationCriteria.addOrder(org.hibernate.criterion.Order.asc(order.getProperty()));
                 case DESC:
-                    assocationCriteria.addOrder(org.hibernate.criterion.Order.desc(order.getProperty()));
+                    this.assocationCriteria.addOrder(org.hibernate.criterion.Order.desc(order.getProperty()));
             }
             return super.order(order);
         }
@@ -1086,14 +1109,14 @@ public abstract class AbstractHibernateQuery extends Query {
         }
 
         protected void addToCriteria(org.hibernate.criterion.Criterion criterion) {
-            if (hibernateJunction != null) {
-                hibernateJunction.add(criterion);
+            if (this.hibernateJunction != null) {
+                this.hibernateJunction.add(criterion);
             }
-            else if (assocationCriteria != null) {
-                assocationCriteria.add(criterion);
+            else if (this.assocationCriteria != null) {
+                this.assocationCriteria.add(criterion);
             }
-            else if (detachedAssocationCriteria != null) {
-                detachedAssocationCriteria.add(criterion);
+            else if (this.detachedAssocationCriteria != null) {
+                this.detachedAssocationCriteria.add(criterion);
             }
         }
 
@@ -1117,7 +1140,8 @@ public abstract class AbstractHibernateQuery extends Query {
 
         @Override
         public void add(Criterion criterion) {
-            final org.hibernate.criterion.Criterion hibernateCriterion = getHibernateCriterionAdapter().toHibernateCriterion(AbstractHibernateQuery.this, criterion, alias);
+            final org.hibernate.criterion.Criterion hibernateCriterion =
+                    getHibernateCriterionAdapter().toHibernateCriterion(AbstractHibernateQuery.this, criterion, this.alias);
             if (hibernateCriterion != null) {
                 addToCriteria(hibernateCriterion);
             }
@@ -1127,14 +1151,14 @@ public abstract class AbstractHibernateQuery extends Query {
         public Junction disjunction() {
             final org.hibernate.criterion.Disjunction disjunction = Restrictions.disjunction();
             addToCriteria(disjunction);
-            return new HibernateJunction(disjunction, alias);
+            return new HibernateJunction(disjunction, this.alias);
         }
 
         @Override
         public Junction negation() {
             final org.hibernate.criterion.Disjunction disjunction = Restrictions.disjunction();
             addToCriteria(Restrictions.not(disjunction));
-            return new HibernateJunction(disjunction, alias);
+            return new HibernateJunction(disjunction, this.alias);
         }
 
         @Override
@@ -1158,14 +1182,16 @@ public abstract class AbstractHibernateQuery extends Query {
         @Override
         public Query and(Criterion a, Criterion b) {
             AbstractHibernateCriterionAdapter adapter = getHibernateCriterionAdapter();
-            addToCriteria(Restrictions.and(adapter.toHibernateCriterion(AbstractHibernateQuery.this, a, alias), adapter.toHibernateCriterion(AbstractHibernateQuery.this, b, alias)));
+            addToCriteria(Restrictions.and(adapter.toHibernateCriterion(AbstractHibernateQuery.this, a, this.alias),
+                    adapter.toHibernateCriterion(AbstractHibernateQuery.this, b, this.alias)));
             return this;
         }
 
         @Override
         public Query or(Criterion a, Criterion b) {
             AbstractHibernateCriterionAdapter adapter = getHibernateCriterionAdapter();
-            addToCriteria(Restrictions.or(adapter.toHibernateCriterion(AbstractHibernateQuery.this, a, alias), adapter.toHibernateCriterion(AbstractHibernateQuery.this, b, alias)));
+            addToCriteria(Restrictions.or(adapter.toHibernateCriterion(AbstractHibernateQuery.this, a, this.alias),
+                    adapter.toHibernateCriterion(AbstractHibernateQuery.this, b, this.alias)));
             return this;
         }
 

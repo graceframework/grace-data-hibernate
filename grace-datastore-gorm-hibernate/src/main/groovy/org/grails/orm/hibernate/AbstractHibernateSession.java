@@ -1,10 +1,11 @@
-/* Copyright (C) 2011 SpringSource
+/*
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -49,7 +50,7 @@ public abstract class AbstractHibernateSession extends AbstractAttributeStoringS
     protected IHibernateTemplate hibernateTemplate;
 
     protected AbstractHibernateSession(AbstractHibernateDatastore hibernateDatastore, SessionFactory sessionFactory) {
-        datastore = hibernateDatastore;
+        this.datastore = hibernateDatastore;
     }
 
     @Override
@@ -63,14 +64,15 @@ public abstract class AbstractHibernateSession extends AbstractAttributeStoringS
 
     @Override
     public boolean isConnected() {
-        return connected;
+        return this.connected;
     }
 
     @Override
     public void disconnect() {
-        connected = false; // don't actually do any disconnection here. This will be handled by OSVI
+        this.connected = false; // don't actually do any disconnection here. This will be handled by OSVI
     }
 
+    @Override
     public Transaction beginTransaction() {
         throw new UnsupportedOperationException("Use HibernatePlatformTransactionManager instead");
     }
@@ -80,69 +82,84 @@ public abstract class AbstractHibernateSession extends AbstractAttributeStoringS
         throw new UnsupportedOperationException("Use HibernatePlatformTransactionManager instead");
     }
 
+    @Override
     public MappingContext getMappingContext() {
         return getDatastore().getMappingContext();
     }
 
+    @Override
     public Serializable persist(Object o) {
-        return hibernateTemplate.save(o);
+        return this.hibernateTemplate.save(o);
     }
 
+    @Override
     public void refresh(Object o) {
-        hibernateTemplate.refresh(o);
+        this.hibernateTemplate.refresh(o);
     }
 
+    @Override
     public void attach(Object o) {
-        hibernateTemplate.lock(o, LockMode.NONE);
+        this.hibernateTemplate.lock(o, LockMode.NONE);
     }
 
+    @Override
     public void flush() {
-        hibernateTemplate.flush();
+        this.hibernateTemplate.flush();
     }
 
+    @Override
     public void clear() {
-        hibernateTemplate.clear();
+        this.hibernateTemplate.clear();
     }
 
+    @Override
     public void clear(Object o) {
-        hibernateTemplate.evict(o);
+        this.hibernateTemplate.evict(o);
     }
 
+    @Override
     public boolean contains(Object o) {
-        return hibernateTemplate.contains(o);
+        return this.hibernateTemplate.contains(o);
     }
 
+    @Override
     public void lock(Object o) {
-        hibernateTemplate.lock(o, LockMode.PESSIMISTIC_WRITE);
+        this.hibernateTemplate.lock(o, LockMode.PESSIMISTIC_WRITE);
     }
 
+    @Override
     public void unlock(Object o) {
         // do nothing
     }
 
+    @Override
     public List<Serializable> persist(Iterable objects) {
         List<Serializable> identifiers = new ArrayList<>();
         for (Object object : objects) {
-            identifiers.add(hibernateTemplate.save(object));
+            identifiers.add(this.hibernateTemplate.save(object));
         }
         return identifiers;
     }
 
+    @Override
     public <T> T retrieve(Class<T> type, Serializable key) {
-        return hibernateTemplate.get(type, key);
+        return this.hibernateTemplate.get(type, key);
     }
 
+    @Override
     public <T> T proxy(Class<T> type, Serializable key) {
-        return hibernateTemplate.load(type, key);
+        return this.hibernateTemplate.load(type, key);
     }
 
+    @Override
     public <T> T lock(Class<T> type, Serializable key) {
-        return hibernateTemplate.get(type, key, LockMode.PESSIMISTIC_WRITE);
+        return this.hibernateTemplate.get(type, key, LockMode.PESSIMISTIC_WRITE);
     }
 
+    @Override
     public void delete(Iterable objects) {
         Collection list = getIterableAsCollection(objects);
-        hibernateTemplate.deleteAll(list);
+        this.hibernateTemplate.deleteAll(list);
     }
 
     @SuppressWarnings("unchecked")
@@ -160,39 +177,46 @@ public abstract class AbstractHibernateSession extends AbstractAttributeStoringS
         return list;
     }
 
+    @Override
     public void delete(Object obj) {
-        hibernateTemplate.delete(obj);
+        this.hibernateTemplate.delete(obj);
     }
 
+    @Override
     public List retrieveAll(Class type, Serializable... keys) {
         return retrieveAll(type, Arrays.asList(keys));
     }
 
+    @Override
     public Persister getPersister(Object o) {
         return null;
     }
 
+    @Override
     public Transaction getTransaction() {
         throw new UnsupportedOperationException("Use HibernatePlatformTransactionManager instead");
     }
 
     @Override
     public boolean hasTransaction() {
-        Object resource = TransactionSynchronizationManager.getResource(hibernateTemplate.getSessionFactory());
+        Object resource = TransactionSynchronizationManager.getResource(this.hibernateTemplate.getSessionFactory());
         return resource != null;
     }
 
+    @Override
     public Datastore getDatastore() {
-        return datastore;
+        return this.datastore;
     }
 
+    @Override
     public boolean isDirty(Object o) {
         // not used, Hibernate manages dirty checking itself
         return true;
     }
 
+    @Override
     public Object getNativeInterface() {
-        return hibernateTemplate;
+        return this.hibernateTemplate;
     }
 
     @Override

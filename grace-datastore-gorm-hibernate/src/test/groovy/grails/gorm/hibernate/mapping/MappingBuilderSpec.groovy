@@ -1,24 +1,39 @@
+/*
+ * Copyright 2017-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.gorm.hibernate.mapping
+
+import spock.lang.Specification
 
 import org.grails.datastore.mapping.model.config.GormProperties
 import org.grails.orm.hibernate.cfg.CompositeIdentity
 import org.grails.orm.hibernate.cfg.Mapping
 import org.grails.orm.hibernate.cfg.PropertyConfig
-import spock.lang.Specification
-
-import jakarta.persistence.FetchType
 
 import static grails.gorm.hibernate.mapping.MappingBuilder.define
+
 /**
  * Created by graemerocher on 01/02/2017.
  */
 class MappingBuilderSpec extends Specification {
 
-    void "test basic table mapping configuration"() {
+    void 'test basic table mapping configuration'() {
         when:
         Mapping mapping = define {
             autowire false
-            table "test"
+            table 'test'
         }.build()
 
         then:
@@ -26,13 +41,13 @@ class MappingBuilderSpec extends Specification {
         mapping.table.name == 'test'
     }
 
-    void "test complex table mapping"() {
+    void 'test complex table mapping'() {
         given:
         Mapping mapping = define {
             table {
-                catalog "foo"
-                schema "bar"
-                name "test"
+                catalog 'foo'
+                schema 'bar'
+                name 'test'
             }
         }.build()
 
@@ -42,26 +57,26 @@ class MappingBuilderSpec extends Specification {
         mapping.table.schema == 'bar'
     }
 
-    void "test id mapping"() {
+    void 'test id mapping'() {
         given:
         Mapping mapping = define {
             id {
                 name 'test'
                 generator 'native'
-                params foo:'bar'
+                params foo: 'bar'
             }
         }.build()
 
         expect:
         mapping.identity.name == 'test'
         mapping.identity.generator == 'native'
-        mapping.identity.params == [foo:'bar']
+        mapping.identity.params == [foo: 'bar']
     }
 
-    void "test composite id mapping"() {
+    void 'test composite id mapping'() {
         given:
         Mapping mapping = define {
-            id composite("foo", "bar").compositeClass(MappingBuilderSpec)
+            id composite('foo', 'bar').compositeClass(MappingBuilderSpec)
         }.build()
 
         expect:
@@ -70,7 +85,7 @@ class MappingBuilderSpec extends Specification {
         mapping.identity.compositeClass == MappingBuilderSpec
     }
 
-    void "test cache mapping"() {
+    void 'test cache mapping'() {
         given:
         Mapping mapping = define {
             cache {
@@ -86,10 +101,10 @@ class MappingBuilderSpec extends Specification {
         mapping.cache.include == 'some'
     }
 
-    void "test sort mapping"() {
+    void 'test sort mapping'() {
         when:
         Mapping mapping = define {
-            sort("foo", 'desc')
+            sort('foo', 'desc')
         }.build()
         then:
         mapping.sort.name == 'foo'
@@ -97,17 +112,17 @@ class MappingBuilderSpec extends Specification {
 
         when:
         mapping = define {
-            sort(foo:'bar')
+            sort(foo: 'bar')
         }.build()
 
         then:
-        mapping.sort.namesAndDirections == [foo:'bar']
+        mapping.sort.namesAndDirections == [foo: 'bar']
     }
 
-    void "test simple discriminator mapping"() {
+    void 'test simple discriminator mapping'() {
         given:
         Mapping mapping = define {
-            discriminator "test"
+            discriminator 'test'
         }.build()
 
         expect:
@@ -117,13 +132,13 @@ class MappingBuilderSpec extends Specification {
         mapping.discriminator.insertable == null
     }
 
-    void "test complex discriminator mapping"() {
+    void 'test complex discriminator mapping'() {
         given:
         Mapping mapping = define {
             discriminator {
-                value "test"
+                value 'test'
                 column {
-                    name "c_test"
+                    name 'c_test'
                 }
                 insertable true
             }
@@ -137,21 +152,21 @@ class MappingBuilderSpec extends Specification {
         mapping.discriminator.insertable
     }
 
-    void "test simple alter version column"() {
+    void 'test simple alter version column'() {
         given:
         Mapping mapping = define {
-            version "my_version"
+            version 'my_version'
         }.build()
 
         expect:
-        mapping.getPropertyConfig(GormProperties.VERSION).column == "my_version"
+        mapping.getPropertyConfig(GormProperties.VERSION).column == 'my_version'
     }
 
-    void "test complex alter version column"() {
+    void 'test complex alter version column'() {
         given:
         Mapping mapping = define {
             version {
-                type "int"
+                type 'int'
                 column {
                     name 'my_version'
                     length 10
@@ -164,10 +179,10 @@ class MappingBuilderSpec extends Specification {
         pc.columns.size() == 1
         pc.type == 'int'
         pc.columns[0].length == 10
-        pc.column == "my_version"
+        pc.column == 'my_version'
     }
 
-    void "test alter property config using property method"() {
+    void 'test alter property config using property method'() {
         given:
         Mapping mapping = define {
             property('blah') {
@@ -186,7 +201,7 @@ class MappingBuilderSpec extends Specification {
         config.columns[0].defaultValue == 'test'
     }
 
-    void "test alter property config using method missing"() {
+    void 'test alter property config using method missing'() {
         given:
         Mapping mapping = define {
             blah = property {
@@ -205,10 +220,10 @@ class MappingBuilderSpec extends Specification {
         config.columns[0].defaultValue == 'test'
     }
 
-    void "test alter property config using map"() {
+    void 'test alter property config using map'() {
         given:
         Mapping mapping = define {
-            blah nullable: true,{
+            blah nullable: true, {
                 column {
                     defaultValue 'test'
                 }
@@ -223,14 +238,14 @@ class MappingBuilderSpec extends Specification {
         config.columns[0].defaultValue == 'test'
     }
 
-    void "test configure join table mapping with closure"() {
+    void 'test configure join table mapping with closure'() {
         given:
         Mapping mapping = define {
             blah = property {
                 joinTable {
-                    name "foo"
-                    key "foo_id"
-                    column "bar_id"
+                    name 'foo'
+                    key 'foo_id'
+                    column 'bar_id'
                 }
             }
         }.build()
@@ -243,16 +258,15 @@ class MappingBuilderSpec extends Specification {
         config.joinTable.name == 'foo'
         config.joinTable.key.name == 'foo_id'
         config.joinTable.column.name == 'bar_id'
-
     }
 
-    void "test configure join table mapping with map"() {
+    void 'test configure join table mapping with map'() {
         given:
         Mapping mapping = define {
             blah = property {
-                joinTable name: "foo",
-                            key: "foo_id",
-                            column: "bar_id"
+                joinTable name: 'foo',
+                        key: 'foo_id',
+                        column: 'bar_id'
             }
         }.build()
 
@@ -264,47 +278,46 @@ class MappingBuilderSpec extends Specification {
         config.joinTable.name == 'foo'
         config.joinTable.key.name == 'foo_id'
         config.joinTable.column.name == 'bar_id'
-
     }
 
-    void "test column config via map"() {
+    void 'test column config via map'() {
         given:
         Mapping mapping = define {
             table 'myTable'
             version false
-            firstName   column:'First_Name',
-                        lazy:true,
-                        unique:true,
-                        type: java.sql.Clob,
-                        length:255,
-                        index:'foo',
-                        sqlType: 'text'
+            firstName column: 'First_Name',
+                    lazy: true,
+                    unique: true,
+                    type: java.sql.Clob,
+                    length: 255,
+                    index: 'foo',
+                    sqlType: 'text'
 
-            property('lastName', [column:'Last_Name'])
+            property('lastName', [column: 'Last_Name'])
         }.build()
 
         expect:
-        "First_Name" == mapping.columns.firstName.column
+        mapping.columns.firstName.column == 'First_Name'
         mapping.columns.firstName.lazy
         mapping.columns.firstName.unique
-        java.sql.Clob == mapping.columns.firstName.type
-        255 == mapping.columns.firstName.length
-        'foo' == mapping.columns.firstName.getIndexName()
-        "text" == mapping.columns.firstName.sqlType
-        "Last_Name" ==  mapping.columns.lastName.column
+        mapping.columns.firstName.type == java.sql.Clob
+        mapping.columns.firstName.length == 255
+        mapping.columns.firstName.getIndexName() == 'foo'
+        mapping.columns.firstName.sqlType == 'text'
+        mapping.columns.lastName.column == 'Last_Name'
     }
 
-    void "test global mapping handling"() {
+    void 'test global mapping handling'() {
         given:
         Mapping mapping = define {
             '*'(property {
                 column {
-                    sqlType "text"
+                    sqlType 'text'
                 }
             })
             firstName(property({
                 column {
-                    name "test"
+                    name 'test'
                 }
             }))
         }.build()
@@ -314,4 +327,5 @@ class MappingBuilderSpec extends Specification {
         mapping.getPropertyConfig('firstName').sqlType == 'text'
         mapping.getPropertyConfig('firstName').column == 'test'
     }
+
 }

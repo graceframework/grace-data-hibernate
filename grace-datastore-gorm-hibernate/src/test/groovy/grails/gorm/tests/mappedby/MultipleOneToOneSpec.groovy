@@ -1,22 +1,37 @@
+/*
+ * Copyright 2017-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.gorm.tests.mappedby
 
-import grails.gorm.annotation.Entity
-import org.grails.orm.hibernate.GormSpec
 import spock.lang.Issue
-import spock.lang.Specification
+
+import grails.gorm.annotation.Entity
+
+import org.grails.orm.hibernate.GormSpec
 
 /**
  * Created by graemerocher on 29/05/2017.
  */
 class MultipleOneToOneSpec extends GormSpec {
 
-
     @Issue('https://github.com/grails/grails-data-mapping/issues/950')
-    void "test mappedBy with multiple many-to-one and a single one-to-one"() {
+    void 'test mappedBy with multiple many-to-one and a single one-to-one'() {
         given:
-        Org branch = new Org(id:1, name: "branch a").save()
-        new OrgMember(org:branch).save(flush:true)
-        def query = OrgMember.where({branch == null})
+        Org branch = new Org(id: 1, name: 'branch a').save()
+        new OrgMember(org: branch).save(flush: true)
+        def query = OrgMember.where({ branch == null })
 
         expect:
         query.updateAll(branch: branch) == 1
@@ -27,8 +42,8 @@ class MultipleOneToOneSpec extends GormSpec {
     List getDomainClasses() {
         [Org, OrgMember]
     }
-}
 
+}
 
 @Entity
 class Org {
@@ -37,27 +52,28 @@ class Org {
 
     OrgMember member
 
-    static mappedBy = [member: "org"]
+    static mappedBy = [member: 'org']
 
     static constraints = {
         member nullable: true
     }
 
     static mapping = {
-        id generator: "assigned"
+        id generator: 'assigned'
     }
 
 }
 
 @Entity
 class OrgMember {
-    static belongsTo = [org:Org]
+
+    static belongsTo = [org: Org]
 
     Org branch
     Org division
     Org region
 
-    static mappedBy = [branch:"none", division:"none", region:"none"]
+    static mappedBy = [branch: 'none', division: 'none', region: 'none']
 
     static constraints = {
         org nullable: false

@@ -1,22 +1,43 @@
+/*
+ * Copyright 2016-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.gorm.tests.validation
 
-import grails.gorm.transactions.Rollback
-import grails.gorm.annotation.Entity
-import org.grails.orm.hibernate.HibernateDatastore
 import spock.lang.AutoCleanup
 import spock.lang.Issue
 import spock.lang.Shared
 import spock.lang.Specification
 
+import grails.gorm.annotation.Entity
+import grails.gorm.transactions.Rollback
+
+import org.grails.orm.hibernate.HibernateDatastore
+
 @Rollback
 class UniqueFalseConstraintSpec extends Specification {
 
-    @Shared Map config = [
-            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+    @Shared
+    Map config = [
+            'dataSource.url'     : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
             'dataSource.dbCreate': 'create-drop',
-            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+            'dataSource.dialect' : 'org.hibernate.dialect.H2Dialect'
     ]
-    @Shared @AutoCleanup HibernateDatastore hibernateDatastore = new HibernateDatastore(config, User)
+
+    @Shared
+    @AutoCleanup
+    HibernateDatastore hibernateDatastore = new HibernateDatastore(config, User)
 
     @Issue('https://github.com/grails/grails-data-mapping/issues/1059')
     void 'unique:false constraint is ignored and does not behave as unique:true'() {
@@ -32,10 +53,12 @@ class UniqueFalseConstraintSpec extends Specification {
         !user1.hasErrors()
         !user2.hasErrors()
     }
+
 }
 
 @Entity
 class User {
+
     Long id
     String name
 
@@ -46,4 +69,5 @@ class User {
     static mapping = {
         table 'users'
     }
+
 }

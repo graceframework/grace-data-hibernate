@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2024 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,7 @@ class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
      * Whether to prepare the datastore for runtime reloading
      */
     boolean enableReload = false
+
     /**
      * Settings for the dataSource
      */
@@ -75,6 +76,7 @@ class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
          * Whether OpenSessionInView should be read-only
          */
         OsivSettings osiv = new OsivSettings()
+
         /**
          * Whether Hibernate should be in read-only mode
          */
@@ -84,6 +86,7 @@ class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
          * Whether to use Hibernate's dirty checking instead of Grails'
          */
         boolean hibernateDirtyChecking = false
+
         /**
          * Cache settings
          */
@@ -93,7 +96,6 @@ class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
          * Flush settings
          */
         FlushSettings flush = new FlushSettings()
-
 
         /**
          * The configuration class
@@ -119,6 +121,7 @@ class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
          * The event triggering interceptor
          */
         AbstractClosureEventTriggeringInterceptor eventTriggeringInterceptor
+
         /**
          * The default hibernate event listeners
          */
@@ -131,7 +134,6 @@ class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
          * resources are specified locally via this bean.
          * @see org.hibernate.cfg.Configuration#configure(java.net.URL)
          */
-
         Resource[] configLocations
 
         /**
@@ -227,10 +229,10 @@ class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
         Properties toProperties() {
             Properties props = new Properties()
             if (naming_strategy != null) {
-                props.put("hibernate.naming_strategy".toString(), naming_strategy.name)
+                props.put('hibernate.naming_strategy', naming_strategy.name)
             }
             if (configClass != null) {
-                props.put("hibernate.config_class".toString(), configClass.name)
+                props.put('hibernate.config_class', configClass.name)
             }
             props.put('hibernate.use_query_cache', String.valueOf(cache.queries))
 
@@ -241,21 +243,21 @@ class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
             // Hibernate 5.1/5.2: manually enforce connection release mode ON_CLOSE (the former default)
             try {
                 // Try Hibernate 5.2
-                AvailableSettings.class.getField("CONNECTION_HANDLING")
-                props.put("hibernate.connection.handling_mode", "DELAYED_ACQUISITION_AND_HOLD")
+                AvailableSettings.getField('CONNECTION_HANDLING')
+                props.put('hibernate.connection.handling_mode', 'DELAYED_ACQUISITION_AND_HOLD')
             }
             catch (NoSuchFieldException ex) {
                 // Try Hibernate 5.1
                 try {
-                    AvailableSettings.class.getField("ACQUIRE_CONNECTIONS")
-                    props.put("hibernate.connection.release_mode", "ON_CLOSE")
+                    AvailableSettings.getField('ACQUIRE_CONNECTIONS')
+                    props.put('hibernate.connection.release_mode', 'ON_CLOSE')
                 }
-                catch (NoSuchFieldException ex2) {
+                catch (NoSuchFieldException ignore) {
                     // on Hibernate 5.0.x or lower - no need to change the default there
                 }
             }
 
-            String prefix = "hibernate"
+            String prefix = 'hibernate'
             props.putAll(additionalProperties)
             populateProperties(props, this, prefix)
             return props
@@ -277,10 +279,12 @@ class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
         @CompileStatic
         @SettingsBuilder
         static class CacheSettings {
+
             /**
              * Whether to cache queries
              */
             boolean queries = false
+
         }
 
         @CompileStatic
@@ -312,7 +316,9 @@ class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
                 int getLevel() {
                     return level
                 }
+
             }
+
         }
 
         /**
@@ -321,6 +327,7 @@ class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
         @CompileStatic
         @SettingsBuilder
         static class OsivSettings {
+
             /**
              * Whether to cache queries
              */
@@ -330,8 +337,9 @@ class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
              * Whether OSIV is enabled
              */
             boolean enabled = true
+
         }
 
-
     }
+
 }

@@ -1,10 +1,21 @@
+/*
+ * Copyright 2017-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.gorm.tests.validation
 
-import grails.gorm.annotation.Entity
-import grails.gorm.transactions.Rollback
-import org.grails.orm.hibernate.GormSpec
 import groovy.transform.EqualsAndHashCode
-import org.grails.orm.hibernate.HibernateDatastore
 import org.hibernate.SessionFactory
 import org.springframework.dao.DuplicateKeyException
 import spock.lang.AutoCleanup
@@ -12,22 +23,33 @@ import spock.lang.Issue
 import spock.lang.Shared
 import spock.lang.Specification
 
+import grails.gorm.annotation.Entity
+import grails.gorm.transactions.Rollback
+
+import org.grails.orm.hibernate.HibernateDatastore
+
 /**
  * Created by graemerocher on 29/05/2017.
  */
 @Issue('https://github.com/grails/gorm-hibernate5/issues/36')
 class UniqueWithinGroupSpec extends Specification {
 
-    @Shared Map config = [
-            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+    @Shared
+    Map config = [
+            'dataSource.url'     : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
             'dataSource.dbCreate': 'create-drop',
-            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+            'dataSource.dialect' : 'org.hibernate.dialect.H2Dialect'
     ]
-    @AutoCleanup @Shared HibernateDatastore hibernateDatastore = new HibernateDatastore(config, Thing)
-    @Shared SessionFactory sessionFactory = hibernateDatastore.sessionFactory
+
+    @AutoCleanup
+    @Shared
+    HibernateDatastore hibernateDatastore = new HibernateDatastore(config, Thing)
+
+    @Shared
+    SessionFactory sessionFactory = hibernateDatastore.sessionFactory
 
     @Rollback
-    void "test insert"() {
+    void 'test insert'() {
         when:
         Thing thing1 = new Thing(hello: 1, world: 2)
         thing1.insert(flush: true)
@@ -39,11 +61,10 @@ class UniqueWithinGroupSpec extends Specification {
         notThrown(DuplicateKeyException)
         !thing1.hasErrors()
         thing2.hasErrors()
-
     }
 
     @Rollback
-    void "test save"() {
+    void 'test save'() {
         when:
         Thing thing1 = new Thing(hello: 1, world: 2)
         thing1.save(insert: true, flush: true)
@@ -55,11 +76,10 @@ class UniqueWithinGroupSpec extends Specification {
         notThrown(DuplicateKeyException)
         !thing1.hasErrors()
         thing2.hasErrors()
-
     }
 
     @Rollback
-    void "test validate"() {
+    void 'test validate'() {
         when:
         Thing thing1 = new Thing(hello: 1, world: 2).save(insert: true, flush: true)
         sessionFactory.currentSession.flush()
@@ -70,21 +90,23 @@ class UniqueWithinGroupSpec extends Specification {
         !thing2.validate()
         thing2.errors.getFieldError('hello').code == 'unique'
     }
+
 }
-
-
 
 @Entity
 @EqualsAndHashCode(includes = ['hello', 'world'])
 class Thing implements Serializable {
+
     Long hello
     Long world
 
     static constraints = {
         hello unique: 'world'
     }
+
     static mapping = {
         version false
         id composite: ['hello', 'world']
     }
+
 }

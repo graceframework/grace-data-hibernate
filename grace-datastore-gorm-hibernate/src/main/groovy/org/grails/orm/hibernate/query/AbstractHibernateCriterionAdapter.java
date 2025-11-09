@@ -1,10 +1,11 @@
-/* Copyright (C) 2011 SpringSource
+/*
+ * Copyright 2011-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -86,7 +87,6 @@ public abstract class AbstractHibernateCriterionAdapter {
             // add association query adapters
             addAssociationQueryCriterionAdapters();
         }
-
 
         initialized = true;
     }
@@ -213,7 +213,8 @@ public abstract class AbstractHibernateCriterionAdapter {
                 else {
                     alias += '.' + newAlias;
                 }
-                applySubCriteriaToJunction(existing.getAssociation().getAssociatedEntity(), hibernateQuery, existing.getCriteria().getCriteria(), conjunction, alias);
+                applySubCriteriaToJunction(existing.getAssociation().getAssociatedEntity(), hibernateQuery,
+                        existing.getCriteria().getCriteria(), conjunction, alias);
                 return conjunction;
             }
         });
@@ -253,7 +254,6 @@ public abstract class AbstractHibernateCriterionAdapter {
                 return Restrictions.between(calculatePropertyName(btwCriterion.getProperty(), alias), btwCriterion.getFrom(), btwCriterion.getTo());
             }
         });
-
 
         criterionAdaptors.put(Query.In.class, new CriterionAdaptor() {
             @Override
@@ -426,7 +426,8 @@ public abstract class AbstractHibernateCriterionAdapter {
     protected void addSimplePropertyCriterionAdapters() {
         criterionAdaptors.put(Query.IdEquals.class, new CriterionAdaptor() {
             @Override
-            public org.hibernate.criterion.Criterion toHibernateCriterion(AbstractHibernateQuery hibernateQuery, Query.Criterion criterion, String alias) {
+            public org.hibernate.criterion.Criterion toHibernateCriterion(
+                    AbstractHibernateQuery hibernateQuery, Query.Criterion criterion, String alias) {
                 return Restrictions.idEq(((Query.IdEquals) criterion).getValue());
             }
         });
@@ -515,7 +516,6 @@ public abstract class AbstractHibernateCriterionAdapter {
 
     protected void applySubCriteriaToJunction(PersistentEntity entity, AbstractHibernateQuery hibernateCriteria, List<Query.Criterion> existing,
             Junction conjunction, String alias) {
-
         for (Query.Criterion subCriterion : existing) {
             if (subCriterion instanceof Query.PropertyCriterion) {
                 Query.PropertyCriterion pc = (Query.PropertyCriterion) subCriterion;
@@ -529,8 +529,9 @@ public abstract class AbstractHibernateCriterionAdapter {
             CriterionAdaptor criterionAdaptor = criterionAdaptors.get(subCriterion.getClass());
             if (criterionAdaptor != null) {
                 Criterion c = criterionAdaptor.toHibernateCriterion(hibernateCriteria, subCriterion, alias);
-                if (c != null)
+                if (c != null) {
                     conjunction.add(c);
+                }
             }
             else if (subCriterion instanceof FunctionCallingCriterion) {
                 Criterion sqlRestriction = hibernateCriteria.getRestrictionForFunctionCall((FunctionCallingCriterion) subCriterion, entity);
@@ -541,7 +542,6 @@ public abstract class AbstractHibernateCriterionAdapter {
         }
     }
 
-
     public org.hibernate.criterion.Criterion toHibernateCriterion(AbstractHibernateQuery hibernateQuery, Query.Criterion criterion, String alias) {
         final CriterionAdaptor criterionAdaptor = criterionAdaptors.get(criterion.getClass());
         if (criterionAdaptor != null) {
@@ -550,13 +550,15 @@ public abstract class AbstractHibernateCriterionAdapter {
         return null;
     }
 
-    protected abstract org.hibernate.criterion.DetachedCriteria toHibernateDetachedCriteria(AbstractHibernateQuery query, QueryableCriteria<?> queryableCriteria);
+    protected abstract org.hibernate.criterion.DetachedCriteria toHibernateDetachedCriteria(
+            AbstractHibernateQuery query, QueryableCriteria<?> queryableCriteria);
 
-    protected org.hibernate.criterion.DetachedCriteria toHibernateDetachedCriteria(AbstractHibernateQuery query, QueryableCriteria<?> queryableCriteria, String alias) {
+    protected org.hibernate.criterion.DetachedCriteria toHibernateDetachedCriteria(AbstractHibernateQuery query,
+            QueryableCriteria<?> queryableCriteria, String alias) {
         return toHibernateDetachedCriteria(query, queryableCriteria);
     }
 
-    public static abstract class CriterionAdaptor<T extends Query.Criterion> {
+    public abstract static class CriterionAdaptor<T extends Query.Criterion> {
 
         public abstract org.hibernate.criterion.Criterion toHibernateCriterion(AbstractHibernateQuery hibernateQuery, T criterion, String alias);
 

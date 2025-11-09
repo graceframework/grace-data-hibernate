@@ -1,6 +1,22 @@
+/*
+ * Copyright 2016-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.gorm.tests
 
 import grails.gorm.annotation.Entity
+
 import org.grails.orm.hibernate.GormSpec
 
 /**
@@ -9,38 +25,37 @@ import org.grails.orm.hibernate.GormSpec
 class ManyToOneSpec extends GormSpec {
 
     static {
-        System.setProperty("org.jboss.logging.provider", "slf4j")
+        System.setProperty('org.jboss.logging.provider', 'slf4j')
     }
 
-    void "Test many-to-one association"() {
-        when:"A many-to-one association is saved"
-        Foo foo1 = new Foo(fooDesc: "Foo One").save()
-        Foo foo2 = new Foo(fooDesc: "Foo Two").save()
-        Foo foo3 = new Foo(fooDesc: "Foo Three").save()
+    void 'Test many-to-one association'() {
+        when: 'A many-to-one association is saved'
+        Foo foo1 = new Foo(fooDesc: 'Foo One').save()
+        Foo foo2 = new Foo(fooDesc: 'Foo Two').save()
+        Foo foo3 = new Foo(fooDesc: 'Foo Three').save()
 
-
-        foo3.bar = new Bar(barDesc: "Bar Three",foo:foo3)
-        foo3.save(flush:true)
-        foo1.bar = new Bar(barDesc: "Bar One",foo:foo1)
-        foo1.save(flush:true)
-        foo2.bar = new Bar(barDesc: "Bar Two", foo:foo2)
-        foo2.save(flush:true)
+        foo3.bar = new Bar(barDesc: 'Bar Three', foo: foo3)
+        foo3.save(flush: true)
+        foo1.bar = new Bar(barDesc: 'Bar One', foo: foo1)
+        foo1.save(flush: true)
+        foo2.bar = new Bar(barDesc: 'Bar Two', foo: foo2)
+        foo2.save(flush: true)
 
         session.clear()
-        println "RETRIEVING FOOS!"
+        println 'RETRIEVING FOOS!'
         def foos = Foo.findAll()
-        println("Foos:")
-        foos.each{ f ->
-            println(f.fooDesc + " -> " + f.bar.barDesc)
+        println('Foos:')
+        foos.each { f ->
+            println(f.fooDesc + ' -> ' + f.bar.barDesc)
         }
 
         session.clear()
 
-        println "RETRIEVING BARS!"
+        println 'RETRIEVING BARS!'
         def bars = Bar.findAll()
-        println("Bars:")
-        bars.each{ b ->
-            println(b.barDesc + " -> " + b.foo.fooDesc)
+        println('Bars:')
+        bars.each { b ->
+            println(b.barDesc + ' -> ' + b.foo.fooDesc)
         }
         session.clear()
 
@@ -48,30 +63,30 @@ class ManyToOneSpec extends GormSpec {
         foo2 = Foo.get(foo2.id)
         foo3 = Foo.get(foo3.id)
 
+        Bar bar1 = Bar.findByBarDesc('Bar One')
+        Bar bar2 = Bar.findByBarDesc('Bar Two')
+        Bar bar3 = Bar.findByBarDesc('Bar Three')
 
-
-        Bar bar1 = Bar.findByBarDesc("Bar One")
-        Bar bar2 = Bar.findByBarDesc("Bar Two")
-        Bar bar3 = Bar.findByBarDesc("Bar Three")
-
-        then:"The data model is correct"
-        foo1.fooDesc == "Foo One"
-        foo1.bar.barDesc == "Bar One"
-        foo2.fooDesc == "Foo Two"
-        foo2.bar.barDesc == "Bar Two"
-        foo3.fooDesc == "Foo Three"
-        foo3.bar.barDesc == "Bar Three"
-        bar1.barDesc == "Bar One"
-        bar1.foo.fooDesc == "Foo One"
-        bar2.barDesc == "Bar Two"
-        bar2.foo.fooDesc == "Foo Two"
-        bar3.barDesc == "Bar Three"
-        bar3.foo.fooDesc == "Foo Three"
+        then: 'The data model is correct'
+        foo1.fooDesc == 'Foo One'
+        foo1.bar.barDesc == 'Bar One'
+        foo2.fooDesc == 'Foo Two'
+        foo2.bar.barDesc == 'Bar Two'
+        foo3.fooDesc == 'Foo Three'
+        foo3.bar.barDesc == 'Bar Three'
+        bar1.barDesc == 'Bar One'
+        bar1.foo.fooDesc == 'Foo One'
+        bar2.barDesc == 'Bar Two'
+        bar2.foo.fooDesc == 'Foo Two'
+        bar3.barDesc == 'Bar Three'
+        bar3.foo.fooDesc == 'Foo Three'
     }
+
     @Override
     List getDomainClasses() {
-        [Foo,Bar]
+        [Foo, Bar]
     }
+
 }
 
 @Entity
@@ -82,12 +97,13 @@ class Foo {
     Bar bar
 
     static mapping = {
-        id generator:'identity'
+        id generator: 'identity'
     }
 
     static constraints = {
         bar(nullable: true)
     }
+
 }
 
 @Entity
@@ -95,12 +111,13 @@ class Bar {
 
     String barDesc
 
-    static belongsTo = [ foo: Foo ]
+    static belongsTo = [foo: Foo]
 
     static mapping = {
-        id generator:'identity'
+        id generator: 'identity'
     }
 
     static constraints = {
     }
+
 }

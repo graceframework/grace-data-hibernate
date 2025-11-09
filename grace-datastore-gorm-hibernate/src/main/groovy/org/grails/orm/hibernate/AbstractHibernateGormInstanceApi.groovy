@@ -1,11 +1,11 @@
 /*
- * Copyright 2013-2023 the original author or authors.
+ * Copyright 2013-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -55,24 +55,25 @@ import org.grails.orm.hibernate.support.HibernateRuntimeUtils
 @CompileStatic
 abstract class AbstractHibernateGormInstanceApi<D> extends GormInstanceApi<D> {
 
-    private static final String ARGUMENT_VALIDATE = "validate"
-    private static final String ARGUMENT_DEEP_VALIDATE = "deepValidate"
-    private static final String ARGUMENT_FLUSH = "flush"
-    private static final String ARGUMENT_INSERT = "insert"
-    private static final String ARGUMENT_MERGE = "merge"
-    private static final String ARGUMENT_FAIL_ON_ERROR = "failOnError"
+    private static final String ARGUMENT_VALIDATE = 'validate'
+    private static final String ARGUMENT_DEEP_VALIDATE = 'deepValidate'
+    private static final String ARGUMENT_FLUSH = 'flush'
+    private static final String ARGUMENT_INSERT = 'insert'
+    private static final String ARGUMENT_MERGE = 'merge'
+    private static final String ARGUMENT_FAIL_ON_ERROR = 'failOnError'
     private static final Class DEFERRED_BINDING
 
     static {
         try {
             DEFERRED_BINDING = Class.forName('grails.validation.DeferredBindingActions')
         }
-        catch (Throwable e) {
+        catch (Throwable ignore) {
             DEFERRED_BINDING = null
         }
     }
 
     protected static final Object[] EMPTY_ARRAY = []
+
     /**
      * When a domain instance is saved without validation, we put it
      * into this thread local variable. Any code that needs to know
@@ -80,8 +81,7 @@ abstract class AbstractHibernateGormInstanceApi<D> extends GormInstanceApi<D> {
      * the value. Note that this only works because the session is
      * flushed when a domain instance is saved without validation.
      */
-    static final ThreadLocal<Boolean> insertActiveThreadLocal = new ThreadLocal<Boolean>()
-
+    static final ThreadLocal<Boolean> INSERT_ACTIVE_THREAD_LOCAL = new ThreadLocal<Boolean>()
 
     protected SessionFactory sessionFactory
     protected ClassLoader classLoader
@@ -90,7 +90,8 @@ abstract class AbstractHibernateGormInstanceApi<D> extends GormInstanceApi<D> {
 
     boolean autoFlush
 
-    protected AbstractHibernateGormInstanceApi(Class<D> persistentClass, AbstractHibernateDatastore datastore, ClassLoader classLoader, IHibernateTemplate hibernateTemplate) {
+    protected AbstractHibernateGormInstanceApi(Class<D> persistentClass, AbstractHibernateDatastore datastore,
+            ClassLoader classLoader, IHibernateTemplate hibernateTemplate) {
         super(persistentClass, datastore)
         this.classLoader = classLoader
         sessionFactory = datastore.getSessionFactory()
@@ -103,7 +104,6 @@ abstract class AbstractHibernateGormInstanceApi<D> extends GormInstanceApi<D> {
 
     @Override
     D save(D target, Map arguments) {
-
         PersistentEntity domainClass = persistentEntity
         runDeferredBinding()
         boolean shouldFlush = shouldFlush(arguments)
@@ -137,7 +137,7 @@ abstract class AbstractHibernateGormInstanceApi<D> extends GormInstanceApi<D> {
                 if (errors.hasErrors()) {
                     handleValidationError(domainClass, target, errors)
                     if (shouldFail(arguments)) {
-                        throw validationException.newInstance("Validation Error(s) occurred during save()", errors)
+                        throw validationException.newInstance('Validation Error(s) occurred during save()', errors)
                     }
                     return null
                 }
@@ -169,7 +169,8 @@ abstract class AbstractHibernateGormInstanceApi<D> extends GormInstanceApi<D> {
                 }
                 return performSave(target, shouldFlush)
             }
-        } finally {
+        }
+        finally {
             validateable.skipValidation(!shouldFlush)
         }
     }
@@ -279,10 +280,10 @@ abstract class AbstractHibernateGormInstanceApi<D> extends GormInstanceApi<D> {
                     flushSession session
                 }
                 return target
-            } finally {
+            }
+            finally {
                 resetInsertActive()
             }
-
         }
     }
 
@@ -296,12 +297,13 @@ abstract class AbstractHibernateGormInstanceApi<D> extends GormInstanceApi<D> {
             throw e
         }
     }
+
     /**
      * Performs automatic association retrieval
      * @param entity The domain class to retrieve associations for
      * @param target The target object
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings('unchecked')
     private void autoRetrieveAssocations(Datastore datastore, PersistentEntity entity, Object target) {
         EntityReflector reflector = datastore.mappingContext.getEntityReflector(entity)
         IHibernateTemplate t = this.hibernateTemplate
@@ -327,7 +329,7 @@ abstract class AbstractHibernateGormInstanceApi<D> extends GormInstanceApi<D> {
 
                 def otherSideReflector = datastore.mappingContext.getEntityReflector(otherSide)
                 try {
-                    def id = (Serializable) otherSideReflector.getProperty(propValue, identity.name);
+                    def id = (Serializable) otherSideReflector.getProperty(propValue, identity.name)
                     if (id) {
                         final Object associatedInstance = t.get(prop.type, id)
                         if (associatedInstance) {
@@ -339,7 +341,6 @@ abstract class AbstractHibernateGormInstanceApi<D> extends GormInstanceApi<D> {
                     // property is not accessable
                 }
             }
-
         }
     }
 
@@ -367,7 +368,6 @@ abstract class AbstractHibernateGormInstanceApi<D> extends GormInstanceApi<D> {
     private boolean shouldMerge(Map arguments) {
         ClassUtils.getBooleanFromMap(ARGUMENT_MERGE, arguments)
     }
-
 
     protected boolean shouldFlush(Map map) {
         if (map?.containsKey(ARGUMENT_FLUSH)) {
@@ -416,7 +416,6 @@ abstract class AbstractHibernateGormInstanceApi<D> extends GormInstanceApi<D> {
      * Sets the target object to read-only using the given SessionFactory instance. This
      * avoids Hibernate performing any dirty checking on the object
      *
-     *
      * @param target The target object
      * @param sessionFactory The SessionFactory instance
      */
@@ -429,6 +428,7 @@ abstract class AbstractHibernateGormInstanceApi<D> extends GormInstanceApi<D> {
             }
         }
     }
+
     /**
      * Sets the target object to read-write, allowing Hibernate to dirty check it and auto-flush changes.
      *
@@ -460,14 +460,14 @@ abstract class AbstractHibernateGormInstanceApi<D> extends GormInstanceApi<D> {
      * to set a ThreadLocal variable that determines the value for getAssumedUnsaved().
      */
     static void markInsertActive() {
-        insertActiveThreadLocal.set(Boolean.TRUE);
+        INSERT_ACTIVE_THREAD_LOCAL.set(Boolean.TRUE)
     }
 
     /**
      * Clears the ThreadLocal variable set by markInsertActive().
      */
     static void resetInsertActive() {
-        insertActiveThreadLocal.remove();
+        INSERT_ACTIVE_THREAD_LOCAL.remove()
     }
 
     /**
@@ -487,4 +487,5 @@ abstract class AbstractHibernateGormInstanceApi<D> extends GormInstanceApi<D> {
     SessionFactory getSessionFactory() {
         return this.sessionFactory
     }
+
 }

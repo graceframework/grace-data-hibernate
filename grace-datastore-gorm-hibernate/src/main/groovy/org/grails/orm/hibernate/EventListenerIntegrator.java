@@ -1,11 +1,11 @@
 /*
- * Copyright 2013 the original author or authors.
+ * Copyright 2010-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -41,7 +41,6 @@ public class EventListenerIntegrator implements Integrator {
         this.eventListeners = eventListeners;
     }
 
-    @SuppressWarnings("unchecked")
     protected static final List<EventType<? extends Serializable>> TYPES = Arrays.asList(
             EventType.AUTO_FLUSH,
             EventType.MERGE,
@@ -82,11 +81,10 @@ public class EventListenerIntegrator implements Integrator {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void integrate(Metadata metadata, SessionFactoryImplementor sessionFactory, SessionFactoryServiceRegistry serviceRegistry) {
-
         EventListenerRegistry listenerRegistry = serviceRegistry.getService(EventListenerRegistry.class);
 
-        if (eventListeners != null) {
-            for (Map.Entry<String, Object> entry : eventListeners.entrySet()) {
+        if (this.eventListeners != null) {
+            for (Map.Entry<String, Object> entry : this.eventListeners.entrySet()) {
                 EventType type = EventType.resolveEventTypeByName(entry.getKey());
                 Object listenerObject = entry.getValue();
                 if (listenerObject instanceof Collection) {
@@ -98,23 +96,21 @@ public class EventListenerIntegrator implements Integrator {
             }
         }
 
-        if (hibernateEventListeners != null && hibernateEventListeners.getListenerMap() != null) {
-            Map<String, Object> listenerMap = hibernateEventListeners.getListenerMap();
+        if (this.hibernateEventListeners != null && this.hibernateEventListeners.getListenerMap() != null) {
+            Map<String, Object> listenerMap = this.hibernateEventListeners.getListenerMap();
             for (EventType<?> type : TYPES) {
                 appendListeners(listenerRegistry, type, listenerMap);
             }
         }
-
     }
 
-    protected <T> void appendListeners(EventListenerRegistry listenerRegistry,
-            EventType<T> eventType, Collection<T> listeners) {
-
+    protected <T> void appendListeners(EventListenerRegistry listenerRegistry, EventType<T> eventType, Collection<T> listeners) {
         EventListenerGroup<T> group = listenerRegistry.getEventListenerGroup(eventType);
         for (T listener : listeners) {
             if (listener != null) {
                 if (shouldOverrideListeners(eventType, listener)) {
-                    // since ClosureEventTriggeringInterceptor extends DefaultSaveOrUpdateEventListener we want to override instead of append the listener here
+                    // since ClosureEventTriggeringInterceptor extends DefaultSaveOrUpdateEventListener
+                    // we want to override instead of append the listener here
                     // to avoid there being 2 implementations which would impact performance too
                     group.clear();
                     group.appendListener(listener);
@@ -134,11 +130,11 @@ public class EventListenerIntegrator implements Integrator {
     @SuppressWarnings("unchecked")
     protected <T> void appendListeners(final EventListenerRegistry listenerRegistry,
             final EventType<T> eventType, final Map<String, Object> listeners) {
-
         Object listener = listeners.get(eventType.eventName());
         if (listener != null) {
             if (shouldOverrideListeners(eventType, listener)) {
-                // since ClosureEventTriggeringInterceptor extends DefaultSaveOrUpdateEventListener we want to override instead of append the listener here
+                // since ClosureEventTriggeringInterceptor extends DefaultSaveOrUpdateEventListener
+                // we want to override instead of append the listener here
                 // to avoid there being 2 implementations which would impact performance too
                 listenerRegistry.setListeners(eventType, (T) listener);
             }
@@ -148,7 +144,7 @@ public class EventListenerIntegrator implements Integrator {
         }
     }
 
-
+    @Override
     public void disintegrate(SessionFactoryImplementor sessionFactory, SessionFactoryServiceRegistry serviceRegistry) {
         // nothing to do
     }

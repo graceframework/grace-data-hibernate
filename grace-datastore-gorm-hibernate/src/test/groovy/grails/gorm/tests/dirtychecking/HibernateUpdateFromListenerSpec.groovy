@@ -1,13 +1,20 @@
+/*
+ * Copyright 2016-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.gorm.tests.dirtychecking
 
-import grails.gorm.transactions.Rollback
-import org.grails.datastore.gorm.events.ConfigurableApplicationEventPublisher
-import org.grails.datastore.mapping.core.Datastore
-import org.grails.datastore.mapping.engine.event.AbstractPersistenceEvent
-import org.grails.datastore.mapping.engine.event.AbstractPersistenceEventListener
-import org.grails.datastore.mapping.engine.event.PreInsertEvent
-import org.grails.datastore.mapping.engine.event.PreUpdateEvent
-import org.grails.orm.hibernate.HibernateDatastore
 import org.springframework.context.ApplicationEvent
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.ConfigurableApplicationContext
@@ -17,17 +24,31 @@ import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
+import grails.gorm.transactions.Rollback
+
+import org.grails.datastore.gorm.events.ConfigurableApplicationEventPublisher
+import org.grails.datastore.mapping.core.Datastore
+import org.grails.datastore.mapping.engine.event.AbstractPersistenceEvent
+import org.grails.datastore.mapping.engine.event.AbstractPersistenceEventListener
+import org.grails.datastore.mapping.engine.event.PreInsertEvent
+import org.grails.datastore.mapping.engine.event.PreUpdateEvent
+import org.grails.orm.hibernate.HibernateDatastore
+
 class HibernateUpdateFromListenerSpec extends Specification {
 
-    @Shared Map config = [
-            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+    @Shared
+    Map config = [
+            'dataSource.url'     : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
             'dataSource.dbCreate': 'create-drop',
-            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+            'dataSource.dialect' : 'org.hibernate.dialect.H2Dialect'
     ]
+
     @Shared
     @AutoCleanup
     HibernateDatastore datastore = new HibernateDatastore(config, Person)
-    @Shared PlatformTransactionManager transactionManager = datastore.transactionManager
+
+    @Shared
+    PlatformTransactionManager transactionManager = datastore.transactionManager
 
     PersonSaveOrUpdatePersistentEventListener listener
 
@@ -36,18 +57,19 @@ class HibernateUpdateFromListenerSpec extends Specification {
         ApplicationEventPublisher publisher = datastore.applicationEventPublisher
         if (publisher instanceof ConfigurableApplicationEventPublisher) {
             ((ConfigurableApplicationEventPublisher) publisher).addApplicationListener(listener)
-        } else if (publisher instanceof ConfigurableApplicationContext) {
+        }
+        else if (publisher instanceof ConfigurableApplicationContext) {
             ((ConfigurableApplicationContext) publisher).addApplicationListener(listener)
         }
     }
 
     @Rollback
-    void "test the changes made from the listener are saved"() {
+    void 'test the changes made from the listener are saved'() {
         when:
-        Person danny = new Person(name: "Danny", occupation: "manager").save()
+        Person danny = new Person(name: 'Danny', occupation: 'manager').save()
 
         then:
-        new PollingConditions().eventually {listener.isExecuted && Person.count()}
+        new PollingConditions().eventually { listener.isExecuted && Person.count() }
 
         when:
         datastore.currentSession.flush()
@@ -56,7 +78,7 @@ class HibernateUpdateFromListenerSpec extends Specification {
 
         then:
         danny.occupation
-        danny.occupation.endsWith("listener")
+        danny.occupation.endsWith('listener')
     }
 
     static class PersonSaveOrUpdatePersistentEventListener extends AbstractPersistenceEventListener {
@@ -71,7 +93,7 @@ class HibernateUpdateFromListenerSpec extends Specification {
         protected void onPersistenceEvent(AbstractPersistenceEvent event) {
             if (event.entityObject instanceof Person) {
                 Person person = (Person) event.entityObject
-                person.occupation = person.occupation + " listener"
+                person.occupation = person.occupation + ' listener'
             }
             isExecuted = true
         }
@@ -80,5 +102,7 @@ class HibernateUpdateFromListenerSpec extends Specification {
         boolean supportsEventType(Class<? extends ApplicationEvent> eventType) {
             return eventType == PreUpdateEvent || eventType == PreInsertEvent
         }
+
     }
+
 }

@@ -1,10 +1,25 @@
+/*
+ * Copyright 2016-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package grails.gorm.tests
 
 import grails.gorm.DetachedCriteria
 import grails.gorm.annotation.Entity
 import grails.gorm.hibernate.HibernateEntity
 
-@SuppressWarnings("GrMethodMayBeStatic")
+@SuppressWarnings('GrMethodMayBeStatic')
 class DetachCriteriaSubquerySpec extends GormDatastoreSpec {
 
     @Override
@@ -12,8 +27,7 @@ class DetachCriteriaSubquerySpec extends GormDatastoreSpec {
         return [User, Group, GroupAssignment, Organisation]
     }
 
-    void "test detached associated criteria in subquery"() {
-
+    void 'test detached associated criteria in subquery'() {
         setup:
         User supVisor = createUser('supervisor@company.com')
         User user1 = createUser('user1@company.com')
@@ -43,15 +57,14 @@ class DetachCriteriaSubquerySpec extends GormDatastoreSpec {
         result.size() == 1
     }
 
-    void "test executing detached criteria in sub-query multiple times"() {
-
+    void 'test executing detached criteria in sub-query multiple times'() {
         setup:
-        Organisation orgA = new Organisation(name: "A")
+        Organisation orgA = new Organisation(name: 'A')
         orgA.addToUsers(email: 'user1@a')
         orgA.addToUsers(email: 'user2@a')
         orgA.addToUsers(email: 'user3@a')
         orgA.save(flush: true)
-        Organisation orgB = new Organisation(name: "B")
+        Organisation orgB = new Organisation(name: 'B')
         orgB.addToUsers(email: 'user1@b')
         orgB.addToUsers(email: 'user2@b')
         orgB.save(flush: true)
@@ -67,8 +80,7 @@ class DetachCriteriaSubquerySpec extends GormDatastoreSpec {
         result.size() == 5
     }
 
-    void "test that detached criteria subquery should create implicit alias instead of using this_"() {
-
+    void 'test that detached criteria subquery should create implicit alias instead of using this_'() {
         setup:
         User supVisor = createUser('supervisor@company.com')
         User user1 = createUser('user1@company.com')
@@ -99,7 +111,7 @@ class DetachCriteriaSubquerySpec extends GormDatastoreSpec {
 
     private User createUser(String email) {
         User user = new User(email: email)
-        Organisation defaultOrg = Organisation.findOrCreateByName("default")
+        Organisation defaultOrg = Organisation.findOrCreateByName('default')
         defaultOrg.addToUsers(user)
         defaultOrg.save(flush: true)
         user
@@ -121,36 +133,48 @@ class DetachCriteriaSubquerySpec extends GormDatastoreSpec {
 
 }
 
-
 @Entity
 class User implements HibernateEntity<User> {
+
     String email
+
     static belongsTo = [organisation: Organisation]
+
     static mapping = {
         table 'T_USER'
     }
+
 }
 
 @Entity
 class Group implements HibernateEntity<Group> {
+
     String name
     User supervisor
+
     static mapping = {
         table 'T_GROUP'
     }
+
 }
 
 @Entity
 class GroupAssignment implements HibernateEntity<GroupAssignment> {
+
     User user
     Group group
+
     static mapping = {
         table 'T_GROUP_ASSIGNMENT'
     }
+
 }
 
 @Entity
 class Organisation implements HibernateEntity<Organisation> {
+
     String name
+
     static hasMany = [users: User]
+
 }

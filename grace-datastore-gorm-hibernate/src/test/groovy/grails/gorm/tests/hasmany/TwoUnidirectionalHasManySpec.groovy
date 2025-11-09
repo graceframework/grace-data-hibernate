@@ -1,34 +1,31 @@
 /*
- * Copyright 2017 original authors
- * 
+ * Copyright 2017-2025 the original author or authors.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License. 
+ * limitations under the License.
  */
 package grails.gorm.tests.hasmany
 
-import grails.gorm.annotation.Entity
-import grails.gorm.hibernate.mapping.MappingBuilder
-import grails.gorm.transactions.Rollback
-import org.grails.orm.hibernate.HibernateDatastore
 import spock.lang.AutoCleanup
 import spock.lang.Ignore
 import spock.lang.Issue
 import spock.lang.Shared
 import spock.lang.Specification
 
-import jakarta.persistence.CascadeType
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
-import jakarta.persistence.OneToMany
+import grails.gorm.annotation.Entity
+import grails.gorm.hibernate.mapping.MappingBuilder
+import grails.gorm.transactions.Rollback
+
+import org.grails.orm.hibernate.HibernateDatastore
 
 /**
  * @author Graeme Rocher
@@ -36,23 +33,26 @@ import jakarta.persistence.OneToMany
  */
 class TwoUnidirectionalHasManySpec extends Specification {
 
-    @Shared Map config = [
-            'dataSource.url':"jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000",
+    @Shared
+    Map config = [
+            'dataSource.url'     : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
             'dataSource.dbCreate': 'create-drop',
-            'dataSource.dialect': 'org.hibernate.dialect.H2Dialect'
+            'dataSource.dialect' : 'org.hibernate.dialect.H2Dialect'
     ]
-    @Shared @AutoCleanup HibernateDatastore datastore = new HibernateDatastore(config, getClass().getPackage())
 
+    @Shared
+    @AutoCleanup
+    HibernateDatastore datastore = new HibernateDatastore(config, getClass().getPackage())
 
     @Rollback
     @Issue('https://github.com/grails/grails-core/issues/10811')
     @Ignore
-    void "test two undirectional one to many references"() {
+    void 'test two undirectional one to many references'() {
         when:
-        new EcmMask(name: "test")
-                .addToCreateUsers(name: "Fred")
-                .addToUpdateUsers(name:"Bob")
-                .save(flush:true).discard()
+        new EcmMask(name: 'test')
+                .addToCreateUsers(name: 'Fred')
+                .addToUpdateUsers(name: 'Bob')
+                .save(flush: true).discard()
 
         EcmMask mask = EcmMask.first()
 
@@ -60,32 +60,34 @@ class TwoUnidirectionalHasManySpec extends Specification {
         mask != null
         mask.createUsers.size() == 1
         mask.updateUsers.size() == 1
-
     }
 
 }
 
-
 @Entity
 class EcmMask {
+
     String name
-    static hasMany = [createUsers:User,updateUsers:User]
+    static hasMany = [createUsers: User, updateUsers: User]
 
     static mapping = MappingBuilder.orm {
 //        property('createUsers') {
-//            joinTable { name"created_users" }
+//            joinTable { name 'created_users' }
 //        }
 //        property('updateUsers') {
-//            joinTable { name "updated_users" }
+//            joinTable { name 'updated_users' }
 //        }
     }
+
 }
 
 @Entity
 class User {
+
     String name
 
     static mapping = {
         table 'users'
     }
+
 }

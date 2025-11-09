@@ -1,11 +1,11 @@
 /*
- * Copyright 2003-2023 the original author or authors.
+ * Copyright 2016-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,7 +33,6 @@ import org.grails.datastore.mapping.reflect.ClassPropertyFetcher
  * @author Graeme Rocher
  * @since 1.0
  */
-
 class HibernateMappingBuilder implements MappingConfigurationBuilder<Mapping, PropertyConfig> {
 
     private static final String INCLUDE_PARAM = 'include'
@@ -73,7 +72,6 @@ class HibernateMappingBuilder implements MappingConfigurationBuilder<Mapping, Pr
      *
      * @param mappingClosure The closure that defines the ORM DSL
      */
-
     @Override
     @CompileStatic
     Mapping evaluate(Closure mappingClosure, Object context = null) {
@@ -236,7 +234,7 @@ class HibernateMappingBuilder implements MappingConfigurationBuilder<Mapping, Pr
      * @param name The name of the property to sort by
      */
     void order(String direction) {
-        if ("desc".equalsIgnoreCase(direction) || "asc".equalsIgnoreCase(direction)) {
+        if ('desc'.equalsIgnoreCase(direction) || 'asc'.equalsIgnoreCase(direction)) {
             mapping.getSort().direction = direction
         }
     }
@@ -326,7 +324,7 @@ class HibernateMappingBuilder implements MappingConfigurationBuilder<Mapping, Pr
      */
     @CompileStatic
     void cache(String usage, Map args) {
-        args = args ? args : [:]
+        args = args ?: [:]
         args.usage = usage
         cache(args)
     }
@@ -357,7 +355,6 @@ class HibernateMappingBuilder implements MappingConfigurationBuilder<Mapping, Pr
             mapping.tablePerConcreteClass = true
         }
     }
-
 
     /**
      * <p>Configures the second-level cache with the default usage of 'read-write' and the default include of 'all' if
@@ -421,7 +418,7 @@ class HibernateMappingBuilder implements MappingConfigurationBuilder<Mapping, Pr
             }
             // still more arguments?
             if (args) {
-                handleMethodMissing("id", [args] as Object[])
+                handleMethodMissing('id', [args] as Object[])
             }
         }
     }
@@ -447,7 +444,6 @@ class HibernateMappingBuilder implements MappingConfigurationBuilder<Mapping, Pr
                     newConfig = (PropertyConfig) globalConstraints.clone()
                 }
             }
-
 
             PropertyConfig property = mapping.columns[name] ?: newConfig
             property.name = namedArgs.name ?: property.name
@@ -515,18 +511,36 @@ class HibernateMappingBuilder implements MappingConfigurationBuilder<Mapping, Pr
                     property.columns << cc
                 }
 
-                if (namedArgs["column"]) cc.name = namedArgs["column"]
-                if (namedArgs["sqlType"]) cc.sqlType = namedArgs["sqlType"]
-                if (namedArgs["enumType"]) cc.enumType = namedArgs["enumType"]
-                if (namedArgs["index"]) cc.index = namedArgs["index"]
-                if (namedArgs["unique"]) cc.unique = namedArgs["unique"]
-                if (namedArgs["read"]) cc.read = namedArgs["read"]
-                if (namedArgs["write"]) cc.write = namedArgs["write"]
-                if (namedArgs.defaultValue) cc.defaultValue = namedArgs.defaultValue
-                if (namedArgs.comment) cc.comment = namedArgs.comment
-                cc.length = namedArgs["length"] ?: cc.length
-                cc.precision = namedArgs["precision"] ?: cc.precision
-                cc.scale = namedArgs["scale"] ?: cc.scale
+                if (namedArgs['column']) {
+                    cc.name = namedArgs['column']
+                }
+                if (namedArgs['sqlType']) {
+                    cc.sqlType = namedArgs['sqlType']
+                }
+                if (namedArgs['enumType']) {
+                    cc.enumType = namedArgs['enumType']
+                }
+                if (namedArgs['index']) {
+                    cc.index = namedArgs['index']
+                }
+                if (namedArgs['unique']) {
+                    cc.unique = namedArgs['unique']
+                }
+                if (namedArgs['read']) {
+                    cc.read = namedArgs['read']
+                }
+                if (namedArgs['write']) {
+                    cc.write = namedArgs['write']
+                }
+                if (namedArgs.defaultValue) {
+                    cc.defaultValue = namedArgs.defaultValue
+                }
+                if (namedArgs.comment) {
+                    cc.comment = namedArgs.comment
+                }
+                cc.length = namedArgs['length'] ?: cc.length
+                cc.precision = namedArgs['precision'] ?: cc.precision
+                cc.scale = namedArgs['scale'] ?: cc.scale
             }
 
             if (namedArgs.cache instanceof String) {
@@ -535,7 +549,8 @@ class HibernateMappingBuilder implements MappingConfigurationBuilder<Mapping, Pr
                     cc.usage = namedArgs.cache
                 }
                 else {
-                    LOG.warn("ORM Mapping Invalid: Specified [usage] of [cache] with value [$args.usage] for association [$name] in class [$className] is not valid")
+                    LOG.warn("ORM Mapping Invalid: Specified [usage] of [cache] with value [$args.usage] " +
+                            "for association [$name] in class [$className] is not valid")
                 }
                 property.cache = cc
             }
@@ -549,13 +564,15 @@ class HibernateMappingBuilder implements MappingConfigurationBuilder<Mapping, Pr
                     cc.usage = cacheArgs.usage
                 }
                 else {
-                    LOG.warn("ORM Mapping Invalid: Specified [usage] of [cache] with value [$args.usage] for association [$name] in class [$className] is not valid")
+                    LOG.warn("ORM Mapping Invalid: Specified [usage] of [cache] with value [$args.usage] " +
+                            "for association [$name] in class [$className] is not valid")
                 }
                 if (CacheConfig.INCLUDE_OPTIONS.contains(cacheArgs.include)) {
                     cc.include = cacheArgs.include
                 }
                 else {
-                    LOG.warn("ORM Mapping Invalid: Specified [include] of [cache] with value [$args.include] for association [$name] in class [$className] is not valid")
+                    LOG.warn("ORM Mapping Invalid: Specified [include] of [cache] with value [$args.include] " +
+                            "for association [$name] in class [$className] is not valid")
                 }
                 property.cache = cc
             }
@@ -583,9 +600,15 @@ class HibernateMappingBuilder implements MappingConfigurationBuilder<Mapping, Pr
                     join.name = joinArgs
                 }
                 else if (joinArgs instanceof Map) {
-                    if (joinArgs.schema) join.schema = joinArgs.remove('schema')
-                    if (joinArgs.catalog) join.catalog = joinArgs.remove('catalog')
-                    if (joinArgs.name) join.name = joinArgs.remove('name')
+                    if (joinArgs.schema) {
+                        join.schema = joinArgs.remove('schema')
+                    }
+                    if (joinArgs.catalog) {
+                        join.catalog = joinArgs.remove('catalog')
+                    }
+                    if (joinArgs.name) {
+                        join.name = joinArgs.remove('name')
+                    }
                     if (joinArgs.key) {
                         join.key = new ColumnConfig(name: joinArgs.remove('key'))
                     }
@@ -631,6 +654,7 @@ class HibernateMappingBuilder implements MappingConfigurationBuilder<Mapping, Pr
             def invokeMethod(String methodName, Object args) {
                 handleMethodMissing.call(methodName, args)
             }
+
         }
         callable.call()
     }
@@ -659,14 +683,15 @@ class HibernateMappingBuilder implements MappingConfigurationBuilder<Mapping, Pr
         }
 
         boolean hasArgs = args.asBoolean()
-        if ('user-type' == name && hasArgs && (args[0] instanceof Map)) {
+        if (name == 'user-type' && hasArgs && (args[0] instanceof Map)) {
             hibernateCustomUserType(args[0])
         }
-        else if ('importFrom' == name && hasArgs && (args[0] instanceof Class)) {
+        else if (name == 'importFrom' && hasArgs && (args[0] instanceof Class)) {
             // ignore, handled by constraints
-            List<Closure> constraintsToImports = ClassPropertyFetcher.getStaticPropertyValuesFromInheritanceHierarchy((Class) args[0], GormProperties.CONSTRAINTS, Closure)
-            if (constraintsToImports) {
+            List<Closure> constraintsToImports = ClassPropertyFetcher.getStaticPropertyValuesFromInheritanceHierarchy(
+                    (Class) args[0], GormProperties.CONSTRAINTS, Closure)
 
+            if (constraintsToImports) {
                 List originalIncludes = this.methodMissingIncludes
                 List originalExludes = this.methodMissingExcludes
                 try {
@@ -698,5 +723,5 @@ class HibernateMappingBuilder implements MappingConfigurationBuilder<Mapping, Pr
             handleMethodMissing(name, args)
         }
     }
-}
 
+}
