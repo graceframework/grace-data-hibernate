@@ -271,7 +271,7 @@ subprojects { Project subproject ->
     }
 
     checkstyle {
-        toolVersion = "10.3.2"
+        toolVersion = "10.26.1"
         configDirectory.set(rootProject.file("$rootDir/gradle/checkstyle"))
     }
 
