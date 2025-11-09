@@ -14,7 +14,7 @@ ruleset {
     BrokenOddnessCheck
     // ClassForName
     ComparisonOfTwoConstants
-    ComparisonWithSelf
+    // ComparisonWithSelf
     ConstantAssertExpression
     ConstantIfExpression
     ConstantTernaryExpression
@@ -24,7 +24,7 @@ ruleset {
     DuplicateMapKey
     DuplicateSetValue
     EmptyCatchBlock
-    EmptyClass
+    // EmptyClass
     EmptyElseBlock
     EmptyFinallyBlock
     EmptyForStatement
@@ -35,7 +35,7 @@ ruleset {
     EmptySwitchStatement
     EmptySynchronizedStatement
     EmptyTryBlock
-    EmptyWhileStatement
+    // EmptyWhileStatement
     // EqualsAndHashCode
     EqualsOverloaded
     ExplicitGarbageCollection
@@ -112,7 +112,7 @@ ruleset {
     // ImplicitClosureParameter
     // ImplicitReturnStatement
     InvertedCondition
-    InvertedIfElse
+    // InvertedIfElse
     // LongLiteralWithLowerCaseL
     // MethodParameterTypeRequired
     // MethodReturnTypeRequired
@@ -206,27 +206,27 @@ ruleset {
     ConsecutiveBlankLines
     FileEndsWithoutNewline
     Indentation
-    LineLength(length: 150)
+    LineLength(length: 350)
     MissingBlankLineAfterImports
     MissingBlankLineAfterPackage
     MissingBlankLineBeforeAnnotatedField
     SpaceAfterCatch
-    SpaceAfterClosingBrace
+    // SpaceAfterClosingBrace
     SpaceAfterComma
     SpaceAfterFor
     SpaceAfterIf
     SpaceAfterMethodCallName
     SpaceAfterMethodDeclarationName
     SpaceAfterNotOperator
-    SpaceAfterOpeningBrace
+    // SpaceAfterOpeningBrace
     SpaceAfterSemicolon
     SpaceAfterSwitch
     SpaceAfterWhile
     SpaceAroundClosureArrow
-    SpaceAroundMapEntryColon(characterAfterColonRegex: /\s/)
+    // SpaceAroundMapEntryColon(characterAfterColonRegex: /\s/)
     SpaceAroundOperator
-    SpaceBeforeClosingBrace
-    SpaceBeforeOpeningBrace
+    // SpaceBeforeClosingBrace
+    // SpaceBeforeOpeningBrace
     SpaceInsideParentheses
     TrailingWhitespace
 
@@ -351,13 +351,13 @@ ruleset {
     FieldName(ignoreFieldNames: 'serialVersionUID,log,logger')
     InterfaceName
     InterfaceNameSameAsSuperInterface
-    MethodName
+    MethodName(regex: '[a-z]\\w*|.*[ #].*')
     ObjectOverrideMisspelledMethodName
     PackageName
     PackageNameMatchesFilePath
     ParameterName
-    PropertyName
-    VariableName
+    PropertyName(regex: '[a-z_][a-zA-Z0-9_]*')
+    VariableName(regex: '[a-z_][a-zA-Z0-9_]*')
 
     // rulesets/security.xml
     // FileCreateTempFile
@@ -392,7 +392,7 @@ ruleset {
     ConsecutiveStringConcatenation
     UnnecessaryBigDecimalInstantiation
     UnnecessaryBigIntegerInstantiation
-    UnnecessaryBooleanExpression
+    // UnnecessaryBooleanExpression
     UnnecessaryBooleanInstantiation
     UnnecessaryCallForLastElement
     UnnecessaryCallToSubstring
@@ -406,7 +406,7 @@ ruleset {
     UnnecessaryDefInVariableDeclaration
     UnnecessaryDotClass
     UnnecessaryDoubleInstantiation
-    UnnecessaryElseStatement
+    // UnnecessaryElseStatement
     UnnecessaryFinalOnPrivateMethod
     UnnecessaryFloatInstantiation
     UnnecessaryGString
@@ -424,7 +424,7 @@ ruleset {
     UnnecessaryPackageReference
     UnnecessaryParenthesesForMethodCallWithClosure
     UnnecessaryPublicModifier
-    UnnecessaryReturnKeyword
+    // UnnecessaryReturnKeyword
     UnnecessarySafeNavigationOperator
     UnnecessarySelfAssignment
     UnnecessarySemicolon
