@@ -2,7 +2,3 @@ rootProject.name = 'Grace.Data.Hibernate'
 
 // Core
 include "grace-datastore-gorm-hibernate"
-
-// Plugins
-include 'grace-plugin'
-project(':grace-plugin').name = 'hibernate'
