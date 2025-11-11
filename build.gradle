@@ -15,257 +15,43 @@ buildscript {
         }
     }
     dependencies {
-        classpath "io.github.gradle-nexus:publish-plugin:2.0.0"
-        classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
-        classpath "org.gradle:test-retry-gradle-plugin:1.6.0"
+        classpath "org.graceframework:grace-gradle-plugin:${libs.versions.grace.framework.get()}"
     }
 }
 
-group = "org.graceframework"
-version = project.projectVersion
-
-ext {
-    isTravisBuild = System.getenv().get("TRAVIS") == 'true'
-    isCiBuild = project.hasProperty("isCiBuild") || System.getenv().get("CI") as Boolean
-    isBuildSnapshot = version.endsWith('-SNAPSHOT')
-    isReleaseVersion = !isBuildSnapshot
+plugins {
+    id 'java-library'
+    id 'groovy'
+    id 'maven-publish'
+    id 'signing'
+    id 'eclipse'
+    id 'idea'
+    // alias libs.plugins.grace.doc
+    alias libs.plugins.gradle.nexus.publish
 }
 
-ext."signing.keyId" = System.getenv("SIGNING_KEY") ?: project.hasProperty("signing.keyId") ? project.getProperty('signing.keyId') : null
-ext."signing.password" = System.getenv("SIGNING_PASSPHRASE") ?: project.hasProperty("signing.password") ? project.getProperty('signing.password') : null
-ext."signing.secretKeyRingFile" = project.hasProperty("signing.secretKeyRingFile") ? project.getProperty('signing.secretKeyRingFile') : null
-
-// Build with the current version of GORM
-ext['grace-data.version'] = project.gormVersion
-
-logger.lifecycle "GORM VERSION = ${project.gormVersion}"
-
-apply plugin: 'groovy'
-apply plugin: 'maven-publish'
-apply plugin: "io.github.gradle-nexus.publish-plugin"
 apply plugin: 'org.graceframework.grace-doc'
 
-allprojects {
-    repositories {
-        mavenCentral()
-        maven {
-            name = 'Maven Central Portal Snapshots'
-            url = 'https://central.sonatype.com/repository/maven-snapshots/'
+ext."signing.keyId" = project.hasProperty("signing.keyId") ? project.getProperty('signing.keyId') : System.getenv('SIGNING_KEY')
+ext."signing.password" = project.hasProperty("signing.password") ? project.getProperty('signing.password') : System.getenv('SIGNING_PASSPHRASE')
+ext."signing.secretKeyRingFile" = project.hasProperty("signing.secretKeyRingFile") ? project.getProperty('signing.secretKeyRingFile') : ("${System.properties['user.home']}${File.separator}.gnupg${File.separator}secring.gpg")
+ext.isReleaseVersion = !projectVersion.endsWith("SNAPSHOT")
 
-            content {
-                includeGroupAndSubgroups 'org.graceframework'
-            }
-            mavenContent {
-                snapshotsOnly()
-            }
-        }
-    }
+version = project.projectVersion
+group = "org.graceframework"
 
-    configurations {
-        documentation
-    }
-
-    dependencies {
-        documentation "com.github.javaparser:javaparser-core:$javaParserCoreVersion"
-        documentation "org.apache.groovy:groovy:$groovyVersion"
-        documentation "org.apache.groovy:groovy-ant:$groovyVersion"
-    }
+repositories {
+    mavenCentral()
 }
 
-nexusPublishing {
-    repositories {
-        sonatype {
-            def mavenUser = System.getenv("MAVEN_CENTRAL_USER") ?: project.hasProperty("mavenCentralUsername") ? project.mavenCentralUsername : ''
-            def mavenPass = System.getenv("MAVEN_CENTRAL_PASSWORD") ?: project.hasProperty("mavenCentralPassword") ? project.mavenCentralPassword : ''
-            nexusUrl = uri("https://ossrh-staging-api.central.sonatype.com/service/local/")
-            snapshotRepositoryUrl = uri("https://central.sonatype.com/repository/maven-snapshots/")
-            username = mavenUser
-            password = mavenPass
-        }
-    }
+configurations {
+    documentation
 }
 
-subprojects { Project subproject ->
-    ext {
-        projectArtifactId = subproject.name
-        isPluginProject = subproject.name == 'hibernate'
-    }
-
-    if (isPluginProject) {
-        group = "org.graceframework.plugins"
-    }
-    else {
-        group = "org.graceframework"
-    }
-    version = project.rootProject.version
-
-    repositories {
-        mavenCentral()
-        maven {
-            name = 'Maven Central Portal Snapshots'
-            url = 'https://central.sonatype.com/repository/maven-snapshots/'
-
-            content {
-                includeGroupAndSubgroups 'org.graceframework'
-            }
-            mavenContent {
-                snapshotsOnly()
-            }
-        }
-    }
-
-    apply plugin: 'groovy'
-
-    configurations {
-        documentation.extendsFrom(compileClasspath)
-    }
-
-    if (subproject.name == 'docs') {
-        return
-    }
-
-    apply plugin: 'java-library'
-    apply plugin: 'maven-publish'
-    apply plugin: 'checkstyle'
-    apply plugin: 'codenarc'
-    apply plugin: 'signing'
-    apply plugin: "org.gradle.test-retry"
-
-    if (isPluginProject) {
-        apply plugin: 'org.graceframework.grace-plugin'
-    }
-    else {
-        apply plugin: "io.spring.dependency-management"
-
-        dependencyManagement {
-            imports {
-                mavenBom "org.graceframework:grace-bom:$graceVersion"
-            }
-            applyMavenExclusions false
-            generatedPomCustomization {
-                enabled = false
-            }
-        }
-    }
-
-    dependencies {
-        testImplementation "org.spockframework:spock-core", {
-            exclude group: "org.junit.platform", module: "junit-platform-engine"
-        }
-        testImplementation "org.apache.groovy:groovy-test-junit5", {
-            exclude group: "org.junit.platform", module: "junit-platform-launcher"
-            exclude group: "org.junit.jupiter", module: "junit-jupiter-engine"
-        }
-        testImplementation "org.junit.jupiter:junit-jupiter-api"
-        testImplementation "org.junit.platform:junit-platform-runner"
-        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
-    }
-
-    java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(17)
-        }
-        withJavadocJar()
-        withSourcesJar()
-    }
-
-    tasks.withType(Test) {
-        useJUnitPlatform()
-        testLogging {
-            showStandardStreams = true
-            exceptionFormat = 'full'
-        }
-        configure {
-            retry {
-                maxRetries = 2
-                maxFailures = 20
-                failOnPassedAfterRetry = true
-            }
-        }
-    }
-
-    publishing {
-        publications {
-            maven(MavenPublication) {
-                def projectName = subproject.name.split('-')*.capitalize().join(' ')
-                artifactId = projectArtifactId
-
-                from components.java
-
-                versionMapping {
-                    usage('java-api') {
-                        fromResolutionOf('runtimeClasspath')
-                    }
-                    usage('java-runtime') {
-                        fromResolutionResult()
-                    }
-                }
-
-                afterEvaluate {
-                    if(isPluginProject) {
-                        artifact source:"${sourceSets.main.groovy.classesDirectory.get()}/META-INF/grails-plugin.xml",
-                                classifier:"plugin",
-                                extension:'xml'
-                    }
-                }
-                pom {
-                    name = projectName
-                    description = "Grace Data : $projectName"
-                    url = 'https://github.com/graceframework/grace-data-hibernate'
-
-                    licenses {
-                        license {
-                            name = 'The Apache Software License, Version 2.0'
-                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                            distribution = 'repo'
-                        }
-                    }
-
-                    scm {
-                        url = 'https://github.com/graceframework/grace-data-hibernate'
-                        connection = 'https://github.com/graceframework/grace-data-hibernate'
-                        developerConnection = 'https://github.com/graceframework/grace-data-hibernate'
-                    }
-
-                    developers {
-                        developer {
-                            id = 'rainboyan'
-                            name = 'Michael Yan'
-                            email = 'rain@rainboyan.com'
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    afterEvaluate {
-        signing {
-            required = isReleaseVersion && gradle.taskGraph.hasTask("publish")
-            sign publishing.publications.maven
-        }
-    }
-
-    tasks.withType(Sign) {
-        onlyIf { isReleaseVersion }
-    }
-
-    tasks.named('compileGroovy') {
-        inputs.files(tasks.named('processResources'))
-    }
-
-    checkstyle {
-        toolVersion = "10.26.1"
-        configDirectory.set(rootProject.file("$rootDir/gradle/checkstyle"))
-    }
-
-    codenarc {
-        toolVersion = '3.6.0'
-        setConfigFile(new File("$rootDir/gradle/codenarc/codenarc.groovy"))
-    }
-
+dependencies {
+    documentation libs.javaparser
+    documentation libs.groovy.core
 }
-
 
 def cleanTask = project.tasks.findByName('clean')
 if (cleanTask == null) {
@@ -304,4 +90,17 @@ tasks.withType(Groovydoc) {
 publishGuide {
     dependsOn groovydoc
     sourceDir = project.file('src/docs')
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            def mavenUser = System.getenv("MAVEN_CENTRAL_USER") ?: project.hasProperty("mavenCentralUsername") ? project.mavenCentralUsername : ''
+            def mavenPass = System.getenv("MAVEN_CENTRAL_PASSWORD") ?: project.hasProperty("mavenCentralPassword") ? project.mavenCentralPassword : ''
+            nexusUrl = uri("https://ossrh-staging-api.central.sonatype.com/service/local/")
+            snapshotRepositoryUrl = uri("https://central.sonatype.com/repository/maven-snapshots/")
+            username = mavenUser
+            password = mavenPass
+        }
+    }
 }

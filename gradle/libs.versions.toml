@@ -1,0 +1,89 @@
+[versions]
+ehcache = "2.10.6"
+glassfish-expressly = "5.0.0"
+grace-data = "2024.0.0-SNAPSHOT"
+grace-framework = "2024.0.0-SNAPSHOT"
+grace-gradle = "2024.0.0-M1"
+groovy = "4.0.28"
+h2 = "2.3.232"
+hibernate-ehcache = "5.6.15.Final"
+hibernate-core = "5.6.15.Final"
+hibernate-validator = "8.0.2.Final"
+jakarta-annotation = "2.1.1"
+jakarta-el = "5.0.1"
+jakarta-inject = "2.0.1"
+jakarta-persistence = "3.1.0"
+jakarta-servlet = "6.0.0"
+jakarta-transaction = "2.0.1"
+jakarta-validation = "3.0.2"
+javaparser = "3.26.4"
+javassist = "3.30.2-GA"
+junit-jupiter = "5.11.4"
+junit-platform = "1.11.4"
+nexus-publish = "2.0.0"
+objenesis = "3.4"
+slf4j = "2.0.17"
+snakeyaml = "2.3"
+spock = "2.3-groovy-4.0"
+spring-framework = "6.2.11"
+tomcat = "10.1.48"
+
+[libraries]
+ehcache = { module = "net.sf.ehcache:ehcache", version.ref = "ehcache" }
+glassfish-expressly = { module = "org.glassfish.expressly:expressly", version.ref = "glassfish-expressly" }
+grace-bootstrap = { module = "org.graceframework:grace-bootstrap", version.ref = "grace-framework" }
+grace-core = { module = "org.graceframework:grace-core", version.ref = "grace-framework" }
+grace-datastore-core = { module = "org.graceframework:grace-datastore-core", version.ref = "grace-data" }
+grace-datastore-gorm = { module = "org.graceframework:grace-datastore-gorm", version.ref = "grace-data" }
+grace-datastore-gorm-async = { module = "org.graceframework:grace-datastore-gorm-async", version.ref = "grace-data" }
+grace-datastore-gorm-support = { module = "org.graceframework:grace-datastore-gorm-support", version.ref = "grace-data" }
+grace-datastore-gorm-tck = { module = "org.graceframework:grace-datastore-gorm-tck", version.ref = "grace-data" }
+grace-datastore-gorm-test = { module = "org.graceframework:grace-datastore-gorm-test", version.ref = "grace-data" }
+grace-datastore-gorm-validation = { module = "org.graceframework:grace-datastore-gorm-validation", version.ref = "grace-data" }
+grace-datastore-web = { module = "org.graceframework:grace-datastore-web", version.ref = "grace-data" }
+groovy-ant = { module = "org.apache.groovy:groovy-ant", version.ref = "groovy" }
+groovy-core = { module = "org.apache.groovy:groovy", version.ref = "groovy" }
+groovy-dateutil = { module = "org.apache.groovy:groovy-dateutil", version.ref = "groovy" }
+groovy-json = { module = "org.apache.groovy:groovy-json", version.ref = "groovy" }
+groovy-sql = { module = "org.apache.groovy:groovy-sql", version.ref = "groovy" }
+groovy-test = { module = "org.apache.groovy:groovy-test", version.ref = "groovy" }
+groovy-test-junit5 = { module = "org.apache.groovy:groovy-test-junit5", version.ref = "groovy" }
+h2 = { module = "com.h2database:h2", version.ref = "h2" }
+hibernate-ehcache = { module = "org.hibernate:hibernate-ehcache", version.ref = "hibernate-ehcache" }
+hibernate-core = { module = "org.hibernate:hibernate-core-jakarta", version.ref = "hibernate-core" }
+hibernate-validator = { module = "org.hibernate.validator:hibernate-validator", version.ref = "hibernate-validator" }
+jakarta-annotation-api = { module = "jakarta.annotation:jakarta.annotation-api", version.ref = "jakarta-annotation" }
+jakarta-el = { module = "jakarta.el:jakarta.el-api", version.ref = "jakarta-el" }
+jakarta-inject = { module = "jakarta.inject:jakarta.inject-api", version.ref = "jakarta-inject" }
+jakarta-persistence-api = { module = "jakarta.persistence:jakarta.persistence-api", version.ref = "jakarta-persistence" }
+jakarta-servlet = { module = "jakarta.servlet:jakarta.servlet-api", version.ref = "jakarta-servlet" }
+jakarta-transaction = { module = "jakarta.transaction:jakarta.transaction-api", version.ref = "jakarta-transaction" }
+jakarta-validation = { module = "jakarta.validation:jakarta.validation-api", version.ref = "jakarta-validation" }
+javaparser = { module = "com.github.javaparser:javaparser-core", version.ref = "javaparser" }
+javassist = { module = "org.javassist:javassist", version.ref = "javassist" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter" }
+junit-platform-engine = { module = "org.junit.platform:junit-platform-engine", version.ref = "junit-platform" }
+junit-platform-runner = { module = "org.junit.platform:junit-platform-runner", version.ref = "junit-platform" }
+objenesis = { module = "org.objenesis:objenesis", version.ref = "objenesis" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+slf4j-jcl = { module = "org.slf4j:jcl-over-slf4j", version.ref = "slf4j" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
+spock-core = { module = "org.spockframework:spock-core", version.ref = "spock" }
+spock-spring = { module = "org.spockframework:spock-spring", version.ref = "spock" }
+spring-aop = { module = "org.springframework:spring-aop", version.ref = "spring-framework" }
+spring-aspects = { module = "org.springframework:spring-aspects", version.ref = "spring-framework" }
+spring-beans = { module = "org.springframework:spring-beans", version.ref = "spring-framework" }
+spring-context = { module = "org.springframework:spring-context", version.ref = "spring-framework" }
+spring-core = { module = "org.springframework:spring-core", version.ref = "spring-framework" }
+spring-jdbc = { module = "org.springframework:spring-jdbc", version.ref = "spring-framework" }
+spring-test = { module = "org.springframework:spring-test", version.ref = "spring-framework" }
+spring-tx = { module = "org.springframework:spring-tx", version.ref = "spring-framework" }
+spring-orm = { module = "org.springframework:spring-orm", version.ref = "spring-framework" }
+spring-web = { module = "org.springframework:spring-web", version.ref = "spring-framework" }
+tomcat-jdbc = { module = "org.apache.tomcat:tomcat-jdbc", version.ref = "tomcat" }
+
+[plugins]
+grace-doc = { id = "org.graceframework.grace-doc", version.ref = "grace-gradle" }
+gradle-nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-publish" }

@@ -1,0 +1,139 @@
+plugins {
+    id 'java-library'
+    id 'groovy'
+    id 'maven-publish'
+    id 'signing'
+    id 'checkstyle'
+    id 'codenarc'
+}
+
+version = project.projectVersion
+group = "org.graceframework"
+
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+    if (project.projectVersion.endsWith('-SNAPSHOT')) {
+        maven {
+            name = 'Maven Central Portal Snapshots'
+            url = 'https://central.sonatype.com/repository/maven-snapshots/'
+
+            content {
+                includeGroupAndSubgroups 'org.graceframework'
+            }
+            mavenContent {
+                snapshotsOnly()
+            }
+        }
+    }
+}
+
+configurations {
+    documentation
+}
+
+
+dependencies {
+    api libs.groovy.core
+
+    testImplementation libs.groovy.test.junit5
+    testImplementation libs.junit.jupiter.api
+    testImplementation libs.junit.jupiter.engine
+    testImplementation libs.junit.platform.runner
+    testImplementation libs.spock.core
+
+    documentation libs.javaparser
+    documentation libs.groovy.ant
+    documentation libs.groovy.core
+}
+
+compileTestGroovy {
+    configure(groovyOptions.forkOptions) {
+        jvmArgs = [ '-Xmx768m']
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+    withJavadocJar()
+    withSourcesJar()
+}
+
+javadoc {
+    failOnError = false
+}
+
+test {
+    useJUnitPlatform()
+}
+
+configure([javadoc]) {
+    options.encoding "UTF-8"
+    options.docEncoding "UTF-8"
+    options.charSet "UTF-8"
+    options.jFlags "-Xms64M", "-Xmx512M"
+}
+
+checkstyle {
+    toolVersion = "10.26.1"
+    configDirectory.set(rootProject.file("config/checkstyle"))
+}
+
+codenarc {
+    toolVersion = '3.6.0'
+    config = resources.text.fromFile(rootProject.file("config/codenarc/codenarc.groovy"))
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            def projectName = project.name.split('-')*.capitalize().join(' ')
+            groupId = project.group
+            version = project.version
+
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+
+            from components.java
+
+            pom {
+                name = projectName
+                description = "Grace Data Hibernate"
+                url = 'https://github.com/graceframework/grace-data-hibernate'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'rainboyan'
+                        name = 'Michael Yan'
+                        email = 'rain@rainboyan.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/graceframework/grace-data-hibernate.git'
+                    developerConnection = 'scm:git:ssh://github.com:graceframework/grace-data-hibernate.git'
+                    url = 'https://github.com/graceframework/grace-data-hibernate/'
+                }
+            }
+        }
+    }
+}
+
+afterEvaluate {
+    signing {
+        required = isReleaseVersion && gradle.taskGraph.hasTask("publish")
+        sign publishing.publications.maven
+    }
+}
