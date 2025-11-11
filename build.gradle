@@ -17,7 +17,6 @@ buildscript {
     dependencies {
         classpath "io.github.gradle-nexus:publish-plugin:2.0.0"
         classpath "org.graceframework:grace-gradle-plugin:$graceVersion"
-        // classpath "com.github.erdi:webdriver-binaries-gradle-plugin:$webdriverBinariesVersion"
         classpath "org.gradle:test-retry-gradle-plugin:1.6.0"
     }
 }
@@ -89,7 +88,6 @@ nexusPublishing {
 subprojects { Project subproject ->
     ext {
         projectArtifactId = subproject.name
-        isExample = subproject.name.startsWith('example')
         isPluginProject = subproject.name == 'hibernate'
     }
 
@@ -114,20 +112,6 @@ subprojects { Project subproject ->
                 snapshotsOnly()
             }
         }
-    }
-
-    if(isExample) {
-        apply plugin: "groovy"
-
-        dependencies {
-            testImplementation "org.apache.groovy:groovy-test-junit5"
-            testImplementation("org.spockframework:spock-core") { transitive = false}
-            testImplementation "org.junit.jupiter:junit-jupiter-api"
-            testImplementation "org.junit.platform:junit-platform-runner"
-            testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
-        }
-
-        return
     }
 
     apply plugin: 'groovy'

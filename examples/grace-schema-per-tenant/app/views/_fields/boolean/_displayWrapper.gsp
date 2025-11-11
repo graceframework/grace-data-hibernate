@@ -1,1 +1,0 @@
-<g:formatBoolean boolean="${value}"/>
