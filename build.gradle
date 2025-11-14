@@ -55,13 +55,15 @@ dependencies {
 
 def cleanTask = project.tasks.findByName('clean')
 if (cleanTask == null) {
-    task clean(type: Delete) {
-        delete(buildDir)
+    def buildDir = project.layout.buildDirectory
+    tasks.register('clean', Delete) {
+        it.delete(buildDir)
     }
 }
 else {
+    def docsDir = project.layout.buildDirectory.dir('docs')
     cleanTask.doLast {
-        ant.delete(dir: 'build/docs')
+        ((Delete) it).delete(docsDir)
     }
 }
 
@@ -90,6 +92,10 @@ tasks.withType(Groovydoc) {
 publishGuide {
     dependsOn groovydoc
     sourceDir = project.file('src/docs')
+}
+
+tasks.register('docs') { task ->
+    task.dependsOn groovydoc, publishGuide
 }
 
 nexusPublishing {

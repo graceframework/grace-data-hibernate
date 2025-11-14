@@ -106,7 +106,7 @@ publishing {
 
             pom {
                 name = projectName
-                description = "Grace Data Hibernate"
+                description = "Grace Data : $projectName"
                 url = 'https://github.com/graceframework/grace-data-hibernate'
                 licenses {
                     license {
