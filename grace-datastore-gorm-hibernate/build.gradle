@@ -27,9 +27,13 @@ dependencies {
     testImplementation libs.groovy.sql
     testImplementation libs.jakarta.el
     testImplementation libs.jakarta.validation
-    testImplementation libs.ehcache
+    testImplementation libs.ehcache, {
+        capabilities {
+            requireCapability('org.ehcache:ehcache-jakarta')
+        }
+    }
     testImplementation libs.h2
-    testImplementation libs.hibernate.ehcache
+    testImplementation libs.hibernate.jcache
     testImplementation libs.hibernate.validator
     testImplementation libs.tomcat.jdbc
     testRuntimeOnly libs.glassfish.expressly

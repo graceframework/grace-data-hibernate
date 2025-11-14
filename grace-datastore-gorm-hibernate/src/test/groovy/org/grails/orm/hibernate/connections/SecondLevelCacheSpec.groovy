@@ -34,17 +34,20 @@ class SecondLevelCacheSpec extends Specification {
 
     void setupSpec() {
         Map config = [
-                'dataSource.url'         : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
-                'dataSource.dbCreate'    : 'update',
-                'dataSource.dialect'     : H2Dialect.name,
-                'dataSource.formatSql'   : 'true',
-                'dataSource.logSql'      : 'true',
-                'hibernate.flush.mode'   : 'COMMIT',
-                'hibernate.cache.queries': 'true',
-                'hibernate.cache'        : [
+                'dataSource.url'                              : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
+                'dataSource.dbCreate'                         : 'update',
+                'dataSource.dialect'                          : H2Dialect.name,
+                'dataSource.formatSql'                        : 'true',
+                'dataSource.logSql'                           : 'true',
+                'hibernate.flush.mode'                        : 'COMMIT',
+                'hibernate.cache.queries'                     : 'true',
+                'hibernate.cache'                             : [
                         'use_second_level_cache': true,
-                        'region.factory_class'  : 'org.hibernate.cache.ehcache.EhCacheRegionFactory'],
-                'hibernate.hbm2ddl.auto' : 'create',
+                        'region.factory_class'  : 'org.hibernate.cache.jcache.internal.JCacheRegionFactory'
+                ],
+                'hibernate.javax.cache.provider'              : 'org.ehcache.jsr107.EhcacheCachingProvider',
+                'hibernate.javax.cache.missing_cache_strategy': 'create-warn',
+                'hibernate.hbm2ddl.auto'                      : 'create',
         ]
 
         datastore = new HibernateDatastore(DatastoreUtils.createPropertyResolver(config), CachingEntity)

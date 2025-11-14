@@ -34,21 +34,27 @@ class MultipleDataSourcesWithEventsSpec extends Specification {
     void 'Test multiple data sources register the correct events'() {
         given: 'A configuration for multiple data sources'
         Map config = [
-                'dataSource.url'         : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
-                'dataSource.dbCreate'    : 'update',
-                'dataSource.dialect'     : H2Dialect.name,
-                'dataSource.formatSql'   : 'true',
-                'hibernate.flush.mode'   : 'COMMIT',
-                'hibernate.cache.queries': 'true',
-                'hibernate.cache'        : [
+                'dataSource.url'                              : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
+                'dataSource.dbCreate'                         : 'update',
+                'dataSource.dialect'                          : H2Dialect.name,
+                'dataSource.formatSql'                        : 'true',
+                'hibernate.flush.mode'                        : 'COMMIT',
+                'hibernate.cache.queries'                     : 'true',
+                'hibernate.cache'                             : [
                         'use_second_level_cache': true,
-                        'region.factory_class'  : 'org.hibernate.cache.ehcache.EhCacheRegionFactory'],
-                'hibernate.hbm2ddl.auto' : 'create',
-                'dataSources.books'      : [url: 'jdbc:h2:mem:books;LOCK_TIMEOUT=10000']
+                        'region.factory_class'  : 'org.hibernate.cache.jcache.internal.JCacheRegionFactory'
+                ],
+                'hibernate.javax.cache.provider'              : 'org.ehcache.jsr107.EhcacheCachingProvider',
+                'hibernate.javax.cache.missing_cache_strategy': 'create-warn',
+                'hibernate.hbm2ddl.auto'                      : 'create',
+                'dataSources.books'                           : [url: 'jdbc:h2:mem:books;LOCK_TIMEOUT=10000']
         ]
 
         when: 'A entity is saved with the default connection'
-        HibernateDatastore datastore = new HibernateDatastore(DatastoreUtils.createPropertyResolver(config), EventsBook, SecondaryBook)
+        HibernateDatastore datastore = new HibernateDatastore(
+                DatastoreUtils.createPropertyResolver(config),
+                EventsBook, SecondaryBook)
+
         EventsBook book = new EventsBook(name: 'test')
         EventsBook.withTransaction {
             book.save(flush: true)

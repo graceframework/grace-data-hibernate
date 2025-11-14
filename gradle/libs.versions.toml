@@ -1,5 +1,5 @@
 [versions]
-ehcache = "2.10.6"
+ehcache = "3.10.9"
 glassfish-expressly = "5.0.0"
 grace-data = "2024.0.0-SNAPSHOT"
 grace-framework = "2024.0.0-SNAPSHOT"
@@ -8,6 +8,7 @@ groovy = "4.0.29"
 h2 = "2.3.232"
 hibernate-ehcache = "5.6.15.Final"
 hibernate-core = "5.6.15.Final"
+hibernate-jcache = "5.6.15.Final"
 hibernate-validator = "8.0.2.Final"
 jakarta-annotation = "2.1.1"
 jakarta-el = "5.0.1"
@@ -29,7 +30,7 @@ spring-framework = "6.2.11"
 tomcat = "10.1.48"
 
 [libraries]
-ehcache = { module = "net.sf.ehcache:ehcache", version.ref = "ehcache" }
+ehcache = { group = "org.ehcache", name = "ehcache", version.ref = "ehcache" }
 glassfish-expressly = { module = "org.glassfish.expressly:expressly", version.ref = "glassfish-expressly" }
 grace-bootstrap = { module = "org.graceframework:grace-bootstrap", version.ref = "grace-framework" }
 grace-core = { module = "org.graceframework:grace-core", version.ref = "grace-framework" }
@@ -51,6 +52,7 @@ groovy-test-junit5 = { module = "org.apache.groovy:groovy-test-junit5", version.
 h2 = { module = "com.h2database:h2", version.ref = "h2" }
 hibernate-ehcache = { module = "org.hibernate:hibernate-ehcache", version.ref = "hibernate-ehcache" }
 hibernate-core = { module = "org.hibernate:hibernate-core-jakarta", version.ref = "hibernate-core" }
+hibernate-jcache = { module = "org.hibernate:hibernate-jcache", version.ref = "hibernate-jcache" }
 hibernate-validator = { module = "org.hibernate.validator:hibernate-validator", version.ref = "hibernate-validator" }
 jakarta-annotation-api = { module = "jakarta.annotation:jakarta.annotation-api", version.ref = "jakarta-annotation" }
 jakarta-el = { module = "jakarta.el:jakarta.el-api", version.ref = "jakarta-el" }

@@ -31,22 +31,28 @@ class MultipleDataSourcesWithCachingSpec extends Specification {
     void 'Test map to multiple data sources'() {
         given: 'A configuration for multiple data sources'
         Map config = [
-                'dataSource.url'         : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
-                'dataSource.dbCreate'    : 'update',
-                'dataSource.dialect'     : H2Dialect.name,
-                'dataSource.formatSql'   : 'true',
-                'hibernate.flush.mode'   : 'COMMIT',
-                'hibernate.cache.queries': 'true',
-                'hibernate.cache'        : [
+                'dataSource.url'                              : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
+                'dataSource.dbCreate'                         : 'update',
+                'dataSource.dialect'                          : H2Dialect.name,
+                'dataSource.formatSql'                        : 'true',
+                'hibernate.flush.mode'                        : 'COMMIT',
+                'hibernate.cache.queries'                     : 'true',
+                'hibernate.cache'                             : [
                         'use_second_level_cache': true,
-                        'region.factory_class'  : 'org.hibernate.cache.ehcache.EhCacheRegionFactory'],
-                'hibernate.hbm2ddl.auto' : 'create',
-                'dataSources.books'      : [url: 'jdbc:h2:mem:books;LOCK_TIMEOUT=10000'],
-                'dataSources.moreBooks'  : [url: 'jdbc:h2:mem:moreBooks;LOCK_TIMEOUT=10000']
+                        'region.factory_class'  : 'org.hibernate.cache.jcache.internal.JCacheRegionFactory'
+                ],
+                'hibernate.javax.cache.provider'              : 'org.ehcache.jsr107.EhcacheCachingProvider',
+                'hibernate.javax.cache.missing_cache_strategy': 'create-warn',
+                'hibernate.hbm2ddl.auto'                      : 'create',
+                'dataSources.books'                           : [url: 'jdbc:h2:mem:books;LOCK_TIMEOUT=10000'],
+                'dataSources.moreBooks'                       : [url: 'jdbc:h2:mem:moreBooks;LOCK_TIMEOUT=10000']
         ]
 
         when:
-        HibernateDatastore datastore = new HibernateDatastore(DatastoreUtils.createPropertyResolver(config), CachingBook)
+        HibernateDatastore datastore = new HibernateDatastore(
+                DatastoreUtils.createPropertyResolver(config),
+                CachingBook
+        )
         CachingBook book = CachingBook.withTransaction {
             new CachingBook(name: 'The Stand').save(flush: true)
             CachingBook.get(CachingBook.first().id)

@@ -37,15 +37,20 @@ class UniqueWithMultipleDataSourcesSpec extends Specification {
 
     @Shared
     Map config = [
-            'dataSource.url'         : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
-            'dataSource.dbCreate'    : 'update',
-            'dataSource.dialect'     : H2Dialect.name,
-            'dataSource.formatSql'   : 'true',
-            'hibernate.flush.mode'   : 'COMMIT',
-            'hibernate.cache.queries': 'true',
-            'hibernate.cache'        : ['use_second_level_cache': true, 'region.factory_class': 'org.hibernate.cache.ehcache.EhCacheRegionFactory'],
-            'hibernate.hbm2ddl.auto' : 'create',
-            'dataSources.second'     : [url: 'jdbc:h2:mem:second;LOCK_TIMEOUT=10000'],
+            'dataSource.url'                              : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
+            'dataSource.dbCreate'                         : 'update',
+            'dataSource.dialect'                          : H2Dialect.name,
+            'dataSource.formatSql'                        : 'true',
+            'hibernate.flush.mode'                        : 'COMMIT',
+            'hibernate.cache.queries'                     : 'true',
+            'hibernate.cache'                             : [
+                    'use_second_level_cache': true,
+                    'region.factory_class'  : 'org.hibernate.cache.jcache.internal.JCacheRegionFactory'
+            ],
+            'hibernate.javax.cache.provider'              : 'org.ehcache.jsr107.EhcacheCachingProvider',
+            'hibernate.javax.cache.missing_cache_strategy': 'create-warn',
+            'hibernate.hbm2ddl.auto'                      : 'create',
+            'dataSources.second'                          : [url: 'jdbc:h2:mem:second;LOCK_TIMEOUT=10000'],
     ]
 
     @Shared
