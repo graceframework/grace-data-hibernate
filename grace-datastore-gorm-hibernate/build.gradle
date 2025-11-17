@@ -28,8 +28,8 @@ dependencies {
     testImplementation libs.jakarta.el
     testImplementation libs.jakarta.validation
     testImplementation libs.ehcache, {
-        capabilities {
-            requireCapability('org.ehcache:ehcache-jakarta')
+        artifact {
+            classifier = 'jakarta'
         }
     }
     testImplementation libs.h2
