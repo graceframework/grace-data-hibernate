@@ -15,8 +15,8 @@
  */
 package grails.gorm.tests.validation
 
+import org.hibernate.HibernateException
 import spock.lang.AutoCleanup
-import spock.lang.Ignore
 import spock.lang.Issue
 import spock.lang.Shared
 import spock.lang.Specification
@@ -43,14 +43,26 @@ class SaveWithInvalidEntitySpec extends Specification {
     HibernateDatastore hibernateDatastore = new HibernateDatastore(config, A, B)
 
     /**
-     * This currently fails with a NPE. See explanation https://github.com/grails/grails-core/issues/10604#issuecomment-298943022
+     * This currently fails with a org.hibernate.action.internal.EntityActionVetoException.
+     * See explanation https://github.com/grails/grails-core/issues/10604#issuecomment-298943022
+     * Hibernate fixed this issue in 5.2.13, see https://hibernate.atlassian.net/browse/HHH-11721
      */
     @Rollback
-    @Ignore
     @Issue('https://github.com/grails/grails-core/issues/10604')
     void 'test save with an invalid entity'() {
         when:
         hibernateDatastore.currentSession.persist(new A(b: new B(field2: 'test')))
+        hibernateDatastore.currentSession.flush()
+
+        then:
+        // TODO: Grails should give validate errors
+        thrown(HibernateException)
+    }
+
+    @Rollback
+    void 'test save with an valid entity'() {
+        when:
+        hibernateDatastore.currentSession.persist(new A(b: new B(field1: 'test', field2: 'test')))
         hibernateDatastore.currentSession.flush()
 
         then:

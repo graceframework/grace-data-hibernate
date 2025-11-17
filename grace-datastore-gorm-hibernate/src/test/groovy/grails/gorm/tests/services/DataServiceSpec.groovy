@@ -322,8 +322,7 @@ class DataServiceSpec extends Specification {
         names == ['Carrot', 'Pumpkin']
     }
 
-    @Ignore
-    // Unknown java.lang.StackOverflowError
+    @Ignore('Unknown java.lang.StackOverflowError')
     void 'test interface projection'() {
         given:
         ProductService productService = datastore.getService(ProductService)
@@ -336,6 +335,7 @@ class DataServiceSpec extends Specification {
         ProductInfo info = productService.findProductInfo('Pumpkin', 'Vegetable')
         List<ProductInfo> infos = productService.findProductInfos('Vegetable')
         def result = JsonOutput.toJson(info)
+
         then:
         infos.size() == 2
         infos.first().name == 'Carrot'

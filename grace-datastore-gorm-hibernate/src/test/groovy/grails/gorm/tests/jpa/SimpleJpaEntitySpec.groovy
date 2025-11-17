@@ -64,6 +64,7 @@ class SimpleJpaEntitySpec extends Specification {
         def query = Customer.where {
             lastName == 'Rubble'
         }
+
         then: 'The object was saved'
         Customer.get(null) == null
         Customer.get('null') == null
@@ -83,6 +84,7 @@ class SimpleJpaEntitySpec extends Specification {
         def query = Customer.where {
             lastName == 'Rubble'
         }
+
         then: 'The object was saved'
         c.errors.hasErrors()
         Customer.count() == 0
@@ -99,6 +101,7 @@ class SimpleJpaEntitySpec extends Specification {
         def query = Customer.where {
             lastName == 'Rubble'
         }
+
         then: 'The object was saved'
         thrown(ConstraintViolationException)
         c.errors.hasErrors()

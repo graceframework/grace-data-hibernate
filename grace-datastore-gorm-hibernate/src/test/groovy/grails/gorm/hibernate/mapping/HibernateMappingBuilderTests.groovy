@@ -36,19 +36,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue
  */
 class HibernateMappingBuilderTests {
 
-//    void testWildcardApplyToAllProperties() {
-//        def builder = new HibernateMappingBuilder("Foo")
-//        def mapping = builder.evaluate {
-//            '*'(column:"foo")
-//            '*-1'(column:"foo")
-//            '1-1'(column:"foo")
-//            '1-*'(column:"foo")
-//            '*-*'(column:"foo")
-//            one cache:true
-//            two ignoreNoteFound:false
-//        }
-//    }
-
     @Test
     void testIncludes() {
         def callable = {

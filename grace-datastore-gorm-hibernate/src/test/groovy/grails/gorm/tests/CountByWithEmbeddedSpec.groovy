@@ -31,6 +31,7 @@ class CountByWithEmbeddedSpec extends GormSpec {
         given:
         new CountByPerson(name: 'Fred', bornInCountry: new CountByCountry(name: 'England')).save(flush: true)
         new CountByPerson(bornInCountry: new CountByCountry(name: 'Scotland')).save(flush: true)
+
         expect:
         CountByPerson.countByNameIsNotNull() == 1
     }

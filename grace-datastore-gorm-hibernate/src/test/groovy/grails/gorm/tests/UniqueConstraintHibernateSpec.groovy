@@ -28,8 +28,6 @@ import org.grails.orm.hibernate.HibernateDatastore
 
 /**
  * Tests the unique constraint
- */
-/**
  *
  *  NOTE: This test is disabled because in order for the test suite to run quickly we need to run each test in a transaction.
  *  This makes it not possible to test the scenario outlined here, however tests for this use case exist in the hibernate plugin itself

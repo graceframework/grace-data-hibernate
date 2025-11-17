@@ -56,6 +56,7 @@ class DetachedCriteriaJoinSpec extends GormSpec {
 
         DynamicFinder.applyDetachedCriteria(query, dc)
         def joinType = query.hibernateCriteria.subcriteriaList.first().joinType
+
         expect:
         joinType == org.hibernate.sql.JoinType.INNER_JOIN
     }
@@ -70,6 +71,7 @@ class DetachedCriteriaJoinSpec extends GormSpec {
 
         DynamicFinder.applyDetachedCriteria(query, dc)
         def joinType = query.hibernateCriteria.subcriteriaList.first().joinType
+
         expect:
         joinType == org.hibernate.sql.JoinType.LEFT_OUTER_JOIN
     }
@@ -84,6 +86,7 @@ class DetachedCriteriaJoinSpec extends GormSpec {
 
         DynamicFinder.applyDetachedCriteria(query, dc)
         def joinType = query.hibernateCriteria.subcriteriaList.first().joinType
+
         expect:
         joinType == org.hibernate.sql.JoinType.RIGHT_OUTER_JOIN
     }

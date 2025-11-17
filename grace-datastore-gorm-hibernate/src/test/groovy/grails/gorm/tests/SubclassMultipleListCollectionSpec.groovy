@@ -30,8 +30,15 @@ import org.grails.orm.hibernate.HibernateDatastore
 /**
  * Created by graemerocher on 01/03/2017.
  */
-@Ignore('https://issues.apache.org/jira/browse/GROOVY-5106')
+@Ignore
 class SubclassMultipleListCollectionSpec extends Specification {
+
+    @Shared
+    Map config = [
+            'dataSource.url'     : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect' : 'org.hibernate.dialect.H2Dialect'
+    ]
 
     @AutoCleanup
     @Shared
@@ -41,14 +48,13 @@ class SubclassMultipleListCollectionSpec extends Specification {
     PlatformTransactionManager transactionManager
 
     void setupSpec() {
-        hibernateDatastore = new HibernateDatastore(
+        hibernateDatastore = new HibernateDatastore(config,
                 SuperProduct, Product, Iteration
         )
         transactionManager = hibernateDatastore.getTransactionManager()
     }
 
-    @Ignore
-    // not yet implemented
+    @Ignore('not yet implemented')
     @Rollback
     @Issue('https://github.com/grails/grails-data-mapping/issues/882')
     void 'test inheritance with multiple list collections'() {
@@ -82,7 +88,7 @@ class Product extends SuperProduct {
 
 }
 
-//@Entity
+@Entity
 class SuperProduct {
 
     static constraints = {

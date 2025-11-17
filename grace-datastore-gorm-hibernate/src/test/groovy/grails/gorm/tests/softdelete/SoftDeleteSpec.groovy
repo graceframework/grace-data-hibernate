@@ -16,7 +16,6 @@
 package grails.gorm.tests.softdelete
 
 import spock.lang.AutoCleanup
-import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -30,12 +29,18 @@ import org.grails.orm.hibernate.HibernateDatastore
  * @author Graeme Rocher
  * @since 1.0
  */
-@Ignore('Maybe BUG in Groovy 4!!!')
 class SoftDeleteSpec extends Specification {
 
     @Shared
+    Map config = [
+            'dataSource.url'     : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
+            'dataSource.dbCreate': 'create-drop',
+            'dataSource.dialect' : 'org.hibernate.dialect.H2Dialect'
+    ]
+
+    @Shared
     @AutoCleanup
-    HibernateDatastore datastore = new HibernateDatastore(Person)
+    HibernateDatastore datastore = new HibernateDatastore(config, Person)
 
     @Rollback
     void 'test soft delete'() {

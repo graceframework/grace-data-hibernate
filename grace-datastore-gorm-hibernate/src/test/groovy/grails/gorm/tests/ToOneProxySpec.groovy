@@ -33,6 +33,7 @@ class ToOneProxySpec extends GormDatastoreSpec {
         session.flush()
 
         def proxyHandler = new HibernateProxyHandler()
+
         then: 'The association was not initialized'
         proxyHandler.getAssociationProxy(t, 'club') != null
         !proxyHandler.isInitialized(t, 'club')

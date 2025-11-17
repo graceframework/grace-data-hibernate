@@ -68,11 +68,13 @@ class DetachedCriteriaProjectionSpec extends Specification {
             }
             eq 'field', 'abc'
         }
+
         when:
         // will fail
         def results = Entity1.withCriteria {
             inList 'id', detachedCriteria
         }
+
         then:
         results.size() == 1
     }
@@ -84,6 +86,7 @@ class DetachedCriteriaProjectionSpec extends Specification {
             eq 'field', 'abc'
         }
         detachedCriteria.projections << new Query.DistinctPropertyProjection('entityId')
+
         expect:
         assert Entity1.withCriteria {
             inList 'id', detachedCriteria
@@ -100,10 +103,12 @@ class DetachedCriteriaProjectionSpec extends Specification {
             }
         }
         detachedCriteria.projections << new Query.DistinctPropertyProjection('entityId')
+
         when:
         def results = Entity1.withCriteria {
             inList 'id', detachedCriteria
         }
+
         then:
         results.size() == 1
     }
@@ -122,7 +127,7 @@ class Entity1 {
 @Entity
 class Entity2 {
 
-    static belongsTo = { parent: Entity1 }
+    static belongsTo = [parent: Entity1]
 
     String field
 

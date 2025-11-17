@@ -85,7 +85,8 @@ class Engine implements MultiTenant<Engine> {
 
     Integer cylinders
     String manufacturer
-//    static belongsTo = [vehicle: Vehicle] // If you remove this, it fails
+
+    static belongsTo = [vehicle: Vehicle] // If you remove this, it fails
 
     static constraints = {
         cylinders nullable: false
@@ -102,7 +103,8 @@ class Wheel implements MultiTenant<Wheel> {
 
     Integer spokes
     String manufacturer
-//    static belongsTo = [vehicle: Vehicle] // If you remove this, it fails
+
+    static belongsTo = [vehicle: Vehicle] // If you remove this, it fails
 
     static constraints = {
         spokes nullable: false
@@ -122,6 +124,7 @@ class Vehicle implements MultiTenant<Vehicle> {
     String manufacturer
 
     static hasMany = [engines: Engine, wheels: Wheel]
+
     static constraints = {
         model blank: false
         year min: 1980, column: '`year`'

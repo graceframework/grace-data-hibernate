@@ -106,6 +106,7 @@ class MappingBuilderSpec extends Specification {
         Mapping mapping = define {
             sort('foo', 'desc')
         }.build()
+
         then:
         mapping.sort.name == 'foo'
         mapping.sort.direction == 'desc'
@@ -174,6 +175,7 @@ class MappingBuilderSpec extends Specification {
             }
         }.build()
         PropertyConfig pc = mapping.getPropertyConfig(GormProperties.VERSION)
+
         expect:
         pc != null
         pc.columns.size() == 1

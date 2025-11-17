@@ -74,6 +74,7 @@ class GlobalConstraintWithCompositeIdSpec extends Specification {
         PersistentEntity entity = hibernateDatastore.mappingContext.getPersistentEntity(DomainB.name)
         PropertyConfig nameProp = entity.getPropertyByName('name').mapping.mappedForm
         PropertyConfig someOtherConfig = entity.getPropertyByName('someOther').mapping.mappedForm
+
         expect:
         nameProp.unique
         someOtherConfig.unique
