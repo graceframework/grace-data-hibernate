@@ -24,8 +24,7 @@ class HibernateVersionSupportSpec extends Specification {
 
     void 'test hibernate version is at least'() {
         expect:
-        !HibernateVersionSupport.isAtLeastVersion('6.0.0')
-        HibernateVersionSupport.isAtLeastVersion('5.3.0')
+        HibernateVersionSupport.isAtLeastVersion('6.0.0')
     }
 
 }

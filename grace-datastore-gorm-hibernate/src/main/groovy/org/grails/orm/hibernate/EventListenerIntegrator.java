@@ -15,7 +15,6 @@
  */
 package org.grails.orm.hibernate;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -41,7 +40,7 @@ public class EventListenerIntegrator implements Integrator {
         this.eventListeners = eventListeners;
     }
 
-    protected static final List<EventType<? extends Serializable>> TYPES = Arrays.asList(
+    protected static final List<EventType<? extends Object>> TYPES = Arrays.asList(
             EventType.AUTO_FLUSH,
             EventType.MERGE,
             EventType.PERSIST,

@@ -15,17 +15,7 @@
  */
 package grails.orm;
 
-import java.sql.SQLException;
-import java.util.Iterator;
-
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.criterion.Projections;
-import org.hibernate.internal.CriteriaImpl;
-
-import org.grails.orm.hibernate.GrailsHibernateTemplate;
-import org.grails.orm.hibernate.query.HibernateQuery;
+import org.grails.datastore.mapping.query.Query;
 
 /**
  * A result list for Criteria list calls, which is aware of the totalCount for
@@ -39,62 +29,8 @@ import org.grails.orm.hibernate.query.HibernateQuery;
 @Deprecated
 public class PagedResultList extends grails.gorm.PagedResultList {
 
-    private transient GrailsHibernateTemplate hibernateTemplate;
-
-    private final Criteria criteria;
-
-    public PagedResultList(GrailsHibernateTemplate template, Criteria crit) {
-        super(null);
-        resultList = crit.list();
-        this.criteria = crit;
-        this.hibernateTemplate = template;
-    }
-
-    public PagedResultList(GrailsHibernateTemplate template, HibernateQuery query) {
-        super(null);
-        resultList = query.listForCriteria();
-        this.criteria = query.getHibernateCriteria();
-        this.hibernateTemplate = template;
-    }
-
-    @Override
-    protected void initialize() {
-        // no-op, already initialized
-    }
-
-    @Override
-    public int getTotalCount() {
-        if (totalCount == Integer.MIN_VALUE) {
-            totalCount = this.hibernateTemplate.execute(new GrailsHibernateTemplate.HibernateCallback<Integer>() {
-
-                @Override
-                public Integer doInHibernate(Session session) throws HibernateException, SQLException {
-                    CriteriaImpl impl = (CriteriaImpl) PagedResultList.this.criteria;
-                    Criteria totalCriteria = session.createCriteria(impl.getEntityOrClassName());
-                    PagedResultList.this.hibernateTemplate.applySettings(totalCriteria);
-
-                    Iterator iterator = impl.iterateExpressionEntries();
-                    while (iterator.hasNext()) {
-                        CriteriaImpl.CriterionEntry entry = (CriteriaImpl.CriterionEntry) iterator.next();
-                        totalCriteria.add(entry.getCriterion());
-                    }
-                    Iterator subcriteriaIterator = impl.iterateSubcriteria();
-                    while (subcriteriaIterator.hasNext()) {
-                        CriteriaImpl.Subcriteria sub = (CriteriaImpl.Subcriteria) subcriteriaIterator.next();
-                        totalCriteria.createAlias(sub.getPath(), sub.getAlias(), sub.getJoinType(), sub.getWithClause());
-                    }
-                    totalCriteria.setProjection(impl.getProjection());
-                    totalCriteria.setProjection(Projections.rowCount());
-                    return ((Number) totalCriteria.uniqueResult()).intValue();
-                }
-
-            });
-        }
-        return totalCount;
-    }
-
-    public void setTotalCount(int totalCount) {
-        this.totalCount = totalCount;
+    public PagedResultList(Query query) {
+        super(query);
     }
 
 }

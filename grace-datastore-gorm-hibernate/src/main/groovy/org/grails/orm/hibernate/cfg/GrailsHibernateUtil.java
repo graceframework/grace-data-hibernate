@@ -21,14 +21,12 @@ import java.util.Map;
 import groovy.lang.GroovyObject;
 import groovy.lang.GroovySystem;
 import groovy.lang.MetaClass;
-import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.FlushMode;
 import org.hibernate.Hibernate;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
 import org.hibernate.engine.spi.EntityEntry;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.engine.spi.Status;
@@ -93,131 +91,6 @@ public class GrailsHibernateUtil extends HibernateRuntimeUtils {
 
     private static HibernateProxyHandler proxyHandler = new HibernateProxyHandler();
 
-    public static void populateArgumentsForCriteria(AbstractHibernateDatastore datastore, Class<?> targetClass,
-            Criteria c, Map argMap, ConversionService conversionService) {
-        populateArgumentsForCriteria(datastore, targetClass, c, argMap, conversionService, true);
-    }
-
-    /**
-     * Populates criteria arguments for the given target class and arguments map
-     *
-     * @param datastore the GrailsApplication instance
-     * @param targetClass The target class
-     * @param c The criteria instance
-     * @param argMap The arguments map
-     */
-    @SuppressWarnings("rawtypes")
-    public static void populateArgumentsForCriteria(AbstractHibernateDatastore datastore, Class<?> targetClass,
-            Criteria c, Map argMap, ConversionService conversionService, boolean useDefaultMapping) {
-        Integer maxParam = null;
-        Integer offsetParam = null;
-        if (argMap.containsKey(ARGUMENT_MAX)) {
-            maxParam = conversionService.convert(argMap.get(ARGUMENT_MAX), Integer.class);
-        }
-        if (argMap.containsKey(ARGUMENT_OFFSET)) {
-            offsetParam = conversionService.convert(argMap.get(ARGUMENT_OFFSET), Integer.class);
-        }
-        if (argMap.containsKey(ARGUMENT_FETCH_SIZE)) {
-            c.setFetchSize(conversionService.convert(argMap.get(ARGUMENT_FETCH_SIZE), Integer.class));
-        }
-        if (argMap.containsKey(ARGUMENT_TIMEOUT)) {
-            c.setTimeout(conversionService.convert(argMap.get(ARGUMENT_TIMEOUT), Integer.class));
-        }
-        if (argMap.containsKey(ARGUMENT_FLUSH_MODE)) {
-            c.setFlushMode(convertFlushMode(argMap.get(ARGUMENT_FLUSH_MODE)));
-        }
-        if (argMap.containsKey(ARGUMENT_READ_ONLY)) {
-            c.setReadOnly(ClassUtils.getBooleanFromMap(ARGUMENT_READ_ONLY, argMap));
-        }
-        String orderParam = (String) argMap.get(ARGUMENT_ORDER);
-        Object fetchObj = argMap.get(ARGUMENT_FETCH);
-        if (fetchObj instanceof Map) {
-            Map fetch = (Map) fetchObj;
-            for (Object o : fetch.keySet()) {
-                String associationName = (String) o;
-                c.setFetchMode(associationName, getFetchMode(fetch.get(associationName)));
-            }
-        }
-
-        final int max = maxParam == null ? -1 : maxParam;
-        final int offset = offsetParam == null ? -1 : offsetParam;
-        if (max > -1) {
-            c.setMaxResults(max);
-        }
-        if (offset > -1) {
-            c.setFirstResult(offset);
-        }
-        if (ClassUtils.getBooleanFromMap(ARGUMENT_LOCK, argMap)) {
-            c.setLockMode(LockMode.PESSIMISTIC_WRITE);
-            c.setCacheable(false);
-        }
-        else {
-            if (argMap.containsKey(ARGUMENT_CACHE)) {
-                c.setCacheable(ClassUtils.getBooleanFromMap(ARGUMENT_CACHE, argMap));
-            }
-            else {
-                cacheCriteriaByMapping(targetClass, c);
-            }
-        }
-
-        final Object sortObj = argMap.get(ARGUMENT_SORT);
-        if (sortObj != null) {
-            boolean ignoreCase = true;
-            Object caseArg = argMap.get(ARGUMENT_IGNORE_CASE);
-            if (caseArg instanceof Boolean) {
-                ignoreCase = (Boolean) caseArg;
-            }
-            if (sortObj instanceof Map) {
-                Map sortMap = (Map) sortObj;
-                for (Object sort : sortMap.keySet()) {
-                    final String order = ORDER_DESC.equalsIgnoreCase((String) sortMap.get(sort)) ? ORDER_DESC : ORDER_ASC;
-                    addOrderPossiblyNested(datastore, c, targetClass, (String) sort, order, ignoreCase);
-                }
-            }
-            else {
-                final String sort = (String) sortObj;
-                final String order = ORDER_DESC.equalsIgnoreCase(orderParam) ? ORDER_DESC : ORDER_ASC;
-                addOrderPossiblyNested(datastore, c, targetClass, sort, order, ignoreCase);
-            }
-        }
-        else if (useDefaultMapping) {
-            Mapping m = GrailsDomainBinder.getMapping(targetClass);
-            if (m != null) {
-                Map sortMap = m.getSort().getNamesAndDirections();
-                for (Object sort : sortMap.keySet()) {
-                    final String order = ORDER_DESC.equalsIgnoreCase((String) sortMap.get(sort)) ? ORDER_DESC : ORDER_ASC;
-                    addOrderPossiblyNested(datastore, c, targetClass, (String) sort, order, true);
-                }
-            }
-        }
-    }
-
-    /**
-     * @deprecated No replacement. Do not use.
-     */
-    @Deprecated
-    public static void setBinder(GrailsDomainBinder binder) {
-    }
-
-    /**
-     * Populates criteria arguments for the given target class and arguments map
-     *
-     * @param targetClass The target class
-     * @param c The criteria instance
-     * @param argMap The arguments map
-     *
-     */
-    @Deprecated
-    @SuppressWarnings("rawtypes")
-    public static void populateArgumentsForCriteria(Class<?> targetClass, Criteria c, Map argMap, ConversionService conversionService) {
-        populateArgumentsForCriteria(null, targetClass, c, argMap, conversionService);
-    }
-
-    @SuppressWarnings("rawtypes")
-    public static void populateArgumentsForCriteria(Criteria c, Map argMap, ConversionService conversionService) {
-        populateArgumentsForCriteria(null, null, c, argMap, conversionService);
-    }
-
     private static FlushMode convertFlushMode(Object object) {
         if (object == null) {
             return null;
@@ -226,74 +99,6 @@ public class GrailsHibernateUtil extends HibernateRuntimeUtils {
             return (FlushMode) object;
         }
         return FlushMode.valueOf(String.valueOf(object));
-    }
-
-    /**
-     * Add order to criteria, creating necessary subCriteria if nested sort property (ie. sort:'nested.property').
-     */
-    private static void addOrderPossiblyNested(AbstractHibernateDatastore datastore,
-            Criteria c, Class<?> targetClass, String sort, String order, boolean ignoreCase) {
-        int firstDotPos = sort.indexOf(".");
-        if (firstDotPos == -1) {
-            addOrder(c, sort, order, ignoreCase);
-        }
-        else { // nested property
-            String sortHead = sort.substring(0, firstDotPos);
-            String sortTail = sort.substring(firstDotPos + 1);
-            PersistentProperty property = getGrailsDomainClassProperty(datastore, targetClass, sortHead);
-            if (property instanceof Embedded) {
-                // embedded objects cannot reference entities (at time of writing), so no more recursion needed
-                addOrder(c, sort, order, ignoreCase);
-            }
-            else if (property instanceof Association) {
-                Criteria subCriteria = c.createCriteria(sortHead);
-                Class<?> propertyTargetClass = ((Association) property).getAssociatedEntity().getJavaClass();
-                GrailsHibernateUtil.cacheCriteriaByMapping(datastore, propertyTargetClass, subCriteria);
-                addOrderPossiblyNested(datastore, subCriteria, propertyTargetClass, sortTail, order, ignoreCase); // Recurse on nested sort
-            }
-        }
-    }
-
-    /**
-     * Add order directly to criteria.
-     */
-    private static void addOrder(Criteria c, String sort, String order, boolean ignoreCase) {
-        if (ORDER_DESC.equals(order)) {
-            c.addOrder(ignoreCase ? Order.desc(sort).ignoreCase() : Order.desc(sort));
-        }
-        else {
-            c.addOrder(ignoreCase ? Order.asc(sort).ignoreCase() : Order.asc(sort));
-        }
-    }
-
-    /**
-     * Get hold of the GrailsDomainClassProperty represented by the targetClass' propertyName,
-     * assuming targetClass corresponds to a GrailsDomainClass.
-     */
-    private static PersistentProperty getGrailsDomainClassProperty(AbstractHibernateDatastore datastore,
-            Class<?> targetClass, String propertyName) {
-        PersistentEntity grailsClass = datastore != null ? datastore.getMappingContext().getPersistentEntity(targetClass.getName()) : null;
-        if (grailsClass == null) {
-            throw new IllegalArgumentException("Unexpected: class is not a domain class:" + targetClass.getName());
-        }
-        return grailsClass.getPropertyByName(propertyName);
-    }
-
-    /**
-     * Configures the criteria instance to cache based on the configured mapping.
-     *
-     * @param targetClass The target class
-     * @param criteria The criteria
-     */
-    public static void cacheCriteriaByMapping(Class<?> targetClass, Criteria criteria) {
-        Mapping m = GrailsDomainBinder.getMapping(targetClass);
-        if (m != null && m.getCache() != null && m.getCache().getEnabled()) {
-            criteria.setCacheable(true);
-        }
-    }
-
-    public static void cacheCriteriaByMapping(AbstractHibernateDatastore datastore, Class<?> targetClass, Criteria criteria) {
-        cacheCriteriaByMapping(targetClass, criteria);
     }
 
     /**

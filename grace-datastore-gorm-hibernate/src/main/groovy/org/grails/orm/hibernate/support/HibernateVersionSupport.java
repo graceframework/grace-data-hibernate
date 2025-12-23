@@ -17,7 +17,6 @@ package org.grails.orm.hibernate.support;
 
 import org.hibernate.FlushMode;
 import org.hibernate.Hibernate;
-import org.hibernate.Query;
 import org.hibernate.Session;
 
 import org.grails.datastore.mapping.core.grailsversion.GrailsVersion;
@@ -28,7 +27,6 @@ import org.grails.datastore.mapping.core.grailsversion.GrailsVersion;
  *
  * @author Graeme Rocher
  * @author Juergen Hoeller
- *
  * @since 6.0
  *
  */
@@ -37,6 +35,7 @@ public class HibernateVersionSupport {
 
     /**
      * Get the native Hibernate FlushMode, adapting between Hibernate 5.0/5.1 and 5.2+.
+     *
      * @param session the Hibernate Session to get the flush mode from
      * @return the FlushMode (never {@code null})
      * @since 4.3
@@ -49,6 +48,7 @@ public class HibernateVersionSupport {
 
     /**
      * Set the native Hibernate FlushMode, adapting between Hibernate 5.0/5.1 and 5.2+.
+     *
      * @param session the Hibernate Session to get the flush mode from
      * @since 4.3
      * @deprecated Previously used for Hibernate backwards, will be removed in a future release.
@@ -60,6 +60,7 @@ public class HibernateVersionSupport {
 
     /**
      * Check the current hibernate version
+     *
      * @param required The required version
      * @return True if it is at least the given version
      */
@@ -71,19 +72,6 @@ public class HibernateVersionSupport {
         else {
             return false;
         }
-    }
-
-    /**
-     * Creates a query
-     *
-     * @param session The session
-     * @param query The query
-     * @return The created query
-     * @deprecated Previously used for Hibernate backwards, will be removed in a future release.
-     */
-    @Deprecated
-    public static Query createQuery(Session session, String query) {
-        return session.createQuery(query);
     }
 
 }

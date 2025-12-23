@@ -15,35 +15,19 @@
  */
 package grails.orm;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
-import jakarta.persistence.metamodel.Attribute;
-import jakarta.persistence.metamodel.PluralAttribute;
+import jakarta.persistence.criteria.JoinType;
 
-import groovy.lang.GroovySystem;
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Projection;
-import org.hibernate.criterion.ProjectionList;
-import org.hibernate.criterion.Projections;
-import org.hibernate.sql.JoinType;
-import org.hibernate.type.StandardBasicTypes;
-import org.hibernate.type.Type;
-import org.springframework.orm.hibernate5.SessionHolder;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
+import groovy.lang.Closure;
 
-import org.grails.datastore.mapping.model.PersistentEntity;
+import org.grails.datastore.mapping.query.Query;
+import org.grails.datastore.mapping.query.api.BuildableCriteria;
+import org.grails.datastore.mapping.query.api.Criteria;
+import org.grails.datastore.mapping.query.api.ProjectionList;
 import org.grails.datastore.mapping.query.api.QueryableCriteria;
-import org.grails.orm.hibernate.GrailsHibernateTemplate;
-import org.grails.orm.hibernate.HibernateDatastore;
-import org.grails.orm.hibernate.cfg.GrailsHibernateUtil;
 import org.grails.orm.hibernate.query.AbstractHibernateCriteriaBuilder;
-import org.grails.orm.hibernate.query.AbstractHibernateQuery;
-import org.grails.orm.hibernate.query.HibernateProjectionAdapter;
-import org.grails.orm.hibernate.query.HibernateQuery;
 
 /**
  * <p>Wraps the Hibernate Criteria API in a builder. The builder can be retrieved through the "createCriteria()" dynamic static
@@ -74,228 +58,454 @@ import org.grails.orm.hibernate.query.HibernateQuery;
  */
 public class HibernateCriteriaBuilder extends AbstractHibernateCriteriaBuilder {
 
-    /*
-     * Define constants which may be used inside of criteria queries
-     * to refer to standard Hibernate Type instances.
-     */
-    public static final Type BOOLEAN = StandardBasicTypes.BOOLEAN;
-
-    public static final Type YES_NO = StandardBasicTypes.YES_NO;
-
-    public static final Type BYTE = StandardBasicTypes.BYTE;
-
-    public static final Type CHARACTER = StandardBasicTypes.CHARACTER;
-
-    public static final Type SHORT = StandardBasicTypes.SHORT;
-
-    public static final Type INTEGER = StandardBasicTypes.INTEGER;
-
-    public static final Type LONG = StandardBasicTypes.LONG;
-
-    public static final Type FLOAT = StandardBasicTypes.FLOAT;
-
-    public static final Type DOUBLE = StandardBasicTypes.DOUBLE;
-
-    public static final Type BIG_DECIMAL = StandardBasicTypes.BIG_DECIMAL;
-
-    public static final Type BIG_INTEGER = StandardBasicTypes.BIG_INTEGER;
-
-    public static final Type STRING = StandardBasicTypes.STRING;
-
-    public static final Type NUMERIC_BOOLEAN = StandardBasicTypes.NUMERIC_BOOLEAN;
-
-    public static final Type TRUE_FALSE = StandardBasicTypes.TRUE_FALSE;
-
-    public static final Type URL = StandardBasicTypes.URL;
-
-    public static final Type TIME = StandardBasicTypes.TIME;
-
-    public static final Type DATE = StandardBasicTypes.DATE;
-
-    public static final Type TIMESTAMP = StandardBasicTypes.TIMESTAMP;
-
-    public static final Type CALENDAR = StandardBasicTypes.CALENDAR;
-
-    public static final Type CALENDAR_DATE = StandardBasicTypes.CALENDAR_DATE;
-
-    public static final Type CLASS = StandardBasicTypes.CLASS;
-
-    public static final Type LOCALE = StandardBasicTypes.LOCALE;
-
-    public static final Type CURRENCY = StandardBasicTypes.CURRENCY;
-
-    public static final Type TIMEZONE = StandardBasicTypes.TIMEZONE;
-
-    public static final Type UUID_BINARY = StandardBasicTypes.UUID_BINARY;
-
-    public static final Type UUID_CHAR = StandardBasicTypes.UUID_CHAR;
-
-    public static final Type BINARY = StandardBasicTypes.BINARY;
-
-    public static final Type WRAPPER_BINARY = StandardBasicTypes.WRAPPER_BINARY;
-
-    public static final Type IMAGE = StandardBasicTypes.IMAGE;
-
-    public static final Type BLOB = StandardBasicTypes.BLOB;
-
-    public static final Type MATERIALIZED_BLOB = StandardBasicTypes.MATERIALIZED_BLOB;
-
-    public static final Type CHAR_ARRAY = StandardBasicTypes.CHAR_ARRAY;
-
-    public static final Type CHARACTER_ARRAY = StandardBasicTypes.CHARACTER_ARRAY;
-
-    public static final Type TEXT = StandardBasicTypes.TEXT;
-
-    public static final Type CLOB = StandardBasicTypes.CLOB;
-
-    public static final Type MATERIALIZED_CLOB = StandardBasicTypes.MATERIALIZED_CLOB;
-
-    public static final Type SERIALIZABLE = StandardBasicTypes.SERIALIZABLE;
-
-    @SuppressWarnings("rawtypes")
-    public HibernateCriteriaBuilder(Class targetClass, SessionFactory sessionFactory) {
-        super(targetClass, sessionFactory);
-        setDefaultFlushMode(GrailsHibernateTemplate.FLUSH_AUTO);
-    }
-
-    @SuppressWarnings("rawtypes")
-    public HibernateCriteriaBuilder(Class targetClass, SessionFactory sessionFactory, boolean uniqueResult) {
-        super(targetClass, sessionFactory, uniqueResult);
-        setDefaultFlushMode(GrailsHibernateTemplate.FLUSH_AUTO);
-    }
-
-    /**
-     * Join an association using the specified join-type, assigning an alias
-     * to the joined association.
-     * The joinType is expected to be one of CriteriaSpecification.INNER_JOIN (the default),
-     * CriteriaSpecificationFULL_JOIN, or CriteriaSpecificationLEFT_JOIN.
-     *
-     * @param associationPath A dot-seperated property path
-     * @param alias           The alias to assign to the joined association (for later reference).
-     * @param joinType        The type of join to use.
-     * @return this (for method chaining)
-     * @throws HibernateException Indicates a problem creating the sub criteria
-     * @see #createAlias(String, String)
-     */
-    public Criteria createAlias(String associationPath, String alias, int joinType) {
-        return criteria.createAlias(associationPath, alias, JoinType.parse(joinType));
+    @Override
+    public Class getTargetClass() {
+        return null;
     }
 
     @Override
-    protected Object executeUniqueResultWithProxyUnwrap() {
-        return GrailsHibernateUtil.unwrapIfProxy(criteria.uniqueResult());
+    public Criteria exists(QueryableCriteria<?> subquery) {
+        return null;
     }
 
     @Override
-    protected void cacheCriteriaMapping() {
-        GrailsHibernateUtil.cacheCriteriaByMapping(datastore, targetClass, criteria);
-    }
-
-    protected Class getClassForAssociationType(Attribute<?, ?> type) {
-        if (type instanceof PluralAttribute) {
-            return ((PluralAttribute) type).getElementType().getJavaType();
-        }
-        return type.getJavaType();
+    public Criteria notExists(QueryableCriteria<?> subquery) {
+        return null;
     }
 
     @Override
-    protected List createPagedResultList(Map args) {
-        GrailsHibernateUtil.populateArgumentsForCriteria(datastore, targetClass, criteria, args, conversionService);
-        GrailsHibernateTemplate ght = new GrailsHibernateTemplate(sessionFactory, (HibernateDatastore) datastore, getDefaultFlushMode());
-        return new PagedResultList(ght, criteria);
-    }
-
-    /**
-     * Creates a Criterion with from the specified property name and "rlike" (a regular expression version of "like") expression
-     *
-     * @param propertyName  The property name
-     * @param propertyValue The ilike value
-     * @return A Criterion instance
-     */
-    @Override
-    public org.grails.datastore.mapping.query.api.Criteria rlike(String propertyName, Object propertyValue) {
-        if (!validateSimpleExpression()) {
-            throwRuntimeException(new IllegalArgumentException("Call to [rlike] with propertyName [" +
-                    propertyName + "] and value [" + propertyValue + "] not allowed here."));
-        }
-
-        propertyName = calculatePropertyName(propertyName);
-        propertyValue = calculatePropertyValue(propertyValue);
-        addToCriteria(new RlikeExpression(propertyName, propertyValue));
-        return this;
+    public Criteria idEquals(Object value) {
+        return null;
     }
 
     @Override
-    protected void createCriteriaInstance() {
-        if (TransactionSynchronizationManager.hasResource(sessionFactory)) {
-            participate = true;
-            hibernateSession = ((SessionHolder) TransactionSynchronizationManager.getResource(sessionFactory)).getSession();
-        }
-        else {
-            hibernateSession = sessionFactory.openSession();
-        }
-
-        criteria = hibernateSession.createCriteria(targetClass);
-        cacheCriteriaMapping();
-        criteriaMetaClass = GroovySystem.getMetaClassRegistry().getMetaClass(criteria.getClass());
+    public Criteria isEmpty(String propertyName) {
+        return null;
     }
 
     @Override
-    protected org.hibernate.criterion.DetachedCriteria convertToHibernateCriteria(QueryableCriteria<?> queryableCriteria) {
-        return getHibernateDetachedCriteria(new HibernateQuery(criteria, queryableCriteria.getPersistentEntity()), queryableCriteria);
+    public Criteria isNotEmpty(String propertyName) {
+        return null;
     }
 
-    public static org.hibernate.criterion.DetachedCriteria getHibernateDetachedCriteria(
-            AbstractHibernateQuery query, QueryableCriteria<?> queryableCriteria) {
-        String alias = queryableCriteria.getAlias();
-        return getHibernateDetachedCriteria(query, queryableCriteria, alias);
-    }
-
-    public static org.hibernate.criterion.DetachedCriteria getHibernateDetachedCriteria(
-            AbstractHibernateQuery query, QueryableCriteria<?> queryableCriteria, String alias) {
-        PersistentEntity persistentEntity = queryableCriteria.getPersistentEntity();
-        Class targetClass = persistentEntity.getJavaClass();
-        org.hibernate.criterion.DetachedCriteria detachedCriteria;
-
-        if (alias != null) {
-            detachedCriteria = org.hibernate.criterion.DetachedCriteria.forClass(targetClass, alias);
-        }
-        else {
-            detachedCriteria = org.hibernate.criterion.DetachedCriteria.forClass(targetClass);
-        }
-        populateHibernateDetachedCriteria(new HibernateQuery(detachedCriteria, persistentEntity), detachedCriteria, queryableCriteria);
-        return detachedCriteria;
-    }
-
-    private static void populateHibernateDetachedCriteria(AbstractHibernateQuery query,
-            org.hibernate.criterion.DetachedCriteria detachedCriteria, QueryableCriteria<?> queryableCriteria) {
-        List<org.grails.datastore.mapping.query.Query.Criterion> criteriaList = queryableCriteria.getCriteria();
-        for (org.grails.datastore.mapping.query.Query.Criterion criterion : criteriaList) {
-            Criterion hibernateCriterion = HibernateQuery.HIBERNATE_CRITERION_ADAPTER.toHibernateCriterion(query, criterion, null);
-            if (hibernateCriterion != null) {
-                detachedCriteria.add(hibernateCriterion);
-            }
-        }
-
-        List<org.grails.datastore.mapping.query.Query.Projection> projections = queryableCriteria.getProjections();
-        ProjectionList projectionList = Projections.projectionList();
-        for (org.grails.datastore.mapping.query.Query.Projection projection : projections) {
-            Projection hibernateProjection = new HibernateProjectionAdapter(projection).toHibernateProjection();
-            if (hibernateProjection != null) {
-                projectionList.add(hibernateProjection);
-            }
-        }
-        detachedCriteria.setProjection(projectionList);
-    }
-
-    /**
-     * Closes the session if it is copen
-     */
     @Override
-    protected void closeSession() {
-        if (hibernateSession != null && hibernateSession.isOpen() && !participate) {
-            hibernateSession.close();
-        }
+    public Criteria isNull(String propertyName) {
+        return null;
+    }
+
+    @Override
+    public Criteria isNotNull(String propertyName) {
+        return null;
+    }
+
+    @Override
+    public Criteria eq(String propertyName, Object propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria idEq(Object propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria ne(String propertyName, Object propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria between(String propertyName, Object start, Object finish) {
+        return null;
+    }
+
+    @Override
+    public Criteria gte(String property, Object value) {
+        return null;
+    }
+
+    @Override
+    public Criteria ge(String property, Object value) {
+        return null;
+    }
+
+    @Override
+    public Criteria gt(String property, Object value) {
+        return null;
+    }
+
+    @Override
+    public Criteria lte(String property, Object value) {
+        return null;
+    }
+
+    @Override
+    public Criteria le(String property, Object value) {
+        return null;
+    }
+
+    @Override
+    public Criteria lt(String property, Object value) {
+        return null;
+    }
+
+    @Override
+    public Criteria like(String propertyName, Object propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria ilike(String propertyName, Object propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria rlike(String propertyName, Object propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria and(Closure callable) {
+        return null;
+    }
+
+    @Override
+    public Criteria or(Closure callable) {
+        return null;
+    }
+
+    @Override
+    public Criteria not(Closure callable) {
+        return null;
+    }
+
+    @Override
+    public Criteria in(String propertyName, Collection values) {
+        return null;
+    }
+
+    @Override
+    public Criteria in(String propertyName, QueryableCriteria<?> subquery) {
+        return null;
+    }
+
+    @Override
+    public Criteria inList(String propertyName, QueryableCriteria<?> subquery) {
+        return null;
+    }
+
+    @Override
+    public Criteria in(String propertyName, Closure<?> subquery) {
+        return null;
+    }
+
+    @Override
+    public Criteria inList(String propertyName, Closure<?> subquery) {
+        return null;
+    }
+
+    @Override
+    public Criteria inList(String propertyName, Collection values) {
+        return null;
+    }
+
+    @Override
+    public Criteria inList(String propertyName, Object[] values) {
+        return null;
+    }
+
+    @Override
+    public Criteria in(String propertyName, Object[] values) {
+        return null;
+    }
+
+    @Override
+    public Criteria notIn(String propertyName, QueryableCriteria<?> subquery) {
+        return null;
+    }
+
+    @Override
+    public Criteria notIn(String propertyName, Closure<?> subquery) {
+        return null;
+    }
+
+    @Override
+    public Criteria order(String propertyName) {
+        return null;
+    }
+
+    @Override
+    public Criteria order(Query.Order o) {
+        return null;
+    }
+
+    @Override
+    public Criteria order(String propertyName, String direction) {
+        return null;
+    }
+
+    @Override
+    public Criteria sizeEq(String propertyName, int size) {
+        return null;
+    }
+
+    @Override
+    public Criteria sizeGt(String propertyName, int size) {
+        return null;
+    }
+
+    @Override
+    public Criteria sizeGe(String propertyName, int size) {
+        return null;
+    }
+
+    @Override
+    public Criteria sizeLe(String propertyName, int size) {
+        return null;
+    }
+
+    @Override
+    public Criteria sizeLt(String propertyName, int size) {
+        return null;
+    }
+
+    @Override
+    public Criteria sizeNe(String propertyName, int size) {
+        return null;
+    }
+
+    @Override
+    public Criteria eqProperty(String propertyName, String otherPropertyName) {
+        return null;
+    }
+
+    @Override
+    public Criteria neProperty(String propertyName, String otherPropertyName) {
+        return null;
+    }
+
+    @Override
+    public Criteria gtProperty(String propertyName, String otherPropertyName) {
+        return null;
+    }
+
+    @Override
+    public Criteria geProperty(String propertyName, String otherPropertyName) {
+        return null;
+    }
+
+    @Override
+    public Criteria ltProperty(String propertyName, String otherPropertyName) {
+        return null;
+    }
+
+    @Override
+    public Criteria leProperty(String propertyName, String otherPropertyName) {
+        return null;
+    }
+
+    @Override
+    public Criteria allEq(Map<String, Object> propertyValues) {
+        return null;
+    }
+
+    @Override
+    public Criteria eqAll(String propertyName, Closure<?> propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria gtAll(String propertyName, Closure<?> propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria ltAll(String propertyName, Closure<?> propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria geAll(String propertyName, Closure<?> propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria leAll(String propertyName, Closure<?> propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria eqAll(String propertyName, QueryableCriteria propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria gtAll(String propertyName, QueryableCriteria propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria ltAll(String propertyName, QueryableCriteria propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria geAll(String propertyName, QueryableCriteria propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria leAll(String propertyName, QueryableCriteria propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria gtSome(String propertyName, QueryableCriteria propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria gtSome(String propertyName, Closure<?> propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria geSome(String propertyName, QueryableCriteria propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria geSome(String propertyName, Closure<?> propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria ltSome(String propertyName, QueryableCriteria propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria ltSome(String propertyName, Closure<?> propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria leSome(String propertyName, QueryableCriteria propertyValue) {
+        return null;
+    }
+
+    @Override
+    public Criteria leSome(String propertyName, Closure<?> propertyValue) {
+        return null;
+    }
+
+    @Override
+    public BuildableCriteria cache(boolean cache) {
+        return null;
+    }
+
+    @Override
+    public BuildableCriteria readOnly(boolean readOnly) {
+        return null;
+    }
+
+    @Override
+    public BuildableCriteria join(String property) {
+        return null;
+    }
+
+    @Override
+    public BuildableCriteria join(String property, JoinType joinType) {
+        return null;
+    }
+
+    @Override
+    public BuildableCriteria select(String property) {
+        return null;
+    }
+
+    @Override
+    public Object list(Closure closure) {
+        return null;
+    }
+
+    @Override
+    public Object list(Map params, Closure closure) {
+        return null;
+    }
+
+    @Override
+    public Object listDistinct(Closure closure) {
+        return null;
+    }
+
+    @Override
+    public Object scroll(Closure closure) {
+        return null;
+    }
+
+    @Override
+    public Object get(Closure closure) {
+        return null;
+    }
+
+    @Override
+    public ProjectionList id() {
+        return null;
+    }
+
+    @Override
+    public ProjectionList count() {
+        return null;
+    }
+
+    @Override
+    public ProjectionList countDistinct(String property) {
+        return null;
+    }
+
+    @Override
+    public ProjectionList groupProperty(String property) {
+        return null;
+    }
+
+    @Override
+    public ProjectionList distinct() {
+        return null;
+    }
+
+    @Override
+    public ProjectionList distinct(String property) {
+        return null;
+    }
+
+    @Override
+    public ProjectionList rowCount() {
+        return null;
+    }
+
+    @Override
+    public ProjectionList property(String name) {
+        return null;
+    }
+
+    @Override
+    public ProjectionList sum(String name) {
+        return null;
+    }
+
+    @Override
+    public ProjectionList min(String name) {
+        return null;
+    }
+
+    @Override
+    public ProjectionList max(String name) {
+        return null;
+    }
+
+    @Override
+    public ProjectionList avg(String name) {
+        return null;
     }
 
 }

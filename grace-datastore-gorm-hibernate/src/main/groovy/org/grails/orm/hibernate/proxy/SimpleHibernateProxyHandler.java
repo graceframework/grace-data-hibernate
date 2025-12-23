@@ -21,7 +21,6 @@ import groovy.lang.GroovyObject;
 import groovy.lang.GroovySystem;
 import org.hibernate.collection.spi.PersistentCollection;
 import org.hibernate.proxy.HibernateProxy;
-import org.hibernate.proxy.HibernateProxyHelper;
 import org.hibernate.proxy.LazyInitializer;
 
 import org.grails.datastore.mapping.core.Session;
@@ -147,7 +146,7 @@ public class SimpleHibernateProxyHandler extends JavassistProxyFactory implement
 
     public Class<?> getProxiedClass(Object o) {
         if (o instanceof HibernateProxy) {
-            return HibernateProxyHelper.getClassWithoutInitializingProxy(o);
+            return ((HibernateProxy) o).getHibernateLazyInitializer().getClass();
         }
         else {
             return super.getProxiedClass(o);

@@ -22,15 +22,11 @@ import jakarta.persistence.criteria.Root
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
-import org.hibernate.Criteria
 import org.hibernate.FlushMode
 import org.hibernate.Session
-import org.hibernate.criterion.Example
-import org.hibernate.criterion.Restrictions
 import org.hibernate.jpa.QueryHints
 import org.hibernate.query.NativeQuery
 import org.hibernate.query.Query
-import org.hibernate.transform.DistinctRootEntityResultTransformer
 import org.springframework.core.convert.ConversionService
 import org.springframework.transaction.PlatformTransactionManager
 
@@ -42,7 +38,6 @@ import org.grails.datastore.mapping.reflect.ClassUtils
 import org.grails.orm.hibernate.cfg.AbstractGrailsDomainBinder
 import org.grails.orm.hibernate.cfg.CompositeIdentity
 import org.grails.orm.hibernate.exceptions.GrailsQueryException
-import org.grails.orm.hibernate.query.GrailsHibernateQueryUtils
 import org.grails.orm.hibernate.query.HibernateHqlQuery
 import org.grails.orm.hibernate.support.HibernateRuntimeUtils
 
@@ -157,7 +152,7 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
                     criteriaBuilder.equal((Expression<?>) queryRoot.get(persistentEntity.identity.name), id)
             )
             Query criteria = session.createQuery(criteriaQuery)
-                    .setHint(QueryHints.HINT_READONLY, true)
+                                    .setHint(QueryHints.HINT_READONLY, true)
             HibernateHqlQuery hibernateHqlQuery = new HibernateHqlQuery(
                     hibernateSession, persistentEntity, criteria)
             return proxyHandler.unwrap(hibernateHqlQuery.singleResult())
@@ -208,24 +203,6 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
             return num
         })
     }
-
-    /**
-     * Fire a post query event
-     *
-     * @param session The session
-     * @param criteria The criteria
-     * @param result The result
-     */
-    protected abstract void firePostQueryEvent(Session session, Criteria criteria, Object result)
-
-    /**
-     * Fire a pre query event
-     *
-     * @param session The session
-     * @param criteria The criteria
-     * @return True if the query should be cancelled
-     */
-    protected abstract void firePreQueryEvent(Session session, Criteria criteria)
 
     @Override
     boolean exists(Serializable id) {
@@ -560,16 +537,8 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
     D find(D exampleObject, Map args) {
         def template = hibernateTemplate
         return (D) template.execute { Session session ->
-            Example example = Example.create(exampleObject).ignoreCase()
 
-            Criteria crit = session.createCriteria(persistentEntity.javaClass)
-            hibernateTemplate.applySettings(crit)
-            crit.add example
-            GrailsHibernateQueryUtils.populateArgumentsForCriteria(persistentEntity, crit, args, datastore.mappingContext.conversionService, true)
-            crit.maxResults = 1
-            firePreQueryEvent(session, crit)
-            List results = crit.list()
-            firePostQueryEvent(session, crit, results)
+            List results = null
             if (results) {
                 return proxyHandler.unwrap(results.get(0))
             }
@@ -580,15 +549,7 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
     List<D> findAll(D exampleObject, Map args) {
         def template = hibernateTemplate
         return (List<D>) template.execute { Session session ->
-            Example example = Example.create(exampleObject).ignoreCase()
-
-            Criteria crit = session.createCriteria(persistentEntity.javaClass)
-            hibernateTemplate.applySettings(crit)
-            crit.add example
-            GrailsHibernateQueryUtils.populateArgumentsForCriteria(persistentEntity, crit, args, datastore.mappingContext.conversionService, true)
-            firePreQueryEvent(session, crit)
-            List results = crit.list()
-            firePostQueryEvent(session, crit, results)
+            List results = null
             return results
         }
     }
@@ -599,22 +560,7 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
             return null
         }
         (List<D>) hibernateTemplate.execute { Session session ->
-            Map<String, Object> processedQueryMap = [:]
-            queryMap.each { key, value -> processedQueryMap[key.toString()] = value }
-            Map queryArgs = filterQueryArgumentMap(processedQueryMap)
-            List<String> nullNames = removeNullNames(queryArgs)
-            Criteria criteria = session.createCriteria(persistentClass)
-            hibernateTemplate.applySettings(criteria)
-            criteria.add(Restrictions.allEq(queryArgs))
-            for (name in nullNames) {
-                criteria.add Restrictions.isNull(name)
-            }
-            criteria.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE)
-
-            GrailsHibernateQueryUtils.populateArgumentsForCriteria(persistentEntity, criteria, args, datastore.mappingContext.conversionService, true)
-            firePreQueryEvent(session, criteria)
-            List results = criteria.list()
-            firePostQueryEvent(session, criteria, results)
+            List results = null
             return results
         }
     }
@@ -676,21 +622,7 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
             return null
         }
         (D) hibernateTemplate.execute { Session session ->
-            Map<String, Object> processedQueryMap = [:]
-            queryMap.each { key, value -> processedQueryMap[key.toString()] = value }
-            Map queryArgs = filterQueryArgumentMap(processedQueryMap)
-            List<String> nullNames = removeNullNames(queryArgs)
-            Criteria criteria = session.createCriteria(persistentClass)
-            hibernateTemplate.applySettings(criteria)
-            criteria.add(Restrictions.allEq(queryArgs))
-            for (name in nullNames) {
-                criteria.add Restrictions.isNull(name)
-            }
-            criteria.setMaxResults(1)
-            GrailsHibernateQueryUtils.populateArgumentsForCriteria(persistentEntity, criteria, args, datastore.mappingContext.conversionService, true)
-            firePreQueryEvent(session, criteria)
-            Object result = criteria.uniqueResult()
-            firePostQueryEvent(session, criteria, result)
+            Object result = null
             return proxyHandler.unwrap(result)
         }
     }

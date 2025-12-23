@@ -34,9 +34,9 @@ import org.grails.datastore.mapping.query.event.PreQueryEvent;
  */
 public class HibernateHqlQuery extends Query {
 
-    private final org.hibernate.query.Query query;
+    private final org.hibernate.query.Query<?> query;
 
-    public HibernateHqlQuery(Session session, PersistentEntity entity, org.hibernate.query.Query query) {
+    public HibernateHqlQuery(Session session, PersistentEntity entity, org.hibernate.query.Query<?> query) {
         super(session, entity);
         this.query = query;
     }
@@ -47,7 +47,7 @@ public class HibernateHqlQuery extends Query {
     }
 
     @Override
-    protected List executeQuery(PersistentEntity entity, Junction criteria) {
+    protected List<?> executeQuery(PersistentEntity entity, Junction criteria) {
         Datastore datastore = getSession().getDatastore();
         ApplicationEventPublisher applicationEventPublisher = datastore.getApplicationEventPublisher();
         PreQueryEvent preQueryEvent = new PreQueryEvent(datastore, this);
@@ -55,12 +55,12 @@ public class HibernateHqlQuery extends Query {
 
         if (uniqueResult) {
             this.query.setMaxResults(1);
-            List results = this.query.list();
+            List<?> results = this.query.list();
             applicationEventPublisher.publishEvent(new PostQueryEvent(datastore, this, results));
             return results;
         }
         else {
-            List results = this.query.list();
+            List<?> results = this.query.list();
             applicationEventPublisher.publishEvent(new PostQueryEvent(datastore, this, results));
             return results;
         }

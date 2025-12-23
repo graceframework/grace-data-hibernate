@@ -19,8 +19,9 @@ import java.io.Serializable;
 
 import org.hibernate.Hibernate;
 import org.hibernate.collection.spi.PersistentCollection;
+import org.hibernate.engine.internal.ManagedTypeHelper;
 import org.hibernate.proxy.HibernateProxy;
-import org.hibernate.proxy.HibernateProxyHelper;
+import org.hibernate.proxy.LazyInitializer;
 
 import org.grails.datastore.mapping.core.Session;
 import org.grails.datastore.mapping.engine.AssociationQueryExecutor;
@@ -65,6 +66,7 @@ public class HibernateProxyHandler implements ProxyHandler, ProxyFactory {
      * Unproxies a HibernateProxy. If the proxy is uninitialized, it automatically triggers an initialization.
      * In case the supplied object is null or not a proxy, the object will be returned as-is.
      * {@inheritDoc}
+     *
      * @see Hibernate#unproxy
      */
     @Override
@@ -78,12 +80,13 @@ public class HibernateProxyHandler implements ProxyHandler, ProxyFactory {
 
     /**
      * {@inheritDoc}
+     *
      * @see org.hibernate.proxy.AbstractLazyInitializer#getIdentifier
      */
     @Override
     public Serializable getIdentifier(Object o) {
         if (o instanceof HibernateProxy) {
-            return ((HibernateProxy) o).getHibernateLazyInitializer().getIdentifier();
+            return (Serializable) ((HibernateProxy) o).getHibernateLazyInitializer().getIdentifier();
         }
         else {
             //TODO seems we can get the id here if its has normal getId
@@ -95,15 +98,21 @@ public class HibernateProxyHandler implements ProxyHandler, ProxyFactory {
 
     /**
      * {@inheritDoc}
-     * @see HibernateProxyHelper#getClassWithoutInitializingProxy
      */
     @Override
     public Class<?> getProxiedClass(Object o) {
-        return HibernateProxyHelper.getClassWithoutInitializingProxy(o);
+        LazyInitializer lazyInitializer = HibernateProxy.extractLazyInitializer(o);
+        if (lazyInitializer != null) {
+            return lazyInitializer.getPersistentClass();
+        }
+        else {
+            return o.getClass();
+        }
     }
 
     /**
      * calls unwrap which calls unproxy
+     *
      * @see #unwrap(Object)
      * @deprecated use unwrap
      */
@@ -117,7 +126,7 @@ public class HibernateProxyHandler implements ProxyHandler, ProxyFactory {
      */
     @Override
     public boolean isProxy(Object o) {
-        return (o instanceof HibernateProxy) || (o instanceof PersistentCollection);
+        return ManagedTypeHelper.isHibernateProxy(o);
     }
 
     /**

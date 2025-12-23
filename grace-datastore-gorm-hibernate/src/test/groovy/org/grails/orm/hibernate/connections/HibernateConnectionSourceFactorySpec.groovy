@@ -15,8 +15,14 @@
  */
 package org.grails.orm.hibernate.connections
 
+import jakarta.persistence.criteria.CriteriaQuery
+import jakarta.persistence.criteria.Root
+
+import org.hibernate.Session
 import org.hibernate.SessionFactory
 import org.hibernate.dialect.H2Dialect
+import org.hibernate.query.Query
+import org.hibernate.query.criteria.HibernateCriteriaBuilder
 import spock.lang.Specification
 
 import grails.gorm.annotation.Entity
@@ -47,13 +53,20 @@ class HibernateConnectionSourceFactorySpec extends Specification {
         then: 'The session factory is created'
         connectionSource.source instanceof SessionFactory
         connectionSource.source.getMetamodel().entity(Foo.name)
-        connectionSource.source.openSession().createCriteria(Foo).list().size() == 0
+        SessionFactory sessionFactory = (SessionFactory) connectionSource.source
+        Session session = sessionFactory.openSession()
+        HibernateCriteriaBuilder cb = sessionFactory.getCriteriaBuilder()
+        CriteriaQuery<Foo> criteria = cb.createQuery(Foo)
+        Root<Foo> root = criteria.from(Foo)
+        criteria.select(root)
+        Query<Foo> query = session.createQuery(criteria)
+        query.list().size() == 0
 
         when: 'The connection source is closed'
         connectionSource.close()
 
         then: 'The session factory is closed'
-        connectionSource.source.isClosed()
+        sessionFactory.isClosed()
     }
 
 }

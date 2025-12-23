@@ -25,8 +25,6 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.context.ApplicationEventPublisher;
@@ -76,7 +74,7 @@ public class HibernateSession extends AbstractHibernateSession {
             return null;
         }
         if (this.proxyHandler.isProxy(instance)) {
-            return ((HibernateProxy) instance).getHibernateLazyInitializer().getIdentifier();
+            return (Serializable) ((HibernateProxy) instance).getHibernateLazyInitializer().getIdentifier();
         }
         Class<?> type = instance.getClass();
         ClassPropertyFetcher cpf = ClassPropertyFetcher.forClass(type);
@@ -164,15 +162,15 @@ public class HibernateSession extends AbstractHibernateSession {
         final PersistentEntity persistentEntity = getMappingContext().getPersistentEntity(type.getName());
         return getHibernateTemplate().execute(session -> {
             final CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery criteriaQuery = criteriaBuilder.createQuery(type);
-            final Root root = criteriaQuery.from(type);
+            CriteriaQuery<?> criteriaQuery = criteriaBuilder.createQuery(type);
+            final Root<?> root = criteriaQuery.from(type);
             final String id = persistentEntity.getIdentity().getName();
             criteriaQuery = criteriaQuery.where(
                     criteriaBuilder.in(
                             root.get(id).in(getIterableAsCollection(keys))
                     )
             );
-            final org.hibernate.query.Query jpaQuery = session.createQuery(criteriaQuery);
+            final org.hibernate.query.Query<?> jpaQuery = session.createQuery(criteriaQuery);
             getHibernateTemplate().applySettings(jpaQuery);
 
             return new HibernateHqlQuery(this, persistentEntity, jpaQuery).list();
@@ -186,11 +184,7 @@ public class HibernateSession extends AbstractHibernateSession {
     @Override
     public Query createQuery(Class type, String alias) {
         final PersistentEntity persistentEntity = getMappingContext().getPersistentEntity(type.getName());
-        GrailsHibernateTemplate hibernateTemplate = getHibernateTemplate();
-        Session currentSession = hibernateTemplate.getSessionFactory().getCurrentSession();
-        final Criteria criteria = alias != null ? currentSession.createCriteria(type, alias) : currentSession.createCriteria(type);
-        hibernateTemplate.applySettings(criteria);
-        return new HibernateQuery(criteria, this, persistentEntity);
+        return new HibernateQuery(this, persistentEntity);
     }
 
     protected GrailsHibernateTemplate getHibernateTemplate() {

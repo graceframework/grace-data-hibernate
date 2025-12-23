@@ -48,8 +48,8 @@ import org.hibernate.event.spi.PreUpdateEvent;
 import org.hibernate.event.spi.PreUpdateEventListener;
 import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.hibernate.event.spi.SaveOrUpdateEventListener;
+import org.hibernate.metamodel.mapping.EntityMappingType;
 import org.hibernate.persister.entity.EntityPersister;
-import org.hibernate.tuple.entity.EntityMetamodel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
@@ -228,11 +228,6 @@ public class ClosureEventListener implements SaveOrUpdateEventListener,
     }
 
     @Override
-    public boolean requiresPostCommitHanding(EntityPersister persister) {
-        return false;
-    }
-
-    @Override
     public boolean requiresPostCommitHandling(EntityPersister persister) {
         return false;
     }
@@ -360,10 +355,10 @@ public class ClosureEventListener implements SaveOrUpdateEventListener,
         Object entity = event.getEntity();
         EntityReflector reflector = this.persistentEntity.getReflector();
         HashMap<Integer, Object> changedState = new HashMap<>();
-        EntityMetamodel entityMetamodel = persister.getEntityMetamodel();
+        EntityMappingType entityMappingType = persister.getEntityMappingType();
         for (int i = 0; i < propertyNames.length; i++) {
             String p = propertyNames[i];
-            Integer index = entityMetamodel.getPropertyIndexOrNull(p);
+            Integer index = entityMappingType.getSelectableIndex(p);
             if (index == null) {
                 continue;
             }

@@ -5,13 +5,9 @@ plugins {
 dependencies {
     api libs.grace.datastore.core
     api libs.grace.datastore.gorm
-    api libs.hibernate.core, {
-        exclude group:'org.dom4j', module:'dom4j'
-        exclude group:'jakarta.activation', module:'jakarta.activation-api'
-        exclude group:'jakarta.annotation', module:'jakarta.annotation-api'
-        exclude group:'jakarta.persistence', module:'jakarta.persistence-api'
-    }
+    api libs.hibernate.core
     api libs.hibernate.validator
+    api libs.jandex
     api libs.jakarta.annotation.api
     api libs.jakarta.el
     api libs.jakarta.persistence.api
@@ -74,13 +70,13 @@ test.doFirst {
         }
     }
     def tckClassesFile = project
-                            .configurations
-                            .testCompileClasspath
-                            .resolvedConfiguration
-                            .getResolvedArtifacts()
-                            .find { resolved ->
-                                resolved.moduleVersion.id.name == 'grace-datastore-gorm-tck'
-                            }.file
+            .configurations
+            .testCompileClasspath
+            .resolvedConfiguration
+            .getResolvedArtifacts()
+            .find { resolved ->
+                resolved.moduleVersion.id.name == 'grace-datastore-gorm-tck'
+            }.file
 
     def tckClassesDir = project.file("${project.buildDir}/tck")
     copy {

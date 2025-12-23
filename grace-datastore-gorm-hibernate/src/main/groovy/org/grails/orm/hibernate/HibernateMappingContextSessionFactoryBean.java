@@ -27,9 +27,9 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Interceptor;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
-import org.hibernate.cfg.NamingStrategy;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
@@ -86,7 +86,7 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
 
     private Interceptor entityInterceptor;
 
-    private NamingStrategy namingStrategy;
+    private PhysicalNamingStrategy namingStrategy;
 
     private Properties hibernateProperties;
 
@@ -297,11 +297,11 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
      * Set a Hibernate NamingStrategy for the SessionFactory, determining the
      * physical column and table names given the info in the mapping document.
      */
-    public void setNamingStrategy(NamingStrategy namingStrategy) {
+    public void setNamingStrategy(PhysicalNamingStrategy namingStrategy) {
         this.namingStrategy = namingStrategy;
     }
 
-    public NamingStrategy getNamingStrategy() {
+    public PhysicalNamingStrategy getNamingStrategy() {
         return this.namingStrategy;
     }
 
@@ -500,7 +500,7 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
         }
 
         if (this.namingStrategy != null) {
-//            configuration.setNamingStrategy(namingStrategy);
+            configuration.setPhysicalNamingStrategy(namingStrategy);
         }
 
         if (this.hibernateProperties != null) {

@@ -40,7 +40,7 @@ import org.grails.datastore.mapping.reflect.NameUtils;
 public class TraitPropertyAccessStrategy implements PropertyAccessStrategy {
 
     @Override
-    public PropertyAccess buildPropertyAccess(Class containerJavaType, String propertyName) {
+    public PropertyAccess buildPropertyAccess(Class<?> containerJavaType, String propertyName, boolean setterRequired) {
         Method readMethod = ReflectionUtils.findMethod(containerJavaType, NameUtils.getGetterName(propertyName));
         if (readMethod == null) {
             throw new IllegalStateException("TraitPropertyAccessStrategy used on property [" + propertyName +

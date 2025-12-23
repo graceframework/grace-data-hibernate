@@ -42,7 +42,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl;
 import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
 import org.hibernate.boot.registry.selector.spi.StrategySelector;
-import org.hibernate.boot.spi.MetadataContributor;
+import org.hibernate.boot.spi.AdditionalMappingContributor;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
@@ -107,7 +107,7 @@ public class HibernateMappingContextConfiguration extends Configuration implemen
 
     private ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
-    private MetadataContributor metadataContributor;
+    private AdditionalMappingContributor metadataContributor;
 
     private Set<Class> additionalClasses = new HashSet<>();
 
@@ -278,7 +278,7 @@ public class HibernateMappingContextConfiguration extends Configuration implemen
 
             @Override
             public <S> Collection<S> loadJavaServices(Class<S> serviceContract) {
-                if (MetadataContributor.class.isAssignableFrom(serviceContract)) {
+                if (AdditionalMappingContributor.class.isAssignableFrom(serviceContract)) {
                     if (HibernateMappingContextConfiguration.this.metadataContributor != null) {
                         return (Collection<S>) Arrays.asList(domainBinder, HibernateMappingContextConfiguration.this.metadataContributor);
                     }
@@ -383,17 +383,17 @@ public class HibernateMappingContextConfiguration extends Configuration implemen
         return this.serviceRegistry;
     }
 
-    @Override
+//    @Override
     protected void reset() {
-        super.reset();
-        try {
-            GrailsIdentifierGeneratorFactory.applyNewInstance(this);
-        }
-        catch (Exception ignore) {
-        }
+//        super.reset();
+//        try {
+//            GrailsIdentifierGeneratorFactory.applyNewInstance(this);
+//        }
+//        catch (Exception ignore) {
+//        }
     }
 
-    public void setMetadataContributor(MetadataContributor metadataContributor) {
+    public void setMetadataContributor(AdditionalMappingContributor metadataContributor) {
         this.metadataContributor = metadataContributor;
     }
 

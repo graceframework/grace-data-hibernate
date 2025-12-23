@@ -20,7 +20,6 @@ import groovy.transform.CompileStatic
 import org.hibernate.engine.spi.EntityEntry
 import org.hibernate.engine.spi.SessionImplementor
 import org.hibernate.persister.entity.EntityPersister
-import org.hibernate.tuple.NonIdentifierAttribute
 
 import org.grails.orm.hibernate.cfg.GrailsHibernateUtil
 
@@ -58,15 +57,13 @@ class HibernateGormInstanceApi<D> extends AbstractHibernateGormInstanceApi<D> {
         }
 
         EntityPersister persister = entry.persister
-        Object[] values = persister.getPropertyValues(instance)
+        Object[] values = persister.getValues(instance)
         int[] dirtyProperties = findDirty(persister, values, entry, instance, session)
         if (dirtyProperties == null) {
             return false
         }
         else {
-            int fieldIndex = persister.getEntityMetamodel().getProperties().findIndexOf { NonIdentifierAttribute attribute ->
-                fieldName == attribute.name
-            }
+            int fieldIndex = persister.findAttributeMapping(fieldName).getStateArrayPosition()
             return fieldIndex in dirtyProperties
         }
     }
@@ -90,7 +87,7 @@ class HibernateGormInstanceApi<D> extends AbstractHibernateGormInstanceApi<D> {
             return false
         }
         EntityPersister persister = entry.persister
-        Object[] currentState = persister.getPropertyValues(instance)
+        Object[] currentState = persister.getValues(instance)
         int[] dirtyPropertyIndexes = findDirty(persister, currentState, entry, instance, session)
         return dirtyPropertyIndexes != null
     }
@@ -109,12 +106,12 @@ class HibernateGormInstanceApi<D> extends AbstractHibernateGormInstanceApi<D> {
         }
 
         EntityPersister persister = entry.persister
-        Object[] currentState = persister.getPropertyValues(instance)
+        Object[] currentState = persister.getValues(instance)
         int[] dirtyPropertyIndexes = findDirty(persister, currentState, entry, instance, session)
         List names = []
-        def entityProperties = persister.getEntityMetamodel().getProperties()
+        def entityProperties = persister.getValues(instance)
         for (index in dirtyPropertyIndexes) {
-            names.add entityProperties[index].name
+            names.add entityProperties[index]
         }
         return names
     }
@@ -133,9 +130,7 @@ class HibernateGormInstanceApi<D> extends AbstractHibernateGormInstanceApi<D> {
         }
 
         EntityPersister persister = entry.persister
-        int fieldIndex = persister.getEntityMetamodel().getProperties().findIndexOf {
-            NonIdentifierAttribute attribute -> fieldName == attribute.name
-        }
+        int fieldIndex = persister.findAttributeMapping(fieldName).getStateArrayPosition()
         return fieldIndex == -1 ? null : entry.loadedState[fieldIndex]
     }
 

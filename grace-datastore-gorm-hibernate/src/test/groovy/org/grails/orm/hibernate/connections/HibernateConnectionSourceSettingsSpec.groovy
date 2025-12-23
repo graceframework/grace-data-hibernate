@@ -15,7 +15,7 @@
  */
 package org.grails.orm.hibernate.connections
 
-import org.hibernate.dialect.Oracle8iDialect
+import org.hibernate.dialect.H2Dialect
 import org.springframework.core.io.UrlResource
 import spock.lang.Specification
 
@@ -30,7 +30,7 @@ class HibernateConnectionSourceSettingsSpec extends Specification {
         when: 'The configuration is built'
         Map config = [
                 'dataSource.dbCreate'      : 'update',
-                'dataSource.dialect'       : Oracle8iDialect.name,
+                'dataSource.dialect'       : H2Dialect.name,
                 'dataSource.formatSql'     : 'true',
                 'hibernate.flush.mode'     : 'commit',
                 'hibernate.cache.queries'  : 'true',
@@ -46,13 +46,13 @@ class HibernateConnectionSourceSettingsSpec extends Specification {
         expectedDataSourceProperties.put('hibernate.hbm2ddl.auto', 'update')
         expectedDataSourceProperties.put('hibernate.show_sql', 'false')
         expectedDataSourceProperties.put('hibernate.format_sql', 'true')
-        expectedDataSourceProperties.put('hibernate.dialect', Oracle8iDialect.name)
+        expectedDataSourceProperties.put('hibernate.dialect', H2Dialect.name)
 
         def expectedHibernateProperties = new Properties()
         expectedHibernateProperties.put('hibernate.hbm2ddl.auto', 'create')
         expectedHibernateProperties.put('hibernate.cache.queries', 'true')
         expectedHibernateProperties.put('hibernate.flush.mode', 'commit')
-        expectedHibernateProperties.put('hibernate.naming_strategy', 'org.hibernate.cfg.ImprovedNamingStrategy')
+        expectedHibernateProperties.put('hibernate.naming_strategy', 'org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy')
         expectedHibernateProperties.put('hibernate.entity_dirtiness_strategy', 'org.grails.orm.hibernate.dirty.GrailsEntityDirtinessStrategy')
         expectedHibernateProperties.put('hibernate.configLocations', 'file:hibernate.cfg.xml')
         expectedHibernateProperties.put('hibernate.use_query_cache', 'true')
@@ -66,7 +66,7 @@ class HibernateConnectionSourceSettingsSpec extends Specification {
 
         then: 'The results are correct'
         settings.dataSource.dbCreate == 'update'
-        settings.dataSource.dialect == Oracle8iDialect
+        settings.dataSource.dialect == H2Dialect
         settings.dataSource.formatSql
         !settings.dataSource.logSql
         settings.dataSource.toHibernateProperties() == expectedDataSourceProperties

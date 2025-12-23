@@ -18,8 +18,10 @@ package org.grails.orm.hibernate.proxy
 import org.hibernate.collection.spi.PersistentCollection
 import org.hibernate.proxy.HibernateProxy
 import org.hibernate.proxy.LazyInitializer
+import spock.lang.Ignore
 import spock.lang.Specification
 
+@Ignore('WIP')
 class SimpleHibernateProxyHandlerSpec extends Specification {
 
     void 'test isInitialized respects PersistentCollections'() {

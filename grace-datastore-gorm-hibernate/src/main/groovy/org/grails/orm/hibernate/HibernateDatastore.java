@@ -569,7 +569,7 @@ public class HibernateDatastore extends AbstractHibernateDatastore implements Me
     @Override
     public Session getCurrentSession() throws ConnectionNotFoundException {
         // HibernateSession, just a thin wrapper around default session handling so simply return a new instance here
-        return new HibernateSession(this, this.sessionFactory, getDefaultFlushMode());
+        return new HibernateSession(this, this.sessionFactory);
     }
 
     @Override

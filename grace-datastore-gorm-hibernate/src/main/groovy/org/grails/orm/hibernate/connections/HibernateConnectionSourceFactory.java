@@ -23,12 +23,11 @@ import javax.sql.DataSource;
 
 import org.hibernate.Interceptor;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.spi.MetadataContributor;
+import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
+import org.hibernate.boot.spi.AdditionalMappingContributor;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.NamingStrategy;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.MessageSource;
@@ -74,7 +73,7 @@ public class HibernateConnectionSourceFactory extends AbstractHibernateConnectio
 
     protected Interceptor interceptor;
 
-    protected MetadataContributor metadataContributor;
+    protected AdditionalMappingContributor metadataContributor;
 
     protected MessageSource messageSource = new StaticMessageSource();
 
@@ -86,18 +85,15 @@ public class HibernateConnectionSourceFactory extends AbstractHibernateConnectio
         return this.persistentClasses;
     }
 
-    @Autowired(required = false)
     public void setHibernateEventListeners(HibernateEventListeners hibernateEventListeners) {
         this.hibernateEventListeners = hibernateEventListeners;
     }
 
-    @Autowired(required = false)
     public void setInterceptor(Interceptor interceptor) {
         this.interceptor = interceptor;
     }
 
-    @Autowired(required = false)
-    public void setMetadataContributor(MetadataContributor metadataContributor) {
+    public void setMetadataContributor(AdditionalMappingContributor metadataContributor) {
         this.metadataContributor = metadataContributor;
     }
 
@@ -261,7 +257,7 @@ public class HibernateConnectionSourceFactory extends AbstractHibernateConnectio
         hibernateSettings.setEventTriggeringInterceptor(eventTriggeringInterceptor);
 
         try {
-            Class<? extends NamingStrategy> namingStrategy = hibernateSettings.getNaming_strategy();
+            Class<? extends PhysicalNamingStrategy> namingStrategy = hibernateSettings.getNaming_strategy();
             if (namingStrategy != null) {
                 GrailsDomainBinder.configureNamingStrategy(name, namingStrategy);
             }

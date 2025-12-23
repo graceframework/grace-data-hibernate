@@ -15,36 +15,10 @@
  */
 package org.grails.orm.hibernate.query;
 
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.DetachedCriteria;
-
-import grails.orm.HibernateCriteriaBuilder;
-import grails.orm.RlikeExpression;
-
-import org.grails.datastore.mapping.query.api.QueryableCriteria;
-
 /**
  * @author Graeme Rocher
  * @since 2.0
  */
 public class HibernateCriterionAdapter extends AbstractHibernateCriterionAdapter {
-
-    protected Criterion createRlikeExpression(String propertyName, String pattern) {
-        return new RlikeExpression(propertyName, pattern);
-    }
-
-    @Override
-    protected DetachedCriteria toHibernateDetachedCriteria(AbstractHibernateQuery hibernateQuery, QueryableCriteria<?> queryableCriteria) {
-        return HibernateCriteriaBuilder.getHibernateDetachedCriteria(hibernateQuery, queryableCriteria);
-    }
-
-    @Override
-    protected DetachedCriteria toHibernateDetachedCriteria(AbstractHibernateQuery hibernateQuery, QueryableCriteria<?> queryableCriteria,
-            String alias) {
-        if (alias == null) {
-            return toHibernateDetachedCriteria(hibernateQuery, queryableCriteria);
-        }
-        return HibernateCriteriaBuilder.getHibernateDetachedCriteria(hibernateQuery, queryableCriteria, alias);
-    }
 
 }

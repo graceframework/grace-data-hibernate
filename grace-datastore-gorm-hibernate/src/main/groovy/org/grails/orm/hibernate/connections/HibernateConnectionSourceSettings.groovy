@@ -17,10 +17,10 @@ package org.grails.orm.hibernate.connections
 
 import groovy.transform.CompileStatic
 import org.hibernate.CustomEntityDirtinessStrategy
+import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+import org.hibernate.boot.model.naming.PhysicalNamingStrategy
 import org.hibernate.cfg.AvailableSettings
 import org.hibernate.cfg.Configuration
-import org.hibernate.cfg.ImprovedNamingStrategy
-import org.hibernate.cfg.NamingStrategy
 import org.springframework.core.io.Resource
 
 import org.grails.datastore.gorm.jdbc.connections.DataSourceSettings
@@ -105,7 +105,7 @@ class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
         /**
          * The naming strategy
          */
-        Class<? extends NamingStrategy> naming_strategy = ImprovedNamingStrategy
+        Class<? extends PhysicalNamingStrategy> naming_strategy = CamelCaseToUnderscoresNamingStrategy
 
         /**
          *
@@ -205,15 +205,15 @@ class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
         Map<String, Object> toHibernateEventListeners(AbstractClosureEventTriggeringInterceptor eventTriggeringInterceptor) {
             if (eventTriggeringInterceptor != null) {
                 return [
-                        'save': eventTriggeringInterceptor,
+                        'save'       : eventTriggeringInterceptor,
                         'save-update': eventTriggeringInterceptor,
-                        'pre-load': eventTriggeringInterceptor,
-                        'post-load': eventTriggeringInterceptor,
-                        'pre-insert': eventTriggeringInterceptor,
+                        'pre-load'   : eventTriggeringInterceptor,
+                        'post-load'  : eventTriggeringInterceptor,
+                        'pre-insert' : eventTriggeringInterceptor,
                         'post-insert': eventTriggeringInterceptor,
-                        'pre-update': eventTriggeringInterceptor,
+                        'pre-update' : eventTriggeringInterceptor,
                         'post-update': eventTriggeringInterceptor,
-                        'pre-delete': eventTriggeringInterceptor,
+                        'pre-delete' : eventTriggeringInterceptor,
                         'post-delete': eventTriggeringInterceptor
                 ] as Map<String, Object>
             }

@@ -17,26 +17,18 @@ package org.grails.orm.hibernate.support;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
 import org.hibernate.HibernateException;
-import org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl;
-import org.hibernate.boot.registry.selector.internal.StrategySelectorImpl;
-import org.hibernate.boot.registry.selector.spi.StrategySelector;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl;
-import org.hibernate.engine.jdbc.dialect.internal.StandardDialectResolver;
 import org.hibernate.engine.jdbc.dialect.spi.DatabaseMetaDataDialectResolutionInfoAdapter;
 import org.hibernate.engine.jdbc.dialect.spi.DialectFactory;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfoSource;
-import org.hibernate.engine.jdbc.dialect.spi.DialectResolver;
-import org.hibernate.service.Service;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.spi.ServiceBinding;
-import org.hibernate.service.spi.ServiceRegistryImplementor;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.datasource.DataSourceUtils;
@@ -116,7 +108,7 @@ public class HibernateDialectDetectorFactoryBean implements FactoryBean<String>,
                     }
 
                 };
-                this.hibernateDialect = dialectFactory.buildDialect(this.hibernateProperties, infoSource);
+                this.hibernateDialect = dialectFactory.buildDialect((Map) this.hibernateProperties, infoSource);
                 this.hibernateDialectClassName = this.hibernateDialect.getClass().getName();
             }
             catch (HibernateException e) {
@@ -136,43 +128,6 @@ public class HibernateDialectDetectorFactoryBean implements FactoryBean<String>,
     // should be using the ServiceRegistry, but getting it from the SessionFactory at startup fails in Spring
     protected DialectFactory createDialectFactory() {
         DialectFactoryImpl factory = new DialectFactoryImpl();
-        factory.injectServices(new ServiceRegistryImplementor() {
-
-            @Override
-            public <R extends Service> R getService(Class<R> serviceRole) {
-                if (serviceRole == DialectResolver.class) {
-                    return (R) new StandardDialectResolver();
-                }
-                else if (serviceRole == StrategySelector.class) {
-                    return (R) new StrategySelectorImpl(new ClassLoaderServiceImpl(Thread.currentThread().getContextClassLoader()));
-                }
-                return null;
-            }
-
-            @Override
-            public <R extends Service> ServiceBinding<R> locateServiceBinding(Class<R> serviceRole) {
-                return null;
-            }
-
-            @Override
-            public void destroy() {
-
-            }
-
-            @Override
-            public void registerChild(ServiceRegistryImplementor child) {
-            }
-
-            @Override
-            public void deRegisterChild(ServiceRegistryImplementor child) {
-            }
-
-            @Override
-            public ServiceRegistry getParentServiceRegistry() {
-                return null;
-            }
-
-        });
         return factory;
     }
 

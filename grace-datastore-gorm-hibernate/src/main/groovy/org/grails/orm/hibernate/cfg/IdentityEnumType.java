@@ -97,7 +97,7 @@ public class IdentityEnumType implements UserType, ParameterizedType, Serializab
             if (LOG.isDebugEnabled()) {
                 LOG.debug(String.format("Mapped Basic Type is %s", this.type));
             }
-            this.sqlTypes = this.type.sqlTypes(null);
+//            this.sqlTypes = this.type.sqlTypes(null);
         }
         catch (Exception e) {
             throw new MappingException("Error mapping Enum Class using IdentifierEnumType", e);
@@ -105,8 +105,8 @@ public class IdentityEnumType implements UserType, ParameterizedType, Serializab
     }
 
     @Override
-    public int[] sqlTypes() {
-        return this.sqlTypes;
+    public int getSqlType() {
+        return 0;
     }
 
     @Override
@@ -125,12 +125,7 @@ public class IdentityEnumType implements UserType, ParameterizedType, Serializab
     }
 
     @Override
-    public Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session,
-            Object owner) throws HibernateException, SQLException {
-        Object id = this.type.nullSafeGet(rs, names[0], session);
-        if ((!rs.wasNull()) && id != null) {
-            return this.bidiMap.getEnumValue(id);
-        }
+    public Object nullSafeGet(ResultSet rs, int position, SharedSessionContractImplementor session, Object owner) throws SQLException {
         return null;
     }
 

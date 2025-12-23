@@ -28,11 +28,11 @@ import org.hibernate.query.Query;
 import org.grails.datastore.mapping.model.PersistentEntity;
 import org.grails.orm.hibernate.GrailsHibernateTemplate;
 
-public class PagedResultList extends grails.gorm.PagedResultList {
+public class PagedResultList<E> extends grails.gorm.PagedResultList<E> {
 
-    private final CriteriaQuery criteriaQuery;
+    private final CriteriaQuery<E> criteriaQuery;
 
-    private final Root queryRoot;
+    private final Root<E> queryRoot;
 
     private final CriteriaBuilder criteriaBuilder;
 
@@ -43,8 +43,8 @@ public class PagedResultList extends grails.gorm.PagedResultList {
     public PagedResultList(GrailsHibernateTemplate template,
             PersistentEntity entity,
             HibernateHqlQuery hibernateHqlQuery,
-            CriteriaQuery criteriaQuery,
-            Root queryRoot,
+            CriteriaQuery<E> criteriaQuery,
+            Root<E> queryRoot,
             CriteriaBuilder criteriaBuilder) {
         super(hibernateHqlQuery);
         this.hibernateTemplate = template;
@@ -66,11 +66,10 @@ public class PagedResultList extends grails.gorm.PagedResultList {
 
                 @Override
                 public Integer doInHibernate(Session session) throws HibernateException, SQLException {
-                    final CriteriaQuery finalQuery = PagedResultList.this.criteriaQuery.select(
-                            PagedResultList.this.criteriaBuilder.count(PagedResultList.this.queryRoot)).distinct(true);
-                    final Query query = session.createQuery(finalQuery);
+                    PagedResultList.this.criteriaQuery.select(PagedResultList.this.queryRoot);
+                    final Query<?> query = session.createQuery(PagedResultList.this.criteriaQuery);
                     PagedResultList.this.hibernateTemplate.applySettings(query);
-                    return ((Number) query.uniqueResult()).intValue();
+                    return Long.valueOf(query.getResultCount()).intValue();
                 }
 
             });

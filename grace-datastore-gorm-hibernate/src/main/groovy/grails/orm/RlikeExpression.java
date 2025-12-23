@@ -15,25 +15,13 @@
  */
 package grails.orm;
 
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.criterion.CriteriaQuery;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.dialect.Dialect;
-import org.hibernate.dialect.H2Dialect;
-import org.hibernate.dialect.MySQLDialect;
-import org.hibernate.dialect.Oracle8iDialect;
-import org.hibernate.dialect.PostgreSQL81Dialect;
-import org.hibernate.engine.spi.TypedValue;
-
 /**
  * Adds support for rlike to Hibernate in supported dialects.
  *
  * @author Graeme Rocher
  * @since 1.1.1
  */
-public class RlikeExpression implements Criterion {
+public class RlikeExpression {
 
     private static final long serialVersionUID = -214329918050957956L;
 
@@ -44,45 +32,6 @@ public class RlikeExpression implements Criterion {
     public RlikeExpression(String propertyName, Object value) {
         this.propertyName = propertyName;
         this.value = value;
-    }
-
-    public RlikeExpression(String propertyName, String value, MatchMode matchMode) {
-        this(propertyName, matchMode.toMatchString(value));
-    }
-
-    @Override
-    public String toSqlString(Criteria criteria, CriteriaQuery criteriaQuery) throws HibernateException {
-        Dialect dialect = criteriaQuery.getFactory().getDialect();
-        String[] columns = criteriaQuery.getColumnsUsingProjection(criteria, this.propertyName);
-        if (columns.length != 1) {
-            throw new HibernateException("rlike may only be used with single-column properties");
-        }
-
-        if (dialect instanceof MySQLDialect) {
-            return columns[0] + " rlike ?";
-        }
-
-        if (isOracleDialect(dialect)) {
-            return " REGEXP_LIKE (" + columns[0] + ", ?)";
-        }
-
-        if (dialect instanceof PostgreSQL81Dialect) {
-            return columns[0] + " ~* ?";
-        }
-
-        if (dialect instanceof H2Dialect) {
-            return columns[0] + " REGEXP ?";
-        }
-
-        throw new HibernateException("rlike is not supported with the configured dialect " + dialect.getClass().getCanonicalName());
-    }
-
-    private boolean isOracleDialect(Dialect dialect) {
-        return (dialect instanceof Oracle8iDialect);
-    }
-
-    public TypedValue[] getTypedValues(Criteria criteria, CriteriaQuery criteriaQuery) throws HibernateException {
-        return new TypedValue[] { criteriaQuery.getTypedValue(criteria, this.propertyName, this.value.toString()) };
     }
 
     @Override

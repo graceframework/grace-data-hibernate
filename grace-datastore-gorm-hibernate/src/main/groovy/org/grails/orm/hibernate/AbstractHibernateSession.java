@@ -45,12 +45,15 @@ public abstract class AbstractHibernateSession extends AbstractAttributeStoringS
 
     protected AbstractHibernateDatastore datastore;
 
+    protected SessionFactory sessionFactory;
+
     protected boolean connected = true;
 
     protected IHibernateTemplate hibernateTemplate;
 
     protected AbstractHibernateSession(AbstractHibernateDatastore hibernateDatastore, SessionFactory sessionFactory) {
         this.datastore = hibernateDatastore;
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
@@ -222,6 +225,10 @@ public abstract class AbstractHibernateSession extends AbstractAttributeStoringS
     @Override
     public void setSynchronizedWithTransaction(boolean synchronizedWithTransaction) {
         // no-op
+    }
+
+    public SessionFactory getSessionFactory() {
+        return this.sessionFactory;
     }
 
 }

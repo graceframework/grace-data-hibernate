@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import groovy.lang.Closure;
-import org.hibernate.Criteria;
+//import org.hibernate.Criteria;
 import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -54,7 +54,7 @@ public interface IHibernateTemplate {
 
     void applySettings(Query query);
 
-    void applySettings(Criteria criteria);
+//    void applySettings(Criteria criteria);
 
     <T> T get(Class<T> type, Serializable key);
 

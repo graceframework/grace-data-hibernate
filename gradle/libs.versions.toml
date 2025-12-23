@@ -3,15 +3,15 @@ codenarc = "3.6.0"
 checkstyle = "10.26.1"
 ehcache = "3.10.9"
 glassfish-expressly = "5.0.0"
-grace-data = "2024.0.0-SNAPSHOT"
+grace-data = "2024.0.0-M1"
 grace-framework = "2024.0.0-SNAPSHOT"
 grace-gradle = "2024.0.0-M1"
 groovy = "4.0.29"
 h2 = "2.3.232"
-hibernate-ehcache = "5.6.15.Final"
-hibernate-core = "5.6.15.Final"
-hibernate-jcache = "5.6.15.Final"
-hibernate-validator = "8.0.2.Final"
+hibernate-core = "6.6.40.Final"
+hibernate-jcache = "6.6.40.Final"
+hibernate-validator = "8.0.3.Final"
+jandex = "3.2.0"
 jakarta-annotation = "2.1.1"
 jakarta-el = "5.0.1"
 jakarta-inject = "2.0.1"
@@ -28,8 +28,8 @@ objenesis = "3.4"
 slf4j = "2.0.17"
 snakeyaml = "2.3"
 spock = "2.3-groovy-4.0"
-spring-framework = "6.2.11"
-tomcat = "10.1.48"
+spring-framework = "6.2.15"
+tomcat = "10.1.50"
 
 [libraries]
 ehcache = { group = "org.ehcache", name = "ehcache", version.ref = "ehcache" }
@@ -52,10 +52,10 @@ groovy-sql = { module = "org.apache.groovy:groovy-sql", version.ref = "groovy" }
 groovy-test = { module = "org.apache.groovy:groovy-test", version.ref = "groovy" }
 groovy-test-junit5 = { module = "org.apache.groovy:groovy-test-junit5", version.ref = "groovy" }
 h2 = { module = "com.h2database:h2", version.ref = "h2" }
-hibernate-ehcache = { module = "org.hibernate:hibernate-ehcache", version.ref = "hibernate-ehcache" }
-hibernate-core = { module = "org.hibernate:hibernate-core-jakarta", version.ref = "hibernate-core" }
-hibernate-jcache = { module = "org.hibernate:hibernate-jcache", version.ref = "hibernate-jcache" }
+hibernate-core = { module = "org.hibernate.orm:hibernate-core", version.ref = "hibernate-core" }
+hibernate-jcache = { module = "org.hibernate.orm:hibernate-jcache", version.ref = "hibernate-jcache" }
 hibernate-validator = { module = "org.hibernate.validator:hibernate-validator", version.ref = "hibernate-validator" }
+jandex = { module = "io.smallrye:jandex", version.ref = "jandex" }
 jakarta-annotation-api = { module = "jakarta.annotation:jakarta.annotation-api", version.ref = "jakarta-annotation" }
 jakarta-el = { module = "jakarta.el:jakarta.el-api", version.ref = "jakarta-el" }
 jakarta-inject = { module = "jakarta.inject:jakarta.inject-api", version.ref = "jakarta-inject" }

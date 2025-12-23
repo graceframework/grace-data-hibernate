@@ -34,7 +34,6 @@ import jakarta.persistence.criteria.Root;
 
 import groovy.lang.Closure;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
-import org.hibernate.Criteria;
 import org.hibernate.FlushMode;
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
@@ -235,13 +234,6 @@ public class GrailsHibernateTemplate implements IHibernateTemplate {
     public void applySettings(org.hibernate.query.Query query) {
         if (this.exposeNativeSession) {
             prepareQuery(query);
-        }
-    }
-
-    @Override
-    public void applySettings(Criteria criteria) {
-        if (this.exposeNativeSession) {
-            prepareCriteria(criteria);
         }
     }
 
@@ -481,7 +473,7 @@ public class GrailsHibernateTemplate implements IHibernateTemplate {
      *
      * @param query the Query object to prepare
      */
-    protected void prepareQuery(org.hibernate.query.Query query) {
+    protected void prepareQuery(org.hibernate.query.Query<?> query) {
         if (this.cacheQueries) {
             query.setCacheable(true);
         }
@@ -491,27 +483,6 @@ public class GrailsHibernateTemplate implements IHibernateTemplate {
         SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager.getResource(this.sessionFactory);
         if (sessionHolder != null && sessionHolder.hasTimeout()) {
             query.setTimeout(sessionHolder.getTimeToLiveInSeconds());
-        }
-    }
-
-    /**
-     * Prepare the given Criteria object, applying cache settings and/or a
-     * transaction timeout.
-     *
-     * @param criteria the Criteria object to prepare
-     * @deprecated Deprecated because Hibernate Criteria are deprecated
-     */
-    @Deprecated
-    protected void prepareCriteria(Criteria criteria) {
-        if (this.cacheQueries) {
-            criteria.setCacheable(true);
-        }
-        if (shouldPassReadOnlyToHibernate()) {
-            criteria.setReadOnly(true);
-        }
-        SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager.getResource(this.sessionFactory);
-        if (sessionHolder != null && sessionHolder.hasTimeout()) {
-            criteria.setTimeout(sessionHolder.getTimeToLiveInSeconds());
         }
     }
 
@@ -716,7 +687,7 @@ public class GrailsHibernateTemplate implements IHibernateTemplate {
 
     @Override
     public Serializable save(Object o) {
-        return this.sessionFactory.getCurrentSession().save(o);
+        return (Serializable) this.sessionFactory.getCurrentSession().save(o);
     }
 
     @Override
@@ -808,10 +779,7 @@ public class GrailsHibernateTemplate implements IHibernateTemplate {
                 if (retVal instanceof org.hibernate.query.Query) {
                     prepareQuery(((org.hibernate.query.Query) retVal));
                 }
-                if (retVal instanceof Criteria) {
-                    prepareCriteria(((Criteria) retVal));
-                }
-                else if (retVal instanceof Query) {
+                if (retVal instanceof Query) {
                     prepareCriteria(((Query) retVal));
                 }
 
