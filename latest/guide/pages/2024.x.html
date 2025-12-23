@@ -1,0 +1,391 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>2.1 What's new in 2024.x 2024.0.0-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navHeader">
+        
+        <span id="logo">
+            <a href="https://graceframework.org" title="Grace Framework Website">
+                <img src="../img/grace.svg" alt="Grace Framework" />
+            </a>
+        </span>
+        
+        <div class="docHeader">
+            <h1 class="docTitle">Grace Data Hibernate</h1>
+            <h3 class="docSubTitle">Provides integration between Grace and Hibernate through GORM</h3>
+        </div>
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/releases.html"><strong>2</strong><span>Release History</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/quickStartGuide.html"><strong>4</strong><span>Quick Start Guide</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/configuration.html"><strong>5</strong><span>Configuration</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/domainClasses.html"><strong>6</strong><span>Domain Modelling in GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/persistenceBasics.html"><strong>7</strong><span>Persistence Basics</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/querying.html"><strong>8</strong><span>Querying with GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/advancedGORMFeatures.html"><strong>9</strong><span>Advanced GORM Features</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/programmaticTransactions.html"><strong>10</strong><span>Programmatic Transactions</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/services.html"><strong>11</strong><span>GORM Data Services</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multipleDataSources.html"><strong>12</strong><span>Multiple Data Sources</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/multiTenancy.html"><strong>13</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/constraints.html"><strong>14</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/testing.html"><strong>15</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../../guide/support.html"><strong>16</strong><span>Support</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <!-- <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li> -->
+            <li class="separator selected">
+                <a id="ref-button" href="../api/index.html">API Docs</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+                    <div class="toc-item prev-left"><a href="../../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>2.1 What's new in 2024.x</h1>
+
+                    <p><strong>Version:</strong> 2024.0.0-SNAPSHOT</p>
+                </div>
+
+                
+
+                
+
+<h2 id="2024.x"><a class="anchor" href="#2024.x"></a>2.1 What's new in 2024.x</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.0.x/src/docs/guide/releases/2024.x.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect2">
+<h3 id="_2024_0_0_m1">2024.0.0-M1</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2024.0.0-M1">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>⭐️ New Features</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add release notes for 2024.x</p>
+</li>
+<li>
+<p>Merge hibernate plugin into the grace-framework <a href="https://github.com/graceframework/grace-data-hibernate/issues/126">#126</a></p>
+</li>
+<li>
+<p>Relocate <code>examples</code> to the grace-data-examples <a href="https://github.com/graceframework/grace-data-hibernate/issues/125">#125</a></p>
+</li>
+<li>
+<p>Remove <code>SchemaExportCommand</code> This command will be moved to database-migration plugin <a href="https://github.com/graceframework/grace-data-hibernate/issues/123">#123</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Configure 'test' task to run against to all the tests in the TCK <a href="https://github.com/graceframework/grace-data-hibernate/issues/133">#133</a></p>
+</li>
+<li>
+<p>Update test dependencies to use jakarta version of Ehcache 3 <a href="https://github.com/graceframework/grace-data-hibernate/issues/132">#132</a></p>
+</li>
+<li>
+<p>Cleanup tests</p>
+</li>
+<li>
+<p>Add Checkstyle and Codenarc version to Gradle version catalog remove the unused 'gradle/checkstyle/*' and 'gradle/codenarc/codenarc.groovy' <a href="https://github.com/graceframework/grace-data-hibernate/issues/131">#131</a></p>
+</li>
+<li>
+<p>Register the missing 'docs' task Improve the 'clean' task Change the description of BOM <a href="https://github.com/graceframework/grace-data-hibernate/issues/130">#130</a></p>
+</li>
+<li>
+<p>Using hibernate-jcache and Ehcache 3 to test Hibernate second-level caching <a href="https://github.com/graceframework/grace-data-hibernate/issues/129">#129</a></p>
+</li>
+<li>
+<p>Update README</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Update the Maven Central badge</p>
+</li>
+<li>
+<p>Update the Groovy version</p>
+</li>
+<li>
+<p>Update the usage</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Restructure Gradle builds <a href="https://github.com/graceframework/grace-data-hibernate/issues/127">#127</a></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Use Gradle version catalog to simplify dependency management</p>
+</li>
+<li>
+<p>Sharing Build Logic using buildSrc</p>
+</li>
+<li>
+<p>Update Checkstyle and CodeNarc plugin</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Cleanup build scripts</p>
+</li>
+<li>
+<p>Code formatting</p>
+</li>
+<li>
+<p>Update Checkstyle Configuration and Codenarc Rules</p>
+</li>
+<li>
+<p>Code formatting with Checkstyle and Codenarc</p>
+</li>
+<li>
+<p>Update CI: Skip integeration tests</p>
+</li>
+<li>
+<p>Temporarily does not include examples projects</p>
+</li>
+<li>
+<p>Start building against Grace Data and Grace Framework 2024.0.0 snapshots</p>
+</li>
+<li>
+<p>Don&#8217;t use deprecated <code>@JpaEntity</code></p>
+</li>
+<li>
+<p>Update Docs Use grails.gorm.annotation.Entity</p>
+</li>
+<li>
+<p>Use grails.gorm.annotation.Entity</p>
+</li>
+<li>
+<p>Add dependency to javassist when using HibernateProxyHandler <a href="https://github.com/graceframework/grace-data-hibernate/issues/120">#120</a></p>
+</li>
+<li>
+<p>Update README</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Update document links</p>
+</li>
+<li>
+<p>Update badge version of Grace, Groovy and Spring Boot</p>
+</li>
+<li>
+<p>Update supported versions</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Update README</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Update badge versions of Grace, Groovy and Spring Boot</p>
+</li>
+<li>
+<p>Update the description</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Migrate to Central Portal OSSRH Staging API <a href="https://github.com/graceframework/grace-data-hibernate/issues/114">#114</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🐞 Bug Fixes</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Relocate <code>HibernateEntity</code> <code>ManagedEntity</code> <code>MappingBuilder</code> to <code>grails.gorm</code> package</p>
+</li>
+<li>
+<p>HibernateDatastoreSpringInitializer not register domainClass correctly <a href="https://github.com/graceframework/grace-data-hibernate/issues/119">#119</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Eclipse Expressly 5.0.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/121">#121</a></p>
+</li>
+<li>
+<p>Upgrade to Grace 2024.0.0-M1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/116">#116</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2024.0.0-M1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/124">#124</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle 8.14.3 <a href="https://github.com/graceframework/grace-data-hibernate/issues/122">#122</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle Codenarc plugin 3.6.0</p>
+</li>
+<li>
+<p>Upgrade to Gradle Checkstyle plugin 10.26.1</p>
+</li>
+<li>
+<p>Upgrade to Groovy 4.0.29 <a href="https://github.com/graceframework/grace-data-hibernate/issues/128">#128</a></p>
+</li>
+<li>
+<p>Upgrade to Groovy 4.0.27 <a href="https://github.com/graceframework/grace-data-hibernate/issues/118">#118</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 6.2.15 <a href="https://github.com/graceframework/grace-data-hibernate/issues/134">#134</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.50 <a href="https://github.com/graceframework/grace-data-hibernate/issues/135">#135</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2024.0.0-M1</p>
+</li>
+<li>
+<p>Bump gradle/actions from 4.0.0 to 4.4.2</p>
+</li>
+<li>
+<p>Bump actions/checkout from 4 to 5</p>
+</li>
+<li>
+<p>Update GitHub workflows - Switch to 2024.0.x</p>
+</li>
+<li>
+<p>Next development version: 2024.0.0-SNAPSHOT</p>
+</li>
+</ul>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item prev-left"><a href="../../guide/introduction.html">&lt;&lt; <strong>1</strong><span>Introduction</span></a></div>
+                
+                    <div class="toc-item next-right"><a href="../../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright &copy; 2022-2025 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>
