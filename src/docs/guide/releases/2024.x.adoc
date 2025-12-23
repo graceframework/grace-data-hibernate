@@ -1,0 +1,76 @@
+=== 2024.0.0-M1
+
+link:{github}/releases/tag/v2024.0.0-M1[release notes]
+
+⭐️ New Features
+
+* Add release notes for 2024.x
+* Merge hibernate plugin into the grace-framework link:{github}/issues/126[#126]
+* Relocate `examples` to the grace-data-examples link:{github}/issues/125[#125]
+* Remove `SchemaExportCommand` This command will be moved to database-migration plugin link:{github}/issues/123[#123]
+
+🛠 Improvements
+
+* Configure 'test' task to run against to all the tests in the TCK link:{github}/issues/133[#133]
+* Update test dependencies to use jakarta version of Ehcache 3 link:{github}/issues/132[#132]
+* Cleanup tests
+* Add Checkstyle and Codenarc version to Gradle version catalog remove the unused 'gradle/checkstyle/*' and 'gradle/codenarc/codenarc.groovy' link:{github}/issues/131[#131]
+* Register the missing 'docs' task Improve the 'clean' task Change the description of BOM link:{github}/issues/130[#130]
+* Using hibernate-jcache and Ehcache 3 to test Hibernate second-level caching link:{github}/issues/129[#129]
+* Update README
+  - Update the Maven Central badge
+  - Update the Groovy version
+  - Update the usage
+
+* Restructure Gradle builds link:{github}/issues/127[#127]
+  - Use Gradle version catalog to simplify dependency management
+  - Sharing Build Logic using buildSrc
+  - Update Checkstyle and CodeNarc plugin
+
+* Cleanup build scripts
+* Code formatting
+* Update Checkstyle Configuration and Codenarc Rules
+* Code formatting with Checkstyle and Codenarc
+* Update CI: Skip integeration tests
+* Temporarily does not include examples projects
+* Start building against Grace Data and Grace Framework 2024.0.0 snapshots
+* Don't use deprecated `@JpaEntity`
+* Update Docs Use grails.gorm.annotation.Entity
+* Use grails.gorm.annotation.Entity
+* Add dependency to javassist when using HibernateProxyHandler link:{github}/issues/120[#120]
+* Update README
+  - Update document links
+  - Update badge version of Grace, Groovy and Spring Boot
+  - Update supported versions
+
+* Update README
+  - Update badge versions of Grace, Groovy and Spring Boot
+  - Update the description
+
+* Migrate to Central Portal OSSRH Staging API link:{github}/issues/114[#114]
+
+🐞 Bug Fixes
+
+* Relocate `HibernateEntity` `ManagedEntity` `MappingBuilder` to `grails.gorm` package
+* HibernateDatastoreSpringInitializer not register domainClass correctly link:{github}/issues/119[#119]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Eclipse Expressly 5.0.0 link:{github}/issues/121[#121]
+* Upgrade to Grace 2024.0.0-M1 link:{github}/issues/116[#116]
+* Upgrade to Grace Data 2024.0.0-M1 link:{github}/issues/124[#124]
+* Upgrade to Gradle 8.14.3 link:{github}/issues/122[#122]
+* Upgrade to Gradle Codenarc plugin 3.6.0
+* Upgrade to Gradle Checkstyle plugin 10.26.1
+* Upgrade to Groovy 4.0.29 link:{github}/issues/128[#128]
+* Upgrade to Groovy 4.0.27 link:{github}/issues/118[#118]
+* Upgrade to Spring Framework 6.2.15 link:{github}/issues/134[#134]
+* Upgrade to Tomcat 10.1.50 link:{github}/issues/135[#135]
+
+⚙️ Tasks
+
+* Release v2024.0.0-M1
+* Bump gradle/actions from 4.0.0 to 4.4.2
+* Bump actions/checkout from 4 to 5
+* Update GitHub workflows - Switch to 2024.0.x
+* Next development version: 2024.0.0-SNAPSHOT
