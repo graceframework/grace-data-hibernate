@@ -1,12 +1,11 @@
-If you wish to use GORM for Hibernate outside of a Grails application you should declare the necessary dependencies for GORM and the database you are using, for example in Gradle:
+If you wish to use Grace Data Hibernate outside of a Grails application you should declare the necessary dependencies for GORM and the database you are using, for example in Gradle:
 
 [source,groovy,subs="attributes"]
 ----
-compile "org.grails:grails-datastore-gorm-hibernate5:{version}"
-runtime "com.h2database:h2:1.4.192"
-runtime "org.apache.tomcat:tomcat-jdbc:8.5.0"
-runtime "org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.5.0"
-runtime "org.slf4j:slf4j-api:1.7.10"
+implementation "org.graceframework:grace-boot:{version}"
+implementation "org.graceframework:grace-boot-hibernate:{version}"
+implementation "org.graceframework:grace-boot-persistence:{version}"
+runtimeOnly "com.h2database:h2:2.3.232"
 ----
 
 NOTE: The above example also uses the https://www.h2database.com[H2 Database] and Tomcat connection pool.

@@ -1,16 +1,16 @@
-To use GORM {version} for Hibernate in Grace 2023 you can specify the following configuration in `build.gradle`:
+To use Grace Data Hibernate {version} in Grace applications you can specify the following configuration in `build.gradle`:
 
 [source,groovy,subs="attributes"]
 ----
 dependencies {
-    compile "org.graceframework.plugins:hibernate:{version}"
+    implementation "org.graceframework:grace-boot-hibernate:{version}"
 }
 ----
 
-Otherwise if you are using an earlier version of Grace framework you can force the GORM version by adding the following block directly above the `dependencies` block:
+Otherwise if you are using an earlier version of Grace framework you can force the Grace Data Hibernate version by adding the following block directly above the `dependencies` block:
 
 [source,groovy,subs="attributes"]
 .build.gradle
 ----
-ext['grace-gorm.version'] = {version}
+ext['grace-data-hibernate.version'] = {version}
 ----

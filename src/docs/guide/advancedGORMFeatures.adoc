@@ -1,1 +1,1 @@
-The following sections cover more advanced usages of GORM including caching, custom mapping and events.
+The following sections cover more advanced usages of Grace Data including caching, custom mapping and events.

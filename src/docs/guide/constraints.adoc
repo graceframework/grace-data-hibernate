@@ -1,1 +1,1 @@
-Constraints are how you define validation when using GORM entities.
+Constraints are how you define validation when using Grace Data entities.

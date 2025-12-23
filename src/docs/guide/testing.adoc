@@ -1,3 +1,3 @@
-In previous versions of GORM it was much more difficult to setup a unit test to test your GORM logic.
+In previous versions of Grace Data it was much more difficult to setup a unit test to test your Grace Data logic.
 
-However, since GORM 6.0, this situation has changed and it is relatively trivial to setup GORM for testing.
+However, since Grace Data 6.0, this situation has changed and it is relatively trivial to setup GORM for testing.

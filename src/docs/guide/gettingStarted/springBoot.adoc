@@ -1,20 +1,19 @@
-To use GORM for Hibernate in Spring Boot add the necessary dependencies to your Boot application:
+To use Grace Data Hibernate in Spring Boot add the necessary dependencies to your Boot application:
 
 [source,groovy,subs="attributes"]
 ----
-compile("org.grails:gorm-hibernate5-spring-boot:{version}")
-compile "org.hibernate:hibernate-core"
-compile "org.hibernate:hibernate-ehcache"
-runtime "com.h2database:h2:1.4.192"
+implementation "org.graceframework:grace-boot:{version}"
+implementation "org.graceframework:grace-boot-hibernate:{version}"
+implementation "org.hibernate:hibernate-jcache"
+runtimeOnly "com.h2database:h2"
 // for MySQL
-// runtime "mysql:mysql-connector-java"
+// runtimeOnly "mysql:mysql-connector-java"
 
 // for connection pooling
-runtime "org.apache.tomcat:tomcat-jdbc:8.5.0"
-runtime "org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.5.0"
+runtimeOnly "org.apache.tomcat:tomcat-jdbc"
 ----
 
-Then ensure you have configured a https://docs.spring.io/spring-boot/3.3/reference/data/sql.html[datasource and Hibernate as per the Spring Boot guide]. For example in the case of MySQL:
+Then ensure you have configured a https://docs.spring.io/spring-boot/3.4/reference/data/sql.html[datasource and Hibernate as per the Spring Boot guide]. For example in the case of MySQL:
 
 [source,yaml]
 ----
@@ -30,19 +29,12 @@ spring:
         password: ""
 ----
 
-TIP: If if you prefer to use the Grails way of configuring the `DataSource` (with `dataSource.url` etc.) then you can add `@EnableAutoConfiguration(exclude = DataSourceAutoConfiguration)` to your `Application` class, which will allow GORM to take over configuring the data source.
-
-Ensure your Boot `Application` class is annotated with `ComponentScan`, for example:
-
 [source,groovy]
 ----
 import org.springframework.boot.SpringApplication
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration
-import org.springframework.context.annotation.*
+import org.springframework.boot.autoconfigure.SpringBootApplication
 
-@Configuration
-@EnableAutoConfiguration
-@ComponentScan
+@SpringBootApplication
 class Application {
     static void main(String[] args) {
         SpringApplication.run Application, args
@@ -50,8 +42,8 @@ class Application {
 }
 ----
 
-NOTE: Using `ComponentScan` without a value results in Boot scanning for classes in the same package or any package nested within the `Application` class package.
-If your GORM entities are in a different package specify the package name as the value of the `ComponentScan` annotation.
+NOTE: Using `@GraceComponentScan` without a value results in Boot scanning for classes in the same package or any package nested within the `Application` class package.
+If your GORM entities are in a different package specify the package name as the value of the `@GraceComponentScan` annotation.
 
 Finally create your GORM entities and ensure they are annotated with `grails.persistence.Entity`:
 
