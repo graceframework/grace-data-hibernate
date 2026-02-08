@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2025 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 package org.grails.orm.hibernate.connections
 
-import org.hibernate.dialect.Oracle8iDialect
+import org.hibernate.dialect.H2Dialect
 import spock.lang.Specification
 
 import org.grails.datastore.gorm.jdbc.connections.DataSourceConnectionSourceFactory
@@ -34,7 +34,7 @@ class DataSourceConnectionSourceFactorySpec extends Specification {
         Map config = [
                 'dataSource.url'                    : 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000',
                 'dataSource.dbCreate'               : 'update',
-                'dataSource.dialect'                : Oracle8iDialect.name,
+                'dataSource.dialect'                : H2Dialect.name,
                 'dataSource.properties.dbProperties': [useSSL: false]
         ]
         def connectionSource = factory.create(
