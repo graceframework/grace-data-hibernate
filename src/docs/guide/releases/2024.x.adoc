@@ -1,3 +1,36 @@
+=== 2024.0.0-RC1
+
+link:{github}/releases/tag/v2024.0.0-RC1[release notes]
+
+⭐️ New Features
+
+* Introduce HibernateEntityTraitProvider for Hibernate GORM link:{github}/issues/145[#145]
+* Relocate HibernateDatastoreSpringInitializer from hibernate plugin to grace-data-hibernate link:{github}/issues/144[#144]
+
+🛠 Improvements
+
+* Add release notes for 2024.0.0-RC1
+* Update copyright in doc.properties 
+* Remove unused resources/META-INF/org.hibernate.integrator.spi.Integrator EventListenerIntegrator has been manually registered by calling `BootstrapServiceRegistryBuilder#applyIntegrator(Integrator)` link:{github}/issues/146[#146]
+* Add HibernateDatastoreSpringInitializerSpec link:{github}/issues/144[#144]
+* Update README - Update badge versions of Grace and Groovy
+* Use H2Dialect instead of Oracle8iDialect
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2024.0.0-M2 link:{github}/issues/139[#139]
+* Upgrade to Grace Data 2024.0.0-RC1 link:{github}/issues/138[#138]
+* Upgrade to Grace Doc Gradle Plugin 2024.0.0-M2 link:{github}/issues/140[#140]
+* Upgrade to Gradle 8.14.4 link:{github}/issues/136[#136]
+* Upgrade to Groovy 4.0.30 link:{github}/issues/137[#137]
+* Upgrade to Hibernate Validator 8.0.3.Final link:{github}/issues/141[#141]
+* Upgrade to Spring Framework 6.2.16 link:{github}/issues/142[#142]
+* Upgrade to Tomcat 10.1.52 link:{github}/issues/143[#143]
+
+⚙️ Tasks
+
+* Release v2024.0.0-RC1
+
 === 2024.0.0-M1
 
 link:{github}/releases/tag/v2024.0.0-M1[release notes]
