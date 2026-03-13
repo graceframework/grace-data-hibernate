@@ -2,6 +2,7 @@ grails.gorm.hibernate
 grails.gorm.hibernate.annotation
 grails.gorm.hibernate.mapping
 grails.orm
+grails.orm.bootstrap
 org.grails.orm.hibernate
 org.grails.orm.hibernate.access
 org.grails.orm.hibernate.cfg
