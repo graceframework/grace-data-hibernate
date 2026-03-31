@@ -1,3 +1,27 @@
+=== 2024.0.0
+
+link:{github}/releases/tag/v2024.0.0[release notes]
+
+🛠 Improvements
+
+* Add release notes for 2024.0.0
+* Update README - Update badge version of Grace
+* Update spring api link in doc.properties
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace 2024.0.0-RC1 link:{github}/issues/147[#147]
+* Upgrade to Grace Data 2024.0.0 link:{github}/issues/148[#148]
+* Upgrade to Spring Framework 6.2.17 link:{github}/issues/149[#149]
+* Upgrade to Tomcat 10.1.53 link:{github}/issues/150[#150]
+
+⚙️ Tasks
+
+* Release v2024.0.0
+* Upgrade to gradle/actions/setup-gradle@v5.0.2
+* Upgrade to actions/setup-java@v5
+* Upgrade to actions/checkout@v6
+
 === 2024.0.0-RC1
 
 link:{github}/releases/tag/v2024.0.0-RC1[release notes]
@@ -10,7 +34,7 @@ link:{github}/releases/tag/v2024.0.0-RC1[release notes]
 🛠 Improvements
 
 * Add release notes for 2024.0.0-RC1
-* Update copyright in doc.properties 
+* Update copyright in doc.properties
 * Remove unused resources/META-INF/org.hibernate.integrator.spi.Integrator EventListenerIntegrator has been manually registered by calling `BootstrapServiceRegistryBuilder#applyIntegrator(Integrator)` link:{github}/issues/146[#146]
 * Add HibernateDatastoreSpringInitializerSpec link:{github}/issues/144[#144]
 * Update README - Update badge versions of Grace and Groovy
