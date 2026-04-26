@@ -27,7 +27,7 @@ objenesis = "3.4"
 slf4j = "2.0.17"
 snakeyaml = "2.3"
 spock = "2.3-groovy-4.0"
-spring-framework = "6.2.17"
+spring-framework = "6.2.18"
 tomcat = "10.1.53"
 
 [libraries]
