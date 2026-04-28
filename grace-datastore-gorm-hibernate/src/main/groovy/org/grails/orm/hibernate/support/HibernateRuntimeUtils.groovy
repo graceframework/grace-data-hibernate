@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2025 the original author or authors.
+ * Copyright 2010-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,7 @@ import org.grails.orm.hibernate.proxy.HibernateProxyHandler
  * Utility methods used at runtime by the GORM for Hibernate implementation
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 4.0
  */
 @CompileStatic
@@ -129,9 +130,7 @@ class HibernateRuntimeUtils {
         }
     }
 
-    static Object convertValueToType(Object passedValue, Class targetType, ConversionService conversionService) {
-        // workaround for GROOVY-6127, do not assign directly in parameters before it's fixed
-        Object value = passedValue
+    static Object convertValueToType(Object value, Class targetType, ConversionService conversionService) {
         if (targetType != null && value != null && !(value in targetType)) {
             if (value instanceof CharSequence) {
                 value = value.toString()
