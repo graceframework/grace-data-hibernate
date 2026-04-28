@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2025 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,6 +50,7 @@ import org.grails.orm.hibernate.support.HibernateRuntimeUtils
  * Abstract implementation of the Hibernate static API for GORM, providing String-based method implementations
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 4.0
  */
 @CompileStatic
@@ -119,8 +120,7 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
                 CriteriaQuery criteriaQuery = criteriaBuilder.createQuery(persistentEntity.javaClass)
                 Root queryRoot = criteriaQuery.from(persistentEntity.javaClass)
                 criteriaQuery = criteriaQuery.where(
-                        //TODO: Remove explicit type cast once GROOVY-9460
-                        criteriaBuilder.equal((Expression<?>) queryRoot.get(persistentEntity.identity.name), id)
+                        criteriaBuilder.equal(queryRoot.get(persistentEntity.identity.name), id)
                 )
                 Query criteria = session.createQuery(criteriaQuery)
                 HibernateHqlQuery hibernateHqlQuery = new HibernateHqlQuery(
@@ -153,8 +153,7 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
 
             Root queryRoot = criteriaQuery.from(persistentEntity.javaClass)
             criteriaQuery = criteriaQuery.where(
-                    //TODO: Remove explicit type cast once GROOVY-9460
-                    criteriaBuilder.equal((Expression<?>) queryRoot.get(persistentEntity.identity.name), id)
+                    criteriaBuilder.equal(queryRoot.get(persistentEntity.identity.name), id)
             )
             Query criteria = session.createQuery(criteriaQuery)
                     .setHint(QueryHints.HINT_READONLY, true)
@@ -236,8 +235,7 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
             Root queryRoot = criteriaQuery.from(persistentEntity.javaClass)
             def idProp = queryRoot.get(persistentEntity.identity.name)
             criteriaQuery = criteriaQuery.where(
-                    //TODO: Remove explicit type cast once GROOVY-9460
-                    criteriaBuilder.equal((Expression<?>) idProp, id)
+                    criteriaBuilder.equal(idProp, id)
             )
             criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(persistentEntity.javaClass)))
             Query criteria = session.createQuery(criteriaQuery)
