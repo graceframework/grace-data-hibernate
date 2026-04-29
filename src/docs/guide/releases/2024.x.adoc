@@ -1,3 +1,31 @@
+=== 2024.1.0-M1
+
+link:{github}/releases/tag/v2024.1.0-M1[release notes]
+
+🛠 Improvements
+
+* Add release notes for 2024.1.0-M1
+* Update README
+* Update doc.properties - switch to 2024.1.x branch - update spring version
+* Update HibernateRuntimeUtils: Remove workaround for GROOVY-6127 link:{github}/issues/159[#159]
+* Update AbstractHibernateGormStaticApi: Remove explicit type cast because GROOVY-9460 has been fixed link:{github}/issues/158[#158]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace Gradle Plugin 2024.1.0-M2 link:{github}/issues/151[#151]
+* Upgrade to Grace Data 2024.1.0-M1 link:{github}/issues/155[#155]
+* Upgrade to Groovy 4.0.31 link:{github}/issues/152[#152]
+* Upgrade to JUnit Jupiter 5.12.2 link:{github}/issues/156[#156]
+* Upgrade to JUnit Platform 1.12.2 link:{github}/issues/157[#157]
+* Upgrade to Spring Framework 6.2.18 link:{github}/issues/153[#153]
+* Upgrade to Tomcat 10.1.54 link:{github}/issues/154[#154]
+
+⚙️ Tasks
+
+* Release v2024.1.0-M1
+* Switch to branch 2024.1.x Update GitHub workflows
+* Next development version: 2024.1.0-SNAPSHOT
+
 === 2024.0.0
 
 link:{github}/releases/tag/v2024.0.0[release notes]
