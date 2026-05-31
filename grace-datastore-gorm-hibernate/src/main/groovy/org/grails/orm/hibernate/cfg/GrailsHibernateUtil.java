@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2025 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -101,10 +101,12 @@ public class GrailsHibernateUtil extends HibernateRuntimeUtils {
     /**
      * Populates criteria arguments for the given target class and arguments map
      *
-     * @param datastore the GrailsApplication instance
+     * @param datastore the HibernateDatastore
      * @param targetClass The target class
      * @param c The criteria instance
      * @param argMap The arguments map
+     * @param conversionService The ConversionService
+     * @param useDefaultMapping Whether to use default mapping
      */
     @SuppressWarnings("rawtypes")
     public static void populateArgumentsForCriteria(AbstractHibernateDatastore datastore, Class<?> targetClass,
