@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2025 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,10 @@ import org.hibernate.SessionFactory
 import org.springframework.context.ApplicationContext
 import spock.lang.Shared
 
-import grails.core.GrailsApplication
 import grails.gorm.tests.GormDatastoreSpec
 
 abstract class GormSpec extends GormDatastoreSpec {
 
-    GrailsApplication grailsApplication
     ApplicationContext applicationContext
     SessionFactory sessionFactory
 
@@ -41,7 +39,6 @@ abstract class GormSpec extends GormDatastoreSpec {
     }
 
     def setup() {
-        grailsApplication = setupClass.grailsApplication
         applicationContext = setupClass.applicationContext
         sessionFactory = setupClass.sessionFactory
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2025 the original author or authors.
+ * Copyright 2010-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,20 +27,14 @@ import org.springframework.transaction.TransactionStatus
 import org.springframework.transaction.support.DefaultTransactionDefinition
 import org.springframework.transaction.support.TransactionSynchronizationManager
 
-import grails.core.DefaultGrailsApplication
-import grails.core.GrailsApplication
-
 import org.grails.datastore.mapping.core.DatastoreUtils
 import org.grails.datastore.mapping.core.Session
 import org.grails.orm.hibernate.GrailsHibernateTransactionManager
 import org.grails.orm.hibernate.HibernateDatastore
 import org.grails.orm.hibernate.cfg.HibernateMappingContextConfiguration
 
-//import org.codehaus.groovy.grails.plugins.web.api.ControllersDomainBindingApi
-
 class Setup {
 
-    static GrailsApplication grailsApplication
     static HibernateDatastore hibernateDatastore
     static hibernateSession
     static GrailsHibernateTransactionManager transactionManager
@@ -64,7 +58,6 @@ class Setup {
             hibernateConfig = null
         }
         hibernateDatastore.destroy()
-        grailsApplication = null
         hibernateDatastore = null
         hibernateSession = null
         transactionManager = null
@@ -96,10 +89,6 @@ class Setup {
 
     static Session setup(List<Class> classes, ConfigObject grailsConfig = new ConfigObject(), boolean isTransactional = true) {
         System.setProperty('hibernate5.gorm.suite', 'true')
-        grailsApplication = new DefaultGrailsApplication(classes as Class[], new GroovyClassLoader(Setup.getClassLoader()))
-        if (grailsConfig) {
-            grailsApplication.config.putAll(grailsConfig)
-        }
 
         grailsConfig.dataSource.dbCreate = 'create-drop'
         grailsConfig.dataSource.url = 'jdbc:h2:mem:grailsDB;LOCK_TIMEOUT=10000'

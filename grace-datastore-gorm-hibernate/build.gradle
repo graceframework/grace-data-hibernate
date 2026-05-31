@@ -20,8 +20,6 @@ dependencies {
     implementation libs.javassist
     implementation libs.slf4j.api
 
-    testImplementation libs.grace.bootstrap
-    testImplementation libs.grace.core
     testImplementation libs.grace.datastore.gorm.tck
     testImplementation libs.groovy.json
     testImplementation libs.groovy.sql
