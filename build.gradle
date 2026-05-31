@@ -14,6 +14,9 @@ buildscript {
             }
         }
     }
+    dependencies {
+        classpath libs.groovy.toml
+    }
 }
 
 plugins {
@@ -38,6 +41,13 @@ ext."signing.password" = project.hasProperty("signing.password") ? project.getPr
 ext."signing.secretKeyRingFile" = project.hasProperty("signing.secretKeyRingFile") ? project.getProperty('signing.secretKeyRingFile') : ("${System.properties['user.home']}${File.separator}.gnupg${File.separator}secring.gpg")
 ext.isReleaseVersion = !projectVersion.endsWith("SNAPSHOT")
 
+def toml = new groovy.toml.TomlSlurper()
+def versions = toml.parse(rootProject.file('gradle/libs.versions.toml')).versions
+def groovyVersion = versions['groovy']
+def graceDataVersion = versions['grace-data']
+def hibernateVersion = versions['hibernate-core']
+def springFrameworkVersion = versions['spring-framework']
+
 version = project.projectVersion
 group = "org.graceframework"
 
@@ -50,8 +60,16 @@ configurations {
 }
 
 dependencies {
-    documentation libs.javaparser
+    documentation libs.hibernate.core
     documentation libs.groovy.core
+    documentation libs.grace.datastore.gorm
+    documentation libs.javaparser
+    documentation libs.javassist
+    documentation libs.spring.context
+    documentation libs.spring.core
+    documentation libs.spring.beans
+    documentation libs.spring.jdbc
+    documentation libs.spring.tx
 }
 
 def cleanTask = project.tasks.findByName('clean')
@@ -88,6 +106,15 @@ tasks.withType(Groovydoc) {
     }
     source = files
     classpath += configurations.documentation
+    link('https://docs.oracle.com/en/java/javase/17/docs/api/java.base/', 'java.', 'jakarta.')
+    link("https://docs.groovy-lang.org/docs/groovy-${groovyVersion}/html/gapi/", 'groovy.', 'org.codehaus.groovy.', 'org.apache.groovy.')
+    link("https://docs.hibernate.org/orm/${hibernateVersion[0..2]}/javadocs/", 'org.hibernate.')
+    link(
+        "https://docs.spring.io/spring-framework/docs/${springFrameworkVersion}/javadoc-api", 
+        'org.springframework.core.', 'org.springframework.context.', 'org.springframework.beans.', 'org.springframework.dao.',
+        'org.springframework.jdbc.', 'org.springframework.orm.', 'org.springframework.transaction.', 'org.springframework.validation'
+    )
+    link("https://graceframework.org/grace-data/${graceDataVersion}/api/", 'grails.gorm.', 'org.grails.datastore.gorm.', 'org.grails.datastore.mapping.')
 }
 
 publishGuide {
