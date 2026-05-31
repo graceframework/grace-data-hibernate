@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2025 the original author or authors.
+ * Copyright 2017-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,10 +30,10 @@ import grails.gorm.services.Service
 import grails.gorm.services.Where
 import grails.gorm.transactions.Rollback
 import grails.gorm.validation.PersistentEntityValidator
-import grails.validation.ValidationException
 
 import org.grails.datastore.gorm.validation.constraints.eval.DefaultConstraintEvaluator
 import org.grails.datastore.gorm.validation.constraints.registry.DefaultConstraintRegistry
+import org.grails.datastore.mapping.validation.ValidationException
 import org.grails.orm.hibernate.HibernateDatastore
 
 /**
