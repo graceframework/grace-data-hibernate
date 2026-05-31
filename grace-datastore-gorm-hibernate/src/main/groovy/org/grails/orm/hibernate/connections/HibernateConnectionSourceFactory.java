@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2025 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,11 +37,9 @@ import org.springframework.context.support.StaticMessageSource;
 import org.springframework.core.io.Resource;
 
 import org.grails.datastore.gorm.jdbc.connections.DataSourceSettings;
-import org.grails.datastore.gorm.jdbc.connections.SpringDataSourceConnectionSourceFactory;
 import org.grails.datastore.gorm.validation.javax.JavaxValidatorRegistry;
 import org.grails.datastore.mapping.core.connections.ConnectionSource;
 import org.grails.datastore.mapping.core.exceptions.ConfigurationException;
-import org.grails.datastore.mapping.core.grailsversion.GrailsVersion;
 import org.grails.datastore.mapping.validation.ValidatorRegistry;
 import org.grails.orm.hibernate.HibernateEventListeners;
 import org.grails.orm.hibernate.cfg.GrailsDomainBinder;
@@ -54,6 +52,7 @@ import org.grails.orm.hibernate.support.ClosureEventTriggeringInterceptor;
  * Constructs {@link SessionFactory} instances from a {@link HibernateMappingContext}
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 6.0
  */
 public class HibernateConnectionSourceFactory extends AbstractHibernateConnectionSourceFactory
@@ -286,11 +285,6 @@ public class HibernateConnectionSourceFactory extends AbstractHibernateConnectio
         if (applicationContext != null) {
             this.applicationContext = applicationContext;
             this.messageSource = applicationContext;
-            if (!GrailsVersion.isAtLeastMajorMinor(3, 3)) {
-                SpringDataSourceConnectionSourceFactory springDataSourceConnectionSourceFactory = new SpringDataSourceConnectionSourceFactory();
-                springDataSourceConnectionSourceFactory.setApplicationContext(applicationContext);
-                this.dataSourceConnectionSourceFactory = springDataSourceConnectionSourceFactory;
-            }
         }
     }
 
