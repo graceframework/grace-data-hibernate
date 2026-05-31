@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2025 the original author or authors.
+ * Copyright 2017-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,6 @@ import org.springframework.transaction.PlatformTransactionManager
 import org.grails.datastore.gorm.bootstrap.support.InstanceFactoryBean
 import org.grails.datastore.mapping.config.Settings
 import org.grails.datastore.mapping.core.connections.ConnectionSource
-import org.grails.datastore.mapping.core.grailsversion.GrailsVersion
 
 /**
  * A factory bean that looks up a datastore by connection name
@@ -52,10 +51,9 @@ class HibernateDatastoreConnectionSourcesRegistrar implements BeanDefinitionRegi
     void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
         for (String dataSourceName in dataSourceNames) {
             boolean isDefault = dataSourceName == ConnectionSource.DEFAULT || dataSourceName == Settings.SETTING_DATASOURCE
-            boolean shouldConfigureDataSourceBean = GrailsVersion.isAtLeastMajorMinor(3, 3)
             String dataSourceBeanName = isDefault ? Settings.SETTING_DATASOURCE : "${Settings.SETTING_DATASOURCE}_$dataSourceName"
 
-            if (!registry.containsBeanDefinition(dataSourceBeanName) && shouldConfigureDataSourceBean) {
+            if (!registry.containsBeanDefinition(dataSourceBeanName)) {
                 RootBeanDefinition dataSourceBean = new RootBeanDefinition()
                 dataSourceBean.setTargetType(DataSource)
                 dataSourceBean.setBeanClass(InstanceFactoryBean)
