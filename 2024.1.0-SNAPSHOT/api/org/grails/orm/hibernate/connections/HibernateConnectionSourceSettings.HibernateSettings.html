@@ -101,10 +101,10 @@ if (location.href.indexOf('is-external=true') == -1) {
             <!-- todo: direct known subclasses -->
             <hr>
 
-<pre>@groovy.transform.CompileStatic
-@org.grails.datastore.mapping.config.SettingsBuilder
+<pre>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.31/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a>
+@<a href='https://graceframework.org/grace-data/2024.1.0-RC1/api/org/grails/datastore/mapping/config/SettingsBuilder.html' title='SettingsBuilder'>SettingsBuilder</a>
 static class HibernateConnectionSourceSettings.HibernateSettings
-extends java.util.LinkedHashMap&lt;java.lang.String, java.lang.String&gt;</pre>
+extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/LinkedHashMap.html' title='LinkedHashMap'>LinkedHashMap</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html' title='String'>String</a>, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html' title='String'>String</a>&gt;</pre>
 
           </li>
     </ul>
@@ -170,17 +170,17 @@ extends java.util.LinkedHashMap&lt;java.lang.String, java.lang.String&gt;</pre>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>java.util.Properties</strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Properties.html' title='Properties'>Properties</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#additionalProperties">additionalProperties</a></code><br>Any additional properties that should be passed through as is.</td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>java.lang.Class&lt;?&gt;[]</strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt;[]</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#annotatedClasses">annotatedClasses</a></code><br>Specify annotated entity classes to register with this Hibernate SessionFactory.</td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>java.lang.String[]</strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html' title='String'>String</a>[]</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#annotatedPackages">annotatedPackages</a></code><br>Specify the names of annotated packages, for which package-level
  annotation metadata will be read.</td>
                         </tr>
@@ -191,29 +191,29 @@ extends java.util.LinkedHashMap&lt;java.lang.String, java.lang.String&gt;</pre>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong><a href='../../../../../org.springframework.core.io.Resource.html'>Resource</a>[]</strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong><a href='https://docs.spring.io/spring-framework/docs/6.2.18/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a>[]</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#cacheableMappingLocations">cacheableMappingLocations</a></code><br>Set locations of cacheable Hibernate mapping files, for example as web app
  resource "/WEB-INF/mapping/example.hbm.xml". </td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>java.lang.Class&lt;? extends AbstractClosureEventTriggeringInterceptor&gt;</strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html' title='Class'>Class</a>&lt;? extends AbstractClosureEventTriggeringInterceptor&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#closureEventTriggeringInterceptorClass">closureEventTriggeringInterceptorClass</a></code><br>A subclass of AbstractClosureEventTriggeringInterceptor</td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>java.lang.Class&lt;? extends Configuration&gt;</strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html' title='Class'>Class</a>&lt;? extends <a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/cfg/Configuration.html' title='Configuration'>Configuration</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#configClass">configClass</a></code><br>The configuration class</td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong><a href='../../../../../org.springframework.core.io.Resource.html'>Resource</a>[]</strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong><a href='https://docs.spring.io/spring-framework/docs/6.2.18/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a>[]</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#configLocations">configLocations</a></code><br>Set the locations of multiple Hibernate XML config files, for example as
  classpath resources "classpath:hibernate.cfg.xml,classpath:extension.cfg.xml".</td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>java.lang.Class&lt;? extends CustomEntityDirtinessStrategy&gt;</strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html' title='Class'>Class</a>&lt;? extends <a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/CustomEntityDirtinessStrategy.html' title='CustomEntityDirtinessStrategy'>CustomEntityDirtinessStrategy</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#entity_dirtiness_strategy">entity_dirtiness_strategy</a></code><br></td>
                         </tr>
                         
@@ -238,25 +238,25 @@ extends java.util.LinkedHashMap&lt;java.lang.String, java.lang.String&gt;</pre>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong><a href='../../../../../org.springframework.core.io.Resource.html'>Resource</a>[]</strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong><a href='https://docs.spring.io/spring-framework/docs/6.2.18/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a>[]</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#mappingDirectoryLocations">mappingDirectoryLocations</a></code><br>Set locations of directories that contain Hibernate mapping resources,
  like "WEB-INF/mappings".</td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong><a href='../../../../../org.springframework.core.io.Resource.html'>Resource</a>[]</strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong><a href='https://docs.spring.io/spring-framework/docs/6.2.18/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a>[]</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#mappingJarLocations">mappingJarLocations</a></code><br>Set locations of jar files that contain Hibernate mapping resources,
  like "WEB-INF/lib/example.hbm.jar".</td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong><a href='../../../../../org.springframework.core.io.Resource.html'>Resource</a>[]</strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong><a href='https://docs.spring.io/spring-framework/docs/6.2.18/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a>[]</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#mappingLocations">mappingLocations</a></code><br>Set locations of Hibernate mapping files, for example as classpath
  resource "classpath:example.hbm.xml". </td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>java.lang.Class&lt;? extends NamingStrategy&gt;</strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html' title='Class'>Class</a>&lt;? extends <a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/cfg/NamingStrategy.html' title='NamingStrategy'>NamingStrategy</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#naming_strategy">naming_strategy</a></code><br>The naming strategy</td>
                         </tr>
                         
@@ -266,7 +266,7 @@ extends java.util.LinkedHashMap&lt;java.lang.String, java.lang.String&gt;</pre>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>java.lang.String[]</strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html' title='String'>String</a>[]</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#packagesToScan">packagesToScan</a></code><br>Specify packages to search for autodetection of your entity classes in the
  classpath. </td>
                         </tr>
@@ -327,18 +327,18 @@ extends java.util.LinkedHashMap&lt;java.lang.String, java.lang.String&gt;</pre>
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#populateProperties(java.util.Properties, java.util.Map, java.lang.String)">populateProperties</a></strong>(java.util.Properties props, java.util.Map current, java.lang.String prefix)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#populateProperties(java.util.Properties, java.util.Map, java.lang.String)">populateProperties</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Properties.html' title='Properties'>Properties</a> props, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html' title='Map'>Map</a> current, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html' title='String'>String</a> prefix)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>java.util.Map&lt;java.lang.String, java.lang.Object&gt;</code></td>
+                            <td class="colLast"><code><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html' title='String'>String</a>, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html' title='Object'>Object</a>&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#toHibernateEventListeners(org.grails.orm.hibernate.support.AbstractClosureEventTriggeringInterceptor)">toHibernateEventListeners</a></strong>(<a href='../../../../../org/grails/orm/hibernate/support/AbstractClosureEventTriggeringInterceptor.html'>AbstractClosureEventTriggeringInterceptor</a> eventTriggeringInterceptor)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>java.util.Properties</code></td>
+                            <td class="colLast"><code><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Properties.html' title='Properties'>Properties</a></code></td>
                             <td class="colLast"><code><strong><a href="#toProperties()">toProperties</a></strong>()</code><br>Convert to Hibernate properties</td>
                         </tr>
                         
@@ -370,7 +370,7 @@ extends java.util.LinkedHashMap&lt;java.lang.String, java.lang.String&gt;</pre>
                         <a name="additionalProperties"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.util.Properties <strong>additionalProperties</strong></h4>
+                                <h4><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Properties.html' title='Properties'>Properties</a> <strong>additionalProperties</strong></h4>
                                 <p> Any additional properties that should be passed through as is.</p>
                             </li>
                         </ul>
@@ -378,17 +378,17 @@ extends java.util.LinkedHashMap&lt;java.lang.String, java.lang.String&gt;</pre>
                         <a name="annotatedClasses"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.Class&lt;?&gt;[] <strong>annotatedClasses</strong></h4>
-                                <p> Specify annotated entity classes to register with this Hibernate SessionFactory. <DL><DT><B>See Also:</B></DT><DD>org.hibernate.cfg.Configuration#addAnnotatedClass(Class)</DD></DL></p>
+                                <h4><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html' title='Class'>Class</a>&lt;?&gt;[] <strong>annotatedClasses</strong></h4>
+                                <p> Specify annotated entity classes to register with this Hibernate SessionFactory. <DL><DT><B>See Also:</B></DT><DD><a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/cfg/Configuration.html#addAnnotatedClass(Class)' title='Configuration.addAnnotatedClass'>Configuration.addAnnotatedClass</a></DD></DL></p>
                             </li>
                         </ul>
                     
                         <a name="annotatedPackages"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String[] <strong>annotatedPackages</strong></h4>
+                                <h4><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html' title='String'>String</a>[] <strong>annotatedPackages</strong></h4>
                                 <p> Specify the names of annotated packages, for which package-level
- annotation metadata will be read. <DL><DT><B>See Also:</B></DT><DD>org.hibernate.cfg.Configuration#addPackage(String)</DD></DL></p>
+ annotation metadata will be read. <DL><DT><B>See Also:</B></DT><DD><a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/cfg/Configuration.html#addPackage(String)' title='Configuration.addPackage'>Configuration.addPackage</a></DD></DL></p>
                             </li>
                         </ul>
                     
@@ -403,20 +403,20 @@ extends java.util.LinkedHashMap&lt;java.lang.String, java.lang.String&gt;</pre>
                         <a name="cacheableMappingLocations"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../org.springframework.core.io.Resource.html'>Resource</a>[] <strong>cacheableMappingLocations</strong></h4>
+                                <h4><a href='https://docs.spring.io/spring-framework/docs/6.2.18/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a>[] <strong>cacheableMappingLocations</strong></h4>
                                 <p> Set locations of cacheable Hibernate mapping files, for example as web app
  resource "/WEB-INF/mapping/example.hbm.xml". Supports any resource location
  via Spring's resource abstraction, as long as the resource can be resolved
  in the file system.
  <p>Can be used to add to mappings from a Hibernate XML config file,
- or to specify all mappings locally. <DL><DT><B>See Also:</B></DT><DD>org.hibernate.cfg.Configuration#addCacheableFile(java.io.File)</DD></DL></p>
+ or to specify all mappings locally. <DL><DT><B>See Also:</B></DT><DD><a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/cfg/Configuration.html#addCacheableFile(java.io.File)' title='Configuration.addCacheableFile'>Configuration.addCacheableFile</a></DD></DL></p>
                             </li>
                         </ul>
                     
                         <a name="closureEventTriggeringInterceptorClass"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.Class&lt;? extends AbstractClosureEventTriggeringInterceptor&gt; <strong>closureEventTriggeringInterceptorClass</strong></h4>
+                                <h4><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html' title='Class'>Class</a>&lt;? extends AbstractClosureEventTriggeringInterceptor&gt; <strong>closureEventTriggeringInterceptorClass</strong></h4>
                                 <p> A subclass of AbstractClosureEventTriggeringInterceptor</p>
                             </li>
                         </ul>
@@ -424,7 +424,7 @@ extends java.util.LinkedHashMap&lt;java.lang.String, java.lang.String&gt;</pre>
                         <a name="configClass"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.Class&lt;? extends Configuration&gt; <strong>configClass</strong></h4>
+                                <h4><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html' title='Class'>Class</a>&lt;? extends <a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/cfg/Configuration.html' title='Configuration'>Configuration</a>&gt; <strong>configClass</strong></h4>
                                 <p> The configuration class</p>
                             </li>
                         </ul>
@@ -432,18 +432,18 @@ extends java.util.LinkedHashMap&lt;java.lang.String, java.lang.String&gt;</pre>
                         <a name="configLocations"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../org.springframework.core.io.Resource.html'>Resource</a>[] <strong>configLocations</strong></h4>
+                                <h4><a href='https://docs.spring.io/spring-framework/docs/6.2.18/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a>[] <strong>configLocations</strong></h4>
                                 <p> Set the locations of multiple Hibernate XML config files, for example as
  classpath resources "classpath:hibernate.cfg.xml,classpath:extension.cfg.xml".
  <p>Note: Can be omitted when all necessary properties and mapping
- resources are specified locally via this bean. <DL><DT><B>See Also:</B></DT><DD>org.hibernate.cfg.Configuration#configure(java.net.URL)</DD></DL></p>
+ resources are specified locally via this bean. <DL><DT><B>See Also:</B></DT><DD><a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/cfg/Configuration.html#configure(java.net.URL)' title='Configuration.configure'>Configuration.configure</a></DD></DL></p>
                             </li>
                         </ul>
                     
                         <a name="entity_dirtiness_strategy"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.Class&lt;? extends CustomEntityDirtinessStrategy&gt; <strong>entity_dirtiness_strategy</strong></h4>
+                                <h4><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html' title='Class'>Class</a>&lt;? extends <a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/CustomEntityDirtinessStrategy.html' title='CustomEntityDirtinessStrategy'>CustomEntityDirtinessStrategy</a>&gt; <strong>entity_dirtiness_strategy</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -483,42 +483,42 @@ extends java.util.LinkedHashMap&lt;java.lang.String, java.lang.String&gt;</pre>
                         <a name="mappingDirectoryLocations"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../org.springframework.core.io.Resource.html'>Resource</a>[] <strong>mappingDirectoryLocations</strong></h4>
+                                <h4><a href='https://docs.spring.io/spring-framework/docs/6.2.18/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a>[] <strong>mappingDirectoryLocations</strong></h4>
                                 <p> Set locations of directories that contain Hibernate mapping resources,
  like "WEB-INF/mappings".
  <p>Can be used to add to mappings from a Hibernate XML config file,
- or to specify all mappings locally. <DL><DT><B>See Also:</B></DT><DD>org.hibernate.cfg.Configuration#addDirectory(java.io.File)</DD></DL></p>
+ or to specify all mappings locally. <DL><DT><B>See Also:</B></DT><DD><a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/cfg/Configuration.html#addDirectory(java.io.File)' title='Configuration.addDirectory'>Configuration.addDirectory</a></DD></DL></p>
                             </li>
                         </ul>
                     
                         <a name="mappingJarLocations"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../org.springframework.core.io.Resource.html'>Resource</a>[] <strong>mappingJarLocations</strong></h4>
+                                <h4><a href='https://docs.spring.io/spring-framework/docs/6.2.18/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a>[] <strong>mappingJarLocations</strong></h4>
                                 <p> Set locations of jar files that contain Hibernate mapping resources,
  like "WEB-INF/lib/example.hbm.jar".
  <p>Can be used to add to mappings from a Hibernate XML config file,
- or to specify all mappings locally. <DL><DT><B>See Also:</B></DT><DD>org.hibernate.cfg.Configuration#addJar(java.io.File)</DD></DL></p>
+ or to specify all mappings locally. <DL><DT><B>See Also:</B></DT><DD><a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/cfg/Configuration.html#addJar(java.io.File)' title='Configuration.addJar'>Configuration.addJar</a></DD></DL></p>
                             </li>
                         </ul>
                     
                         <a name="mappingLocations"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../org.springframework.core.io.Resource.html'>Resource</a>[] <strong>mappingLocations</strong></h4>
+                                <h4><a href='https://docs.spring.io/spring-framework/docs/6.2.18/javadoc-api/org/springframework/core/io/Resource.html' title='Resource'>Resource</a>[] <strong>mappingLocations</strong></h4>
                                 <p> Set locations of Hibernate mapping files, for example as classpath
  resource "classpath:example.hbm.xml". Supports any resource location
  via Spring's resource abstraction, for example relative paths like
  "WEB-INF/mappings/example.hbm.xml" when running in an application context.
  <p>Can be used to add to mappings from a Hibernate XML config file,
- or to specify all mappings locally. <DL><DT><B>See Also:</B></DT><DD>org.hibernate.cfg.Configuration#addInputStream</DD></DL></p>
+ or to specify all mappings locally. <DL><DT><B>See Also:</B></DT><DD><a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/cfg/Configuration.html#addInputStream' title='Configuration.addInputStream'>Configuration.addInputStream</a></DD></DL></p>
                             </li>
                         </ul>
                     
                         <a name="naming_strategy"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.Class&lt;? extends NamingStrategy&gt; <strong>naming_strategy</strong></h4>
+                                <h4><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html' title='Class'>Class</a>&lt;? extends <a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/cfg/NamingStrategy.html' title='NamingStrategy'>NamingStrategy</a>&gt; <strong>naming_strategy</strong></h4>
                                 <p> The naming strategy</p>
                             </li>
                         </ul>
@@ -534,10 +534,10 @@ extends java.util.LinkedHashMap&lt;java.lang.String, java.lang.String&gt;</pre>
                         <a name="packagesToScan"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String[] <strong>packagesToScan</strong></h4>
+                                <h4><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html' title='String'>String</a>[] <strong>packagesToScan</strong></h4>
                                 <p> Specify packages to search for autodetection of your entity classes in the
  classpath. This is analogous to Spring's component-scan feature
- (org.springframework.context.annotation.ClassPathBeanDefinitionScanner).</p>
+ (<a href='https://docs.spring.io/spring-framework/docs/6.2.18/javadoc-api/org/springframework/context/annotation/ClassPathBeanDefinitionScanner.html' title='ClassPathBeanDefinitionScanner'>ClassPathBeanDefinitionScanner</a>).</p>
                             </li>
                         </ul>
                     
@@ -587,7 +587,7 @@ extends java.util.LinkedHashMap&lt;java.lang.String, java.lang.String&gt;</pre>
                         <a name="populateProperties(java.util.Properties, java.util.Map, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.CompileStatic<br>protected&nbsp;void <strong>populateProperties</strong>(java.util.Properties props, java.util.Map current, java.lang.String prefix)</h4>
+                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.31/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a><br>protected&nbsp;void <strong>populateProperties</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Properties.html' title='Properties'>Properties</a> props, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html' title='Map'>Map</a> current, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html' title='String'>String</a> prefix)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -595,7 +595,7 @@ extends java.util.LinkedHashMap&lt;java.lang.String, java.lang.String&gt;</pre>
                         <a name="toHibernateEventListeners(org.grails.orm.hibernate.support.AbstractClosureEventTriggeringInterceptor)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.CompileStatic<br>java.util.Map&lt;java.lang.String, java.lang.Object&gt; <strong>toHibernateEventListeners</strong>(<a href='../../../../../org/grails/orm/hibernate/support/AbstractClosureEventTriggeringInterceptor.html'>AbstractClosureEventTriggeringInterceptor</a> eventTriggeringInterceptor)</h4>
+                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.31/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a><br><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html' title='Map'>Map</a>&lt;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html' title='String'>String</a>, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html' title='Object'>Object</a>&gt; <strong>toHibernateEventListeners</strong>(<a href='../../../../../org/grails/orm/hibernate/support/AbstractClosureEventTriggeringInterceptor.html'>AbstractClosureEventTriggeringInterceptor</a> eventTriggeringInterceptor)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -603,7 +603,7 @@ extends java.util.LinkedHashMap&lt;java.lang.String, java.lang.String&gt;</pre>
                         <a name="toProperties()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.CompileStatic<br>java.util.Properties <strong>toProperties</strong>()</h4>
+                                <h4>@<a href='https://docs.groovy-lang.org/docs/groovy-4.0.31/html/gapi/groovy/transform/CompileStatic.html' title='CompileStatic'>CompileStatic</a><br><a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Properties.html' title='Properties'>Properties</a> <strong>toProperties</strong>()</h4>
                                 <p> Convert to Hibernate properties <DL><DT><B>Returns:</B></DT><DD>The hibernate properties</DD></DL></p>
                             </li>
                         </ul>
