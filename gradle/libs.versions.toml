@@ -4,7 +4,7 @@ checkstyle = "10.26.1"
 ehcache = "3.10.9"
 glassfish-expressly = "5.0.0"
 grace-data = "2024.1.0-M1"
-grace-framework = "2024.1.0-M2"
+grace-gradle = "2024.1.0-M2"
 groovy = "4.0.31"
 h2 = "2.3.232"
 hibernate-ehcache = "5.6.15.Final"
@@ -32,8 +32,6 @@ tomcat = "10.1.54"
 [libraries]
 ehcache = { group = "org.ehcache", name = "ehcache", version.ref = "ehcache" }
 glassfish-expressly = { module = "org.glassfish.expressly:expressly", version.ref = "glassfish-expressly" }
-grace-bootstrap = { module = "org.graceframework:grace-bootstrap", version.ref = "grace-framework" }
-grace-core = { module = "org.graceframework:grace-core", version.ref = "grace-framework" }
 grace-datastore-core = { module = "org.graceframework:grace-datastore-core", version.ref = "grace-data" }
 grace-datastore-gorm = { module = "org.graceframework:grace-datastore-gorm", version.ref = "grace-data" }
 grace-datastore-gorm-async = { module = "org.graceframework:grace-datastore-gorm-async", version.ref = "grace-data" }
@@ -86,5 +84,5 @@ spring-web = { module = "org.springframework:spring-web", version.ref = "spring-
 tomcat-jdbc = { module = "org.apache.tomcat:tomcat-jdbc", version.ref = "tomcat" }
 
 [plugins]
-grace-doc = { id = "org.graceframework.grace-doc", version.ref = "grace-framework" }
+grace-doc = { id = "org.graceframework.grace-doc", version.ref = "grace-gradle" }
 gradle-nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-publish" }
