@@ -1,3 +1,34 @@
+=== 2024.1.0-RC1
+
+link:{github}/releases/tag/v2024.1.0-RC1[release notes]
+
+🛠 Improvements
+
+* Add release notes for 2024.1.0-RC1
+* Update README
+* Add more documentation dependencies and links for groovydc generation link:{github}/issues/175[#175]
+* Cleanup Gradle version catalog link:{github}/issues/173[#173]
+* Remove deprecated Event constants in ClosureEventTriggeringInterceptor link:{github}/issues/172[#172]
+* Improve java docs for GrailsHibernateUtil link:{github}/issues/171[#171]
+* GORM Hibernate don't need GrailsApplication in all tests link:{github}/issues/170[#170]
+* Use GORM's ValidationException instead of grails.validation.ValidationException link:{github}/issues/169[#169]
+* Remove deprecated HibernateVersionSupport link:{github}/issues/168[#168]
+* HibernateConnectionSourceFactory should not use SpringDataSourceConnectionSourceFactory to configure dataSourceConnectionSourceFactory link:{github}/issues/167[#167]
+* HibernateDatastoreConnectionSourcesRegistrar should always configure DataSource bean link:{github}/issues/166[#166]
+* Add .sdkmanrc with latest java version 17.0.19-zulu link:{github}/issues/163[#163]
+* Upgrade Release Drafter Gradle Action to v7 link:{github}/issues/162[#162]
+* Upgrade GitHub workflows: migrate java distribution from `adopt` to `zulu` link:{github}/issues/161[#161]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace Data 2024.1.0-RC1 link:{github}/issues/174[#174]
+* Upgrade to Grace Gradle Plugin 2024.1.0-M3 link:{github}/issues/164[#164]
+* Upgrade to Gradle 8.14.5 link:{github}/issues/165[#165]
+
+⚙️ Tasks
+
+* Release v2024.1.0-RC1
+
 === 2024.1.0-M1
 
 link:{github}/releases/tag/v2024.1.0-M1[release notes]
