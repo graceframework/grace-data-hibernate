@@ -4,15 +4,15 @@
 [![Grace Document](https://img.shields.io/badge/Grace_Document-latest-blue?style=flat&logo=asciidoctor&logoColor=E40046&labelColor=ffffff&color=f49b06)](https://graceframework.org/grace-data-hibernate/latest/)
 [![Grace on X](https://img.shields.io/twitter/follow/graceframework?style=social)](https://x.com/graceframework)
 
-[![Groovy Version](https://img.shields.io/badge/Groovy-4.0.31-blue?style=flat&color=4298b8)](https://groovy-lang.org/releasenotes/groovy-4.0.html)
-[![Grace Version](https://img.shields.io/badge/Grace-2024.1.0-blue?style=flat&color=f49b06)](https://github.com/graceframework/grace-framework/releases/tag/v2024.1.0-M3)
+[![Groovy Version](https://img.shields.io/badge/Groovy-4.0.32-blue?style=flat&color=4298b8)](https://groovy-lang.org/releasenotes/groovy-4.0.html)
+[![Grace Version](https://img.shields.io/badge/Grace-2024.1.0-blue?style=flat&color=f49b06)](https://github.com/graceframework/grace-framework/releases/tag/v2024.1.0-RC2)
 
 # Grace Data for Hibernate
 
 This project implements [GORM](https://github.com/graceframework/grace-data) for the [Hibernate ORM](https://hibernate.org/orm/).
 
 > [!IMPORTANT]
-> Currently, this plugin has been migrate to Jakarta Namespace, and support Hibernate 5.6. Grace Framework and Grace Data 2024.0 will upgrade to Hibernate 6.x. 
+> Currently, this plugin has been migrate to Jakarta Namespace, and support [Hibernate 5.6](https://hibernate.org/orm/releases/5.6/). Grace Framework and Grace Data 2024.2 will upgrade to Hibernate 6.x. 
 
 From version 2023.0.0-M5, this plugin has been renamed from the original `hibernate5` to `hibernate`.
 
@@ -32,7 +32,6 @@ dependencies {
     implementation "org.hibernate:hibernate-core-jakarta:5.6.15.Final"
 
     // After 2024.0.0-M1
-    implementation "org.graceframework:grace-datastore-gorm-hibernate"
     implementation "org.graceframework:grace-boot-hibernate"
 }
 ```
