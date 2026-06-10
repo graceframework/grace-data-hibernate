@@ -99,7 +99,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 
             <dl>
                 <dt>All Implemented Interfaces and Traits:</dt>
-                <dd><a href='https://graceframework.org/grace-data/2024.1.0-RC1/api/org/grails/datastore/mapping/proxy/ProxyHandler.html' title='ProxyHandler'>ProxyHandler</a>, <a href='https://graceframework.org/grace-data/2024.1.0-RC1/api/org/grails/datastore/mapping/proxy/ProxyFactory.html' title='ProxyFactory'>ProxyFactory</a></dd>
+                <dd><a href='https://graceframework.org/grace-data/2024.1.0/api/org/grails/datastore/mapping/proxy/ProxyHandler.html' title='ProxyHandler'>ProxyHandler</a>, <a href='https://graceframework.org/grace-data/2024.1.0/api/org/grails/datastore/mapping/proxy/ProxyFactory.html' title='ProxyFactory'>ProxyFactory</a></dd>
             </dl>
     
 
@@ -108,7 +108,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 
 <pre>public class HibernateProxyHandler
 extends <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html' title='Object'>Object</a>
-implements <a href='https://graceframework.org/grace-data/2024.1.0-RC1/api/org/grails/datastore/mapping/proxy/ProxyHandler.html' title='ProxyHandler'>ProxyHandler</a>, <a href='https://graceframework.org/grace-data/2024.1.0-RC1/api/org/grails/datastore/mapping/proxy/ProxyFactory.html' title='ProxyFactory'>ProxyFactory</a></pre>
+implements <a href='https://graceframework.org/grace-data/2024.1.0/api/org/grails/datastore/mapping/proxy/ProxyHandler.html' title='ProxyHandler'>ProxyHandler</a>, <a href='https://graceframework.org/grace-data/2024.1.0/api/org/grails/datastore/mapping/proxy/ProxyFactory.html' title='ProxyFactory'>ProxyFactory</a></pre>
 
     <p> Implementation of the ProxyHandler interface for Hibernate using org.hibernate.Hibernate
  and HibernateProxyHelper where possible.
@@ -155,13 +155,13 @@ implements <a href='https://graceframework.org/grace-data/2024.1.0-RC1/api/org/g
                         <tr class="altColor">
                             <td class="colFirst"><code>&lt;T&gt;</code></td>
                             <td class="colLast"><code>public&nbsp;T</code></td>
-                            <td class="colLast"><code><strong><a href="#createProxy(org.hibernate.Session, Class, java.io.Serializable)">createProxy</a></strong>(<a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/Session.html' title='Session'>Session</a> session, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html' title='Class'>Class</a>&lt;T&gt; type, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html' title='Serializable'>Serializable</a> key)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#createProxy(org.grails.datastore.mapping.core.Session, Class, java.io.Serializable)">createProxy</a></strong>(<a href='https://graceframework.org/grace-data/2024.1.0/api/org/grails/datastore/mapping/core/Session.html' title='Session'>Session</a> session, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html' title='Class'>Class</a>&lt;T&gt; type, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html' title='Serializable'>Serializable</a> key)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code>&lt;T, K extends Serializable&gt;</code></td>
                             <td class="colLast"><code>public&nbsp;T</code></td>
-                            <td class="colLast"><code><strong><a href="#createProxy(org.hibernate.Session, AssociationQueryExecutor, K)">createProxy</a></strong>(<a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/Session.html' title='Session'>Session</a> session, <a href='https://graceframework.org/grace-data/2024.1.0-RC1/api/org/grails/datastore/mapping/engine/AssociationQueryExecutor.html' title='AssociationQueryExecutor'>AssociationQueryExecutor</a>&lt;K, T&gt; executor, K associationKey)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#createProxy(org.grails.datastore.mapping.core.Session, AssociationQueryExecutor, K)">createProxy</a></strong>(<a href='https://graceframework.org/grace-data/2024.1.0/api/org/grails/datastore/mapping/core/Session.html' title='Session'>Session</a> session, <a href='https://graceframework.org/grace-data/2024.1.0/api/org/grails/datastore/mapping/engine/AssociationQueryExecutor.html' title='AssociationQueryExecutor'>AssociationQueryExecutor</a>&lt;K, T&gt; executor, K associationKey)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
@@ -278,18 +278,18 @@ implements <a href='https://graceframework.org/grace-data/2024.1.0-RC1/api/org/g
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="createProxy(org.hibernate.Session, Class, java.io.Serializable)"><!-- --></a>
+                        <a name="createProxy(org.grails.datastore.mapping.core.Session, Class, java.io.Serializable)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>&lt;T&gt; @<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;T <strong>createProxy</strong>(<a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/Session.html' title='Session'>Session</a> session, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html' title='Class'>Class</a>&lt;T&gt; type, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html' title='Serializable'>Serializable</a> key)</h4>
+                                <h4>&lt;T&gt; @<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;T <strong>createProxy</strong>(<a href='https://graceframework.org/grace-data/2024.1.0/api/org/grails/datastore/mapping/core/Session.html' title='Session'>Session</a> session, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html' title='Class'>Class</a>&lt;T&gt; type, <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html' title='Serializable'>Serializable</a> key)</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="createProxy(org.hibernate.Session, AssociationQueryExecutor, K)"><!-- --></a>
+                        <a name="createProxy(org.grails.datastore.mapping.core.Session, AssociationQueryExecutor, K)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>&lt;T, K extends Serializable&gt; @<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;T <strong>createProxy</strong>(<a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/Session.html' title='Session'>Session</a> session, <a href='https://graceframework.org/grace-data/2024.1.0-RC1/api/org/grails/datastore/mapping/engine/AssociationQueryExecutor.html' title='AssociationQueryExecutor'>AssociationQueryExecutor</a>&lt;K, T&gt; executor, K associationKey)</h4>
+                                <h4>&lt;T, K extends Serializable&gt; @<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;T <strong>createProxy</strong>(<a href='https://graceframework.org/grace-data/2024.1.0/api/org/grails/datastore/mapping/core/Session.html' title='Session'>Session</a> session, <a href='https://graceframework.org/grace-data/2024.1.0/api/org/grails/datastore/mapping/engine/AssociationQueryExecutor.html' title='AssociationQueryExecutor'>AssociationQueryExecutor</a>&lt;K, T&gt; executor, K associationKey)</h4>
                                 <p></p>
                             </li>
                         </ul>

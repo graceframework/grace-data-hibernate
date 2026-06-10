@@ -114,7 +114,7 @@ implements <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base
  Hibernate's org.hibernate.engine.transaction.Isolater class's interaction with transactions
  <p>
  This is required when there is no real JTA transaction manager in use and Spring's
- <a href='https://docs.spring.io/spring-framework/docs/6.2.18/javadoc-api/org/springframework/jdbc/datasource/TransactionAwareDataSourceProxy.html' title='TransactionAwareDataSourceProxy'>TransactionAwareDataSourceProxy</a> is used.
+ <a href='https://docs.spring.io/spring-framework/docs/6.2.19/javadoc-api/org/springframework/jdbc/datasource/TransactionAwareDataSourceProxy.html' title='TransactionAwareDataSourceProxy'>TransactionAwareDataSourceProxy</a> is used.
  <p>
  Without this solution, using Hibernate's TableGenerator identity strategies will fail to support transactions.
  The id generator will commit the current transaction and break transactional behaviour.
@@ -157,7 +157,7 @@ implements <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base
                         
                         <tr class="altColor">
                             <td class="colFirst">
-                                <code><strong><a href="#HibernateJtaTransactionManagerAdapter(org.springframework.transaction.PlatformTransactionManager)">HibernateJtaTransactionManagerAdapter</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.18/javadoc-api/org/springframework/transaction/PlatformTransactionManager.html' title='PlatformTransactionManager'>PlatformTransactionManager</a> springTransactionManager)</code><br></td>
+                                <code><strong><a href="#HibernateJtaTransactionManagerAdapter(org.springframework.transaction.PlatformTransactionManager)">HibernateJtaTransactionManagerAdapter</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.19/javadoc-api/org/springframework/transaction/PlatformTransactionManager.html' title='PlatformTransactionManager'>PlatformTransactionManager</a> springTransactionManager)</code><br></td>
                         </tr>
                         
                     </table>
@@ -196,12 +196,12 @@ implements <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;static&nbsp;int</code></td>
-                            <td class="colLast"><code><strong><a href="#convertToJtaStatus(org.springframework.transaction.TransactionStatus)">convertToJtaStatus</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.18/javadoc-api/org/springframework/transaction/TransactionStatus.html' title='TransactionStatus'>TransactionStatus</a> status)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#convertToJtaStatus(org.springframework.transaction.TransactionStatus)">convertToJtaStatus</a></strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.19/javadoc-api/org/springframework/transaction/TransactionStatus.html' title='TransactionStatus'>TransactionStatus</a> status)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.18/javadoc-api/org/springframework/transaction/TransactionStatus.html' title='TransactionStatus'>TransactionStatus</a></code></td>
+                            <td class="colLast"><code>protected&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.19/javadoc-api/org/springframework/transaction/TransactionStatus.html' title='TransactionStatus'>TransactionStatus</a></code></td>
                             <td class="colLast"><code><strong><a href="#getAndRemoveStatus()">getAndRemoveStatus</a></strong>()</code><br></td>
                         </tr>
                         
@@ -213,14 +213,14 @@ implements <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;<a href='https://graceframework.org/grace-data/2024.1.0-RC1/api/org/grails/datastore/mapping/transactions/Transaction.html' title='Transaction'>Transaction</a></code></td>
+                            <td class="colLast"><code>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/jakarta/transaction/Transaction.html' title='Transaction'>Transaction</a></code></td>
                             <td class="colLast"><code><strong><a href="#getTransaction()">getTransaction</a></strong>()</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>public&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#resume(org.grails.datastore.mapping.transactions.Transaction)">resume</a></strong>(<a href='https://graceframework.org/grace-data/2024.1.0-RC1/api/org/grails/datastore/mapping/transactions/Transaction.html' title='Transaction'>Transaction</a> tobj)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#resume(jakarta.transaction.Transaction)">resume</a></strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/jakarta/transaction/Transaction.html' title='Transaction'>Transaction</a> tobj)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -243,7 +243,7 @@ implements <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>public&nbsp;<a href='https://graceframework.org/grace-data/2024.1.0-RC1/api/org/grails/datastore/mapping/transactions/Transaction.html' title='Transaction'>Transaction</a></code></td>
+                            <td class="colLast"><code>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/jakarta/transaction/Transaction.html' title='Transaction'>Transaction</a></code></td>
                             <td class="colLast"><code><strong><a href="#suspend()">suspend</a></strong>()</code><br></td>
                         </tr>
                         
@@ -297,7 +297,7 @@ implements <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base
                         <a name="HibernateJtaTransactionManagerAdapter(org.springframework.transaction.PlatformTransactionManager)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;<strong>HibernateJtaTransactionManagerAdapter</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.18/javadoc-api/org/springframework/transaction/PlatformTransactionManager.html' title='PlatformTransactionManager'>PlatformTransactionManager</a> springTransactionManager)</h4>
+                                <h4>public&nbsp;<strong>HibernateJtaTransactionManagerAdapter</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.19/javadoc-api/org/springframework/transaction/PlatformTransactionManager.html' title='PlatformTransactionManager'>PlatformTransactionManager</a> springTransactionManager)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -334,7 +334,7 @@ implements <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base
                         <a name="convertToJtaStatus(org.springframework.transaction.TransactionStatus)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;static&nbsp;int <strong>convertToJtaStatus</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.18/javadoc-api/org/springframework/transaction/TransactionStatus.html' title='TransactionStatus'>TransactionStatus</a> status)</h4>
+                                <h4>protected&nbsp;static&nbsp;int <strong>convertToJtaStatus</strong>(<a href='https://docs.spring.io/spring-framework/docs/6.2.19/javadoc-api/org/springframework/transaction/TransactionStatus.html' title='TransactionStatus'>TransactionStatus</a> status)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -342,7 +342,7 @@ implements <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base
                         <a name="getAndRemoveStatus()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.18/javadoc-api/org/springframework/transaction/TransactionStatus.html' title='TransactionStatus'>TransactionStatus</a> <strong>getAndRemoveStatus</strong>()</h4>
+                                <h4>protected&nbsp;<a href='https://docs.spring.io/spring-framework/docs/6.2.19/javadoc-api/org/springframework/transaction/TransactionStatus.html' title='TransactionStatus'>TransactionStatus</a> <strong>getAndRemoveStatus</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -358,15 +358,15 @@ implements <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base
                         <a name="getTransaction()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;<a href='https://graceframework.org/grace-data/2024.1.0-RC1/api/org/grails/datastore/mapping/transactions/Transaction.html' title='Transaction'>Transaction</a> <strong>getTransaction</strong>()</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/jakarta/transaction/Transaction.html' title='Transaction'>Transaction</a> <strong>getTransaction</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="resume(org.grails.datastore.mapping.transactions.Transaction)"><!-- --></a>
+                        <a name="resume(jakarta.transaction.Transaction)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;void <strong>resume</strong>(<a href='https://graceframework.org/grace-data/2024.1.0-RC1/api/org/grails/datastore/mapping/transactions/Transaction.html' title='Transaction'>Transaction</a> tobj)</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;void <strong>resume</strong>(<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/jakarta/transaction/Transaction.html' title='Transaction'>Transaction</a> tobj)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -398,7 +398,7 @@ implements <a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base
                         <a name="suspend()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;<a href='https://graceframework.org/grace-data/2024.1.0-RC1/api/org/grails/datastore/mapping/transactions/Transaction.html' title='Transaction'>Transaction</a> <strong>suspend</strong>()</h4>
+                                <h4>@<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Override.html' title='Override'>Override</a><br>public&nbsp;<a href='https://docs.oracle.com/en/java/javase/17/docs/api/java.base/jakarta/transaction/Transaction.html' title='Transaction'>Transaction</a> <strong>suspend</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
