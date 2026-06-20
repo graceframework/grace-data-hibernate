@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2025 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@ import org.hibernate.Interceptor;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
-import org.hibernate.cfg.NamingStrategy;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
@@ -58,6 +57,7 @@ import org.grails.orm.hibernate.cfg.HibernateMappingContextConfiguration;
  * and a {@link org.grails.orm.hibernate.cfg.HibernateMappingContextConfiguration}
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 5.0
  */
 public class HibernateMappingContextSessionFactoryBean extends HibernateExceptionTranslator
@@ -86,7 +86,7 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
 
     private Interceptor entityInterceptor;
 
-    private NamingStrategy namingStrategy;
+    private org.hibernate.cfg.NamingStrategy namingStrategy;
 
     private Properties hibernateProperties;
 
@@ -297,11 +297,11 @@ public class HibernateMappingContextSessionFactoryBean extends HibernateExceptio
      * Set a Hibernate NamingStrategy for the SessionFactory, determining the
      * physical column and table names given the info in the mapping document.
      */
-    public void setNamingStrategy(NamingStrategy namingStrategy) {
+    public void setNamingStrategy(org.hibernate.cfg.NamingStrategy namingStrategy) {
         this.namingStrategy = namingStrategy;
     }
 
-    public NamingStrategy getNamingStrategy() {
+    public org.hibernate.cfg.NamingStrategy getNamingStrategy() {
         return this.namingStrategy;
     }
 

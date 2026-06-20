@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2025 the original author or authors.
+ * Copyright 2018-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package org.grails.orm.hibernate.dirty
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
-import org.hibernate.CustomEntityDirtinessStrategy
 import org.hibernate.Hibernate
 import org.hibernate.Session
 import org.hibernate.engine.spi.SessionImplementor
@@ -39,11 +38,12 @@ import org.grails.datastore.mapping.model.types.Embedded
  *
  * @author James Kleeh
  * @author Graeme Rocher
+ * @author Michael Yan
  *
  * @since 6.0.3
  */
 @CompileStatic
-class GrailsEntityDirtinessStrategy implements CustomEntityDirtinessStrategy {
+class GrailsEntityDirtinessStrategy implements org.hibernate.CustomEntityDirtinessStrategy {
 
     protected static final Logger LOG = LoggerFactory.getLogger(GrailsEntityDirtinessStrategy)
 
@@ -91,14 +91,14 @@ class GrailsEntityDirtinessStrategy implements CustomEntityDirtinessStrategy {
     }
 
     @Override
-    void findDirty(Object entity, EntityPersister persister, Session session, CustomEntityDirtinessStrategy.DirtyCheckContext dirtyCheckContext) {
+    void findDirty(Object entity, EntityPersister persister, Session session, org.hibernate.CustomEntityDirtinessStrategy.DirtyCheckContext dirtyCheckContext) {
         Status status = getStatus(session, entity)
         if (entity instanceof DirtyCheckable) {
             dirtyCheckContext.doDirtyChecking(
-                    new CustomEntityDirtinessStrategy.AttributeChecker() {
+                    new org.hibernate.CustomEntityDirtinessStrategy.AttributeChecker() {
 
                         @Override
-                        boolean isDirty(CustomEntityDirtinessStrategy.AttributeInformation attributeInformation) {
+                        boolean isDirty(org.hibernate.CustomEntityDirtinessStrategy.AttributeInformation attributeInformation) {
                             String propertyName = attributeInformation.name
                             if (status != null) {
                                 if (status == Status.MANAGED) {

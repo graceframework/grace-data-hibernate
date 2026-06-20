@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2025 the original author or authors.
+ * Copyright 2010-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,16 +18,11 @@ package org.grails.orm.hibernate.query;
 import java.util.Iterator;
 import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.function.SQLFunction;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
-import org.hibernate.internal.CriteriaImpl;
 import org.hibernate.persister.entity.PropertyMapping;
-import org.hibernate.type.BasicType;
-import org.hibernate.type.TypeResolver;
 
 import grails.orm.HibernateCriteriaBuilder;
 import grails.orm.RlikeExpression;
@@ -42,6 +37,7 @@ import org.grails.orm.hibernate.HibernateSession;
  * Bridges the Query API with the Hibernate Criteria API
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 1.0
  */
 @SuppressWarnings("rawtypes")
@@ -49,26 +45,26 @@ public class HibernateQuery extends AbstractHibernateQuery {
 
     public static final HibernateCriterionAdapter HIBERNATE_CRITERION_ADAPTER = new HibernateCriterionAdapter();
 
-    public HibernateQuery(Criteria criteria, AbstractHibernateSession session, PersistentEntity entity) {
+    public HibernateQuery(org.hibernate.Criteria criteria, AbstractHibernateSession session, PersistentEntity entity) {
         super(criteria, session, entity);
     }
 
-    public HibernateQuery(Criteria criteria, PersistentEntity entity) {
+    public HibernateQuery(org.hibernate.Criteria criteria, PersistentEntity entity) {
         super(criteria, null, entity);
     }
 
-    public HibernateQuery(Criteria subCriteria, AbstractHibernateSession session, PersistentEntity associatedEntity, String newAlias) {
+    public HibernateQuery(org.hibernate.Criteria subCriteria, AbstractHibernateSession session, PersistentEntity associatedEntity, String newAlias) {
         super(subCriteria, session, associatedEntity, newAlias);
     }
 
-    public HibernateQuery(DetachedCriteria criteria, PersistentEntity entity) {
+    public HibernateQuery(org.hibernate.criterion.DetachedCriteria criteria, PersistentEntity entity) {
         super(criteria, entity);
     }
 
     /**
      * @return The hibernate criteria
      */
-    public Criteria getHibernateCriteria() {
+    public org.hibernate.Criteria getHibernateCriteria() {
         return this.criteria;
     }
 
@@ -82,11 +78,11 @@ public class HibernateQuery extends AbstractHibernateQuery {
     }
 
     protected void setDetachedCriteriaValue(QueryableCriteria value, PropertyCriterion pc) {
-        DetachedCriteria hibernateDetachedCriteria = HibernateCriteriaBuilder.getHibernateDetachedCriteria(this, value);
+        org.hibernate.criterion.DetachedCriteria hibernateDetachedCriteria = HibernateCriteriaBuilder.getHibernateDetachedCriteria(this, value);
         pc.setValue(hibernateDetachedCriteria);
     }
 
-    protected String render(BasicType basic, List<String> columns, SessionFactory sessionFactory, SQLFunction sqlFunction) {
+    protected String render(org.hibernate.type.BasicType basic, List<String> columns, SessionFactory sessionFactory, SQLFunction sqlFunction) {
         return sqlFunction.render(basic, columns, (SessionFactoryImplementor) sessionFactory);
     }
 
@@ -95,7 +91,7 @@ public class HibernateQuery extends AbstractHibernateQuery {
     }
 
     @Deprecated
-    protected TypeResolver getTypeResolver(SessionFactory sessionFactory) {
+    protected org.hibernate.type.TypeResolver getTypeResolver(SessionFactory sessionFactory) {
         return ((SessionFactoryImplementor) sessionFactory).getTypeResolver();
     }
 
@@ -106,20 +102,20 @@ public class HibernateQuery extends AbstractHibernateQuery {
 
     @Override
     public Object clone() {
-        final CriteriaImpl impl = (CriteriaImpl) criteria;
+        final org.hibernate.internal.CriteriaImpl impl = (org.hibernate.internal.CriteriaImpl) criteria;
         final HibernateSession hibernateSession = (HibernateSession) getSession();
         final GrailsHibernateTemplate hibernateTemplate = (GrailsHibernateTemplate) hibernateSession.getNativeInterface();
         return hibernateTemplate.execute((GrailsHibernateTemplate.HibernateCallback<Object>) session -> {
-            Criteria newCriteria = session.createCriteria(impl.getEntityOrClassName());
+            org.hibernate.Criteria newCriteria = session.createCriteria(impl.getEntityOrClassName());
 
             Iterator iterator = impl.iterateExpressionEntries();
             while (iterator.hasNext()) {
-                CriteriaImpl.CriterionEntry entry = (CriteriaImpl.CriterionEntry) iterator.next();
+                org.hibernate.internal.CriteriaImpl.CriterionEntry entry = (org.hibernate.internal.CriteriaImpl.CriterionEntry) iterator.next();
                 newCriteria.add(entry.getCriterion());
             }
             Iterator subcriteriaIterator = impl.iterateSubcriteria();
             while (subcriteriaIterator.hasNext()) {
-                CriteriaImpl.Subcriteria sub = (CriteriaImpl.Subcriteria) subcriteriaIterator.next();
+                org.hibernate.internal.CriteriaImpl.Subcriteria sub = (org.hibernate.internal.CriteriaImpl.Subcriteria) subcriteriaIterator.next();
                 newCriteria.createAlias(sub.getPath(), sub.getAlias(), sub.getJoinType(), sub.getWithClause());
             }
             return new HibernateQuery(newCriteria, hibernateSession, entity);

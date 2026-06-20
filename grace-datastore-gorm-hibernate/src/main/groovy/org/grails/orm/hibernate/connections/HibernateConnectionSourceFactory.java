@@ -25,7 +25,6 @@ import org.hibernate.Interceptor;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.spi.MetadataContributor;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.NamingStrategy;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -260,7 +259,7 @@ public class HibernateConnectionSourceFactory extends AbstractHibernateConnectio
         hibernateSettings.setEventTriggeringInterceptor(eventTriggeringInterceptor);
 
         try {
-            Class<? extends NamingStrategy> namingStrategy = hibernateSettings.getNaming_strategy();
+            Class<? extends org.hibernate.cfg.NamingStrategy> namingStrategy = hibernateSettings.getNaming_strategy();
             if (namingStrategy != null) {
                 GrailsDomainBinder.configureNamingStrategy(name, namingStrategy);
             }

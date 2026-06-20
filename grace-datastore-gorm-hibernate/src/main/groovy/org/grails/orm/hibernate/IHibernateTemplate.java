@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2025 the original author or authors.
+ * Copyright 2013-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import groovy.lang.Closure;
-import org.hibernate.Criteria;
 import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -29,6 +28,7 @@ import org.hibernate.query.Query;
  *
  * @author Burt Beckwith
  * @author Graeme Rocher
+ * @author Michael Yan
  */
 public interface IHibernateTemplate {
 
@@ -54,7 +54,7 @@ public interface IHibernateTemplate {
 
     void applySettings(Query query);
 
-    void applySettings(Criteria criteria);
+    void applySettings(org.hibernate.Criteria criteria);
 
     <T> T get(Class<T> type, Serializable key);
 

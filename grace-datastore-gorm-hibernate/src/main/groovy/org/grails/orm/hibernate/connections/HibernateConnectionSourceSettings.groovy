@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2025 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,6 @@ import groovy.transform.CompileStatic
 import org.hibernate.CustomEntityDirtinessStrategy
 import org.hibernate.cfg.AvailableSettings
 import org.hibernate.cfg.Configuration
-import org.hibernate.cfg.ImprovedNamingStrategy
-import org.hibernate.cfg.NamingStrategy
 import org.springframework.core.io.Resource
 
 import org.grails.datastore.gorm.jdbc.connections.DataSourceSettings
@@ -105,7 +103,7 @@ class HibernateConnectionSourceSettings extends ConnectionSourceSettings {
         /**
          * The naming strategy
          */
-        Class<? extends NamingStrategy> naming_strategy = ImprovedNamingStrategy
+        Class<? extends org.hibernate.cfg.NamingStrategy> naming_strategy = org.hibernate.cfg.ImprovedNamingStrategy
 
         /**
          *

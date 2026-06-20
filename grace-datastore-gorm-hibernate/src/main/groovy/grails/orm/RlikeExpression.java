@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2025 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,7 @@
  */
 package grails.orm;
 
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.criterion.CriteriaQuery;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.dialect.MySQLDialect;
@@ -31,9 +27,10 @@ import org.hibernate.engine.spi.TypedValue;
  * Adds support for rlike to Hibernate in supported dialects.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 1.1.1
  */
-public class RlikeExpression implements Criterion {
+public class RlikeExpression implements org.hibernate.criterion.Criterion {
 
     private static final long serialVersionUID = -214329918050957956L;
 
@@ -46,12 +43,12 @@ public class RlikeExpression implements Criterion {
         this.value = value;
     }
 
-    public RlikeExpression(String propertyName, String value, MatchMode matchMode) {
+    public RlikeExpression(String propertyName, String value, org.hibernate.criterion.MatchMode matchMode) {
         this(propertyName, matchMode.toMatchString(value));
     }
 
     @Override
-    public String toSqlString(Criteria criteria, CriteriaQuery criteriaQuery) throws HibernateException {
+    public String toSqlString(org.hibernate.Criteria criteria, org.hibernate.criterion.CriteriaQuery criteriaQuery) throws HibernateException {
         Dialect dialect = criteriaQuery.getFactory().getDialect();
         String[] columns = criteriaQuery.getColumnsUsingProjection(criteria, this.propertyName);
         if (columns.length != 1) {
@@ -81,7 +78,7 @@ public class RlikeExpression implements Criterion {
         return (dialect instanceof Oracle8iDialect);
     }
 
-    public TypedValue[] getTypedValues(Criteria criteria, CriteriaQuery criteriaQuery) throws HibernateException {
+    public TypedValue[] getTypedValues(org.hibernate.Criteria criteria, org.hibernate.criterion.CriteriaQuery criteriaQuery) throws HibernateException {
         return new TypedValue[] { criteriaQuery.getTypedValue(criteria, this.propertyName, this.value.toString()) };
     }
 

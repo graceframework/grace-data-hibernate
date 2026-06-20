@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2025 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,8 @@ package grails.orm;
 import java.sql.SQLException;
 import java.util.Iterator;
 
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.criterion.Projections;
-import org.hibernate.internal.CriteriaImpl;
 
 import org.grails.orm.hibernate.GrailsHibernateTemplate;
 import org.grails.orm.hibernate.query.HibernateQuery;
@@ -32,6 +29,7 @@ import org.grails.orm.hibernate.query.HibernateQuery;
  * the paged result.
  *
  * @author Siegfried Puchbauer
+ * @author Michael Yan
  * @since 1.0
  * @deprecated Use {@link org.grails.orm.hibernate.query.PagedResultList} instead.
  */
@@ -41,9 +39,9 @@ public class PagedResultList extends grails.gorm.PagedResultList {
 
     private transient GrailsHibernateTemplate hibernateTemplate;
 
-    private final Criteria criteria;
+    private final org.hibernate.Criteria criteria;
 
-    public PagedResultList(GrailsHibernateTemplate template, Criteria crit) {
+    public PagedResultList(GrailsHibernateTemplate template, org.hibernate.Criteria crit) {
         super(null);
         resultList = crit.list();
         this.criteria = crit;
@@ -69,22 +67,22 @@ public class PagedResultList extends grails.gorm.PagedResultList {
 
                 @Override
                 public Integer doInHibernate(Session session) throws HibernateException, SQLException {
-                    CriteriaImpl impl = (CriteriaImpl) PagedResultList.this.criteria;
-                    Criteria totalCriteria = session.createCriteria(impl.getEntityOrClassName());
+                    org.hibernate.internal.CriteriaImpl impl = (org.hibernate.internal.CriteriaImpl) PagedResultList.this.criteria;
+                    org.hibernate.Criteria totalCriteria = session.createCriteria(impl.getEntityOrClassName());
                     PagedResultList.this.hibernateTemplate.applySettings(totalCriteria);
 
                     Iterator iterator = impl.iterateExpressionEntries();
                     while (iterator.hasNext()) {
-                        CriteriaImpl.CriterionEntry entry = (CriteriaImpl.CriterionEntry) iterator.next();
+                        org.hibernate.internal.CriteriaImpl.CriterionEntry entry = (org.hibernate.internal.CriteriaImpl.CriterionEntry) iterator.next();
                         totalCriteria.add(entry.getCriterion());
                     }
                     Iterator subcriteriaIterator = impl.iterateSubcriteria();
                     while (subcriteriaIterator.hasNext()) {
-                        CriteriaImpl.Subcriteria sub = (CriteriaImpl.Subcriteria) subcriteriaIterator.next();
+                        org.hibernate.internal.CriteriaImpl.Subcriteria sub = (org.hibernate.internal.CriteriaImpl.Subcriteria) subcriteriaIterator.next();
                         totalCriteria.createAlias(sub.getPath(), sub.getAlias(), sub.getJoinType(), sub.getWithClause());
                     }
                     totalCriteria.setProjection(impl.getProjection());
-                    totalCriteria.setProjection(Projections.rowCount());
+                    totalCriteria.setProjection(org.hibernate.criterion.Projections.rowCount());
                     return ((Number) totalCriteria.uniqueResult()).intValue();
                 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2025 the original author or authors.
+ * Copyright 2013-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import jakarta.persistence.criteria.Root
 
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
-import org.hibernate.Criteria
 import org.hibernate.FlushMode
 import org.hibernate.LockMode
 import org.hibernate.Session
@@ -51,6 +50,7 @@ import org.grails.orm.hibernate.query.PagedResultList
  * The implementation of the GORM static method contract for Hibernate
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 1.0
  */
 @CompileStatic
@@ -224,7 +224,7 @@ class HibernateGormStaticApi<D> extends AbstractHibernateGormStaticApi<D> {
     }
 
     @Override
-    protected void firePostQueryEvent(Session session, Criteria criteria, Object result) {
+    protected void firePostQueryEvent(Session session, org.hibernate.Criteria criteria, Object result) {
         if (result instanceof List) {
             datastore.applicationEventPublisher.publishEvent(new PostQueryEvent(datastore,
                     new HibernateQuery(criteria, persistentEntity), (List) result))
@@ -236,7 +236,7 @@ class HibernateGormStaticApi<D> extends AbstractHibernateGormStaticApi<D> {
     }
 
     @Override
-    protected void firePreQueryEvent(Session session, Criteria criteria) {
+    protected void firePreQueryEvent(Session session, org.hibernate.Criteria criteria) {
         datastore.applicationEventPublisher.publishEvent(new PreQueryEvent(datastore,
                 new HibernateQuery(criteria, persistentEntity)))
     }
@@ -260,8 +260,8 @@ class HibernateGormStaticApi<D> extends AbstractHibernateGormStaticApi<D> {
     }
 
     @CompileDynamic
-    protected void setResultTransformer(Criteria c) {
-        c.resultTransformer = Criteria.DISTINCT_ROOT_ENTITY
+    protected void setResultTransformer(org.hibernate.Criteria c) {
+        c.resultTransformer = org.hibernate.Criteria.DISTINCT_ROOT_ENTITY
     }
 
 }

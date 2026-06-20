@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2025 the original author or authors.
+ * Copyright 2018-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +25,9 @@ import jakarta.persistence.criteria.From;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Root;
 
-import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.FlushMode;
 import org.hibernate.LockMode;
-import org.hibernate.criterion.Order;
 import org.hibernate.query.Query;
 import org.springframework.core.convert.ConversionService;
 
@@ -46,6 +44,7 @@ import org.grails.orm.hibernate.cfg.Mapping;
  * Utility methods for configuring Hibernate queries
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 4.0
  */
 public class GrailsHibernateQueryUtils {
@@ -59,7 +58,7 @@ public class GrailsHibernateQueryUtils {
      */
     @SuppressWarnings("rawtypes")
     @Deprecated
-    public static void populateArgumentsForCriteria(PersistentEntity entity, Criteria c, Map argMap,
+    public static void populateArgumentsForCriteria(PersistentEntity entity, org.hibernate.Criteria c, Map argMap,
             ConversionService conversionService, boolean useDefaultMapping) {
         Integer maxParam = null;
         Integer offsetParam = null;
@@ -272,7 +271,7 @@ public class GrailsHibernateQueryUtils {
     /**
      * Add order to criteria, creating necessary subCriteria if nested sort property (ie. sort:'nested.property').
      */
-    private static void addOrderPossiblyNested(Criteria c, PersistentEntity entity, String sort, String order, boolean ignoreCase) {
+    private static void addOrderPossiblyNested(org.hibernate.Criteria c, PersistentEntity entity, String sort, String order, boolean ignoreCase) {
         int firstDotPos = sort.indexOf(".");
         if (firstDotPos == -1) {
             addOrder(c, sort, order, ignoreCase);
@@ -287,7 +286,7 @@ public class GrailsHibernateQueryUtils {
             }
             else if (property instanceof Association) {
                 Association a = (Association) property;
-                Criteria subCriteria = c.createCriteria(sortHead);
+                org.hibernate.Criteria subCriteria = c.createCriteria(sortHead);
                 PersistentEntity associatedEntity = a.getAssociatedEntity();
                 Class<?> propertyTargetClass = associatedEntity.getJavaClass();
                 cacheCriteriaByMapping(propertyTargetClass, subCriteria);
@@ -374,7 +373,7 @@ public class GrailsHibernateQueryUtils {
      * @param targetClass The target class
      * @param criteria    The criteria
      */
-    private static void cacheCriteriaByMapping(Class<?> targetClass, Criteria criteria) {
+    private static void cacheCriteriaByMapping(Class<?> targetClass, org.hibernate.Criteria criteria) {
         Mapping m = AbstractGrailsDomainBinder.getMapping(targetClass);
         if (m != null && m.getCache() != null && m.getCache().getEnabled()) {
             criteria.setCacheable(true);
@@ -412,12 +411,12 @@ public class GrailsHibernateQueryUtils {
     /**
      * Add order directly to criteria.
      */
-    private static void addOrder(Criteria c, String sort, String order, boolean ignoreCase) {
+    private static void addOrder(org.hibernate.Criteria c, String sort, String order, boolean ignoreCase) {
         if (DynamicFinder.ORDER_DESC.equals(order)) {
-            c.addOrder(ignoreCase ? Order.desc(sort).ignoreCase() : Order.desc(sort));
+            c.addOrder(ignoreCase ? org.hibernate.criterion.Order.desc(sort).ignoreCase() : org.hibernate.criterion.Order.desc(sort));
         }
         else {
-            c.addOrder(ignoreCase ? Order.asc(sort).ignoreCase() : Order.asc(sort));
+            c.addOrder(ignoreCase ? org.hibernate.criterion.Order.asc(sort).ignoreCase() : org.hibernate.criterion.Order.asc(sort));
         }
     }
 

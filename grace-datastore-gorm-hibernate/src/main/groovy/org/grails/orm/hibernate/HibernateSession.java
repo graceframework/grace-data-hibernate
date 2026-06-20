@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2025 the original author or authors.
+ * Copyright 2010-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.proxy.HibernateProxy;
@@ -51,6 +50,7 @@ import org.grails.orm.hibernate.query.HibernateQuery;
  * Session implementation that wraps a Hibernate {@link org.hibernate.Session}.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 1.0
  */
 @SuppressWarnings("rawtypes")
@@ -188,7 +188,7 @@ public class HibernateSession extends AbstractHibernateSession {
         final PersistentEntity persistentEntity = getMappingContext().getPersistentEntity(type.getName());
         GrailsHibernateTemplate hibernateTemplate = getHibernateTemplate();
         Session currentSession = hibernateTemplate.getSessionFactory().getCurrentSession();
-        final Criteria criteria = alias != null ? currentSession.createCriteria(type, alias) : currentSession.createCriteria(type);
+        final org.hibernate.Criteria criteria = alias != null ? currentSession.createCriteria(type, alias) : currentSession.createCriteria(type);
         hibernateTemplate.applySettings(criteria);
         return new HibernateQuery(criteria, this, persistentEntity);
     }

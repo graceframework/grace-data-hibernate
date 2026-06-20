@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2025 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,20 +22,17 @@ import jakarta.persistence.metamodel.Attribute;
 import jakarta.persistence.metamodel.PluralAttribute;
 
 import groovy.lang.GroovySystem;
-import org.hibernate.Criteria;
+
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Projection;
-import org.hibernate.criterion.ProjectionList;
-import org.hibernate.criterion.Projections;
-import org.hibernate.sql.JoinType;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 import org.springframework.orm.hibernate5.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import org.grails.datastore.mapping.model.PersistentEntity;
+import org.grails.datastore.mapping.query.Query;
+import org.grails.datastore.mapping.query.api.Criteria;
 import org.grails.datastore.mapping.query.api.QueryableCriteria;
 import org.grails.orm.hibernate.GrailsHibernateTemplate;
 import org.grails.orm.hibernate.HibernateDatastore;
@@ -71,6 +68,7 @@ import org.grails.orm.hibernate.query.HibernateQuery;
  * </pre>
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  */
 public class HibernateCriteriaBuilder extends AbstractHibernateCriteriaBuilder {
 
@@ -177,8 +175,8 @@ public class HibernateCriteriaBuilder extends AbstractHibernateCriteriaBuilder {
      * @throws HibernateException Indicates a problem creating the sub criteria
      * @see #createAlias(String, String)
      */
-    public Criteria createAlias(String associationPath, String alias, int joinType) {
-        return criteria.createAlias(associationPath, alias, JoinType.parse(joinType));
+    public org.hibernate.Criteria createAlias(String associationPath, String alias, int joinType) {
+        return criteria.createAlias(associationPath, alias, org.hibernate.sql.JoinType.parse(joinType));
     }
 
     @Override
@@ -213,7 +211,7 @@ public class HibernateCriteriaBuilder extends AbstractHibernateCriteriaBuilder {
      * @return A Criterion instance
      */
     @Override
-    public org.grails.datastore.mapping.query.api.Criteria rlike(String propertyName, Object propertyValue) {
+    public Criteria rlike(String propertyName, Object propertyValue) {
         if (!validateSimpleExpression()) {
             throwRuntimeException(new IllegalArgumentException("Call to [rlike] with propertyName [" +
                     propertyName + "] and value [" + propertyValue + "] not allowed here."));
@@ -269,18 +267,18 @@ public class HibernateCriteriaBuilder extends AbstractHibernateCriteriaBuilder {
 
     private static void populateHibernateDetachedCriteria(AbstractHibernateQuery query,
             org.hibernate.criterion.DetachedCriteria detachedCriteria, QueryableCriteria<?> queryableCriteria) {
-        List<org.grails.datastore.mapping.query.Query.Criterion> criteriaList = queryableCriteria.getCriteria();
-        for (org.grails.datastore.mapping.query.Query.Criterion criterion : criteriaList) {
-            Criterion hibernateCriterion = HibernateQuery.HIBERNATE_CRITERION_ADAPTER.toHibernateCriterion(query, criterion, null);
+        List<Query.Criterion> criteriaList = queryableCriteria.getCriteria();
+        for (Query.Criterion criterion : criteriaList) {
+            org.hibernate.criterion.Criterion hibernateCriterion = HibernateQuery.HIBERNATE_CRITERION_ADAPTER.toHibernateCriterion(query, criterion, null);
             if (hibernateCriterion != null) {
                 detachedCriteria.add(hibernateCriterion);
             }
         }
 
-        List<org.grails.datastore.mapping.query.Query.Projection> projections = queryableCriteria.getProjections();
-        ProjectionList projectionList = Projections.projectionList();
-        for (org.grails.datastore.mapping.query.Query.Projection projection : projections) {
-            Projection hibernateProjection = new HibernateProjectionAdapter(projection).toHibernateProjection();
+        List<Query.Projection> projections = queryableCriteria.getProjections();
+        org.hibernate.criterion.ProjectionList projectionList = org.hibernate.criterion.Projections.projectionList();
+        for (Query.Projection projection : projections) {
+            org.hibernate.criterion.Projection hibernateProjection = new HibernateProjectionAdapter(projection).toHibernateProjection();
             if (hibernateProjection != null) {
                 projectionList.add(hibernateProjection);
             }

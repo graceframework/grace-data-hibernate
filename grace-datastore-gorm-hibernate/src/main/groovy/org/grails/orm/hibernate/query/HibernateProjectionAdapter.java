@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2025 the original author or authors.
+ * Copyright 2011-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,15 +18,13 @@ package org.grails.orm.hibernate.query;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hibernate.criterion.Projection;
-import org.hibernate.criterion.Projections;
-
 import org.grails.datastore.mapping.query.Query;
 
 /**
  * Adapts Grails datastore API to Hibernate projections.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 2.0
  */
 public class HibernateProjectionAdapter {
@@ -38,37 +36,37 @@ public class HibernateProjectionAdapter {
     static {
         adapterMap.put(Query.AvgProjection.class, gormProjection -> {
             Query.AvgProjection avg = (Query.AvgProjection) gormProjection;
-            return Projections.avg(avg.getPropertyName());
+            return org.hibernate.criterion.Projections.avg(avg.getPropertyName());
         });
-        adapterMap.put(Query.IdProjection.class, gormProjection -> Projections.id());
+        adapterMap.put(Query.IdProjection.class, gormProjection -> org.hibernate.criterion.Projections.id());
         adapterMap.put(Query.SumProjection.class, gormProjection -> {
             Query.SumProjection avg = (Query.SumProjection) gormProjection;
-            return Projections.sum(avg.getPropertyName());
+            return org.hibernate.criterion.Projections.sum(avg.getPropertyName());
         });
         adapterMap.put(Query.DistinctPropertyProjection.class, gormProjection -> {
             Query.DistinctPropertyProjection avg = (Query.DistinctPropertyProjection) gormProjection;
-            return Projections.distinct(Projections.property(avg.getPropertyName()));
+            return org.hibernate.criterion.Projections.distinct(org.hibernate.criterion.Projections.property(avg.getPropertyName()));
         });
         adapterMap.put(Query.PropertyProjection.class, gormProjection -> {
             Query.PropertyProjection avg = (Query.PropertyProjection) gormProjection;
-            return Projections.property(avg.getPropertyName());
+            return org.hibernate.criterion.Projections.property(avg.getPropertyName());
         });
-        adapterMap.put(Query.CountProjection.class, gormProjection -> Projections.rowCount());
+        adapterMap.put(Query.CountProjection.class, gormProjection -> org.hibernate.criterion.Projections.rowCount());
         adapterMap.put(Query.CountDistinctProjection.class, gormProjection -> {
             Query.CountDistinctProjection cd = (Query.CountDistinctProjection) gormProjection;
-            return Projections.countDistinct(cd.getPropertyName());
+            return org.hibernate.criterion.Projections.countDistinct(cd.getPropertyName());
         });
         adapterMap.put(Query.GroupPropertyProjection.class, gormProjection -> {
             Query.GroupPropertyProjection cd = (Query.GroupPropertyProjection) gormProjection;
-            return Projections.groupProperty(cd.getPropertyName());
+            return org.hibernate.criterion.Projections.groupProperty(cd.getPropertyName());
         });
         adapterMap.put(Query.MaxProjection.class, gormProjection -> {
             Query.MaxProjection cd = (Query.MaxProjection) gormProjection;
-            return Projections.max(cd.getPropertyName());
+            return org.hibernate.criterion.Projections.max(cd.getPropertyName());
         });
         adapterMap.put(Query.MinProjection.class, gormProjection -> {
             Query.MinProjection cd = (Query.MinProjection) gormProjection;
-            return Projections.min(cd.getPropertyName());
+            return org.hibernate.criterion.Projections.min(cd.getPropertyName());
         });
     }
 
@@ -76,7 +74,7 @@ public class HibernateProjectionAdapter {
         this.projection = projection;
     }
 
-    public Projection toHibernateProjection() {
+    public org.hibernate.criterion.Projection toHibernateProjection() {
         ProjectionAdapter projectionAdapter = adapterMap.get(this.projection.getClass());
         if (projectionAdapter == null) {
             throw new UnsupportedOperationException("Unsupported projection used: " + this.projection.getClass().getName());
@@ -86,7 +84,7 @@ public class HibernateProjectionAdapter {
 
     private interface ProjectionAdapter {
 
-        Projection toHibernateProjection(Query.Projection gormProjection);
+        org.hibernate.criterion.Projection toHibernateProjection(Query.Projection gormProjection);
 
     }
 

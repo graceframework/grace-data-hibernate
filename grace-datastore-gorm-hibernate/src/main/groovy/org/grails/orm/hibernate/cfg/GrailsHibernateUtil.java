@@ -21,18 +21,16 @@ import java.util.Map;
 import groovy.lang.GroovyObject;
 import groovy.lang.GroovySystem;
 import groovy.lang.MetaClass;
-import org.hibernate.Criteria;
+
 import org.hibernate.FetchMode;
 import org.hibernate.FlushMode;
 import org.hibernate.Hibernate;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
 import org.hibernate.engine.spi.EntityEntry;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.engine.spi.Status;
-import org.hibernate.internal.util.StringHelper;
 import org.hibernate.proxy.HibernateProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +52,7 @@ import org.grails.orm.hibernate.support.HibernateRuntimeUtils;
  * Utility methods for configuring Hibernate inside Grails.
  *
  * @author Graeme Rocher
+ * @author Michael Yan
  * @since 0.4
  */
 public class GrailsHibernateUtil extends HibernateRuntimeUtils {
@@ -94,7 +93,7 @@ public class GrailsHibernateUtil extends HibernateRuntimeUtils {
     private static HibernateProxyHandler proxyHandler = new HibernateProxyHandler();
 
     public static void populateArgumentsForCriteria(AbstractHibernateDatastore datastore, Class<?> targetClass,
-            Criteria c, Map argMap, ConversionService conversionService) {
+            org.hibernate.Criteria c, Map argMap, ConversionService conversionService) {
         populateArgumentsForCriteria(datastore, targetClass, c, argMap, conversionService, true);
     }
 
@@ -110,7 +109,7 @@ public class GrailsHibernateUtil extends HibernateRuntimeUtils {
      */
     @SuppressWarnings("rawtypes")
     public static void populateArgumentsForCriteria(AbstractHibernateDatastore datastore, Class<?> targetClass,
-            Criteria c, Map argMap, ConversionService conversionService, boolean useDefaultMapping) {
+            org.hibernate.Criteria c, Map argMap, ConversionService conversionService, boolean useDefaultMapping) {
         Integer maxParam = null;
         Integer offsetParam = null;
         if (argMap.containsKey(ARGUMENT_MAX)) {
@@ -211,12 +210,12 @@ public class GrailsHibernateUtil extends HibernateRuntimeUtils {
      */
     @Deprecated
     @SuppressWarnings("rawtypes")
-    public static void populateArgumentsForCriteria(Class<?> targetClass, Criteria c, Map argMap, ConversionService conversionService) {
+    public static void populateArgumentsForCriteria(Class<?> targetClass, org.hibernate.Criteria c, Map argMap, ConversionService conversionService) {
         populateArgumentsForCriteria(null, targetClass, c, argMap, conversionService);
     }
 
     @SuppressWarnings("rawtypes")
-    public static void populateArgumentsForCriteria(Criteria c, Map argMap, ConversionService conversionService) {
+    public static void populateArgumentsForCriteria(org.hibernate.Criteria c, Map argMap, ConversionService conversionService) {
         populateArgumentsForCriteria(null, null, c, argMap, conversionService);
     }
 
@@ -234,7 +233,7 @@ public class GrailsHibernateUtil extends HibernateRuntimeUtils {
      * Add order to criteria, creating necessary subCriteria if nested sort property (ie. sort:'nested.property').
      */
     private static void addOrderPossiblyNested(AbstractHibernateDatastore datastore,
-            Criteria c, Class<?> targetClass, String sort, String order, boolean ignoreCase) {
+            org.hibernate.Criteria c, Class<?> targetClass, String sort, String order, boolean ignoreCase) {
         int firstDotPos = sort.indexOf(".");
         if (firstDotPos == -1) {
             addOrder(c, sort, order, ignoreCase);
@@ -248,7 +247,7 @@ public class GrailsHibernateUtil extends HibernateRuntimeUtils {
                 addOrder(c, sort, order, ignoreCase);
             }
             else if (property instanceof Association) {
-                Criteria subCriteria = c.createCriteria(sortHead);
+                org.hibernate.Criteria subCriteria = c.createCriteria(sortHead);
                 Class<?> propertyTargetClass = ((Association) property).getAssociatedEntity().getJavaClass();
                 GrailsHibernateUtil.cacheCriteriaByMapping(datastore, propertyTargetClass, subCriteria);
                 addOrderPossiblyNested(datastore, subCriteria, propertyTargetClass, sortTail, order, ignoreCase); // Recurse on nested sort
@@ -259,12 +258,12 @@ public class GrailsHibernateUtil extends HibernateRuntimeUtils {
     /**
      * Add order directly to criteria.
      */
-    private static void addOrder(Criteria c, String sort, String order, boolean ignoreCase) {
+    private static void addOrder(org.hibernate.Criteria c, String sort, String order, boolean ignoreCase) {
         if (ORDER_DESC.equals(order)) {
-            c.addOrder(ignoreCase ? Order.desc(sort).ignoreCase() : Order.desc(sort));
+            c.addOrder(ignoreCase ? org.hibernate.criterion.Order.desc(sort).ignoreCase() : org.hibernate.criterion.Order.desc(sort));
         }
         else {
-            c.addOrder(ignoreCase ? Order.asc(sort).ignoreCase() : Order.asc(sort));
+            c.addOrder(ignoreCase ? org.hibernate.criterion.Order.asc(sort).ignoreCase() : org.hibernate.criterion.Order.asc(sort));
         }
     }
 
@@ -287,14 +286,14 @@ public class GrailsHibernateUtil extends HibernateRuntimeUtils {
      * @param targetClass The target class
      * @param criteria The criteria
      */
-    public static void cacheCriteriaByMapping(Class<?> targetClass, Criteria criteria) {
+    public static void cacheCriteriaByMapping(Class<?> targetClass, org.hibernate.Criteria criteria) {
         Mapping m = GrailsDomainBinder.getMapping(targetClass);
         if (m != null && m.getCache() != null && m.getCache().getEnabled()) {
             criteria.setCacheable(true);
         }
     }
 
-    public static void cacheCriteriaByMapping(AbstractHibernateDatastore datastore, Class<?> targetClass, Criteria criteria) {
+    public static void cacheCriteriaByMapping(AbstractHibernateDatastore datastore, Class<?> targetClass, org.hibernate.Criteria criteria) {
         cacheCriteriaByMapping(targetClass, criteria);
     }
 
@@ -468,15 +467,15 @@ public class GrailsHibernateUtil extends HibernateRuntimeUtils {
     }
 
     public static String qualify(final String prefix, final String name) {
-        return StringHelper.qualify(prefix, name);
+        return org.hibernate.internal.util.StringHelper.qualify(prefix, name);
     }
 
     public static boolean isNotEmpty(final String string) {
-        return StringHelper.isNotEmpty(string);
+        return org.hibernate.internal.util.StringHelper.isNotEmpty(string);
     }
 
     public static String unqualify(final String qualifiedName) {
-        return StringHelper.unqualify(qualifiedName);
+        return org.hibernate.internal.util.StringHelper.unqualify(qualifiedName);
     }
 
 }

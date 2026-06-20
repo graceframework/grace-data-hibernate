@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2025 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,6 @@ import jakarta.persistence.criteria.Root;
 
 import groovy.lang.Closure;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
-import org.hibernate.Criteria;
 import org.hibernate.FlushMode;
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
@@ -239,7 +238,7 @@ public class GrailsHibernateTemplate implements IHibernateTemplate {
     }
 
     @Override
-    public void applySettings(Criteria criteria) {
+    public void applySettings(org.hibernate.Criteria criteria) {
         if (this.exposeNativeSession) {
             prepareCriteria(criteria);
         }
@@ -502,7 +501,7 @@ public class GrailsHibernateTemplate implements IHibernateTemplate {
      * @deprecated Deprecated because Hibernate Criteria are deprecated
      */
     @Deprecated
-    protected void prepareCriteria(Criteria criteria) {
+    protected void prepareCriteria(org.hibernate.Criteria criteria) {
         if (this.cacheQueries) {
             criteria.setCacheable(true);
         }
@@ -808,8 +807,8 @@ public class GrailsHibernateTemplate implements IHibernateTemplate {
                 if (retVal instanceof org.hibernate.query.Query) {
                     prepareQuery(((org.hibernate.query.Query) retVal));
                 }
-                if (retVal instanceof Criteria) {
-                    prepareCriteria(((Criteria) retVal));
+                if (retVal instanceof org.hibernate.Criteria) {
+                    prepareCriteria(((org.hibernate.Criteria) retVal));
                 }
                 else if (retVal instanceof Query) {
                     prepareCriteria(((Query) retVal));
