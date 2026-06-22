@@ -31,7 +31,9 @@ dependencies {
         }
     }
     testImplementation libs.h2
-    testImplementation libs.hibernate.jcache
+    testImplementation libs.hibernate.jcache, {
+        exclude group: 'org.hibernate', module: 'hibernate-core'
+    }
     testImplementation libs.hibernate.validator
     testImplementation libs.tomcat.jdbc
     testRuntimeOnly libs.glassfish.expressly
