@@ -20,7 +20,6 @@ import jakarta.persistence.criteria.CriteriaBuilder
 import jakarta.persistence.criteria.CriteriaQuery
 import jakarta.persistence.criteria.Root
 
-import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import org.hibernate.FlushMode
 import org.hibernate.LockMode
@@ -43,7 +42,6 @@ import org.grails.datastore.mapping.query.event.PreQueryEvent
 import org.grails.orm.hibernate.exceptions.GrailsQueryException
 import org.grails.orm.hibernate.query.GrailsHibernateQueryUtils
 import org.grails.orm.hibernate.query.HibernateHqlQuery
-import org.grails.orm.hibernate.query.HibernateQuery
 import org.grails.orm.hibernate.query.PagedResultList
 
 /**
@@ -210,35 +208,33 @@ class HibernateGormStaticApi<D> extends AbstractHibernateGormStaticApi<D> {
     }
 
     protected <T> T withQueryEvents(Query query, Closure<T> callable) {
-        HibernateDatastore hibernateDatastore = (HibernateDatastore) datastore
-
-        def eventPublisher = hibernateDatastore.applicationEventPublisher
-
-        def hqlQuery = new HibernateHqlQuery(new HibernateSession(hibernateDatastore, sessionFactory), persistentEntity, query)
-        eventPublisher.publishEvent(new PreQueryEvent(hibernateDatastore, hqlQuery))
+        firePreQueryEvent(sessionFactory, query)
 
         def result = callable.call()
 
-        eventPublisher.publishEvent(new PostQueryEvent(hibernateDatastore, hqlQuery, Collections.singletonList(result)))
+        firePostQueryEvent(sessionFactory, query, result)
         return result
     }
 
     @Override
-    protected void firePostQueryEvent(Session session, org.hibernate.Criteria criteria, Object result) {
+    protected void firePostQueryEvent(SessionFactory sessionFactory, Query query, Object result) {
+        HibernateDatastore hibernateDatastore = (HibernateDatastore) datastore
+        HibernateHqlQuery hqlQuery = new HibernateHqlQuery(new HibernateSession(hibernateDatastore, sessionFactory), persistentEntity, query)
+
         if (result instanceof List) {
-            datastore.applicationEventPublisher.publishEvent(new PostQueryEvent(datastore,
-                    new HibernateQuery(criteria, persistentEntity), (List) result))
+            datastore.applicationEventPublisher.publishEvent(new PostQueryEvent(hqlQuery, result))
         }
         else {
-            datastore.applicationEventPublisher.publishEvent(new PostQueryEvent(datastore,
-                    new HibernateQuery(criteria, persistentEntity), Collections.singletonList(result)))
+            datastore.applicationEventPublisher.publishEvent(new PostQueryEvent(hqlQuery, Collections.singletonList(result)))
         }
     }
 
     @Override
-    protected void firePreQueryEvent(Session session, org.hibernate.Criteria criteria) {
-        datastore.applicationEventPublisher.publishEvent(new PreQueryEvent(datastore,
-                new HibernateQuery(criteria, persistentEntity)))
+    protected void firePreQueryEvent(SessionFactory sessionFactory, Query query) {
+        HibernateDatastore hibernateDatastore = (HibernateDatastore) datastore
+        HibernateHqlQuery hqlQuery = new HibernateHqlQuery(new HibernateSession(hibernateDatastore, sessionFactory), persistentEntity, query)
+
+        datastore.applicationEventPublisher.publishEvent(new PreQueryEvent(hibernateDatastore, hqlQuery))
     }
 
     @Override
@@ -257,11 +253,6 @@ class HibernateGormStaticApi<D> extends AbstractHibernateGormStaticApi<D> {
         }
         HibernateHqlQuery query = new HibernateHqlQuery(hibernateSession, persistentEntity, q)
         return query
-    }
-
-    @CompileDynamic
-    protected void setResultTransformer(org.hibernate.Criteria c) {
-        c.resultTransformer = org.hibernate.Criteria.DISTINCT_ROOT_ENTITY
     }
 
 }
