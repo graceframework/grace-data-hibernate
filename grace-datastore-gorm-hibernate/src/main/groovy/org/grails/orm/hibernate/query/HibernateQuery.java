@@ -24,7 +24,6 @@ import org.hibernate.dialect.function.SQLFunction;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.persister.entity.PropertyMapping;
 
-import grails.orm.HibernateCriteriaBuilder;
 import grails.orm.RlikeExpression;
 
 import org.grails.datastore.mapping.model.PersistentEntity;
@@ -73,19 +72,23 @@ public class HibernateQuery extends AbstractHibernateQuery {
         return HIBERNATE_CRITERION_ADAPTER;
     }
 
+    @Override
     protected org.hibernate.criterion.Criterion createRlikeExpression(String propertyName, String value) {
         return new RlikeExpression(propertyName, value);
     }
 
+    @Override
     protected void setDetachedCriteriaValue(QueryableCriteria value, PropertyCriterion pc) {
-        org.hibernate.criterion.DetachedCriteria hibernateDetachedCriteria = HibernateCriteriaBuilder.getHibernateDetachedCriteria(this, value);
+        org.hibernate.criterion.DetachedCriteria hibernateDetachedCriteria = AbstractHibernateCriteriaBuilder.getHibernateDetachedCriteria(this, value);
         pc.setValue(hibernateDetachedCriteria);
     }
 
+    @Override
     protected String render(org.hibernate.type.BasicType basic, List<String> columns, SessionFactory sessionFactory, SQLFunction sqlFunction) {
         return sqlFunction.render(basic, columns, (SessionFactoryImplementor) sessionFactory);
     }
 
+    @Override
     protected PropertyMapping getEntityPersister(String name, SessionFactory sessionFactory) {
         return (PropertyMapping) ((SessionFactoryImplementor) sessionFactory).getEntityPersister(name);
     }

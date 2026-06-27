@@ -15,7 +15,6 @@
  */
 package org.grails.orm.hibernate.query;
 
-import grails.orm.HibernateCriteriaBuilder;
 import grails.orm.RlikeExpression;
 
 import org.grails.datastore.mapping.query.api.QueryableCriteria;
@@ -33,7 +32,7 @@ public class HibernateCriterionAdapter extends AbstractHibernateCriterionAdapter
 
     @Override
     protected org.hibernate.criterion.DetachedCriteria toHibernateDetachedCriteria(AbstractHibernateQuery hibernateQuery, QueryableCriteria<?> queryableCriteria) {
-        return HibernateCriteriaBuilder.getHibernateDetachedCriteria(hibernateQuery, queryableCriteria);
+        return AbstractHibernateCriteriaBuilder.getHibernateDetachedCriteria(hibernateQuery, queryableCriteria);
     }
 
     @Override
@@ -42,7 +41,7 @@ public class HibernateCriterionAdapter extends AbstractHibernateCriterionAdapter
         if (alias == null) {
             return toHibernateDetachedCriteria(hibernateQuery, queryableCriteria);
         }
-        return HibernateCriteriaBuilder.getHibernateDetachedCriteria(hibernateQuery, queryableCriteria, alias);
+        return AbstractHibernateCriteriaBuilder.getHibernateDetachedCriteria(hibernateQuery, queryableCriteria, alias);
     }
 
 }

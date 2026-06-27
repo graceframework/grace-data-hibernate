@@ -26,10 +26,12 @@ import java.util.Map;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.metamodel.Attribute;
 import jakarta.persistence.metamodel.EntityType;
+import jakarta.persistence.metamodel.PluralAttribute;
 
 import groovy.lang.Closure;
 import groovy.lang.DelegatesTo;
 import groovy.lang.GroovyObjectSupport;
+import groovy.lang.GroovySystem;
 import groovy.lang.MetaClass;
 import groovy.lang.MetaMethod;
 import groovy.lang.MissingMethodException;
@@ -45,10 +47,15 @@ import org.hibernate.transform.ResultTransformer;
 import org.hibernate.type.Type;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.orm.hibernate5.SessionHolder;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import grails.gorm.DetachedCriteria;
 import grails.gorm.MultiTenant;
+import grails.orm.PagedResultList;
+import grails.orm.RlikeExpression;
 
+import org.grails.datastore.mapping.model.PersistentEntity;
 import org.grails.datastore.mapping.multitenancy.MultiTenancySettings;
 import org.grails.datastore.mapping.query.Query;
 import org.grails.datastore.mapping.query.api.BuildableCriteria;
@@ -57,9 +64,12 @@ import org.grails.datastore.mapping.query.api.ProjectionList;
 import org.grails.datastore.mapping.query.api.QueryableCriteria;
 import org.grails.datastore.mapping.reflect.NameUtils;
 import org.grails.orm.hibernate.AbstractHibernateDatastore;
+import org.grails.orm.hibernate.GrailsHibernateTemplate;
+import org.grails.orm.hibernate.HibernateDatastore;
+import org.grails.orm.hibernate.cfg.GrailsHibernateUtil;
 
 /**
- * Abstract super class for sharing code between Hibernate 3 and 4 implementations of HibernateCriteriaBuilder
+ * Abstract super class for sharing code between Hibernate 5 implementations of HibernateCriteriaBuilder
  *
  * @author Graeme Rocher
  * @author Michael Yan
@@ -289,6 +299,7 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      *
      * @param propertyName The property name
      */
+    @Override
     public ProjectionList distinct(String propertyName) {
         distinct(propertyName, null);
         return this;
@@ -479,7 +490,9 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
         return propertyValue;
     }
 
-    protected abstract org.hibernate.criterion.DetachedCriteria convertToHibernateCriteria(QueryableCriteria<?> queryableCriteria);
+    protected org.hibernate.criterion.DetachedCriteria convertToHibernateCriteria(QueryableCriteria<?> queryableCriteria) {
+        return getHibernateDetachedCriteria(new HibernateQuery(criteria, queryableCriteria.getPersistentEntity()), queryableCriteria);
+    }
 
     /**
      * Adds a projection that allows the criteria to return the property count
@@ -1357,7 +1370,17 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * @return A Criterion instance
      */
     @Override
-    public abstract Criteria rlike(String propertyName, Object propertyValue);
+    public Criteria rlike(String propertyName, Object propertyValue) {
+        if (!validateSimpleExpression()) {
+            throwRuntimeException(new IllegalArgumentException("Call to [rlike] with propertyName [" +
+                    propertyName + "] and value [" + propertyValue + "] not allowed here."));
+        }
+
+        propertyName = calculatePropertyName(propertyName);
+        propertyValue = calculatePropertyValue(propertyValue);
+        addToCriteria(new RlikeExpression(propertyName, propertyValue));
+        return this;
+    }
 
     /**
      * Creates a Criterion with from the specified property name and "ilike" (a case sensitive version of "like") expression
@@ -2014,10 +2037,15 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
         throw new MissingMethodException(name, getClass(), args);
     }
 
-    protected abstract Object executeUniqueResultWithProxyUnwrap();
+    protected Object executeUniqueResultWithProxyUnwrap() {
+        return GrailsHibernateUtil.unwrapIfProxy(criteria.uniqueResult());
+    }
 
-    protected abstract List createPagedResultList(Map args);
-
+    protected List createPagedResultList(Map args) {
+        GrailsHibernateUtil.populateArgumentsForCriteria(datastore, targetClass, criteria, args, conversionService);
+        GrailsHibernateTemplate ght = new GrailsHibernateTemplate(sessionFactory, (HibernateDatastore) datastore, getDefaultFlushMode());
+        return new PagedResultList(ght, criteria);
+    }
 
     private boolean isAssociationQueryMethod(Object[] args) {
         return args.length == 1 && args[0] instanceof Closure;
@@ -2071,9 +2099,23 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
         return this.criteria;
     }
 
-    protected abstract void createCriteriaInstance();
+    protected void createCriteriaInstance() {
+        if (TransactionSynchronizationManager.hasResource(sessionFactory)) {
+            participate = true;
+            hibernateSession = ((SessionHolder) TransactionSynchronizationManager.getResource(sessionFactory)).getSession();
+        }
+        else {
+            hibernateSession = sessionFactory.openSession();
+        }
 
-    protected abstract void cacheCriteriaMapping();
+        criteria = hibernateSession.createCriteria(targetClass);
+        cacheCriteriaMapping();
+        criteriaMetaClass = GroovySystem.getMetaClassRegistry().getMetaClass(criteria.getClass());
+    }
+
+    protected void cacheCriteriaMapping() {
+        GrailsHibernateUtil.cacheCriteriaByMapping(datastore, targetClass, criteria);
+    }
 
     private void invokeClosureNode(Object args) {
         Closure<?> callable = (Closure<?>) args;
@@ -2140,9 +2182,16 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
      * @return this (for method chaining)
      * @throws org.hibernate.HibernateException Indicates a problem creating the sub criteria
      */
-    public abstract org.hibernate.Criteria createAlias(String associationPath, String alias, int joinType);
+    public org.hibernate.Criteria createAlias(String associationPath, String alias, int joinType) {
+        return this.criteria.createAlias(associationPath, alias, org.hibernate.sql.JoinType.parse(joinType));
+    }
 
-    protected abstract Class getClassForAssociationType(Attribute<?, ?> type);
+    protected Class<?> getClassForAssociationType(Attribute<?, ?> type) {
+        if (type instanceof PluralAttribute) {
+            return ((PluralAttribute) type).getElementType().getJavaType();
+        }
+        return type.getJavaType();
+    }
 
     /**
      * Throws a runtime exception where necessary to ensure the session gets closed
@@ -2172,6 +2221,49 @@ public abstract class AbstractHibernateCriteriaBuilder extends GroovyObjectSuppo
 
     public void setDefaultFlushMode(int defaultFlushMode) {
         this.defaultFlushMode = defaultFlushMode;
+    }
+
+    public static org.hibernate.criterion.DetachedCriteria getHibernateDetachedCriteria(
+            AbstractHibernateQuery query, QueryableCriteria<?> queryableCriteria) {
+        String alias = queryableCriteria.getAlias();
+        return getHibernateDetachedCriteria(query, queryableCriteria, alias);
+    }
+
+    public static org.hibernate.criterion.DetachedCriteria getHibernateDetachedCriteria(
+            AbstractHibernateQuery query, QueryableCriteria<?> queryableCriteria, String alias) {
+        PersistentEntity persistentEntity = queryableCriteria.getPersistentEntity();
+        Class targetClass = persistentEntity.getJavaClass();
+        org.hibernate.criterion.DetachedCriteria detachedCriteria;
+
+        if (alias != null) {
+            detachedCriteria = org.hibernate.criterion.DetachedCriteria.forClass(targetClass, alias);
+        }
+        else {
+            detachedCriteria = org.hibernate.criterion.DetachedCriteria.forClass(targetClass);
+        }
+        populateHibernateDetachedCriteria(new HibernateQuery(detachedCriteria, persistentEntity), detachedCriteria, queryableCriteria);
+        return detachedCriteria;
+    }
+
+    private static void populateHibernateDetachedCriteria(AbstractHibernateQuery query,
+            org.hibernate.criterion.DetachedCriteria detachedCriteria, QueryableCriteria<?> queryableCriteria) {
+        List<Query.Criterion> criteriaList = queryableCriteria.getCriteria();
+        for (Query.Criterion criterion : criteriaList) {
+            org.hibernate.criterion.Criterion hibernateCriterion = HibernateQuery.HIBERNATE_CRITERION_ADAPTER.toHibernateCriterion(query, criterion, null);
+            if (hibernateCriterion != null) {
+                detachedCriteria.add(hibernateCriterion);
+            }
+        }
+
+        List<Query.Projection> projections = queryableCriteria.getProjections();
+        org.hibernate.criterion.ProjectionList projectionList = org.hibernate.criterion.Projections.projectionList();
+        for (Query.Projection projection : projections) {
+            org.hibernate.criterion.Projection hibernateProjection = new HibernateProjectionAdapter(projection).toHibernateProjection();
+            if (hibernateProjection != null) {
+                projectionList.add(hibernateProjection);
+            }
+        }
+        detachedCriteria.setProjection(projectionList);
     }
 
     /**
