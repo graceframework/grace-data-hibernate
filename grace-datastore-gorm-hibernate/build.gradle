@@ -35,6 +35,7 @@ dependencies {
         exclude group: 'org.hibernate', module: 'hibernate-core'
     }
     testImplementation libs.hibernate.validator
+    testImplementation libs.logback
     testImplementation libs.tomcat.jdbc
     testRuntimeOnly libs.glassfish.expressly
 }
