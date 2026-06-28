@@ -109,7 +109,7 @@ public abstract class AbstractHibernateQuery extends Query {
 
     protected ProxyHandler proxyHandler = new HibernateProxyHandler();
 
-    protected final AbstractHibernateCriterionAdapter abstractHibernateCriterionAdapter;
+    protected final HibernateCriterionAdapter hibernateCriterionAdapter;
 
     protected AbstractHibernateQuery(org.hibernate.Criteria criteria, AbstractHibernateSession session, PersistentEntity entity) {
         super(session, entity);
@@ -117,13 +117,13 @@ public abstract class AbstractHibernateQuery extends Query {
         if (entity != null) {
             initializeJoinStatus();
         }
-        this.abstractHibernateCriterionAdapter = createHibernateCriterionAdapter();
+        this.hibernateCriterionAdapter = createHibernateCriterionAdapter();
     }
 
     protected AbstractHibernateQuery(org.hibernate.criterion.DetachedCriteria criteria, PersistentEntity entity) {
         super(null, entity);
         this.detachedCriteria = criteria;
-        this.abstractHibernateCriterionAdapter = createHibernateCriterionAdapter();
+        this.hibernateCriterionAdapter = createHibernateCriterionAdapter();
         if (entity != null) {
             initializeJoinStatus();
         }
@@ -408,7 +408,7 @@ public abstract class AbstractHibernateQuery extends Query {
 
     @Override
     public Query and(Criterion a, Criterion b) {
-        AbstractHibernateCriterionAdapter adapter = getHibernateCriterionAdapter();
+        HibernateCriterionAdapter adapter = getHibernateCriterionAdapter();
         addToCriteria(org.hibernate.criterion.Restrictions.and(adapter.toHibernateCriterion(this, a, this.alias),
                 adapter.toHibernateCriterion(this, a, this.alias)));
         return this;
@@ -416,7 +416,7 @@ public abstract class AbstractHibernateQuery extends Query {
 
     @Override
     public Query or(Criterion a, Criterion b) {
-        AbstractHibernateCriterionAdapter adapter = getHibernateCriterionAdapter();
+        HibernateCriterionAdapter adapter = getHibernateCriterionAdapter();
         addToCriteria(org.hibernate.criterion.Restrictions.or(adapter.toHibernateCriterion(this, a, this.alias),
                 adapter.toHibernateCriterion(this, b, this.alias)));
         return this;
@@ -916,11 +916,11 @@ public abstract class AbstractHibernateQuery extends Query {
 
     protected abstract void setDetachedCriteriaValue(QueryableCriteria value, PropertyCriterion pc);
 
-    protected AbstractHibernateCriterionAdapter getHibernateCriterionAdapter() {
-        return this.abstractHibernateCriterionAdapter;
+    protected HibernateCriterionAdapter getHibernateCriterionAdapter() {
+        return this.hibernateCriterionAdapter;
     }
 
-    protected abstract AbstractHibernateCriterionAdapter createHibernateCriterionAdapter();
+    protected abstract HibernateCriterionAdapter createHibernateCriterionAdapter();
 
     protected abstract org.hibernate.criterion.Criterion createRlikeExpression(String propertyName, String value);
 
@@ -945,7 +945,7 @@ public abstract class AbstractHibernateQuery extends Query {
                     }
                 }
                 else {
-                    AbstractHibernateCriterionAdapter adapter = getHibernateCriterionAdapter();
+                    HibernateCriterionAdapter adapter = getHibernateCriterionAdapter();
                     org.hibernate.criterion.Criterion criterion = adapter.toHibernateCriterion(AbstractHibernateQuery.this, c, this.alias);
                     if (criterion != null) {
                         this.hibernateJunction.add(criterion);
@@ -1174,7 +1174,7 @@ public abstract class AbstractHibernateQuery extends Query {
 
         @Override
         public Query and(Criterion a, Criterion b) {
-            AbstractHibernateCriterionAdapter adapter = getHibernateCriterionAdapter();
+            HibernateCriterionAdapter adapter = getHibernateCriterionAdapter();
             addToCriteria(org.hibernate.criterion.Restrictions.and(adapter.toHibernateCriterion(AbstractHibernateQuery.this, a, this.alias),
                     adapter.toHibernateCriterion(AbstractHibernateQuery.this, b, this.alias)));
             return this;
@@ -1182,7 +1182,7 @@ public abstract class AbstractHibernateQuery extends Query {
 
         @Override
         public Query or(Criterion a, Criterion b) {
-            AbstractHibernateCriterionAdapter adapter = getHibernateCriterionAdapter();
+            HibernateCriterionAdapter adapter = getHibernateCriterionAdapter();
             addToCriteria(org.hibernate.criterion.Restrictions.or(adapter.toHibernateCriterion(AbstractHibernateQuery.this, a, this.alias),
                     adapter.toHibernateCriterion(AbstractHibernateQuery.this, b, this.alias)));
             return this;

@@ -68,7 +68,7 @@ public class HibernateQuery extends AbstractHibernateQuery {
     }
 
     @Override
-    protected AbstractHibernateCriterionAdapter createHibernateCriterionAdapter() {
+    protected HibernateCriterionAdapter createHibernateCriterionAdapter() {
         return HIBERNATE_CRITERION_ADAPTER;
     }
 
