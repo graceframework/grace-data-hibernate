@@ -5,7 +5,7 @@
 [![Grace on X](https://img.shields.io/twitter/follow/graceframework?style=social)](https://x.com/graceframework)
 
 [![Groovy Version](https://img.shields.io/badge/Groovy-4.0.32-blue?style=flat&color=4298b8)](https://groovy-lang.org/releasenotes/groovy-4.0.html)
-[![Grace Version](https://img.shields.io/badge/Grace-2024.1.0-blue?style=flat&color=f49b06)](https://github.com/graceframework/grace-framework/releases/tag/v2024.1.0-RC2)
+[![Grace Version](https://img.shields.io/badge/Grace-2024.1.1-blue?style=flat&color=f49b06)](https://github.com/graceframework/grace-framework/releases/tag/v2024.1.1)
 
 # Grace Data for Hibernate
 
@@ -42,6 +42,7 @@ To make it easier for users to use and upgrade, Grace Data Hibernate adopts a ve
 
 | GORM Hibernate Version | Grace Version |
 |------------------------|---------------|
+| 2024.2.x               | 2024.2.x      |
 | 2024.1.x               | 2024.1.x      |
 | 2024.0.x               | 2024.0.x      |
 | 2023.3.x               | 2023.3.x      |
@@ -54,7 +55,7 @@ To make it easier for users to use and upgrade, Grace Data Hibernate adopts a ve
 
 ## Ducumentation
 
-* [2024.1.x](https://graceframework.org/grace-data-hibernate/2024.1.x/)
+* [2024.2.x](https://graceframework.org/grace-data-hibernate/2024.2.x/)
 
 ## License
 
