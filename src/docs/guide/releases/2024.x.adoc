@@ -1,3 +1,31 @@
+=== 2024.2.0-M1
+
+link:{github}/releases/tag/v2024.2.0-M1[release notes]
+
+🛠 Improvements
+
+* Add release notes for 2024.2.0-M1
+* Update doc.properties - switch to 2024.1.x branch - update spring version
+* Update README - Update the badget version of Grace - Update the document link
+* HibernateCriterionAdapter: push methods from AbstractHibernateCriterionAdapter down link:{github}/issues/192[#192]
+* HibernateCriteriaBuilder: pull methods up to AbstractHibernateCriteriaBuilder link:{github}/issues/191[#191]
+* HibernateGormStaticApi: Migrate Hibernate's deprecated Criteria API to JPA link:{github}/issues/190[#190]
+* Add logback configuration for tests to print Hibernate SQL and deprecation logs link:{github}/issues/189[#189]
+* Exclude javax version of hibernate-core dependency for hibernate-jcache link:{github}/issues/187[#187]
+* Import the full name with package of Hibernate APIs link:{github}/issues/186[#186]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace Data 2024.2.0-M1 link:{github}/issues/184[#184]
+* Upgrade to Grace Gradle Plugin 2024.1.1 link:{github}/issues/188[#188]
+* Upgrade to Spock 2.4 link:{github}/issues/185[#185]
+
+⚙️ Tasks
+
+* Release v2024.2.0-M1
+* Update github workflows - Switch to '2024.2.x' branch
+* Next development version: 2024.2.0-SNAPSHOT
+
 === 2024.1.0
 
 link:{github}/releases/tag/v2024.1.0[release notes]
