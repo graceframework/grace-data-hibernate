@@ -20,8 +20,8 @@ jakarta-transaction = "2.0.1"
 jakarta-validation = "3.0.2"
 javaparser = "3.28.2"
 javassist = "3.30.2-GA"
-junit-jupiter = "5.12.2"
-junit-platform = "1.12.2"
+junit-jupiter = "5.14.4"
+junit-platform = "1.14.4"
 logback = "1.5.38"
 nexus-publish = "2.0.0"
 objenesis = "3.4"
@@ -67,6 +67,7 @@ junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.re
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter" }
 junit-platform-engine = { module = "org.junit.platform:junit-platform-engine", version.ref = "junit-platform" }
 junit-platform-runner = { module = "org.junit.platform:junit-platform-runner", version.ref = "junit-platform" }
+junit-platform-suite = { module = "org.junit.platform:junit-platform-suite", version.ref = "junit-platform" }
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 objenesis = { module = "org.objenesis:objenesis", version.ref = "objenesis" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }

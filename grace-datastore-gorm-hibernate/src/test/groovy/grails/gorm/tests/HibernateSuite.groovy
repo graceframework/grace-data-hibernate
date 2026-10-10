@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2025 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,14 @@
  */
 package grails.gorm.tests
 
-import org.junit.runner.RunWith
-import org.junit.runners.Suite
+import org.junit.platform.suite.api.SelectClasses
+import org.junit.platform.suite.api.Suite
 
 /**
  * Created by graemerocher on 06/07/2016.
  */
-@RunWith(Suite)
-
-@Suite.SuiteClasses([
+@Suite
+@SelectClasses([
         NullValueEqualSpec
 ])
 class HibernateSuite {
