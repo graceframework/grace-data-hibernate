@@ -28,7 +28,7 @@ objenesis = "3.4"
 slf4j = "2.0.20"
 spock = "2.4-groovy-4.0"
 spring-framework = "6.2.19"
-tomcat = "10.1.55"
+tomcat = "10.1.60"
 
 [libraries]
 ehcache = { group = "org.ehcache", name = "ehcache", version.ref = "ehcache" }
