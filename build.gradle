@@ -49,7 +49,7 @@ def hibernateVersion = versions['hibernate-core']
 def springFrameworkVersion = versions['spring-framework']
 
 version = project.projectVersion
-group = "org.graceframework"
+group = "org.graceframework.data"
 
 repositories {
     mavenCentral()

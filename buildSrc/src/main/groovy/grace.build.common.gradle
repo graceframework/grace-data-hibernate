@@ -8,7 +8,7 @@ plugins {
 }
 
 version = project.projectVersion
-group = "org.graceframework"
+group = "org.graceframework.data"
 
 repositories {
     mavenCentral()
