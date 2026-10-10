@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>9.2.8 Eager and Lazy Fetching 2024.2.0-M1</title>
+    <title>9.2.8 Eager and Lazy Fetching 2025.0.0-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -120,7 +120,7 @@ function addJsClass() {
                 <div class="project">
                     <h1>9.2.8 Eager and Lazy Fetching</h1>
 
-                    <p><strong>Version:</strong> 2024.2.0-M1</p>
+                    <p><strong>Version:</strong> 2025.0.0-SNAPSHOT</p>
                 </div>
 
                 
@@ -130,7 +130,7 @@ function addJsClass() {
 <h3 id="fetchingDSL"><a class="anchor" href="#fetchingDSL"></a>9.2.8 Eager and Lazy Fetching</h3>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.2.x/src/docs/guide/advancedGORMFeatures/ormdsl/fetchingDSL.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/advancedGORMFeatures/ormdsl/fetchingDSL.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -330,7 +330,7 @@ function addJsClass() {
 </div>
 </div>
 <div class="paragraph">
-<p>In the above example the <code>pet</code> association is no longer lazy because it is being retrieved along with the <code>Person</code> and thus no proxies are necessary. There are cases when it makes sense for a proxy to be returned, mostly in the case where its impossible to know if the data will be used or not. For those cases in order to access properties of the subclasses, the proxy must be unwrapped. To unwrap a proxy inject an instance of <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/mapping/proxy/ProxyHandler.html">ProxyHandler</a> and pass the proxy to the <code>unwrap</code> method.</p>
+<p>In the above example the <code>pet</code> association is no longer lazy because it is being retrieved along with the <code>Person</code> and thus no proxies are necessary. There are cases when it makes sense for a proxy to be returned, mostly in the case where its impossible to know if the data will be used or not. For those cases in order to access properties of the subclasses, the proxy must be unwrapped. To unwrap a proxy inject an instance of <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/mapping/proxy/ProxyHandler.html">ProxyHandler</a> and pass the proxy to the <code>unwrap</code> method.</p>
 </div>
 <div class="listingblock">
 <div class="content">

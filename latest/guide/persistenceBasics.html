@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>7 Persistence Basics 2024.2.0-M1</title>
+    <title>7 Persistence Basics 2025.0.0-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -120,7 +120,7 @@ function addJsClass() {
                 <div class="project">
                     <h1>7 Persistence Basics</h1>
 
-                    <p><strong>Version:</strong> 2024.2.0-M1</p>
+                    <p><strong>Version:</strong> 2025.0.0-SNAPSHOT</p>
                 </div>
 
                 
@@ -165,7 +165,7 @@ function addJsClass() {
 <h1 id="persistenceBasics"><a class="anchor" href="#persistenceBasics"></a>7 Persistence Basics</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.2.x/src/docs/guide/persistenceBasics.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/persistenceBasics.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -178,7 +178,7 @@ function addJsClass() {
 <p>If you are using Grace, then Grace automatically binds a Hibernate session to the currently executing request. This lets you use the <code>save()</code> and <code>delete</code> methods as well as other GORM methods transparently.</p>
 </div>
 <div class="paragraph">
-<p>If you are not using Grace then you have to make sure that a session is bound to the current request. One way to to achieve that is with the <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#withNewSession(groovy.lang.Closure)">withNewSession(Closure)</a> method:</p>
+<p>If you are not using Grace then you have to make sure that a session is bound to the current request. One way to to achieve that is with the <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#withNewSession(groovy.lang.Closure)">withNewSession(Closure)</a> method:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -188,7 +188,7 @@ function addJsClass() {
 </div>
 </div>
 <div class="paragraph">
-<p>Another option is to bind a transaction using the <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#withTransaction(groovy.lang.Closure)">withTransaction(Closure)</a> method:</p>
+<p>Another option is to bind a transaction using the <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#withTransaction(groovy.lang.Closure)">withTransaction(Closure)</a> method:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -202,14 +202,14 @@ function addJsClass() {
 <h2 id="transactionalWriteBehind"><a class="anchor" href="#transactionalWriteBehind"></a>7.1 Transactional Write-Behind</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.2.x/src/docs/guide/persistenceBasics/transactionalWriteBehind.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/persistenceBasics/transactionalWriteBehind.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>A useful feature of Hibernate over direct JDBC calls and even other frameworks is that when you call <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#save()">save()</a> or <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#delete()">delete()</a> it does not necessarily perform any SQL operations <strong>at that point</strong>. Hibernate batches up SQL statements and executes them as late as possible, often at the end of the request when flushing and closing the session.</p>
+<p>A useful feature of Hibernate over direct JDBC calls and even other frameworks is that when you call <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#save()">save()</a> or <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#delete()">delete()</a> it does not necessarily perform any SQL operations <strong>at that point</strong>. Hibernate batches up SQL statements and executes them as late as possible, often at the end of the request when flushing and closing the session.</p>
 </div>
 <div class="paragraph">
 <p>If you are using Grace this typically done for you automatically, which manages your Hibernate session. If you are using GORM outside of Grace then you may need to manually flush the session at the end of your operation.</p>
@@ -225,14 +225,14 @@ function addJsClass() {
 <h2 id="savingAndUpdating"><a class="anchor" href="#savingAndUpdating"></a>7.2 Saving and Updating</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.2.x/src/docs/guide/persistenceBasics/savingAndUpdating.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/persistenceBasics/savingAndUpdating.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>An example of using the <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#save()">save()</a> method can be seen below:</p>
+<p>An example of using the <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#save()">save()</a> method can be seen below:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -285,14 +285,14 @@ p.save(<span class="key">flush</span>: <span class="predefined-constant">true</s
 <h2 id="deletingObjects"><a class="anchor" href="#deletingObjects"></a>7.3 Deleting Objects</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.2.x/src/docs/guide/persistenceBasics/deletingObjects.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/persistenceBasics/deletingObjects.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>An example of the <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#delete()">delete()</a> method can be seen below:</p>
+<p>An example of the <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#delete()">delete()</a> method can be seen below:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -337,7 +337,7 @@ p.delete(<span class="key">flush</span>: <span class="predefined-constant">true<
 </div>
 </div>
 <div class="paragraph">
-<p>Another alternative is to use an HQL statement within the <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#executeUpdate(java.lang.String)">executeUpdate(&#8230;&#8203;)</a> method:</p>
+<p>Another alternative is to use an HQL statement within the <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#executeUpdate(java.lang.String)">executeUpdate(&#8230;&#8203;)</a> method:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -350,7 +350,7 @@ p.delete(<span class="key">flush</span>: <span class="predefined-constant">true<
 <h2 id="cascades"><a class="anchor" href="#cascades"></a>7.4 Understanding Cascading Updates and Deletes</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.2.x/src/docs/guide/persistenceBasics/cascades.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/persistenceBasics/cascades.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -598,7 +598,7 @@ a.save()</code></pre>
 <h2 id="fetching"><a class="anchor" href="#fetching"></a>7.5 Eager and Lazy Fetching</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.2.x/src/docs/guide/persistenceBasics/fetching.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/persistenceBasics/fetching.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -651,7 +651,7 @@ a.save()</code></pre>
 <h2 id="configuringEagerFetching"><a class="anchor" href="#configuringEagerFetching"></a>7.6 Configuring Eager Fetching</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.2.x/src/docs/guide/persistenceBasics/configuringEagerFetching.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/persistenceBasics/configuringEagerFetching.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -685,7 +685,7 @@ a.save()</code></pre>
 <h2 id="alteringFetchStrategy"><a class="anchor" href="#alteringFetchStrategy"></a>7.7 Altering Fetch Strategy for a Query</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.2.x/src/docs/guide/persistenceBasics/alteringFetchStrategy.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/persistenceBasics/alteringFetchStrategy.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -722,7 +722,7 @@ Author.findAllByNameLike(<span class="string"><span class="delimiter">&quot;</sp
 <h2 id="batchFetching"><a class="anchor" href="#batchFetching"></a>7.8 Using Batch Fetching</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.2.x/src/docs/guide/persistenceBasics/batchFetching.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/persistenceBasics/batchFetching.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -760,7 +760,7 @@ Author.findAllByNameLike(<span class="string"><span class="delimiter">&quot;</sp
 <h2 id="locking"><a class="anchor" href="#locking"></a>7.9 Pessimistic and Optimistic Locking</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.2.x/src/docs/guide/persistenceBasics/locking.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/persistenceBasics/locking.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -825,7 +825,7 @@ The <code>version</code> will only be updated after flushing the session.
 <p>Pessimistic locking is equivalent to doing a SQL "SELECT * FOR UPDATE" statement and locking a row in the database. This has the implication that other read operations will be blocking until the lock is released.</p>
 </div>
 <div class="paragraph">
-<p>In GORM pessimistic locking is performed on an existing instance with the <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#lock()">lock()</a> method:</p>
+<p>In GORM pessimistic locking is performed on an existing instance with the <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#lock()">lock()</a> method:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -842,7 +842,7 @@ airport.save()</code></pre>
 <p>However, in the above case what we are doing is "upgrading" from a regular SELECT to a SELECT..FOR UPDATE and another thread could still have updated the record in between the call to <code>get()</code> and the call to <code>lock()</code>.</p>
 </div>
 <div class="paragraph">
-<p>To get around this problem you can use the static <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#lock(java.io.Serializable)">lock(id)</a> method that takes an id just like <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#get(java.io.Serializable)">get(id)</a>:</p>
+<p>To get around this problem you can use the static <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#lock(java.io.Serializable)">lock(id)</a> method that takes an id just like <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#get(java.io.Serializable)">get(id)</a>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -855,7 +855,7 @@ airport.save()</code></pre>
 <p>In this case only SELECT..FOR UPDATE is issued.</p>
 </div>
 <div class="paragraph">
-<p>As well as the <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#lock(java.io.Serializable)">lock(id)</a> method you can also obtain a pessimistic locking using queries. For example using a dynamic finder:</p>
+<p>As well as the <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#lock(java.io.Serializable)">lock(id)</a> method you can also obtain a pessimistic locking using queries. For example using a dynamic finder:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -879,14 +879,14 @@ airport.save()</code></pre>
 <h2 id="modificationChecking"><a class="anchor" href="#modificationChecking"></a>7.10 Modification Checking</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.2.x/src/docs/guide/persistenceBasics/modificationChecking.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/persistenceBasics/modificationChecking.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>Once you have loaded and possibly modified a persistent domain class instance, it isn&#8217;t straightforward to retrieve the original values. If you try to reload the instance using <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#get(java.io.Serializable)">get(id)</a> Hibernate will return the current modified instance from its Session cache.</p>
+<p>Once you have loaded and possibly modified a persistent domain class instance, it isn&#8217;t straightforward to retrieve the original values. If you try to reload the instance using <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#get(java.io.Serializable)">get(id)</a> Hibernate will return the current modified instance from its Session cache.</p>
 </div>
 <div class="paragraph">
 <p>Reloading using another query would trigger a flush which could cause problems if your data isn&#8217;t ready to be flushed yet. So GORM provides some methods to retrieve the original values that Hibernate caches when it loads the instance (which it uses for dirty checking).</p>
@@ -894,7 +894,7 @@ airport.save()</code></pre>
 <div class="sect2">
 <h3 id="_isdirty">isDirty</h3>
 <div class="paragraph">
-<p>You can use the <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#isDirty(java.lang.String)">isDirty()</a> method to check if any field has been modified:</p>
+<p>You can use the <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#isDirty(java.lang.String)">isDirty()</a> method to check if any field has been modified:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -973,7 +973,7 @@ airport.properties = params
 <div class="sect2">
 <h3 id="_getdirtypropertynames">getDirtyPropertyNames</h3>
 <div class="paragraph">
-<p>You can use the <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#getDirtyPropertyNames()">getDirtyPropertyNames()</a> method to retrieve the names of modified fields; this may be empty but will not be null:</p>
+<p>You can use the <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#getDirtyPropertyNames()">getDirtyPropertyNames()</a> method to retrieve the names of modified fields; this may be empty but will not be null:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -991,7 +991,7 @@ airport.properties = params
 <div class="sect2">
 <h3 id="_getpersistentvalue">getPersistentValue</h3>
 <div class="paragraph">
-<p>You can use the <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#getPersistentValue(java.lang.String)">getPersistentValue(fieldName)</a> method to retrieve the value of a modified field:</p>
+<p>You can use the <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#getPersistentValue(java.lang.String)">getPersistentValue(fieldName)</a> method to retrieve the value of a modified field:</p>
 </div>
 <div class="listingblock">
 <div class="content">

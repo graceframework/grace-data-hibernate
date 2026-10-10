@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>7.1 Transactional Write-Behind 2024.2.0-M1</title>
+    <title>7.1 Transactional Write-Behind 2025.0.0-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -120,7 +120,7 @@ function addJsClass() {
                 <div class="project">
                     <h1>7.1 Transactional Write-Behind</h1>
 
-                    <p><strong>Version:</strong> 2024.2.0-M1</p>
+                    <p><strong>Version:</strong> 2025.0.0-SNAPSHOT</p>
                 </div>
 
                 
@@ -130,14 +130,14 @@ function addJsClass() {
 <h2 id="transactionalWriteBehind"><a class="anchor" href="#transactionalWriteBehind"></a>7.1 Transactional Write-Behind</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.2.x/src/docs/guide/persistenceBasics/transactionalWriteBehind.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/persistenceBasics/transactionalWriteBehind.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>A useful feature of Hibernate over direct JDBC calls and even other frameworks is that when you call <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#save()">save()</a> or <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#delete()">delete()</a> it does not necessarily perform any SQL operations <strong>at that point</strong>. Hibernate batches up SQL statements and executes them as late as possible, often at the end of the request when flushing and closing the session.</p>
+<p>A useful feature of Hibernate over direct JDBC calls and even other frameworks is that when you call <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#save()">save()</a> or <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#delete()">delete()</a> it does not necessarily perform any SQL operations <strong>at that point</strong>. Hibernate batches up SQL statements and executes them as late as possible, often at the end of the request when flushing and closing the session.</p>
 </div>
 <div class="paragraph">
 <p>If you are using Grace this typically done for you automatically, which manages your Hibernate session. If you are using GORM outside of Grace then you may need to manually flush the session at the end of your operation.</p>

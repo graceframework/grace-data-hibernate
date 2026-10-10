@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>13.3 Database Per Tenant 2024.2.0-M1</title>
+    <title>13.3 Database Per Tenant 2025.0.0-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -120,7 +120,7 @@ function addJsClass() {
                 <div class="project">
                     <h1>13.3 Database Per Tenant</h1>
 
-                    <p><strong>Version:</strong> 2024.2.0-M1</p>
+                    <p><strong>Version:</strong> 2025.0.0-SNAPSHOT</p>
                 </div>
 
                 
@@ -130,7 +130,7 @@ function addJsClass() {
 <h2 id="databasePerTenant"><a class="anchor" href="#databasePerTenant"></a>13.3 Database Per Tenant</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.2.x/src/docs/guide/multiTenancy/databasePerTenant.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/multiTenancy/databasePerTenant.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -142,7 +142,7 @@ function addJsClass() {
 <div class="sect2">
 <h3 id="_configuration">Configuration</h3>
 <div class="paragraph">
-<p>In order to activate database-per-tenant multi-tenancy you need to set the multi-tenancy mode to <code>DATABASE</code> in your configuration and supply a <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/mapping/multitenancy/TenantResolver.html">TenantResolver</a>:</p>
+<p>In order to activate database-per-tenant multi-tenancy you need to set the multi-tenancy mode to <code>DATABASE</code> in your configuration and supply a <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/mapping/multitenancy/TenantResolver.html">TenantResolver</a>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -168,7 +168,7 @@ function addJsClass() {
 <div class="sect2">
 <h3 id="_multi_tenant_domain_classes">Multi Tenant Domain Classes</h3>
 <div class="paragraph">
-<p>With the above configuration in place you then to need to implement the <a href="https://graceframework.org/grace-data/2024.2.x/api/grails/gorm/MultiTenant.html">MultiTenant</a> trait in the domain classes you want to be regarded as multi tenant:</p>
+<p>With the above configuration in place you then to need to implement the <a href="https://graceframework.org/grace-data/2025.0.x/api/grails/gorm/MultiTenant.html">MultiTenant</a> trait in the domain classes you want to be regarded as multi tenant:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -204,7 +204,7 @@ SessionFactory sessionFactory = hibernateDatastore
 <div class="sect2">
 <h3 id="_multi_tenancy_with_sessions">Multi Tenancy with Sessions</h3>
 <div class="paragraph">
-<p>When working with GORM typically you need a session bound to the current thread in order for GORM and transactions to work consistently. If you switch to a different tenant then it may be that the session bound to the current thread no longer matches the underlying <code>SessionFactory</code> being used by the tenant. With this in mind you may wants to use the <a href="https://graceframework.org/grace-data/2024.2.x/api/grails/gorm/multitenancy/Tenants.html">Tenants</a> class to ensure the correct session is bound for the current tenant:</p>
+<p>When working with GORM typically you need a session bound to the current thread in order for GORM and transactions to work consistently. If you switch to a different tenant then it may be that the session bound to the current thread no longer matches the underlying <code>SessionFactory</code> being used by the tenant. With this in mind you may wants to use the <a href="https://graceframework.org/grace-data/2025.0.x/api/grails/gorm/multitenancy/Tenants.html">Tenants</a> class to ensure the correct session is bound for the current tenant:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -247,7 +247,7 @@ SessionFactory sessionFactory = hibernateDatastore
 <p>Provisioning and creating SQL databases at runtime is non-trivial and beyond the scope of what GORM offers, however the <a href="#connectionSources">ConnectionSources API</a> does provide a way to hook into GORM to make this possible.</p>
 </div>
 <div class="paragraph">
-<p>By default an <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/mapping/core/connections/InMemoryConnectionSources.html">InMemoryConnectionSources</a> object is used which will read the connection sources from the application configuration and store them in-memory.</p>
+<p>By default an <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/mapping/core/connections/InMemoryConnectionSources.html">InMemoryConnectionSources</a> object is used which will read the connection sources from the application configuration and store them in-memory.</p>
 </div>
 <div class="paragraph">
 <p>However, it is possible to configure an alternate implementation:</p>

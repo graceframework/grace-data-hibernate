@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>10 Programmatic Transactions 2024.2.0-M1</title>
+    <title>10 Programmatic Transactions 2025.0.0-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -120,7 +120,7 @@ function addJsClass() {
                 <div class="project">
                     <h1>10 Programmatic Transactions</h1>
 
-                    <p><strong>Version:</strong> 2024.2.0-M1</p>
+                    <p><strong>Version:</strong> 2025.0.0-SNAPSHOT</p>
                 </div>
 
                 
@@ -141,7 +141,7 @@ function addJsClass() {
 <h1 id="programmaticTransactions"><a class="anchor" href="#programmaticTransactions"></a>10 Programmatic Transactions</h1>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.2.x/src/docs/guide/programmaticTransactions.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/programmaticTransactions.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -151,14 +151,14 @@ function addJsClass() {
 <p>Grace Data&#8217;s transaction management is built on Spring and uses Spring&#8217;s Transaction abstraction for dealing with programmatic transactions.</p>
 </div>
 <div class="paragraph">
-<p>However, Grace Data classes have been enhanced to make this simpler with the <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#withTransaction(groovy.lang.Closure)">withTransaction(Closure)</a>  method. This method has a single parameter, a Closure, which has a single parameter which is a Spring <a href="https://docs.spring.io/spring-framework/docs/6.2.19/javadoc-api/org/springframework/transaction/TransactionStatus.html">TransactionStatus</a> instance.</p>
+<p>However, Grace Data classes have been enhanced to make this simpler with the <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#withTransaction(groovy.lang.Closure)">withTransaction(Closure)</a>  method. This method has a single parameter, a Closure, which has a single parameter which is a Spring <a href="https://docs.spring.io/spring-framework/docs/6.2.19/javadoc-api/org/springframework/transaction/TransactionStatus.html">TransactionStatus</a> instance.</p>
 </div>
 
 
 <h2 id="withTransactionMethod"><a class="anchor" href="#withTransactionMethod"></a>10.1 Using the withTransaction Method</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.2.x/src/docs/guide/programmaticTransactions/withTransactionMethod.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/programmaticTransactions/withTransactionMethod.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -217,14 +217,14 @@ GORM versions prior to 6.0.0 did not roll back transactions for a checked <code>
 <h2 id="transactionService"><a class="anchor" href="#transactionService"></a>10.2 Using TransactionService</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.2.x/src/docs/guide/programmaticTransactions/transactionService.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/programmaticTransactions/transactionService.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>Since GORM 6.1, if you need more flexibility then instead you can instead take advantage of the <a href="https://graceframework.org/grace-data/2024.2.x/api/grails/gorm/transactions/TransactionService.html">TransactionService</a>, which can be obtained by looking it up from from the <code>HibernateDatastore</code>:</p>
+<p>Since GORM 6.1, if you need more flexibility then instead you can instead take advantage of the <a href="https://graceframework.org/grace-data/2025.0.x/api/grails/gorm/transactions/TransactionService.html">TransactionService</a>, which can be obtained by looking it up from from the <code>HibernateDatastore</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">

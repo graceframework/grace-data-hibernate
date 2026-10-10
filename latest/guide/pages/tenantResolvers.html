@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>13.6 Understanding Tenant Resolvers 2024.2.0-M1</title>
+    <title>13.6 Understanding Tenant Resolvers 2025.0.0-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -120,7 +120,7 @@ function addJsClass() {
                 <div class="project">
                     <h1>13.6 Understanding Tenant Resolvers</h1>
 
-                    <p><strong>Version:</strong> 2024.2.0-M1</p>
+                    <p><strong>Version:</strong> 2025.0.0-SNAPSHOT</p>
                 </div>
 
                 
@@ -130,14 +130,14 @@ function addJsClass() {
 <h2 id="tenantResolvers"><a class="anchor" href="#tenantResolvers"></a>13.6 Understanding Tenant Resolvers</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.2.x/src/docs/guide/multiTenancy/tenantResolvers.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/multiTenancy/tenantResolvers.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
 
 
 <div class="paragraph">
-<p>As mentioned previously the <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/mapping/multitenancy/TenantResolver.html">TenantResolver</a> interface is how you define the value of the <a href="https://graceframework.org/grace-data/2024.2.x/api/grails/gorm/multitenancy/Tenants.html#currentId()">current tenant</a>.</p>
+<p>As mentioned previously the <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/mapping/multitenancy/TenantResolver.html">TenantResolver</a> interface is how you define the value of the <a href="https://graceframework.org/grace-data/2025.0.x/api/grails/gorm/multitenancy/Tenants.html#currentId()">current tenant</a>.</p>
 </div>
 <div class="paragraph">
 <p>This section will cover a few more details about implementing <code>TenantResolver</code> instances.</p>
@@ -209,14 +209,14 @@ function addJsClass() {
 <div class="listingblock">
 <div class="title">build.gradle</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">compile "org.grails:grails-datastore-web:2024.2.0-M1"</code></pre>
+<pre class="CodeRay highlight"><code data-lang="groovy">compile "org.grails:grails-datastore-web:2025.0.0-SNAPSHOT"</code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_the_alltenantsresolver_interface">The AllTenantsResolver interface</h3>
 <div class="paragraph">
-<p>If you are using discriminator-based multi-tenancy then you may need to implement the <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/mapping/multitenancy/AllTenantsResolver.html">AllTenantsResolver</a> interface in your <code>TenantResolver</code> implementation if you want to at any point iterate over all available tenants.</p>
+<p>If you are using discriminator-based multi-tenancy then you may need to implement the <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/mapping/multitenancy/AllTenantsResolver.html">AllTenantsResolver</a> interface in your <code>TenantResolver</code> implementation if you want to at any point iterate over all available tenants.</p>
 </div>
 <div class="paragraph">
 <p>Typically with discriminator-based multi-tenancy the tenants are identified by some other domain class property. So for example an implementation would look like:</p>

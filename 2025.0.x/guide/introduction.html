@@ -1,0 +1,297 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <title>1 Introduction 2025.0.0-SNAPSHOT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
+    <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
+    <script type="text/javascript">
+function addJsClass() {
+    var classes = document.body.className.split(" ");
+    classes.push("js");
+    document.body.className = classes.join(" ");
+}
+    </script>
+</head>
+
+<body class="body" onload="addJsClass();">
+<div id="navigation">
+    <div class="navHeader">
+        
+        <span id="logo">
+            <a href="https://graceframework.org" title="Grace Framework Website">
+                <img src="../img/grace.svg" alt="Grace Framework" />
+            </a>
+        </span>
+        
+        <div class="docHeader">
+            <h1 class="docTitle">Grace Data Hibernate</h1>
+            <h3 class="docSubTitle">Provides integration between Grace and Hibernate through GORM</h3>
+        </div>
+    </div>
+    <div class="navLinks">
+        <ul>
+            <li>
+                <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)">
+                    <a href="../guide/index.html" class="button">Table of contents</a>
+
+                    <div id="nav-summary-childs" style="display:none;">
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/introduction.html"><strong>1</strong><span>Introduction</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/releases.html"><strong>2</strong><span>Release History</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/gettingStarted.html"><strong>3</strong><span>Getting Started</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/quickStartGuide.html"><strong>4</strong><span>Quick Start Guide</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/configuration.html"><strong>5</strong><span>Configuration</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/domainClasses.html"><strong>6</strong><span>Domain Modelling in GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/persistenceBasics.html"><strong>7</strong><span>Persistence Basics</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/querying.html"><strong>8</strong><span>Querying with GORM</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/advancedGORMFeatures.html"><strong>9</strong><span>Advanced GORM Features</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/programmaticTransactions.html"><strong>10</strong><span>Programmatic Transactions</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/services.html"><strong>11</strong><span>GORM Data Services</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/multipleDataSources.html"><strong>12</strong><span>Multiple Data Sources</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/multiTenancy.html"><strong>13</strong><span>Multi-Tenancy</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/constraints.html"><strong>14</strong><span>Validation and Constraints</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/testing.html"><strong>15</strong><span>GORM and Testing</span></a>
+                        </div>
+                        
+                        <div class="toc-item" style="margin-left:0"><a href="../guide/support.html"><strong>16</strong><span>Support</span></a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+            <!-- <li class="separator selected">
+                <a id="ref-button" onclick="localToggle(); return false;" href="#">Quick Reference</a>
+            </li> -->
+            <li class="separator selected">
+                <a id="ref-button" href="../api/index.html">API Docs</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+<table id="colset" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td id="col1">
+            <div id="main" class="corner-all">
+
+                
+
+                <span id='toggle-col1' class="toggle">(<a href="#" onclick="localToggle(); return false;">Quick Reference</a>)</span>
+
+                
+                    <div class="toc-item next-right"><a href="../guide/releases.html"><strong>2</strong><span>Release History</span> >></a></div>
+                
+
+
+                <div class="project">
+                    <h1>1 Introduction</h1>
+
+                    <p><strong>Version:</strong> 2025.0.0-SNAPSHOT</p>
+                </div>
+
+                
+                <div id="table-of-content">
+                    <h2>Table of Contents</h2>
+                    
+                    <div class="toc-item" style="margin-left:0px"><a href="#upgradeNotes"><strong>1.1</strong><span>Upgrade Notes</span></a>
+                    </div>
+                    
+                </div>
+                
+
+                
+
+<h1 id="introduction"><a class="anchor" href="#introduction"></a>1 Introduction</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/introduction.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p><a href="https://graceframework.org/grace-data/2024.0.x/">Grace Data</a> is a data access framework with multiple backend implementations that allows you to rapidly write data access code with little effort for your favourite database.</p>
+</div>
+<div class="paragraph">
+<p>There are currently several implementations of Grace Data. This documentation covers the original implementation of Grace Data which is based on the <a href="https://hibernate.org/orm/">Hibernate ORM</a>. Below you can find links to the other implementations:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://graceframework.org/grace-data-mongodb/2024.0.x/">Grace Data MongoDB</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>As mentioned, <a href="https://github.com/graceframework/grace-data-hibernate">Grace Data Hibernate</a> is the original implementation of GORM and has evolved dramatically over the years from a few meta-programming functions into a complete data access framework with multiple implementations for different datastores relational and NoSQL.</p>
+</div>
+
+
+<h2 id="upgradeNotes"><a class="anchor" href="#upgradeNotes"></a>1.1 Upgrade Notes</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/introduction/upgradeNotes.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect2">
+<h3 id="_dependency_upgrades">Dependency Upgrades</h3>
+<div class="paragraph">
+<p>GORM 2023.3 supports Apache Groovy 4 and Java 17, Hibernate 5.6.x and Spring 6.1.x.</p>
+</div>
+<div class="paragraph">
+<p>Each of these underlying components may have changes that require altering your application. These changes are beyond the scope of this documentation.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_default_autowire_by_type_inside_gorm_data_services">Default Autowire By Type inside GORM Data Services</h3>
+<div class="paragraph">
+<p>A GORM Service (or a bean) inside GORM DataService will default to autowire by-type, For example:</p>
+</div>
+<div class="paragraph">
+<p><em>./app/services/example/BookService.groovy</em></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">package</span> example
+
+<span class="keyword">import</span> <span class="include">grails.gorm.services.Service</span>
+
+<span class="annotation">@Service</span>(<span class="predefined-type">Book</span>)
+<span class="directive">abstract</span> <span class="type">class</span> <span class="class">BookService</span> {
+
+    TestService testRepo
+
+    <span class="directive">abstract</span> <span class="predefined-type">Book</span> save(<span class="predefined-type">String</span> title, <span class="predefined-type">String</span> author)
+
+    <span class="type">void</span> doSomething() {
+        <span class="keyword">assert</span> testRepo != <span class="predefined-constant">null</span>
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Please note that with autowire by-type as the default, when multiple beans for same type are found the application with throw Exception. Use the Spring <code>@Qualifier</code> annotation for <a href="https://docs.spring.io/spring-framework/reference/6.1/core/beans/annotation-config/autowired-qualifiers.html">Fine-tuning Annotation Based Autowiring with Qualifiers</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_jpa_annotated_entites_are_not_supported">JPA-annotated Entites are not supported</h3>
+<div class="paragraph">
+<p>Support for using JPA-annotated entites written in Groovy has been added since GORM 6.1, but this feature has been removed since GORM 2023.0.</p>
+</div>
+<div class="paragraph">
+<p>We want to keep GORM focusing on Groovy DSL, this allow developers to use JPA entities written in Java in the <code>app/domain</code>, so we can use Spring Data JPA or Micronaut Data JPA.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_initial_support_for_groovy_5">Initial support for Groovy 5</h3>
+<div class="paragraph">
+<p>Groovy 5.0 is the next major version, it&#8217;s currently in beta, but you can try it in the Grace applications.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_auto_configure_hibernate_plugin">Auto-Configure Hibernate Plugin</h3>
+<div class="paragraph">
+<p>GORM 2023.1.0 introduced <code>HibernateGormAutoConfiguration</code> as a Spring Boot&#8217;s <a href="https://docs.spring.io/spring-boot/3.3/reference/features/developing-auto-configuration.html">Auto-configuration</a>, and the Hibernate plugin has also provides <a href="https://docs.spring.io/spring-boot/3.3/specification/configuration-metadata/index.html">Configuration Metadata</a>.</p>
+</div>
+<div class="paragraph">
+<p>Most importantly, you can now easily use GORM for Hibernate in your Spring Boot application.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">dependencies {
+    implementation 'org.apache.groovy:groovy'
+    implementation 'org.graceframework.plugins:hibernate:2025.0.0-SNAPSHOT'
+    runtimeOnly 'com.h2database:h2'
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_support_grailscomponentscan">Support <code>@GrailsComponentScan</code></h3>
+<div class="paragraph">
+<p>GORM 2023.1.0 use <code>@GrailsComponentScan</code> to customize GORM <code>@Entity</code> scanning locations, just like Spring&#8217;s <a href="{springjavadoc}/org/springframework/context/annotation/ComponentScan.html"><code>@ComponentScan</code></a> does.</p>
+</div>
+<div class="paragraph">
+<p><em>./app/init/example/Application.groovy</em></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">package</span> example
+
+<span class="keyword">import</span> <span class="include">grails.boot.annotation.GrailsComponentScan</span>
+
+<span class="annotation">@GrailsComponentScan</span>(basePackages=[<span class="string"><span class="delimiter">'</span><span class="content">com.appone</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">com.apptwo</span><span class="delimiter">'</span></span>])
+<span class="type">class</span> <span class="class">Application</span> {
+
+}</code></pre>
+</div>
+</div>
+</div>
+
+
+                <div style="clear:both;margin-top:15px;"></div>
+                
+                    <div class="toc-item next-right"><a href="../guide/releases.html"><strong>2</strong><span>Release History</span> >></a></div>
+                
+                <div style="clear:both"></div>
+            </div>
+        </td>
+        <td id="col2">
+            <div class="local clearfix">
+                <div class="local-title">
+                    <a href="../guide/index.html" target="mainFrame">Quick Reference</a>
+                    <span class="toggle">(<a href="#" onclick="localToggle(); return false;">hide</a>)</span>
+                </div>
+                <div class="menu">
+                    
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div id="footer">
+    Copyright &copy; 2022-2026 Michael Yan and the original authors. The content is licensed under a Creative Commons Attribution 4.0 International (CC BY SA 4.0) license.
+    
+</div>
+
+<script type="text/javascript" src="../js/docs.js"></script>
+
+</body>
+</html>

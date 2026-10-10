@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-    <title>7.9 Pessimistic and Optimistic Locking 2024.2.0-M1</title>
+    <title>7.9 Pessimistic and Optimistic Locking 2025.0.0-SNAPSHOT</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8"/>
     <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8"/>
@@ -120,7 +120,7 @@ function addJsClass() {
                 <div class="project">
                     <h1>7.9 Pessimistic and Optimistic Locking</h1>
 
-                    <p><strong>Version:</strong> 2024.2.0-M1</p>
+                    <p><strong>Version:</strong> 2025.0.0-SNAPSHOT</p>
                 </div>
 
                 
@@ -130,7 +130,7 @@ function addJsClass() {
 <h2 id="locking"><a class="anchor" href="#locking"></a>7.9 Pessimistic and Optimistic Locking</h2>
 
 <div class='contribute-btn'>
-    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2024.2.x/src/docs/guide/persistenceBasics/locking.adoc"'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/persistenceBasics/locking.adoc"'>
         <i class='fa fa-pencil-square-o'></i> Improve this doc
     </button>
 </div>
@@ -195,7 +195,7 @@ The <code>version</code> will only be updated after flushing the session.
 <p>Pessimistic locking is equivalent to doing a SQL "SELECT * FOR UPDATE" statement and locking a row in the database. This has the implication that other read operations will be blocking until the lock is released.</p>
 </div>
 <div class="paragraph">
-<p>In GORM pessimistic locking is performed on an existing instance with the <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#lock()">lock()</a> method:</p>
+<p>In GORM pessimistic locking is performed on an existing instance with the <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#lock()">lock()</a> method:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -212,7 +212,7 @@ airport.save()</code></pre>
 <p>However, in the above case what we are doing is "upgrading" from a regular SELECT to a SELECT..FOR UPDATE and another thread could still have updated the record in between the call to <code>get()</code> and the call to <code>lock()</code>.</p>
 </div>
 <div class="paragraph">
-<p>To get around this problem you can use the static <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#lock(java.io.Serializable)">lock(id)</a> method that takes an id just like <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#get(java.io.Serializable)">get(id)</a>:</p>
+<p>To get around this problem you can use the static <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#lock(java.io.Serializable)">lock(id)</a> method that takes an id just like <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#get(java.io.Serializable)">get(id)</a>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -225,7 +225,7 @@ airport.save()</code></pre>
 <p>In this case only SELECT..FOR UPDATE is issued.</p>
 </div>
 <div class="paragraph">
-<p>As well as the <a href="https://graceframework.org/grace-data/2024.2.x/api/org/grails/datastore/gorm/GormEntity.html#lock(java.io.Serializable)">lock(id)</a> method you can also obtain a pessimistic locking using queries. For example using a dynamic finder:</p>
+<p>As well as the <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#lock(java.io.Serializable)">lock(id)</a> method you can also obtain a pessimistic locking using queries. For example using a dynamic finder:</p>
 </div>
 <div class="listingblock">
 <div class="content">
