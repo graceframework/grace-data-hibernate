@@ -1,3 +1,26 @@
+=== 2024.2.0-RC1
+
+link:{github}/releases/tag/v2024.2.0-RC1[release notes]
+
+🛠 Improvements
+
+* Update README - Update the versions of Groovy and Grace badges
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace Data 2024.2.0-RC1 link:{github}/issues/211[#211]
+* Upgrade to Grace Gradle Plugin 2024.1.2 link:{github}/issues/193[#193]
+* Upgrade to Groovy 4.0.33 link:{github}/issues/194[#194]
+* Upgrade to JUnit Jupiter 5.14.4 and JUnit Platform 1.14.4 link:{github}/issues/210[#210]
+* Upgrade to Logback 1.5.38 link:{github}/issues/195[#195]
+* Upgrade to SLF4J 2.0.20 link:{github}/issues/196[#196]
+* Upgrade to Tomcat 10.1.60 link:{github}/issues/197[#197]
+
+⚙️ Tasks
+
+* Release v2024.2.0-RC1
+* Upgrade Java version in sdkmanrc to 17.0.20-zulu link:{github}/issues/198[#198]
+
 === 2024.2.0-M1
 
 link:{github}/releases/tag/v2024.2.0-M1[release notes]
