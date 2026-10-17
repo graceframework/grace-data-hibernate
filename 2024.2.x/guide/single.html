@@ -2,7 +2,7 @@
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
-        <title>Grace Data Hibernate 2024.2.0-M1</title>
+        <title>Grace Data Hibernate 2024.2.0-SNAPSHOT</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" href="../css/main.css" type="text/css" media="screen, print" title="Style" charset="utf-8" />
         <link rel="stylesheet" href="../css/pdf.css" type="text/css" media="print" title="PDF" charset="utf-8" />
@@ -28,7 +28,7 @@ function addJsClass(el) {
                 <div class="docHeader">
                     <h1 class="docTitle">Grace Data Hibernate</h1>
                     <h3 class="docSubTitle">Provides integration between Grace and Hibernate through GORM</h3>
-                    <span class="docVersion">2024.2.0-M1</span>
+                    <span class="docVersion">2024.2.0-SNAPSHOT</span>
                 </div>
             </div>
             <div class="navLinks">
@@ -94,7 +94,7 @@ function addJsClass(el) {
                         <div class="project">
                             <h1>Grace Data Hibernate</h1>
                             <p><strong>Authors:</strong> Michael Yan</p>
-                            <p><strong>Version:</strong> 2024.2.0-M1</p>
+                            <p><strong>Version:</strong> 2024.2.0-SNAPSHOT</p>
                             
                         </div>
 
@@ -386,7 +386,7 @@ function addJsClass(el) {
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy">dependencies {
     implementation 'org.apache.groovy:groovy'
-    implementation 'org.graceframework.plugins:hibernate:2024.2.0-M1'
+    implementation 'org.graceframework.plugins:hibernate:2024.2.0-SNAPSHOT'
     runtimeOnly 'com.h2database:h2'
 }</code></pre>
 </div>
@@ -495,6 +495,63 @@ function addJsClass(el) {
 </div>
 
 
+<div class="sect2">
+<h3 id="_2024_2_0_rc1">2024.2.0-RC1</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2024.2.0-RC1">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Update README - Update the versions of Groovy and Grace badges</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Grace Data 2024.2.0-RC1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/211">#211</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Gradle Plugin 2024.1.2 <a href="https://github.com/graceframework/grace-data-hibernate/issues/193">#193</a></p>
+</li>
+<li>
+<p>Upgrade to Groovy 4.0.33 <a href="https://github.com/graceframework/grace-data-hibernate/issues/194">#194</a></p>
+</li>
+<li>
+<p>Upgrade to JUnit Jupiter 5.14.4 and JUnit Platform 1.14.4 <a href="https://github.com/graceframework/grace-data-hibernate/issues/210">#210</a></p>
+</li>
+<li>
+<p>Upgrade to Logback 1.5.38 <a href="https://github.com/graceframework/grace-data-hibernate/issues/195">#195</a></p>
+</li>
+<li>
+<p>Upgrade to SLF4J 2.0.20 <a href="https://github.com/graceframework/grace-data-hibernate/issues/196">#196</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.60 <a href="https://github.com/graceframework/grace-data-hibernate/issues/197">#197</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2024.2.0-RC1</p>
+</li>
+<li>
+<p>Upgrade Java version in sdkmanrc to 17.0.20-zulu <a href="https://github.com/graceframework/grace-data-hibernate/issues/198">#198</a></p>
+</li>
+</ul>
+</div>
+</div>
 <div class="sect2">
 <h3 id="_2024_2_0_m1">2024.2.0-M1</h3>
 <div class="paragraph">
@@ -2424,12 +2481,12 @@ function addJsClass(el) {
 
 
 <div class="paragraph">
-<p>To use Grace Data Hibernate 2024.2.0-M1 in Grace applications you can specify the following configuration in <code>build.gradle</code>:</p>
+<p>To use Grace Data Hibernate 2024.2.0-SNAPSHOT in Grace applications you can specify the following configuration in <code>build.gradle</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy">dependencies {
-    implementation "org.graceframework:grace-boot-hibernate:2024.2.0-M1"
+    implementation "org.graceframework:grace-boot-hibernate:2024.2.0-SNAPSHOT"
 }</code></pre>
 </div>
 </div>
@@ -2439,7 +2496,7 @@ function addJsClass(el) {
 <div class="listingblock">
 <div class="title">build.gradle</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">ext['grace-data-hibernate.version'] = 2024.2.0-M1</code></pre>
+<pre class="CodeRay highlight"><code data-lang="groovy">ext['grace-data-hibernate.version'] = 2024.2.0-SNAPSHOT</code></pre>
 </div>
 </div>
 
@@ -10299,7 +10356,7 @@ sessionFactory.openSession()</code></pre>
 <div class="listingblock">
 <div class="title">build.gradle</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">compile "org.grails:grails-datastore-web:2024.2.0-M1"</code></pre>
+<pre class="CodeRay highlight"><code data-lang="groovy">compile "org.grails:grails-datastore-web:2024.2.0-SNAPSHOT"</code></pre>
 </div>
 </div>
 </div>
