@@ -49,7 +49,7 @@ class SubclassMultipleListCollectionSpec extends Specification {
 
     void setupSpec() {
         hibernateDatastore = new HibernateDatastore(config,
-                SuperProduct, Product, Iteration
+                SuperProduct, SubProduct, Iteration
         )
         transactionManager = hibernateDatastore.getTransactionManager()
     }
@@ -60,7 +60,7 @@ class SubclassMultipleListCollectionSpec extends Specification {
     void 'test inheritance with multiple list collections'() {
         when:
         Iteration iter = new Iteration()
-        iter.addToProducts(new Product())
+        iter.addToProducts(new SubProduct())
         iter.addToOtherProducts(new SuperProduct())
         iter.save(flush: true)
 
@@ -75,14 +75,14 @@ class Iteration {
 
     List products
 
-    static hasMany = [products: Product, otherProducts: SuperProduct]
+    static hasMany = [products: SubProduct, otherProducts: SuperProduct]
     // uncommenting this line resolves the issue
 //    static mappedBy = [products: 'iteration', otherProducts: 'none']
 
 }
 
 @Entity
-class Product extends SuperProduct {
+class SubProduct extends SuperProduct {
 
     static belongsTo = [iteration: Iteration]
 
