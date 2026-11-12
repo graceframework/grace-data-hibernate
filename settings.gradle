@@ -2,3 +2,4 @@ rootProject.name = 'Grace.Data.Hibernate'
 
 // Core
 include "grace-datastore-gorm-hibernate"
+include "grace-spring-orm-hibernate"

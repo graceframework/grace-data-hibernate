@@ -1,0 +1,18 @@
+plugins {
+    id 'grace.build.common'
+}
+
+dependencies {
+    api libs.hibernate.core, {
+        exclude group: 'org.dom4j', module:'dom4j'
+        exclude group: 'jakarta.activation', module: 'jakarta.activation-api'
+        exclude group: 'jakarta.annotation', module: 'jakarta.annotation-api'
+        exclude group: 'jakarta.persistence', module: 'jakarta.persistence-api'
+    }
+    api libs.jakarta.persistence.api
+    compileOnly libs.jakarta.servlet
+    compileOnly libs.spring.orm
+    compileOnly libs.spring.aop
+    compileOnly libs.spring.context
+    compileOnly libs.spring.web
+}
