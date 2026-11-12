@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    api project(':grace-spring-orm-hibernate')
     api libs.grace.datastore.core
     api libs.grace.datastore.gorm
     api libs.hibernate.core, {
