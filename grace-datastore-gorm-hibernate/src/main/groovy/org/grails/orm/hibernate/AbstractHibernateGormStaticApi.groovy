@@ -183,10 +183,10 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
     }
 
     @Override
-    Integer count() {
-        (Integer) hibernateTemplate.execute({ Session session ->
+    Long count() {
+        (Long) hibernateTemplate.execute({ Session session ->
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder()
-            CriteriaQuery criteriaQuery = criteriaBuilder.createQuery(persistentEntity.javaClass)
+            CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long)
             criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(persistentEntity.javaClass)))
             Query criteria = session.createQuery(criteriaQuery)
             HibernateHqlQuery hibernateHqlQuery = new HibernateHqlQuery(hibernateSession, persistentEntity, criteria) {
@@ -227,7 +227,7 @@ abstract class AbstractHibernateGormStaticApi<D> extends GormStaticApi<D> {
         id = convertIdentifier(id)
         hibernateTemplate.execute { Session session ->
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder()
-            CriteriaQuery criteriaQuery = criteriaBuilder.createQuery(persistentEntity.javaClass)
+            CriteriaQuery criteriaQuery = criteriaBuilder.createQuery(Long)
             Root queryRoot = criteriaQuery.from(persistentEntity.javaClass)
             def idProp = queryRoot.get(persistentEntity.identity.name)
             criteriaQuery = criteriaQuery.where(
