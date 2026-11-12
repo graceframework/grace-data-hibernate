@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2025 the original author or authors.
+ * Copyright 2016-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,8 +41,8 @@ class MultiColumnUniqueConstraintSpec extends GormDatastoreSpec {
 
     void 'test generated unique constraints for related domains'() {
         given: 'two existing tasks'
-        Task task1 = new Task(name: 'task1').save(flush: true, failOnError: true)
-        Task task2 = new Task(name: 'task2').save(flush: true, failOnError: true)
+        TaskEntity task1 = new TaskEntity(name: 'task1').save(flush: true, failOnError: true)
+        TaskEntity task2 = new TaskEntity(name: 'task2').save(flush: true, failOnError: true)
 
         when: 'saving task links for the same toTask but not breaking unique index'
         TaskLink taskLink1 = new TaskLink(fromTask: task1, toTask: task2).save(flush: true, validate: false)
@@ -61,7 +61,7 @@ class MultiColumnUniqueConstraintSpec extends GormDatastoreSpec {
 
     @Override
     List getDomainClasses() {
-        [DomainOne, Task, TaskLink]
+        [DomainOne, TaskEntity, TaskLink]
     }
 
 }
@@ -79,7 +79,7 @@ class DomainOne {
 }
 
 @Entity
-class Task {
+class TaskEntity {
 
     String name
 
@@ -88,8 +88,8 @@ class Task {
 @Entity
 class TaskLink {
 
-    Task toTask
-    Task fromTask
+    TaskEntity toTask
+    TaskEntity fromTask
 
     static constraints = {
         toTask unique: ['fromTask']
