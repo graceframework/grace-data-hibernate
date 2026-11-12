@@ -2,6 +2,13 @@ plugins {
     id 'grace.build.common'
 }
 
+configurations {
+    tck {
+        transitive = false
+    }
+    testImplementation.extendsFrom(tck)
+}
+
 dependencies {
     api project(':grace-spring-orm-hibernate')
     api libs.grace.datastore.core
@@ -21,7 +28,7 @@ dependencies {
     implementation libs.javassist
     implementation libs.slf4j.api
 
-    testImplementation libs.grace.datastore.gorm.tck
+    tck libs.grace.datastore.gorm.tck
     testImplementation libs.groovy.json
     testImplementation libs.groovy.sql
     testImplementation libs.jakarta.el
@@ -41,10 +48,20 @@ dependencies {
     testRuntimeOnly libs.glassfish.expressly
 }
 
+def prepareTckTests = tasks.register('prepareTckTests', Sync) { Sync it ->
+    it.inputs.files(configurations.tck)
+    it.outputs.upToDateWhen { false }
+    it.destinationDirectory = project.layout.buildDirectory.dir('tck')
+    it.from zipTree(configurations.tck.singleFile), {
+        include '**/*.class'
+    }
+}
 
 test {
     systemProperty('hibernate5.gorm.suite', System.getProperty('hibernate5.gorm.suite') ?: true)
+    dependsOn(prepareTckTests)
     useJUnitPlatform()
+
     if (isCiBuild) {
         maxParallelForks = 1
         forkEvery = 10
@@ -54,61 +71,7 @@ test {
         forkEvery = 30
     }
 
-    jvmArgs = ['-Xmx1028M']
-    afterSuite {
-        System.out.print('.')
-        System.out.flush()
-    }
-}
+    jvmArgs = ['-Xmx2048M']
 
-
-test.doFirst {
-    def toBaseClassRelativePathWithoutExtension = { String base, String classFile ->
-        if (classFile.startsWith(base)) {
-            def sansClass = classFile[0 .. classFile.size() - ".class".size() - 1]
-            def dollarIndex = sansClass.indexOf('$')
-            def baseClass = dollarIndex > 0 ? sansClass[0..dollarIndex - 1] : sansClass
-            def relative = baseClass - base - '/'
-            relative
-        }
-        else {
-            null
-        }
-    }
-    def tckClassesFile = project
-                            .configurations
-                            .testCompileClasspath
-                            .resolvedConfiguration
-                            .getResolvedArtifacts()
-                            .find { resolved ->
-                                resolved.moduleVersion.id.name == 'grace-datastore-gorm-tck'
-                            }.file
-
-    def tckClassesDir = project.file("${project.buildDir}/tck")
-    copy {
-        from zipTree(tckClassesFile)
-        into tckClassesDir
-    }
-    copy {
-        from tckClassesDir
-        into sourceSets.test.output.classesDirs.find { it.path.contains('classes/groovy') }
-        include "**/*.class"
-        exclude { details ->
-            // Do not copy across any TCK class (or nested classes of that class)
-            // If there is a corresponding source file in the particular modules
-            // test source tree. Allows a module to override a test/helper.
-
-            if (!details.file.isFile()) {
-                return false
-            }
-            def candidatePath = details.file.absolutePath
-            def relativePath = toBaseClassRelativePathWithoutExtension(tckClassesDir.absolutePath, candidatePath)
-
-            if (relativePath == null) {
-                throw new IllegalStateException("$candidatePath does not appear to be in the TCK")
-            }
-
-            project.file("src/test/groovy/${relativePath}.groovy").exists()
-        }
-    }
+    testClassesDirs = objects.fileCollection().from(prepareTckTests, testClassesDirs)
 }
