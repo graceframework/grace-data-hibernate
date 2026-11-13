@@ -3,14 +3,18 @@ plugins {
 }
 
 configurations {
+    shadow {
+        transitive = false
+    }
     tck {
         transitive = false
     }
-    testImplementation.extendsFrom(tck)
+    compileClasspath.extendsFrom(shadow)
+    testImplementation.extendsFrom(shadow, tck)
 }
 
 dependencies {
-    api project(':grace-spring-orm-hibernate')
+    shadow project(':grace-spring-orm-hibernate')
     api libs.grace.datastore.core
     api libs.grace.datastore.gorm
     api libs.hibernate.core, {
@@ -74,4 +78,18 @@ test {
     jvmArgs = ['-Xmx2048M']
 
     testClassesDirs = objects.fileCollection().from(prepareTckTests, testClassesDirs)
+}
+
+def prepareShadow = tasks.register('prepareShadow', Sync) { Sync it ->
+    it.inputs.files(configurations.shadow)
+    it.outputs.upToDateWhen { false }
+    it.destinationDirectory = project.layout.buildDirectory.dir('shadow')
+    it.from zipTree(configurations.shadow.singleFile), {
+        include '**/*.class'
+    }
+}
+
+jar {
+    dependsOn prepareShadow
+    from project.layout.buildDirectory.dir('shadow')
 }
