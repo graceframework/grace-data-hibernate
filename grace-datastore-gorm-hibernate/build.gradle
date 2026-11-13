@@ -52,6 +52,31 @@ dependencies {
     testRuntimeOnly libs.glassfish.expressly
 }
 
+
+def prepareShadow = tasks.register('prepareShadow', Sync) { Sync it ->
+    it.inputs.files(configurations.shadow)
+    it.outputs.upToDateWhen { false }
+    it.destinationDirectory = project.layout.buildDirectory.dir('shadow')
+    it.from zipTree(configurations.shadow.singleFile), {
+        include '**/*.class'
+    }
+}
+
+jar {
+    dependsOn prepareShadow
+    manifest.attributes["Implementation-Title"] = project.name
+    manifest.attributes["Implementation-Version"] = project.version
+    manifest.attributes["Automatic-Module-Name"] = project.name.replace('-', '.')
+    manifest.attributes["Created-By"] =
+            "${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})"
+
+    from project.layout.buildDirectory.dir('shadow')
+    from("${rootDir}") {
+        include "LICENSE"
+        into "META-INF"
+    }
+}
+
 def prepareTckTests = tasks.register('prepareTckTests', Sync) { Sync it ->
     it.inputs.files(configurations.tck)
     it.outputs.upToDateWhen { false }
@@ -78,18 +103,4 @@ test {
     jvmArgs = ['-Xmx2048M']
 
     testClassesDirs = objects.fileCollection().from(prepareTckTests, testClassesDirs)
-}
-
-def prepareShadow = tasks.register('prepareShadow', Sync) { Sync it ->
-    it.inputs.files(configurations.shadow)
-    it.outputs.upToDateWhen { false }
-    it.destinationDirectory = project.layout.buildDirectory.dir('shadow')
-    it.from zipTree(configurations.shadow.singleFile), {
-        include '**/*.class'
-    }
-}
-
-jar {
-    dependsOn prepareShadow
-    from project.layout.buildDirectory.dir('shadow')
 }
