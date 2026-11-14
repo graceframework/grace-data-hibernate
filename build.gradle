@@ -99,6 +99,7 @@ else {
 
 tasks.withType(Groovydoc) {
     group = 'Documentation'
+    javaVersion = JavaLanguageVersion.of(21)
     docTitle = "Grace Data Hibernate - ${project.version}"
     destinationDir = project.file('build/docs/manual/api')
     def files = []
