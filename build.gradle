@@ -53,6 +53,17 @@ group = "org.graceframework"
 
 repositories {
     mavenCentral()
+    maven {
+        name = 'Maven Central Portal Snapshots'
+        url = 'https://central.sonatype.com/repository/maven-snapshots/'
+
+        content {
+            includeGroupAndSubgroups 'org.graceframework'
+        }
+        mavenContent {
+            snapshotsOnly()
+        }
+    }
 }
 
 configurations {
