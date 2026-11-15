@@ -1,0 +1,53 @@
+=== 2025.0.0-M1
+
+link:{github}/releases/tag/v2025.0.0-M1[release notes]
+
+⚠️ Noteworthy Changes
+
+* Change group name to 'org.graceframework.data' link:{github}/issues/213[#213]
+* Create module grace-spring-orm-hibernate link:{github}/issues/214[#214]
+* AbstractHibernateGormStaticApi: return Long from count() instead of Integer  link:{github}/issues/218[#218]
+
+🛠 Improvements
+
+* Include LICENSE and NOTICE files into the JAR file link:{github}/issues/238[#238]
+* Set javaVersion property for groovydoc link:{github}/issues/234[#234]
+* Add Maven Snapshot repo link:{github}/issues/232[#232]
+* Include LICENSE file into the JAR file link:{github}/issues/227[#227]
+* Combine spring-orm-hibernate classes into grace-datastore-gorm-hibernate as a single output Jar link:{github}/issues/226[#226]
+* Enable Gradle Configuration Cache link:{github}/issues/225[#225]
+* Create prepareTckTests task for TCK tests link:{github}/issues/224[#224]
+* Rename duplicated domains: Task and Product link:{github}/issues/223[#223]
+* Update gettingStarted guide
+* Update doc.properties - switch to 2025.0.x branch
+
+🚀 Dependency Upgrades
+
+* Upgrade to Eclipse Expressly 6.0.0 link:{github}/issues/215[#215]
+* Upgrade to Grace Data 2025.0.0-M2 link:{github}/issues/212[#212]
+* Upgrade to Grace Gradle Plugin 2025.0.0-M2 link:{github}/issues/231[#231]
+* Upgrade to Gradle 9.8.2 link:{github}/issues/221[#221]
+* Upgrade to Groovy 5.0.8 link:{github}/issues/202[#202]
+* Upgrade to H2 2.4.240 link:{github}/issues/216[#216]
+* Upgrade to Hibernate Validator 9.0.1.Final link:{github}/issues/219[#219]
+* Upgrade to Hibernate Validator 9.0.2.Final link:{github}/issues/228[#228]
+* Upgrade to Jakarta Annotation 3.0.0 link:{github}/issues/203[#203]
+* Upgrade to Jakarta Expression Language 6.0.1 link:{github}/issues/204[#204]
+* Upgrade to Jakarta Persistence 3.2.0 link:{github}/issues/206[#206]
+* Upgrade to Jakarta Servlet 6.1.0 link:{github}/issues/205[#205]
+* Upgrade to Jakarta Validation 3.1.1 link:{github}/issues/207[#207]
+* Upgrade to JUnit Jupiter 6.0.3 link:{github}/issues/222[#222]
+* Upgrade to Spring Framework 7.0.9 link:{github}/issues/208[#208]
+* Upgrade to Spring Framework 7.0.10 link:{github}/issues/229[#229]
+* Upgrade to Tomcat 11.0.24 link:{github}/issues/209[#209]
+* Upgrade to Tomcat 11.0.27 link:{github}/issues/230[#230]
+
+⚙️ Tasks
+
+* Release v2025.0.0-M1
+* Upgrade to gradle/actions/setup-gradle@v6.4.0 link:{github}/issues/201[#201]
+* Upgrade to actions/setup-java@v6 link:{github}/issues/200[#200]
+* Upgrade to actions/checkout@v7 link:{github}/issues/199[#199]
+* Disabled dependabot
+* Update GitHub workflows - Switch to '2025.0.x'
+* Next development version: 2025.0.0-SNAPSHOT
