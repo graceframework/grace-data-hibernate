@@ -1,0 +1,355 @@
+<!--
+
+     Licensed to the Apache Software Foundation (ASF) under one
+     or more contributor license agreements.  See the NOTICE file
+     distributed with this work for additional information
+     regarding copyright ownership.  The ASF licenses this file
+     to you under the Apache License, Version 2.0 (the
+     "License"); you may not use this file except in compliance
+     with the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing,
+     software distributed under the License is distributed on an
+     "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+     specific language governing permissions and limitations
+     under the License.
+
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+
+<title>org.springframework.orm.hibernate5 (Grace.Data.Hibernate 2025.0.0-M1 API)</title>
+<meta name="keywords" content="org.springframework.orm.hibernate5 package">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" title="Style">
+<link href="../../../../groovy.ico" type="image/x-icon" rel="shortcut icon">
+<link href="../../../../groovy.ico" type="image/x-icon" rel="icon">
+<script type="text/javascript">
+function windowTitle()
+{
+    parent.document.title="org.springframework.orm.hibernate5 (Grace.Data.Hibernate 2025.0.0-M1 API)";
+}
+</script>
+<noscript>
+</noscript>
+
+</head>
+
+<body class="center" onload="windowTitle();">
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<div class="topNav"><a name="navbar_top">
+    <!--   -->
+</a><a href="#skip-navbar_top" title="Skip navigation links"></a><a name="navbar_top_firstrow">
+    <!--   -->
+</a>
+<a name="navbar_top_firstrow"><!-- --></a>
+<ul class="navList" title="Navigation">
+    <li><a href="../../../../overview-summary.html">Overview</a></li>
+    <li class="navBarCell1Rev">Package</li>
+    <li>Class</li>
+    <li><a href="../../../../deprecated-list.html">Deprecated</a></li>
+    <li><a href="../../../../index-all.html">Index</a></li>
+    <li><a href="../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+
+<div class="subNav">
+    <ul class="navList">
+        <li><a href="../../../../index.html?org/springframework/orm/hibernate5/package-summary.html" target="_top">Frames</a></li>
+        <li><a href="package-summary.html" target="_top">No Frames</a></li>
+    </ul>
+</div>
+
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<div class="header">
+    <h1 class="title">Package org.springframework.orm.hibernate5</h1>
+</div>
+
+
+<h2 title="Package org.springframework.orm.hibernate5 Description" class="title">Package org.springframework.orm.hibernate5 Description</h2>
+<div class="header"> Package providing integration of
+ <a href="https://hibernate.org/">Hibernate ORM 5.x</a>
+ with Spring concepts.
+
+ <p>This package supports Hibernate 5.x while also tolerating use against
+ Hibernate ORM 6.x for migration purposes. Note that we strongly recommend
+ Hibernate's native <code>sessionFactory.getCurrentSession()</code> style.<DL><DT><B>NonNullApi:</B></DT><DD>@NonNullFields</DD></DL>
+ </div>
+
+
+<div class="contentContainer">
+
+
+    <div class="summary">
+        <ul class="blockList">
+            <li class="blockList">
+                <table border="0" cellpadding="3" cellspacing="0" summary="Interface Summary">
+                    <caption><span>Interface Summary</span><span class="tabEnd">&nbsp;</span></caption>
+                    <tbody>
+                    <tr>
+                        <th class="colFirst" scope="col">Interface</th>
+                        <th class="colLast" scope="col">Description</th>
+                    </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="HibernateCallback.html" title="class in org/springframework/orm/hibernate5">
+                                    HibernateCallback
+                                </a></strong>
+                            </td>
+                            <td>Callback interface for Hibernate code. </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="HibernateOperations.html" title="class in org/springframework/orm/hibernate5">
+                                    HibernateOperations
+                                </a></strong>
+                            </td>
+                            <td>Interface that specifies a common set of Hibernate operations as well as
+ a general <a href='#execute'>execute</a> method for Session-based lambda expressions.
+ </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </li>
+            </ul>
+        </div>
+    
+
+
+
+    <div class="summary">
+        <ul class="blockList">
+            <li class="blockList">
+                <table border="0" cellpadding="3" cellspacing="0" summary="Class Summary">
+                    <caption><span>Class Summary</span><span class="tabEnd">&nbsp;</span></caption>
+                    <tbody>
+                    <tr>
+                        <th class="colFirst" scope="col">Class</th>
+                        <th class="colLast" scope="col">Description</th>
+                    </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="HibernateExceptionTranslator.html" title="class in org/springframework/orm/hibernate5">
+                                    HibernateExceptionTranslator
+                                </a></strong>
+                            </td>
+                            <td><a href='https://docs.spring.io/spring-framework/docs/7.0.10/javadoc-api/org/springframework/dao/support/PersistenceExceptionTranslator.html' title='PersistenceExceptionTranslator'>PersistenceExceptionTranslator</a> capable of translating <a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/HibernateException.html' title='HibernateException'>HibernateException</a>
+ instances to Spring's <a href='https://docs.spring.io/spring-framework/docs/7.0.10/javadoc-api/org/springframework/dao/DataAccessException.html' title='DataAccessException'>DataAccessException</a> hierarchy. </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="HibernateObjectRetrievalFailureException.html" title="class in org/springframework/orm/hibernate5">
+                                    HibernateObjectRetrievalFailureException
+                                </a></strong>
+                            </td>
+                            <td>Hibernate-specific subclass of ObjectRetrievalFailureException.
+ </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="HibernateOptimisticLockingFailureException.html" title="class in org/springframework/orm/hibernate5">
+                                    HibernateOptimisticLockingFailureException
+                                </a></strong>
+                            </td>
+                            <td>Hibernate-specific subclass of ObjectOptimisticLockingFailureException.
+ </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="HibernateTemplate.html" title="class in org/springframework/orm/hibernate5">
+                                    HibernateTemplate
+                                </a></strong>
+                            </td>
+                            <td>Helper class that simplifies Hibernate data access code. </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="HibernateTransactionManager.html" title="class in org/springframework/orm/hibernate5">
+                                    HibernateTransactionManager
+                                </a></strong>
+                            </td>
+                            <td><a href='https://docs.spring.io/spring-framework/docs/7.0.10/javadoc-api/org/springframework/transaction/PlatformTransactionManager.html' title='PlatformTransactionManager'>PlatformTransactionManager</a>
+ implementation for a single Hibernate <a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/SessionFactory.html' title='SessionFactory'>SessionFactory</a>.
+ </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="LocalSessionFactoryBean.html" title="class in org/springframework/orm/hibernate5">
+                                    LocalSessionFactoryBean
+                                </a></strong>
+                            </td>
+                            <td><a href='https://docs.spring.io/spring-framework/docs/7.0.10/javadoc-api/org/springframework/beans/factory/FactoryBean.html' title='FactoryBean'>FactoryBean</a> that creates a Hibernate <a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/SessionFactory.html' title='SessionFactory'>SessionFactory</a>. </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="LocalSessionFactoryBuilder.html" title="class in org/springframework/orm/hibernate5">
+                                    LocalSessionFactoryBuilder
+                                </a></strong>
+                            </td>
+                            <td>A Spring-provided extension of the standard Hibernate <a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/cfg/Configuration.html' title='Configuration'>Configuration</a> class,
+ adding <a href='../../../../org/springframework/orm/hibernate5/SpringSessionContext.html' title='SpringSessionContext'>SpringSessionContext</a> as a default and providing convenient ways
+ to specify a JDBC javax.sql.DataSource and an application class loader.</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SessionFactoryUtils.html" title="class in org/springframework/orm/hibernate5">
+                                    SessionFactoryUtils
+                                </a></strong>
+                            </td>
+                            <td>Helper class featuring methods for Hibernate Session handling.
+ </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SessionHolder.html" title="class in org/springframework/orm/hibernate5">
+                                    SessionHolder
+                                </a></strong>
+                            </td>
+                            <td>Resource holder wrapping a Hibernate <a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/Session.html' title='Session'>Session</a> (plus an optional <a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/Transaction.html' title='Transaction'>Transaction</a>).
+ </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SpringBeanContainer.html" title="class in org/springframework/orm/hibernate5">
+                                    SpringBeanContainer
+                                </a></strong>
+                            </td>
+                            <td>Spring's implementation of Hibernate's <a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/resource/beans/container/spi/BeanContainer.html' title='BeanContainer'>BeanContainer</a> SPI,
+ delegating to a Spring <a href='https://docs.spring.io/spring-framework/docs/7.0.10/javadoc-api/org/springframework/beans/factory/config/ConfigurableListableBeanFactory.html' title='ConfigurableListableBeanFactory'>ConfigurableListableBeanFactory</a>.</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SpringFlushSynchronization.html" title="class in org/springframework/orm/hibernate5">
+                                    SpringFlushSynchronization
+                                </a></strong>
+                            </td>
+                            <td>Simple synchronization adapter that propagates a <CODE>flush()</CODE> call
+ to the underlying Hibernate Session. </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SpringJtaSessionContext.html" title="class in org/springframework/orm/hibernate5">
+                                    SpringJtaSessionContext
+                                </a></strong>
+                            </td>
+                            <td>Spring-specific subclass of Hibernate's JTASessionContext,
+ setting <CODE>FlushMode.MANUAL</CODE> for read-only transactions.</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SpringSessionContext.html" title="class in org/springframework/orm/hibernate5">
+                                    SpringSessionContext
+                                </a></strong>
+                            </td>
+                            <td>Implementation of Hibernate 3.1's <a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/context/spi/CurrentSessionContext.html' title='CurrentSessionContext'>CurrentSessionContext</a> interface
+ that delegates to Spring's <a href='../../../../org/springframework/orm/hibernate5/SessionFactoryUtils.html' title='SessionFactoryUtils'>SessionFactoryUtils</a> for providing a
+ Spring-managed current <a href='https://docs.hibernate.org/orm/5.6/javadocs/org/hibernate/Session.html' title='Session'>Session</a>.</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SpringSessionSynchronization.html" title="class in org/springframework/orm/hibernate5">
+                                    SpringSessionSynchronization
+                                </a></strong>
+                            </td>
+                            <td>Callback for resource cleanup at the end of a Spring-managed transaction
+ for a pre-bound Hibernate Session.</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </li>
+            </ul>
+        </div>
+    
+
+
+
+    <div class="summary">
+        <ul class="blockList">
+            <li class="blockList">
+                <table border="0" cellpadding="3" cellspacing="0" summary="Exception Summary">
+                    <caption><span>Exception Summary</span><span class="tabEnd">&nbsp;</span></caption>
+                    <tbody>
+                    <tr>
+                        <th class="colFirst" scope="col">Exception</th>
+                        <th class="colLast" scope="col">Description</th>
+                    </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="HibernateJdbcException.html" title="class in org/springframework/orm/hibernate5">
+                                    HibernateJdbcException
+                                </a></strong>
+                            </td>
+                            <td>Hibernate-specific subclass of UncategorizedDataAccessException,
+ for JDBC exceptions that Hibernate wrapped.</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="HibernateQueryException.html" title="class in org/springframework/orm/hibernate5">
+                                    HibernateQueryException
+                                </a></strong>
+                            </td>
+                            <td>Hibernate-specific subclass of InvalidDataAccessResourceUsageException,
+ thrown on invalid HQL query syntax.</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="HibernateSystemException.html" title="class in org/springframework/orm/hibernate5">
+                                    HibernateSystemException
+                                </a></strong>
+                            </td>
+                            <td>Hibernate-specific subclass of UncategorizedDataAccessException,
+ for Hibernate system errors that do not match any concrete
+ <CODE>org.springframework.dao</CODE> exceptions.</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </li>
+            </ul>
+        </div>
+    
+
+
+
+
+</div>
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<div class="bottomNav"><a name="navbar_bottom">
+    <!--   -->
+</a><a href="#skip-navbar_bottom" title="Skip navigation links"></a><a name="navbar_bottom_firstrow">
+    <!--   -->
+</a>
+    <ul class="navList" title="Navigation">
+        <li><a href="overview-summary.html">Overview</a></li>
+        <li class="navBarCell1Rev">Package</li>
+        <li>Class</li>
+        <li><a href="deprecated-list.html">Deprecated</a></li>
+        <li><a href="index-all.html">Index</a></li>
+        <li><a href="help-doc.html">Help</a></li>
+    </ul>
+</div>
+<div class="subNav">
+    <div>
+        <ul class="navList">
+            <li><a href="index.html?deprecated-list.html" target="_top">Frames</a></li>
+            <li><a href="deprecated-list.html" target="_top">No Frames</a></li>
+        </ul>
+    </div>
+
+    <div class="aboutLanguage"><em>Groovy Documentation</em></div>
+    <a name="skip-navbar_bottom">
+        <!--   -->
+    </a></div>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+</body>
+</html>
