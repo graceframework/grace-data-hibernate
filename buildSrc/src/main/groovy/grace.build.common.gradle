@@ -61,6 +61,20 @@ java {
     withSourcesJar()
 }
 
+jar {
+    manifest.attributes["Implementation-Title"] = project.name
+    manifest.attributes["Implementation-Version"] = project.version
+    manifest.attributes["Automatic-Module-Name"] = project.name.replace('-', '.')
+    manifest.attributes["Created-By"] =
+            "${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})"
+
+    from("${rootDir}/buildSrc/src/main/resources/legal") {
+        include "LICENSE.txt", "NOTICE.txt"
+        into "META-INF"
+        expand(copyright: new Date().format("yyyy"), version: project.version)
+    }
+}
+
 javadoc {
     failOnError = false
 }
