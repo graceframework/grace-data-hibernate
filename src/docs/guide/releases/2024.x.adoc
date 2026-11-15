@@ -1,3 +1,29 @@
+=== 2024.2.0
+
+link:{github}/releases/tag/v2024.2.0[release notes]
+
+⚠️ Noteworthy Changes
+
+* AbstractHibernateGormStaticApi: return Long from count() instead of Integer link:{github}/issues/217[#217]
+
+🛠 Improvements
+
+* Add release notes for 2024.2.0
+* Include LICENSE and NOTICE files into the JAR file link:{github}/issues/237[#237]
+* Add Maven Snapshot repo link:{github}/issues/232[#232]
+* Rename duplicated domains: Task and Product link:{github}/issues/223[#223]
+
+🚀 Dependency Upgrades
+
+* Upgrade to Grace Data 2024.2.0 link:{github}/issues/239[#239]
+* Upgrade to Gradle 8.14.7 link:{github}/issues/220[#220]
+* Upgrade to Hibernate Validator 8.0.5.Final link:{github}/issues/235[#235]
+* Upgrade to Tomcat 10.1.61 link:{github}/issues/236[#236]
+
+⚙️ Tasks
+
+* Release v2024.2.0
+
 === 2024.2.0-RC1
 
 link:{github}/releases/tag/v2024.2.0-RC1[release notes]
