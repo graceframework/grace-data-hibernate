@@ -108,9 +108,11 @@ function addJsClass(el) {
                             
                             <div class="toc-item" style="margin-left:0px"><a href="#releases"><strong>2</strong><span>Release History</span></a></div>
                             
-                            <div class="toc-item" style="margin-left:10px"><a href="#2024.x"><strong>2.1</strong><span>What's new in 2024.x</span></a></div>
+                            <div class="toc-item" style="margin-left:10px"><a href="#2025.x"><strong>2.1</strong><span>What's new in 2025.x</span></a></div>
                             
-                            <div class="toc-item" style="margin-left:10px"><a href="#2023.x"><strong>2.2</strong><span>What's new in 2023.x</span></a></div>
+                            <div class="toc-item" style="margin-left:10px"><a href="#2024.x"><strong>2.2</strong><span>What's new in 2024.x</span></a></div>
+                            
+                            <div class="toc-item" style="margin-left:10px"><a href="#2023.x"><strong>2.3</strong><span>What's new in 2023.x</span></a></div>
                             
                             <div class="toc-item" style="margin-left:0px"><a href="#gettingStarted"><strong>3</strong><span>Getting Started</span></a></div>
                             
@@ -441,6 +443,10 @@ function addJsClass(el) {
 <td class="tableblock halign-left valign-top"><p class="tableblock">Grace Version</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/graceframework/grace-data-hibernate/tree/2025.0.x">2025.0.x</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2025.0.x</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/graceframework/grace-data-hibernate/tree/2024.2.x">2024.2.x</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">2024.2.x</p></td>
 </tr>
@@ -486,7 +492,166 @@ function addJsClass(el) {
 </div>
 
 
-<h2 id="2024.x"><a class="anchor" href="#2024.x"></a>2.1 What's new in 2024.x</h2>
+<h2 id="2025.x"><a class="anchor" href="#2025.x"></a>2.1 What's new in 2025.x</h2>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/releases/2025.x.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="sect2">
+<h3 id="_2025_0_0_m1">2025.0.0-M1</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2025.0.0-M1">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>⚠️ Noteworthy Changes</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Change group name to 'org.graceframework.data' <a href="https://github.com/graceframework/grace-data-hibernate/issues/213">#213</a></p>
+</li>
+<li>
+<p>Create module grace-spring-orm-hibernate <a href="https://github.com/graceframework/grace-data-hibernate/issues/214">#214</a></p>
+</li>
+<li>
+<p>AbstractHibernateGormStaticApi: return Long from count() instead of Integer  <a href="https://github.com/graceframework/grace-data-hibernate/issues/218">#218</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Include LICENSE and NOTICE files into the JAR file <a href="https://github.com/graceframework/grace-data-hibernate/issues/238">#238</a></p>
+</li>
+<li>
+<p>Set javaVersion property for groovydoc <a href="https://github.com/graceframework/grace-data-hibernate/issues/234">#234</a></p>
+</li>
+<li>
+<p>Add Maven Snapshot repo <a href="https://github.com/graceframework/grace-data-hibernate/issues/232">#232</a></p>
+</li>
+<li>
+<p>Include LICENSE file into the JAR file <a href="https://github.com/graceframework/grace-data-hibernate/issues/227">#227</a></p>
+</li>
+<li>
+<p>Combine spring-orm-hibernate classes into grace-datastore-gorm-hibernate as a single output Jar <a href="https://github.com/graceframework/grace-data-hibernate/issues/226">#226</a></p>
+</li>
+<li>
+<p>Enable Gradle Configuration Cache <a href="https://github.com/graceframework/grace-data-hibernate/issues/225">#225</a></p>
+</li>
+<li>
+<p>Create prepareTckTests task for TCK tests <a href="https://github.com/graceframework/grace-data-hibernate/issues/224">#224</a></p>
+</li>
+<li>
+<p>Rename duplicated domains: Task and Product <a href="https://github.com/graceframework/grace-data-hibernate/issues/223">#223</a></p>
+</li>
+<li>
+<p>Update gettingStarted guide</p>
+</li>
+<li>
+<p>Update doc.properties - switch to 2025.0.x branch</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Eclipse Expressly 6.0.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/215">#215</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Data 2025.0.0-M2 <a href="https://github.com/graceframework/grace-data-hibernate/issues/212">#212</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Gradle Plugin 2025.0.0-M2 <a href="https://github.com/graceframework/grace-data-hibernate/issues/231">#231</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle 9.8.2 <a href="https://github.com/graceframework/grace-data-hibernate/issues/221">#221</a></p>
+</li>
+<li>
+<p>Upgrade to Groovy 5.0.8 <a href="https://github.com/graceframework/grace-data-hibernate/issues/202">#202</a></p>
+</li>
+<li>
+<p>Upgrade to H2 2.4.240 <a href="https://github.com/graceframework/grace-data-hibernate/issues/216">#216</a></p>
+</li>
+<li>
+<p>Upgrade to Hibernate Validator 9.0.1.Final <a href="https://github.com/graceframework/grace-data-hibernate/issues/219">#219</a></p>
+</li>
+<li>
+<p>Upgrade to Hibernate Validator 9.0.2.Final <a href="https://github.com/graceframework/grace-data-hibernate/issues/228">#228</a></p>
+</li>
+<li>
+<p>Upgrade to Jakarta Annotation 3.0.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/203">#203</a></p>
+</li>
+<li>
+<p>Upgrade to Jakarta Expression Language 6.0.1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/204">#204</a></p>
+</li>
+<li>
+<p>Upgrade to Jakarta Persistence 3.2.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/206">#206</a></p>
+</li>
+<li>
+<p>Upgrade to Jakarta Servlet 6.1.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/205">#205</a></p>
+</li>
+<li>
+<p>Upgrade to Jakarta Validation 3.1.1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/207">#207</a></p>
+</li>
+<li>
+<p>Upgrade to JUnit Jupiter 6.0.3 <a href="https://github.com/graceframework/grace-data-hibernate/issues/222">#222</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 7.0.9 <a href="https://github.com/graceframework/grace-data-hibernate/issues/208">#208</a></p>
+</li>
+<li>
+<p>Upgrade to Spring Framework 7.0.10 <a href="https://github.com/graceframework/grace-data-hibernate/issues/229">#229</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 11.0.24 <a href="https://github.com/graceframework/grace-data-hibernate/issues/209">#209</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 11.0.27 <a href="https://github.com/graceframework/grace-data-hibernate/issues/230">#230</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2025.0.0-M1</p>
+</li>
+<li>
+<p>Upgrade to gradle/actions/setup-gradle@v6.4.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/201">#201</a></p>
+</li>
+<li>
+<p>Upgrade to actions/setup-java@v6 <a href="https://github.com/graceframework/grace-data-hibernate/issues/200">#200</a></p>
+</li>
+<li>
+<p>Upgrade to actions/checkout@v7 <a href="https://github.com/graceframework/grace-data-hibernate/issues/199">#199</a></p>
+</li>
+<li>
+<p>Disabled dependabot</p>
+</li>
+<li>
+<p>Update GitHub workflows - Switch to '2025.0.x'</p>
+</li>
+<li>
+<p>Next development version: 2025.0.0-SNAPSHOT</p>
+</li>
+</ul>
+</div>
+</div>
+
+
+<h2 id="2024.x"><a class="anchor" href="#2024.x"></a>2.2 What's new in 2024.x</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/releases/2024.x.adoc"'>
@@ -495,6 +660,127 @@ function addJsClass(el) {
 </div>
 
 
+<div class="sect2">
+<h3 id="_2024_2_0">2024.2.0</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2024.2.0">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>⚠️ Noteworthy Changes</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>AbstractHibernateGormStaticApi: return Long from count() instead of Integer <a href="https://github.com/graceframework/grace-data-hibernate/issues/217">#217</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add release notes for 2024.2.0</p>
+</li>
+<li>
+<p>Include LICENSE and NOTICE files into the JAR file <a href="https://github.com/graceframework/grace-data-hibernate/issues/237">#237</a></p>
+</li>
+<li>
+<p>Add Maven Snapshot repo <a href="https://github.com/graceframework/grace-data-hibernate/issues/232">#232</a></p>
+</li>
+<li>
+<p>Rename duplicated domains: Task and Product <a href="https://github.com/graceframework/grace-data-hibernate/issues/223">#223</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Grace Data 2024.2.0 <a href="https://github.com/graceframework/grace-data-hibernate/issues/239">#239</a></p>
+</li>
+<li>
+<p>Upgrade to Gradle 8.14.7 <a href="https://github.com/graceframework/grace-data-hibernate/issues/220">#220</a></p>
+</li>
+<li>
+<p>Upgrade to Hibernate Validator 8.0.5.Final <a href="https://github.com/graceframework/grace-data-hibernate/issues/235">#235</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.61 <a href="https://github.com/graceframework/grace-data-hibernate/issues/236">#236</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2024.2.0</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2024_2_0_rc1">2024.2.0-RC1</h3>
+<div class="paragraph">
+<p><a href="https://github.com/graceframework/grace-data-hibernate/releases/tag/v2024.2.0-RC1">release notes</a></p>
+</div>
+<div class="paragraph">
+<p>🛠 Improvements</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Update README - Update the versions of Groovy and Grace badges</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>🚀 Dependency Upgrades</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upgrade to Grace Data 2024.2.0-RC1 <a href="https://github.com/graceframework/grace-data-hibernate/issues/211">#211</a></p>
+</li>
+<li>
+<p>Upgrade to Grace Gradle Plugin 2024.1.2 <a href="https://github.com/graceframework/grace-data-hibernate/issues/193">#193</a></p>
+</li>
+<li>
+<p>Upgrade to Groovy 4.0.33 <a href="https://github.com/graceframework/grace-data-hibernate/issues/194">#194</a></p>
+</li>
+<li>
+<p>Upgrade to JUnit Jupiter 5.14.4 and JUnit Platform 1.14.4 <a href="https://github.com/graceframework/grace-data-hibernate/issues/210">#210</a></p>
+</li>
+<li>
+<p>Upgrade to Logback 1.5.38 <a href="https://github.com/graceframework/grace-data-hibernate/issues/195">#195</a></p>
+</li>
+<li>
+<p>Upgrade to SLF4J 2.0.20 <a href="https://github.com/graceframework/grace-data-hibernate/issues/196">#196</a></p>
+</li>
+<li>
+<p>Upgrade to Tomcat 10.1.60 <a href="https://github.com/graceframework/grace-data-hibernate/issues/197">#197</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>⚙️ Tasks</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Release v2024.2.0-RC1</p>
+</li>
+<li>
+<p>Upgrade Java version in sdkmanrc to 17.0.20-zulu <a href="https://github.com/graceframework/grace-data-hibernate/issues/198">#198</a></p>
+</li>
+</ul>
+</div>
+</div>
 <div class="sect2">
 <h3 id="_2024_2_0_m1">2024.2.0-M1</h3>
 <div class="paragraph">
@@ -1143,7 +1429,7 @@ function addJsClass(el) {
 </div>
 
 
-<h2 id="2023.x"><a class="anchor" href="#2023.x"></a>2.2 What's new in 2023.x</h2>
+<h2 id="2023.x"><a class="anchor" href="#2023.x"></a>2.3 What's new in 2023.x</h2>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/graceframework/grace-data-hibernate/edit/2025.0.x/src/docs/guide/releases/2023.x.adoc"'>
@@ -8725,7 +9011,7 @@ These mappings will not work for default unidirectional one-to-many or many-to-m
 <p>Grace Data&#8217;s transaction management is built on Spring and uses Spring&#8217;s Transaction abstraction for dealing with programmatic transactions.</p>
 </div>
 <div class="paragraph">
-<p>However, Grace Data classes have been enhanced to make this simpler with the <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#withTransaction(groovy.lang.Closure)">withTransaction(Closure)</a>  method. This method has a single parameter, a Closure, which has a single parameter which is a Spring <a href="https://docs.spring.io/spring-framework/docs/6.2.19/javadoc-api/org/springframework/transaction/TransactionStatus.html">TransactionStatus</a> instance.</p>
+<p>However, Grace Data classes have been enhanced to make this simpler with the <a href="https://graceframework.org/grace-data/2025.0.x/api/org/grails/datastore/gorm/GormEntity.html#withTransaction(groovy.lang.Closure)">withTransaction(Closure)</a>  method. This method has a single parameter, a Closure, which has a single parameter which is a Spring <a href="https://docs.spring.io/spring-framework/docs/7.0.10/javadoc-api/org/springframework/transaction/TransactionStatus.html">TransactionStatus</a> instance.</p>
 </div>
 
 
@@ -8781,7 +9067,7 @@ GORM versions prior to 6.0.0 did not roll back transactions for a checked <code>
 </table>
 </div>
 <div class="paragraph">
-<p>You can also use "save points" to rollback a transaction to a particular point in time if you don&#8217;t want to rollback the entire transaction. This can be achieved through the use of Spring&#8217;s <a href="https://docs.spring.io/spring-framework/docs/6.2.19/javadoc-api/org/springframework/transaction/SavepointManager.html">SavePointManager</a> interface.</p>
+<p>You can also use "save points" to rollback a transaction to a particular point in time if you don&#8217;t want to rollback the entire transaction. This can be achieved through the use of Spring&#8217;s <a href="https://docs.spring.io/spring-framework/docs/7.0.10/javadoc-api/org/springframework/transaction/SavepointManager.html">SavePointManager</a> interface.</p>
 </div>
 <div class="paragraph">
 <p>The <code>withTransaction</code> method deals with the begin/commit/rollback logic for you within the scope of the block.</p>

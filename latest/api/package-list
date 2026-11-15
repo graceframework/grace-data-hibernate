@@ -17,3 +17,5 @@ org.grails.orm.hibernate.proxy
 org.grails.orm.hibernate.query
 org.grails.orm.hibernate.support
 org.grails.orm.hibernate.transaction
+org.springframework.orm.hibernate5
+org.springframework.orm.hibernate5.support
